@@ -1,0 +1,17 @@
+﻿  GameInstance.cpp
+C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\GameInstance.cpp(26,2): warning C4311: '형식 캐스트': 'Engine::CGraphic_Device *'에서 'HRESULT'(으)로 포인터가 잘립니다.
+C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\GameInstance.cpp(26,2): warning C4302: '형식 캐스트': 'Engine::CGraphic_Device *'에서 'HRESULT'(으)로 잘립니다.
+C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\GameInstance.cpp(27,2): error C2248: 'Engine::CTimer_Manager::~CTimer_Manager': private 멤버('Engine::CTimer_Manager' 클래스에서 선언)에 액세스할 수 없습니다.
+      C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Public\Timer_Manager.h(12,11):
+      'Engine::CTimer_Manager::~CTimer_Manager' 선언을 참조하십시오.
+      C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Public\Timer_Manager.h(8,7):
+      'Engine::CTimer_Manager' 선언을 참조하십시오.
+  
+C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\GameInstance.cpp(27,2): error C2440: '형식 캐스트': 'T'에서 'HRESULT'(으)로 변환할 수 없습니다.
+C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\GameInstance.cpp(27,2): error C2440:         with
+C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\GameInstance.cpp(27,2): error C2440:         [
+C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\GameInstance.cpp(27,2): error C2440:             T=Engine::CTimer_Manager
+C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\GameInstance.cpp(27,2): error C2440:         ]
+      C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\GameInstance.cpp(27,2):
+      이 변환을 수행할 수 있는 사용 가능한 사용자 정의 변환 연산자가 없거나 연산자를 호출할 수 없습니다.
+  

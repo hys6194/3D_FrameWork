@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="00.System">
+      <UniqueIdentifier>{0cbbfe42-8a9f-463c-b59a-0e2354acf2db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility">
+      <UniqueIdentifier>{9962f3df-bf41-4445-bc20-56853d147b9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\99.SuperClass">
+      <UniqueIdentifier>{b1fa8c41-7d9f-40d0-bbd9-5340a41f7038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines">
+      <UniqueIdentifier>{f61a4153-8e74-4d57-9e6a-ef7c388bf5f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\Timers">
+      <UniqueIdentifier>{ec92c66d-7748-4e0a-ba2c-e3fb73fcdfbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\Timers\Manager">
+      <UniqueIdentifier>{26564492-1ab1-42ce-adff-7d751cc9bd47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\00.GameInstance">
+      <UniqueIdentifier>{9930e6e6-7ffe-419f-9b41-b197856a430c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\Device">
+      <UniqueIdentifier>{7ac4177a-8e79-4339-80b7-7b0bf25ff5b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\Device\Graphic">
+      <UniqueIdentifier>{194ebabe-6f74-46c3-9d0c-0b7e57b589f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\98.AbstractFactory">
+      <UniqueIdentifier>{272e3229-eaff-4b33-bb96-b3a1685d9faf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Public\Base.h">
+      <Filter>01.Utility\99.SuperClass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Defines.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Macro.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Struct.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Typedef.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Enum.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Function.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Timer_Manager.h">
+      <Filter>00.System\Timers\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Timer.h">
+      <Filter>00.System\Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameInstance.h">
+      <Filter>01.Utility\00.GameInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Graphic_Device.h">
+      <Filter>00.System\Device\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AbstractFactory.h">
+      <Filter>01.Utility\98.AbstractFactory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Private\Base.cpp">
+      <Filter>01.Utility\99.SuperClass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Timer_Manager.cpp">
+      <Filter>00.System\Timers\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Timer.cpp">
+      <Filter>00.System\Timers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameInstance.cpp">
+      <Filter>01.Utility\00.GameInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Graphic_Device.cpp">
+      <Filter>00.System\Device\Graphic</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
