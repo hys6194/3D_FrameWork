@@ -141,7 +141,7 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND hWnd, _bool isWindowed, _uint iWin
 	SwapChain.BufferDesc.RefreshRate.Denominator = 1;
 
 	/* 멀티샘플링 : 안티얼라이징 (계단현상방지) */
-	/* 나나중에 후처리 렌더링 : 멀티샘플링 지원(x) */
+	/* 나중에 후처리 렌더링 : 멀티샘플링 지원(x) */
 	/*어느 순간 후처리 쉐이더가 멀티 샘플링을 지원하지 않아서 어쩔 수 없이 기능을 끈 것. 
 	후처리 방식을 이용해서 직접 안티 앨리어싱을 구현해야 한다*/
 	SwapChain.SampleDesc.Quality = 0;

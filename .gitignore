@@ -8,3 +8,17 @@
 .vs/3D_Framework/v17/Solution.VC.db
 .vs/3D_Framework/v17/Solution.VC.db-wal
 .vs/3D_Framework/v17/Solution.VC.db-shm
+.vs/3D_Framework/v17/ipch/AutoPCH/
+*.ipch
+.vs/3D_Framework/v17/ipch/AutoPCH/a28765cb95a3c205/LEVEL.ipch
+*.vsidx
+*.db
+*.json
+*.tlog
+*.tlog
+/Client/Default/x64
+/Saved
+/Intermediate
+/.vs
+/Build
+*.sln

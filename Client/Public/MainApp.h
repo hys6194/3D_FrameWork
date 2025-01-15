@@ -4,12 +4,12 @@
 #include "Base.h"
 
 BEGIN(Engine)
-class CGameInstance;
+class GameInstance;
 END
 
 BEGIN(Client)
 
-class CMainApp final : public CBase
+class CMainApp final : public Base
 {
 private:
 	CMainApp();
@@ -23,7 +23,7 @@ public:
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
-	CGameInstance*			m_pGameInstance = { nullptr };
+	GameInstance*			m_pGameInstance = { nullptr };
 
 
 #ifdef _DEBUG

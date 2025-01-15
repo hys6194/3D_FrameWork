@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 
 CMainApp::CMainApp()
-	: m_pGameInstance { CGameInstance::GetInstance() }
+	: m_pGameInstance { GameInstance::GetInstance() }
 {
 	Safe_AddRef(m_pGameInstance);
 }

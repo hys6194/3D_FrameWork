@@ -31,6 +31,12 @@
     <Filter Include="01.Utility\98.AbstractFactory">
       <UniqueIdentifier>{272e3229-eaff-4b33-bb96-b3a1685d9faf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\01. Level">
+      <UniqueIdentifier>{fe223e17-60a8-496d-a732-c47b6d00b5c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\01. Level\Manager">
+      <UniqueIdentifier>{026e5c76-89b0-493b-83af-e9a7568d6ddc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -69,6 +75,12 @@
     <ClInclude Include="..\Public\AbstractFactory.h">
       <Filter>01.Utility\98.AbstractFactory</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level.h">
+      <Filter>01.Utility\01. Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Manager.h">
+      <Filter>01.Utility\01. Level\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -85,6 +97,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Graphic_Device.cpp">
       <Filter>00.System\Device\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level.cpp">
+      <Filter>01.Utility\01. Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Manager.cpp">
+      <Filter>01.Utility\01. Level\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

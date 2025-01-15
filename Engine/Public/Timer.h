@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class CTimer final : public CBase
+class CTimer final : public Base
 {
 private:
 	CTimer();
