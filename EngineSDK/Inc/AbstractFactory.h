@@ -5,17 +5,5 @@
 
 class AbstractFactory
 {
-public:
-	template<typename T>
-	static T* Create(T*& Instance)
-	{
-		Instance = new T;
-
-		if (Instance == nullptr)
-			return nullptr;
-
-		return Instance;
-	}
-
 };
 

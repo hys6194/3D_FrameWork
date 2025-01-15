@@ -1,16 +1,16 @@
 #include "../Public/Base.h"
 
-CBase::CBase()
+Base::Base()
 {
 
 }
 
-_uint CBase::AddRef()
+_uint Base::AddRef()
 {
 	return ++m_iRefCnt;
 }
 
-_uint CBase::Release()
+_uint Base::Release()
 {
 	if (0 == m_iRefCnt)
 	{
@@ -24,7 +24,7 @@ _uint CBase::Release()
 		return m_iRefCnt--;
 }
 
-void CBase::Free()
+void Base::Free()
 {
 
 }

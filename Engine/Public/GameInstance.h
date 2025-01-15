@@ -3,32 +3,31 @@
 #include "Base.h"
 #include "AbstractFactory.h"
 
-/* CGameInstance */
+/* GameInstance */
 /* 엔진이 제공해주는 대부분의 기능을 모아둔다. */
 /* 한번의 함수 호출로 대부분의 초기화 기능을 한꺼번에 수행한다. */
 /* 한번의 함수 호출로 대부분의 기능을 정리한다. */
 
 BEGIN(Engine)
 
-class ENGINE_DLL CGameInstance final : public CBase
+class ENGINE_DLL GameInstance final : public Base
 {
-	DECLARE_SINGLETON(CGameInstance)
+	DECLARE_SINGLETON(GameInstance)
 
 private:
-	CGameInstance();
-	virtual ~CGameInstance() = default;
-
+	GameInstance();
+	virtual ~GameInstance() = default;
 
 public:
 	HRESULT Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext);
-
+	void Update_Engine(_float fTimeDelta);
+	void Clear(_uint iClearLevelIndex);
 
 #pragma region GRAPHIC_DEVICE
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);	
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
 #pragma endregion
-
 
 #pragma region TIMER_MANAGER
 public:

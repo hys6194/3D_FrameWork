@@ -51,7 +51,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     if (nullptr == pMainApp)
         return FALSE;
 
-    CGameInstance* pGameInstance = CGameInstance::GetInstance();
+    GameInstance* pGameInstance = GameInstance::GetInstance();
     if (nullptr == pGameInstance)
         return FALSE;
 
