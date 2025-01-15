@@ -22,3 +22,17 @@
 /.vs
 /Build
 *.sln
+.vs/3D_Framework/v17/.suo
+/.vs/3D_Framework/v17
+/.vs/3D_Framework
+.vs/3D_Framework/v17/Browse.VC.db-wal
+.vs/3D_Framework/v17/Browse.VC.db-shm
+.vs/3D_Framework/v17/Browse.VC.db
+/.vs
+.vs/3D_Framework/v17/DocumentLayout.json
+.vs/3D_Framework/v17/Solution.VC.db
+.vs/3D_Framework/v17/Solution.VC.db-shm
+*.db-wal
+*.db-shm
+*.db
+*.json
