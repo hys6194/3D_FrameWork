@@ -5,9 +5,11 @@ Level_Loading::Level_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 {
 }
 
-HRESULT Level_Loading::Initialize()
+HRESULT Level_Loading::Initialize(LEVEL eNextLevelID)
 {
-	return E_NOTIMPL;
+	
+
+	return S_OK;
 }
 
 void Level_Loading::Update(_float fTimeDelta)
@@ -16,12 +18,20 @@ void Level_Loading::Update(_float fTimeDelta)
 
 HRESULT Level_Loading::Render()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
-Level_Loading* Level_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+Level_Loading* Level_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID)
 {
-	return nullptr;
+	Level_Loading* pInstance = new Level_Loading(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize(eNextLevelID)))
+	{
+		MSG_BOX("Failed To Created : Level_Loading");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void Level_Loading::Free()

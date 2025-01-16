@@ -7,6 +7,18 @@
       "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Private\\Level_Logo.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\GameInstance.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|solutionrelative:Engine\\Private\\GameInstance.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Loader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Public\\Loader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Loader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Private\\Loader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_Logo.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Public\\Level_Logo.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -23,44 +35,32 @@
       "RelativeMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|solutionrelative:Engine\\Private\\Level_Manager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_GamePlay.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Private\\Level_GamePlay.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_GamePlay.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Public\\Level_GamePlay.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\Level.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|solutionrelative:Engine\\Public\\Level.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\Level_Manager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|solutionrelative:Engine\\Public\\Level_Manager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\GameInstance.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|solutionrelative:Engine\\Private\\GameInstance.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\GameInstance.h||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|solutionrelative:Engine\\Public\\GameInstance.h||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Loader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Public\\Loader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\MainApp.h||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Public\\MainApp.h||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\MainApp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Private\\MainApp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\Level.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|solutionrelative:Engine\\Private\\Level.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_GamePlay.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Public\\Level_GamePlay.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_GamePlay.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Private\\Level_GamePlay.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\Level.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|solutionrelative:Engine\\Public\\Level.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\MainApp.h||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{46A2ABBC-3E21-49B1-8EEE-ABDBC3CBCD4E}|Client\\Default\\Client.vcxproj|solutionrelative:Client\\Public\\MainApp.h||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A1E1A0C2-997B-4E95-AB26-327D07A882B4}|Engine\\Default\\Engine.vcxproj|E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\Base.cpp||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -98,45 +98,178 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Level_Loading.cpp",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_Loading.cpp",
-              "RelativeDocumentMoniker": "Client\\Private\\Level_Loading.cpp",
-              "ToolTip": "C:\\Users\\ys010\\OneDrive\\\uBB38\uC11C\\GitHub\\3D_FrameWork\\Client\\Private\\Level_Loading.cpp*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Title": "Loader.cpp",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Loader.cpp",
+              "RelativeDocumentMoniker": "Client\\Private\\Loader.cpp",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Loader.cpp",
+              "RelativeToolTip": "Client\\Private\\Loader.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-01-15T07:38:32.544Z"
+              "WhenOpened": "2025-01-16T01:16:36.435Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Level_GamePlay.h",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_GamePlay.h",
-              "RelativeDocumentMoniker": "Client\\Public\\Level_GamePlay.h",
-              "ToolTip": "C:\\Users\\ys010\\OneDrive\\\uBB38\uC11C\\GitHub\\3D_FrameWork\\Client\\Public\\Level_GamePlay.h*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAALAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "Loader.h",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Loader.h",
+              "RelativeDocumentMoniker": "Client\\Public\\Loader.h",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Loader.h",
+              "RelativeToolTip": "Client\\Public\\Loader.h",
+              "ViewState": "AQIAABAAAAAAAAAAAAAgwB8AAAAwAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-01-15T07:35:45.734Z"
+              "WhenOpened": "2025-01-16T01:16:35.749Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
+              "Title": "Level_Logo.cpp",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_Logo.cpp",
+              "RelativeDocumentMoniker": "Client\\Private\\Level_Logo.cpp",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_Logo.cpp",
+              "RelativeToolTip": "Client\\Private\\Level_Logo.cpp",
+              "ViewState": "AQIAAAEAAAAAAAAAAAAQwBkAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-15T07:38:04.036Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "Level_Manager.cpp",
               "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\Level_Manager.cpp",
               "RelativeDocumentMoniker": "Engine\\Private\\Level_Manager.cpp",
               "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\Level_Manager.cpp",
               "RelativeToolTip": "Engine\\Private\\Level_Manager.cpp",
-              "ViewState": "AgIAABgAAAAAAAAAAADwvyQAAAAZAAAAAAAAAA==",
+              "ViewState": "AQIAACMAAAAAAAAAAAAowCgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-01-15T06:57:43.343Z"
+              "WhenOpened": "2025-01-15T06:57:43.343Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
+              "Title": "Level_Manager.h",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\Level_Manager.h",
+              "RelativeDocumentMoniker": "Engine\\Public\\Level_Manager.h",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\Level_Manager.h",
+              "RelativeToolTip": "Engine\\Public\\Level_Manager.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-01-15T06:53:34.45Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Level_Loading.h",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_Loading.h",
+              "RelativeDocumentMoniker": "Client\\Public\\Level_Loading.h",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_Loading.h",
+              "RelativeToolTip": "Client\\Public\\Level_Loading.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-01-15T07:38:20.023Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GameInstance.cpp",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\GameInstance.cpp",
+              "RelativeDocumentMoniker": "Engine\\Private\\GameInstance.cpp",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\GameInstance.cpp",
+              "RelativeToolTip": "Engine\\Private\\GameInstance.cpp",
+              "ViewState": "AQIAABkAAAAAAAAAAAAowEgAAABEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-15T06:27:54.054Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "GameInstance.h",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\GameInstance.h",
+              "RelativeDocumentMoniker": "Engine\\Public\\GameInstance.h",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\GameInstance.h",
+              "RelativeToolTip": "Engine\\Public\\GameInstance.h",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAACgAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-01-15T06:40:45.424Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Level_Loading.cpp",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_Loading.cpp",
+              "RelativeDocumentMoniker": "Client\\Private\\Level_Loading.cpp",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_Loading.cpp",
+              "RelativeToolTip": "Client\\Private\\Level_Loading.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-15T07:38:32.544Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Level_Logo.h",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_Logo.h",
+              "RelativeDocumentMoniker": "Client\\Public\\Level_Logo.h",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_Logo.h",
+              "RelativeToolTip": "Client\\Public\\Level_Logo.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwkAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-01-15T07:37:59.218Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MainApp.cpp",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\MainApp.cpp",
+              "RelativeDocumentMoniker": "Client\\Private\\MainApp.cpp",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\MainApp.cpp",
+              "RelativeToolTip": "Client\\Private\\MainApp.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwYAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-15T06:39:03.281Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Level_GamePlay.h",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_GamePlay.h",
+              "RelativeDocumentMoniker": "Client\\Public\\Level_GamePlay.h",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_GamePlay.h",
+              "RelativeToolTip": "Client\\Public\\Level_GamePlay.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-01-15T07:35:45.734Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Level_GamePlay.cpp",
+              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_GamePlay.cpp",
+              "RelativeDocumentMoniker": "Client\\Private\\Level_GamePlay.cpp",
+              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_GamePlay.cpp",
+              "RelativeToolTip": "Client\\Private\\Level_GamePlay.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-15T07:35:46.411Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "Level.h",
               "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\Level.h",
               "RelativeDocumentMoniker": "Engine\\Public\\Level.h",
@@ -148,115 +281,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Level_GamePlay.cpp",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_GamePlay.cpp",
-              "RelativeDocumentMoniker": "Client\\Private\\Level_GamePlay.cpp",
-              "ToolTip": "C:\\Users\\ys010\\OneDrive\\\uBB38\uC11C\\GitHub\\3D_FrameWork\\Client\\Private\\Level_GamePlay.cpp*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-01-15T07:35:46.411Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Level_Logo.cpp",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_Logo.cpp",
-              "RelativeDocumentMoniker": "Client\\Private\\Level_Logo.cpp",
-              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\Level_Logo.cpp",
-              "RelativeToolTip": "Client\\Private\\Level_Logo.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-01-15T07:38:04.036Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Level_Loading.h",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_Loading.h",
-              "RelativeDocumentMoniker": "Client\\Public\\Level_Loading.h",
-              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_Loading.h",
-              "RelativeToolTip": "Client\\Public\\Level_Loading.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwoAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-01-15T07:38:20.023Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Level_Logo.h",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_Logo.h",
-              "RelativeDocumentMoniker": "Client\\Public\\Level_Logo.h",
-              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Level_Logo.h",
-              "RelativeToolTip": "Client\\Public\\Level_Logo.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvxMAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-01-15T07:37:59.218Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Level_Manager.h",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\Level_Manager.h",
-              "RelativeDocumentMoniker": "Engine\\Public\\Level_Manager.h",
-              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\Level_Manager.h",
-              "RelativeToolTip": "Engine\\Public\\Level_Manager.h",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAiwBoAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-01-15T06:53:34.45Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "GameInstance.cpp",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\GameInstance.cpp",
-              "RelativeDocumentMoniker": "Engine\\Private\\GameInstance.cpp",
-              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\GameInstance.cpp",
-              "RelativeToolTip": "Engine\\Private\\GameInstance.cpp",
-              "ViewState": "AgIAABUAAAAAAAAAAAAiwDgAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-01-15T06:27:54.054Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "GameInstance.h",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\GameInstance.h",
-              "RelativeDocumentMoniker": "Engine\\Public\\GameInstance.h",
-              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Public\\GameInstance.h",
-              "RelativeToolTip": "Engine\\Public\\GameInstance.h",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAiwBcAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-01-15T06:40:45.424Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Loader.h",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Loader.h",
-              "RelativeDocumentMoniker": "Client\\Public\\Loader.h",
-              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\Loader.h",
-              "RelativeToolTip": "Client\\Public\\Loader.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-01-15T07:39:03.329Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 14,
-              "Title": "Level.cpp",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\Level.cpp",
-              "RelativeDocumentMoniker": "Engine\\Private\\Level.cpp",
-              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Engine\\Private\\Level.cpp",
-              "RelativeToolTip": "Engine\\Private\\Level.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAABCAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-01-15T06:43:13.555Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
               "Title": "MainApp.h",
               "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Public\\MainApp.h",
               "RelativeDocumentMoniker": "Client\\Public\\MainApp.h",
@@ -265,18 +290,6 @@
               "ViewState": "AgIAAA0AAAAAAAAAAAAiwB8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-01-15T06:40:45.165Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "MainApp.cpp",
-              "DocumentMoniker": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\MainApp.cpp",
-              "RelativeDocumentMoniker": "Client\\Private\\MainApp.cpp",
-              "ToolTip": "E:\\\uD504\uB85C\uC81D\uD2B8\\3D_FrameWork\\Client\\Private\\MainApp.cpp",
-              "RelativeToolTip": "Client\\Private\\MainApp.cpp",
-              "ViewState": "AgIAACQAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-01-15T06:39:03.281Z"
             },
             {
               "$type": "Document",

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Base.h"
-#include "AbstractFactory.h"
 
 /* GameInstance */
 /* 엔진이 제공해주는 대부분의 기능을 모아둔다. */
@@ -36,10 +35,16 @@ public:
 	HRESULT			Add_Timer(const _wstring& strTimerTag);
 #pragma endregion
 
+#pragma region LEVEL_MANAGER
+public:
+	HRESULT Open_Level(_uint iLevelIndex, class Level* pNewLevel );
+#pragma endregion
+
 
 private:
 	class CGraphic_Device* m_pGraphic_Device = { nullptr };
 	class CTimer_Manager* m_pTimer_Manager = { nullptr };
+	class Level_Manager* m_pLevel_Manager = { nullptr };
 
 public:	
 	virtual void Free() override;

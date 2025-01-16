@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
+/* 로고장면을 보여준다. */
+
 BEGIN(Client)
 
 class Level_Logo : public Level
