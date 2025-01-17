@@ -1,16 +1,4 @@
-﻿  Base.cpp
-  GameInstance.cpp
-E:\프로젝트\3D_FrameWork\Engine\Private\GameInstance.cpp(18,2): warning C4311: '형식 캐스트': 'Engine::CGraphic_Device *'에서 'HRESULT'(으)로 포인터가 잘립니다.
-E:\프로젝트\3D_FrameWork\Engine\Private\GameInstance.cpp(18,2): warning C4302: '형식 캐스트': 'Engine::CGraphic_Device *'에서 'HRESULT'(으)로 잘립니다.
-E:\프로젝트\3D_FrameWork\Engine\Private\GameInstance.cpp(19,2): warning C4311: '형식 캐스트': 'Engine::CTimer_Manager *'에서 'HRESULT'(으)로 포인터가 잘립니다.
-E:\프로젝트\3D_FrameWork\Engine\Private\GameInstance.cpp(19,2): warning C4302: '형식 캐스트': 'Engine::CTimer_Manager *'에서 'HRESULT'(으)로 잘립니다.
-E:\프로젝트\3D_FrameWork\Engine\Private\GameInstance.cpp(20,2): warning C4311: '형식 캐스트': 'Engine::Level_Manager *'에서 'HRESULT'(으)로 포인터가 잘립니다.
-E:\프로젝트\3D_FrameWork\Engine\Private\GameInstance.cpp(20,2): warning C4302: '형식 캐스트': 'Engine::Level_Manager *'에서 'HRESULT'(으)로 잘립니다.
-  Graphic_Device.cpp
-  Level.cpp
+﻿  Level.cpp
   Level_Manager.cpp
-  Timer.cpp
-  Timer_Manager.cpp
   코드를 생성하고 있습니다...
-     ../Bin/Engine.lib 라이브러리 및 ../Bin/Engine.exp 개체를 생성하고 있습니다.
   Engine.vcxproj -> E:\프로젝트\3D_FrameWork\Engine\Bin\Engine.dll

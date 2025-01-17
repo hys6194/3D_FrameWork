@@ -36,3 +36,13 @@
 *.db-shm
 *.db
 *.json
+*.pdb
+*.idb
+*.obj
+*.tlog
+*.ilk
+*.pdb
+*.exp
+*.json
+*.db
+/.vs/3D_Framework/v17
