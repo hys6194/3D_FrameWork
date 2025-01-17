@@ -34,7 +34,7 @@ HRESULT Level_Manager::Change_Level(_uint iLevelIndex, Level* pNewLevel)
     {
         Safe_Release(m_pCurrentLevel);
 
-        m_pGameInstance->Clear(m_pCurrentLevel);
+        m_pGameInstance->Clear(m_iCurrentLevelIndex);
     }
 
     m_pCurrentLevel = pNewLevel;

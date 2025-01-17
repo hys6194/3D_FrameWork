@@ -1,9 +1,4 @@
-﻿  Level_Manager.cpp
-C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\Level_Manager.cpp(37,26): error C2664: 'void Engine::GameInstance::Clear(Engine::_uint)': 인수 1을(를) 'Engine::Level *'에서 'Engine::_uint'(으)로 변환할 수 없습니다.
-      C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\Level_Manager.cpp(37,32):
-      이 변환이 가능한 컨텍스트가 없습니다.
-      C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Public\GameInstance.h(24,7):
-      'Engine::GameInstance::Clear' 선언을 참조하십시오.
-      C:\Users\ys010\OneDrive\문서\GitHub\3D_FrameWork\Engine\Private\Level_Manager.cpp(37,26):
-      인수 목록 '(Engine::Level *)'을(를) 일치시키는 동안
-  
+﻿  Level.cpp
+  Level_Manager.cpp
+  코드를 생성하고 있습니다...
+  Engine.vcxproj -> E:\프로젝트\3D_FrameWork\Engine\Bin\Engine.dll
