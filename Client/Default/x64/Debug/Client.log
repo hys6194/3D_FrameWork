@@ -1,13 +1,1 @@
-﻿  Level_GamePlay.cpp
-  Level_Loading.cpp
-  Level_Logo.cpp
-  Loader.cpp
-  MainApp.cpp
-  Client.cpp
-  코드를 생성하고 있습니다...
-Level_GamePlay.obj : error LNK2019: "protected: __cdecl Engine::Level::Level(struct ID3D11Device *,struct ID3D11DeviceContext *)" (??0Level@Engine@@IEAA@PEAUID3D11Device@@PEAUID3D11DeviceContext@@@Z)"private: __cdecl Client::Level_GamePlay::Level_GamePlay(struct ID3D11Device *,struct ID3D11DeviceContext *)" (??0Level_GamePlay@Client@@AEAA@PEAUID3D11Device@@PEAUID3D11DeviceContext@@@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
-Level_Loading.obj : error LNK2001: 확인할 수 없는 외부 기호 "protected: __cdecl Engine::Level::Level(struct ID3D11Device *,struct ID3D11DeviceContext *)" (??0Level@Engine@@IEAA@PEAUID3D11Device@@PEAUID3D11DeviceContext@@@Z)
-Level_Logo.obj : error LNK2001: 확인할 수 없는 외부 기호 "protected: __cdecl Engine::Level::Level(struct ID3D11Device *,struct ID3D11DeviceContext *)" (??0Level@Engine@@IEAA@PEAUID3D11Device@@PEAUID3D11DeviceContext@@@Z)
-Level_Loading.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: virtual long __cdecl Engine::Level::Initialize(void)" (?Initialize@Level@Engine@@UEAAJXZ)
-Level_Logo.obj : error LNK2019: "public: virtual void __cdecl Engine::Level::Free(void)" (?Free@Level@Engine@@UEAAXXZ)"public: virtual void __cdecl Client::Level_Logo::Free(void)" (?Free@Level_Logo@Client@@UEAAXXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
-..\Bin\Client.exe : fatal error LNK1120: 3개의 확인할 수 없는 외부 참조입니다.
+﻿  Client.vcxproj -> E:\프로젝트\3D_FrameWork\Client\Bin\Client.exe
