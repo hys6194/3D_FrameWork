@@ -68,6 +68,28 @@ HRESULT Loader::Initialize(LEVEL eNextLevelID)
 
 HRESULT Loader::Loading()
 {
+	EnterCriticalSection(&m_CriticalSection);
+
+	HRESULT hr = {};
+
+	switch (m_eNextLevelID)
+	{
+	case Client::LEVEL_STATIC:
+		break;
+	case Client::LEVEL_LOGO:
+		hr = Loading_Level_Logo();
+		break;
+	case Client::LEVEL_GAMEPLAY:
+		hr = Loading_Level_GamePlay();
+		break;
+	case Client::LEVEL_LOADING:
+		break;
+	case Client::LEVEL_END:
+		break;
+	default:
+		break;
+	}
+
 	return S_OK;
 }
 
@@ -76,6 +98,42 @@ void Loader::Show_LoadingState()
 	//로딩 레벨에서 어떤 자원을 가져오고 있는지 출력하기 위해 만든 함수
 	// Loading~~XX 라는 함수를 만들어서 로딩 레벨에서 출력해줄 것
 	SetWindowText(g_hWnd, m_szLoading);
+}
+HRESULT Loader::Loading_Level_Logo()
+{
+	m_isFinished = false;
+
+	lstrcpy(m_szLoading, TEXT("텍스쳐를 로딩 중입니다."));
+
+	lstrcpy(m_szLoading, TEXT("모델을 로딩 중입니다."));
+
+	lstrcpy(m_szLoading, TEXT("셰이더를 로딩 중입니다."));
+
+	lstrcpy(m_szLoading, TEXT("원형객체를 로딩 중입니다."));
+
+	lstrcpy(m_szLoading, TEXT("로딩을 완료하였습니다."));
+
+	m_isFinished = true;
+	return S_OK;
+
+}
+HRESULT Loader::Loading_Level_GamePlay()
+{
+	m_isFinished = false;
+
+	lstrcpy(m_szLoading, TEXT("텍스쳐를 로딩 중입니다."));
+
+	lstrcpy(m_szLoading, TEXT("모델을 로딩 중입니다."));
+
+	lstrcpy(m_szLoading, TEXT("셰이더를 로딩 중입니다."));
+
+	lstrcpy(m_szLoading, TEXT("원형객체를 로딩 중입니다."));
+
+	lstrcpy(m_szLoading, TEXT("로딩을 완료하였습니다."));
+
+	m_isFinished = true;
+
+	return S_OK;
 }
 Loader* Loader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID)
 {

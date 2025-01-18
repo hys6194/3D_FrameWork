@@ -24,6 +24,9 @@ public:
 	HRESULT Loading();
 	void Show_LoadingState();
 
+	HRESULT Loading_Level_Logo();
+	HRESULT Loading_Level_GamePlay();
+
 public:
 	_bool IsFinished() const { return m_isFinished; }
 
