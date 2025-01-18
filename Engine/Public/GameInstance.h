@@ -25,7 +25,7 @@ public:
 #pragma region GRAPHIC_DEVICE
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);	
 	HRESULT Clear_DepthStencil_View();
-	HRESULT Present();
+	HRESULT Present();//
 #pragma endregion
 
 #pragma region TIMER_MANAGER
