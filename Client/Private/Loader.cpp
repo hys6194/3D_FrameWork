@@ -17,7 +17,7 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	// pArg를 인자로 왜 받아옴?
 	// 다중 쓰레드 환경에서 호출될 가능성이 높아서, 해당 클래스에서 특정 데이터를 전달받아
 	// 작업을 수행하기 위해 사용
-	// 
+	//
 	// 주요 목적 
 	// 일반적으로 스레드 함수는 고정된 서명(보통 void* 타입의 단일 매개변수)을 가집니다.
 	// 
@@ -32,8 +32,7 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	// 
 	// 왜 static_cast? 
 	// 컴파일 타임에 타입변환을 확인하면서 Loader* 타입임을 알고 있으므로 안전한 변환.
-	// 
-	//
+
 	Loader* pLoader = static_cast<Loader*>(pArg);
 
 	if (FAILED(pLoader->Loading()))
