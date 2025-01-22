@@ -46,3 +46,7 @@
 *.json
 *.db
 /.vs/3D_Framework/v17
+/.vs/3D_Framework/v17
+*.db
+*.json
+*.db
