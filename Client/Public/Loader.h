@@ -45,6 +45,10 @@ private:
 	// 레벨 전환을 위한 bool 타입의 변수
 	_bool							m_isFinished = { false };
 
+private:
+	HRESULT Loading_Level_Logo();
+	HRESULT Loading_Level_GamePlay();
+
 public:
 	static Loader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
 	virtual void Free() override;
