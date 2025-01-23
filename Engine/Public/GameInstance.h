@@ -37,6 +37,7 @@ public:
 
 #pragma region LEVEL_MANAGER
 public:
+	// 어떤 레벨을 오픈할지, 어떤 레벨을 Create할지
 	HRESULT Open_Level(_uint iLevelIndex, class Level* pNewLevel );
 #pragma endregion
 
@@ -47,6 +48,7 @@ private:
 	class Level_Manager* m_pLevel_Manager = { nullptr };
 
 public:	
+	void Release_Engine();
 	virtual void Free() override;
 };
 

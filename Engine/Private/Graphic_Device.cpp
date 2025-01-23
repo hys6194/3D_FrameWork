@@ -244,6 +244,8 @@ CGraphic_Device * CGraphic_Device::Create(HWND hWnd, _bool isWindowed, _uint iWi
 	{
 		MSG_BOX("Failed to Created : CGraphic_Device");
 		Safe_Release(pInstance);
+
+		return nullptr;
 	}
 
 	return pInstance;

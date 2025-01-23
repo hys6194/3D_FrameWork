@@ -24,6 +24,7 @@ protected:
 	class GameInstance* m_pGameInstance = { nullptr };
 
 public:
+	// 레벨의 Create는 Level을 상속받는 애들에서 만들어 줄 것
 	virtual void Free() override;
 
 

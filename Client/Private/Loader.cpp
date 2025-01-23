@@ -58,6 +58,7 @@ HRESULT Loader::Initialize(LEVEL eNextLevelID)
 	InitializeCriticalSection(&m_CriticalSection);
 
 	/* 추가 스레드(로딩스레드)를 만든다. */
+	// 여기에서 만든 LoadingMain을 여기서 호출
 	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, LoadingMain, this, 0, nullptr);
 	if (0 == m_hThread)
 		return E_FAIL;
@@ -73,17 +74,17 @@ HRESULT Loader::Loading()
 
 	switch (m_eNextLevelID)
 	{
-	case Client::LEVEL_STATIC:
+	case LEVEL_STATIC:
 		break;
-	case Client::LEVEL_LOGO:
+	case LEVEL_LOGO:
 		hr = Loading_Level_Logo();
 		break;
-	case Client::LEVEL_GAMEPLAY:
+	case LEVEL_GAMEPLAY:
 		hr = Loading_Level_GamePlay();
 		break;
-	case Client::LEVEL_LOADING:
+	case LEVEL_LOADING:
 		break;
-	case Client::LEVEL_END:
+	case LEVEL_END:
 		break;
 	default:
 		break;
@@ -153,6 +154,7 @@ void Loader::Free()
 
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
-
 	Safe_Release(m_pGameInstance);
+
+
 }

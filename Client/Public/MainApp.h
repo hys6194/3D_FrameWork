@@ -25,6 +25,9 @@ private:
 	ID3D11DeviceContext*	m_pContext = { nullptr };
 	GameInstance*			m_pGameInstance = { nullptr };
 
+private:
+	HRESULT Start_Level(LEVEL eLevelID);
+
 
 #ifdef _DEBUG
 private:

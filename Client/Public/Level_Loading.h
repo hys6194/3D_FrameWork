@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
+/* Level_Loading클래스는 로딩창을 띄웠을 때 보여지는 화면을 보여주기 위한 클래스이다 */
+
 BEGIN(Client)
 
 class Level_Loading : public Level
@@ -19,6 +21,8 @@ public:
 	virtual HRESULT Render() override;
 
 private:
+	// 다음 레벨을 준비하기 위해선 로더가 필요하다?
+	// Loading클래스가 Loader를 이용해서 불러오고자 하는 레벨을 불러올 것이기 때문
 	class Loader*		m_pLoader = { nullptr };
 	LEVEL				m_eNextLevelID = { LEVEL_END };
 

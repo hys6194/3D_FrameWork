@@ -77,11 +77,22 @@ HRESULT GameInstance::Open_Level(_uint iLevelIndex, Level* pNewLevel)
 
 #pragma endregion
 
-void GameInstance::Free()
+void GameInstance::Release_Engine()
 {
-	__super::Free();
+	// Free함수를 호출하였을 때, RefCnt가 0이 되어야 삭제가 되는 구조인데,
+	// 카운트가 남아 실질적으로 삭제가 이루어지지 않게 된다.
+	// 따라서, Free 함수에서 호출 되어야 하는 Safe_Release를 따로 호출하여 삭제하면서 레퍼런스 카운터를 감소시키는 것으로 한다
 
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pLevel_Manager);
+
+	GameInstance::DestroyInstance();
+}
+
+void GameInstance::Free()
+{
+	__super::Free();
+
+	
 }

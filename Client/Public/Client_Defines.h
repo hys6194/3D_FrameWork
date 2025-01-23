@@ -9,6 +9,7 @@ namespace Client
 	static const unsigned int	g_iWinSizeX = 1280;
 	static const unsigned int	g_iWinSizeY = 720;
 
+	// 레벨의 단계를 enum으로 설정
 	enum LEVEL { LEVEL_STATIC, LEVEL_LOGO, LEVEL_GAMEPLAY, LEVEL_LOADING, LEVEL_END };
 
 }
