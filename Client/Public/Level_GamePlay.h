@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
+// 게임플레이 장면 보여주는 곳
+
 BEGIN(Client)
 
 class Level_GamePlay final : public Level

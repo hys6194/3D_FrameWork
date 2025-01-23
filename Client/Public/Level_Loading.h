@@ -3,6 +3,9 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
+// 로딩 장면을 보여주는 곳. 배경에 이미지를 띄우고 로딩바가 움직이는 레벨
+// 다음 레벨에 대한 자원을 준비한다의 기능을 하는 Loader를 만들어 준다
+
 BEGIN(Client)
 
 class Level_Loading : public Level
@@ -17,7 +20,7 @@ public:
 	virtual HRESULT Initialize(LEVEL eNextLevelID);
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
-
+	
 private:
 	class Loader*		m_pLoader = { nullptr };
 	LEVEL				m_eNextLevelID = { LEVEL_END };

@@ -37,6 +37,12 @@
     <Filter Include="01.Utility\01. Level\Manager">
       <UniqueIdentifier>{026e5c76-89b0-493b-83af-e9a7568d6ddc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\02. Prototype">
+      <UniqueIdentifier>{88fea85d-6bec-424b-8366-417734915cfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component">
+      <UniqueIdentifier>{6f7e760a-3255-4d10-93f6-e8048d17fbc8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -81,6 +87,12 @@
     <ClInclude Include="..\Public\Level_Manager.h">
       <Filter>01.Utility\01. Level\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Prototype.h">
+      <Filter>01.Utility\02. Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Component.h">
+      <Filter>01.Utility\03. Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -103,6 +115,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Manager.cpp">
       <Filter>01.Utility\01. Level\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Prototype.cpp">
+      <Filter>01.Utility\02. Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Component.cpp">
+      <Filter>01.Utility\03. Component</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
