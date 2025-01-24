@@ -7,5 +7,6 @@
 /Client/Default/x64
 *.pdb
 *.exp
-*.sln
 *.exe
+*.ipch
+*.db
