@@ -37,7 +37,7 @@ public:
 
 #pragma region LEVEL_MANAGER
 public:
-	HRESULT Open_Level(_uint iLevelIndex, class Level* pNewLevel );
+	HRESULT Open_Level(_uint iLevelIndex, class Level* pNewLevel);
 #pragma endregion
 
 

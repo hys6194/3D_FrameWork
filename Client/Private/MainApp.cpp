@@ -1,6 +1,8 @@
 #include "MainApp.h"
 #include "GameInstance.h"
 
+#include "Level_Loading.h"
+
 CMainApp::CMainApp()
 	: m_pGameInstance { GameInstance::GetInstance() }
 {
@@ -16,6 +18,9 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.isWindowed = true;
 	EngineDesc.iWidth_VP = g_iWinSizeX;
 	EngineDesc.iHeight_VP = g_iWinSizeY;
+
+	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
@@ -54,6 +59,16 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
 	m_pGameInstance->Clear_DepthStencil_View();
 	m_pGameInstance->Present();
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Start_Level()
+{
+	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext), E_FAIL);
 
 	return S_OK;
 }

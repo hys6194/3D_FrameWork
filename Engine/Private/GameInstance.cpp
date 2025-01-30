@@ -19,19 +19,12 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 	FAILED_CHECK_RETURN(m_pTimer_Manager = CTimer_Manager::Create(), E_FAIL);
 	FAILED_CHECK_RETURN(m_pLevel_Manager = Level_Manager::Create(), E_FAIL);
 
-
 	return S_OK;
 }
 
-void GameInstance::Update_Engine(_float fTimeDelta)
+void GameInstance::Clear(_uint iLevelIndex)
 {
-	m_pLevel_Manager->Update(fTimeDelta);
-}
-
-void GameInstance::Clear(_uint iClearLevelIndex)
-{
-	// 아직 비워놓은 상태
-	// 추후에 기능을 만들 예정
+	// 추후 오브젝트, 컴포넌트들의 Clear함수들을 여기서 호출하여 정리할 것
 }
 
 #pragma region GRAPHIC_DEVICE

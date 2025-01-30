@@ -1,0 +1,21 @@
+#pragma once
+
+
+#include "Level.h"
+
+class Level_Loading : public Level
+{
+private:
+	Level_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~Level_Loading() = default;
+
+public:
+	virtual HRESULT Initialize() override;
+	virtual void Update(_float fTimeDelta) override;
+	virtual HRESULT Render() override;
+
+public:
+	static Level_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual void Free() override;
+};
+
