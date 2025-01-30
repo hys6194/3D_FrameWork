@@ -68,7 +68,7 @@ HRESULT CMainApp::Start_Level()
 	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	FAILED_CHECK_RETURN(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	return S_OK;
 }
