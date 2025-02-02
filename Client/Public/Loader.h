@@ -24,6 +24,9 @@ private:
 	CRITICAL_SECTION*				m_pCriticalSection = { nullptr };
 	LEVEL							m_eNextLevelID = { LEVEL_END };
 
+	_tchar							m_szLoading[MAX_PATH] = {};
+	_bool							m_bIsFin = { false };
+
 public:
 	static Loader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
 	virtual void Free() override;
