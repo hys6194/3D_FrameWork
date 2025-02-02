@@ -20,10 +20,13 @@ public:
 
 
 private:
-	_uint			m_iLevelID;
+	//_uint			m_iLevelID; -> _uint로 읽어서 가져올 게 아니라 enum으로 받아와야함
 
 	//Loader클래스가 있어야 리소스들을 읽어올 수 있음
-	class Loader* m_pLoader = { nullptr };
+	class Loader*		m_pLoader = { nullptr };
+	LEVEL				m_eLevelID = {};
+	GameInstance*		m_pGameInstance = { nullptr };
+
 
 
 

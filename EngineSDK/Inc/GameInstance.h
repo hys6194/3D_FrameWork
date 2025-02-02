@@ -20,6 +20,7 @@ private:
 
 public:
 	HRESULT Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext);
+	void Update_Engine(_float fTimeDelta);
 	void Clear(_uint iLevelIndex);
 
 

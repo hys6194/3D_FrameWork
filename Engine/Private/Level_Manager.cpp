@@ -14,6 +14,8 @@ HRESULT Level_Manager::Initialize()
 
 void Level_Manager::Update(_float fTimeDelta)
 {
+	if (nullptr != m_pCurrentLevel)
+		m_pCurrentLevel->Update(fTimeDelta);
 }
 
 HRESULT Level_Manager::Render()

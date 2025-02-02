@@ -11,7 +11,7 @@ CMainApp::CMainApp()
 
 HRESULT CMainApp::Initialize()
 {
-	/* 엔진을 사용할 준비를 하자. */
+	// 엔진 사용준비
 	ENGINE_DESC			EngineDesc{};
 
 	EngineDesc.hWnd = g_hWnd;
@@ -19,9 +19,12 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iWidth_VP = g_iWinSizeX;
 	EngineDesc.iHeight_VP = g_iWinSizeY;
 
+
+	// 엔진 초기화
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
+	// 레벨 시작
 	if (FAILED(Start_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
@@ -30,6 +33,12 @@ HRESULT CMainApp::Initialize()
 
 void CMainApp::Update(_float fTimeDelta)
 {
+
+	if (nullptr == m_pGameInstance)
+		return;
+
+	m_pGameInstance->Update_Engine(fTimeDelta);
+
 #ifdef _DEBUG
 	m_fTimeAcc += fTimeDelta;
 #endif

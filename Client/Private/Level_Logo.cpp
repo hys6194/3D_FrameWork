@@ -12,6 +12,7 @@ HRESULT Level_Logo::Initialize()
 
 void Level_Logo::Update(_float fTimeDelta)
 {
+	SetWindowText(g_hWnd, TEXT("현재 레벨 : 로고 레벨"));
 }
 
 HRESULT Level_Logo::Render()
@@ -34,4 +35,5 @@ Level_Logo* Level_Logo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 void Level_Logo::Free()
 {
+	__super::Free();
 }

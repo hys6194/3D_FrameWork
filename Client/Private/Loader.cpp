@@ -4,10 +4,99 @@ Loader::Loader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
 	, m_pContext { pContext }
 {
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
+}
+
+unsigned int APIENTRY LoadingMain(void* pArg)
+{
+	Loader* pLoader = static_cast<Loader*>(pArg);
+
+	if (FAILED(pLoader->Loading()))
+		return 1;
+
+	return 0;
 }
 
 HRESULT Loader::Initialize(LEVEL eNextLevelID)
 {
+	m_eNextLevelID = eNextLevelID;
+
+	InitializeCriticalSection(&m_CriticalSection);
+	
+	// 아래 방식으로 쓰레드를 추가
+	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, LoadingMain, this, 0, nullptr);
+	if (0 == m_hThread)
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT Loader::Loading()
+{
+	// 쓰레드 열기
+	EnterCriticalSection(&m_CriticalSection);
+
+	// 로딩 레벨함수를 HRESULT타입으로 만들었으므로 값을 받아오기 위한 지역변수
+	HRESULT		hr = { };
+
+	// Initialize에서 받아온 레벨값에 따라서 Loding 레벨을 선택한다
+	switch (m_eNextLevelID)
+	{
+	case LEVEL_LOGO:
+		hr = Loading_Logo();
+		break;
+	case LEVEL_GAMEPLAY:
+		hr = Loading_GamePlay();
+		break;
+	}
+
+	// 쓰레드 닫기
+	LeaveCriticalSection(&m_CriticalSection);
+
+	return S_OK;
+}
+
+void Loader::Show_LoadingState()
+{
+	SetWindowText(g_hWnd, m_szLoading);
+}
+
+HRESULT Loader::Loading_Logo()
+{
+	m_IsFin = false;
+
+	lstrcpy(m_szLoading, TEXT("텍스쳐 로딩중."));
+
+	lstrcpy(m_szLoading, TEXT("모델 로딩중."));
+
+	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
+
+	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
+
+	lstrcpy(m_szLoading, TEXT("로딩 완료."));
+
+	m_IsFin = true;
+
+	return S_OK;
+}
+
+HRESULT Loader::Loading_GamePlay()
+{
+	m_IsFin = false;
+
+	lstrcpy(m_szLoading, TEXT("텍스쳐 로딩중."));
+
+	lstrcpy(m_szLoading, TEXT("모델 로딩중."));
+
+	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
+
+	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
+
+	lstrcpy(m_szLoading, TEXT("로딩 완료."));
+
+	m_IsFin = true;
+
 	return S_OK;
 }
 
@@ -30,4 +119,6 @@ void Loader::Free()
 
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
+
+	//DeleteCriticalSection(&m_CriticalSection);
 }

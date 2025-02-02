@@ -22,6 +22,11 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 	return S_OK;
 }
 
+void GameInstance::Update_Engine(_float fTimeDelta)
+{
+	m_pLevel_Manager->Update(fTimeDelta);
+}
+
 void GameInstance::Clear(_uint iLevelIndex)
 {
 	// 추후 오브젝트, 컴포넌트들의 Clear함수들을 여기서 호출하여 정리할 것

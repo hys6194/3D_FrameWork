@@ -16,6 +16,12 @@ private:
 
 public:
 	HRESULT Initialize(LEVEL eNextLevelID);
+	HRESULT Loading();
+	void Show_LoadingState();
+	_bool isFinished() const 
+	{
+		return m_IsFin;
+	}
 
 private:
 	ID3D11Device*					m_pDevice = { nullptr };
@@ -32,7 +38,12 @@ private:
 	_tchar							m_szLoading[MAX_PATH] = {};
 
 	// 레벨 전환을 위한 bool 타입의 변수
-	_bool							m_isFinished = { false };
+	_bool							m_IsFin = { false };
+
+private:
+	HRESULT Loading_Logo();
+	HRESULT	Loading_GamePlay();
+
 public:
 	static Loader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
 	virtual void Free() override;

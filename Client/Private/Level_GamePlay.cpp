@@ -12,6 +12,7 @@ HRESULT Level_GamePlay::Initialize()
 
 void Level_GamePlay::Update(_float fTimeDelta)
 {
+	SetWindowText(g_hWnd, TEXT("현재 레벨 : 게임플레이 레벨"));
 }
 
 HRESULT Level_GamePlay::Render()
