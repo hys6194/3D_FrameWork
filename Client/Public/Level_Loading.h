@@ -25,9 +25,6 @@ private:
 	//Loader클래스가 있어야 리소스들을 읽어올 수 있음
 	class Loader*		m_pLoader = { nullptr };
 	LEVEL				m_eLevelID = {};
-	GameInstance*		m_pGameInstance = { nullptr };
-
-
 
 
 public:

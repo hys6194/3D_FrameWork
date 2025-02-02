@@ -12,6 +12,8 @@ Level_Loading::Level_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 
 HRESULT Level_Loading::Initialize(LEVEL eLevelID)
 {
+	m_eLevelID = eLevelID;
+
 	m_pLoader = Loader::Create(m_pDevice, m_pContext, eLevelID);
 
 	if (nullptr == m_pLoader)

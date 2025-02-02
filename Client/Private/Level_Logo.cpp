@@ -1,5 +1,8 @@
 #include "Level_Logo.h"
 
+#include "Level_Loading.h"
+#include "GameInstance.h"
+
 Level_Logo::Level_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:Level{ pDevice , pContext }
 {
@@ -13,6 +16,12 @@ HRESULT Level_Logo::Initialize()
 void Level_Logo::Update(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, TEXT("현재 레벨 : 로고 레벨"));
+
+	if (GetKeyState(VK_SPACE) & 0x8000)
+	{
+		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
+			return;
+	}
 }
 
 HRESULT Level_Logo::Render()

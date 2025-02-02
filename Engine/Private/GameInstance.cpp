@@ -19,6 +19,18 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 	FAILED_CHECK_RETURN(m_pTimer_Manager = CTimer_Manager::Create(), E_FAIL);
 	FAILED_CHECK_RETURN(m_pLevel_Manager = Level_Manager::Create(), E_FAIL);
 
+	//m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext);
+	//if (nullptr == m_pGraphic_Device)
+	//	return E_FAIL;
+	//
+	//m_pTimer_Manager = CTimer_Manager::Create();
+	//if (nullptr == m_pTimer_Manager)
+	//	return E_FAIL;
+	//
+	//m_pLevel_Manager = Level_Manager::Create();
+	//if (nullptr == m_pLevel_Manager)
+	//	return E_FAIL;
+
 	return S_OK;
 }
 
@@ -75,11 +87,17 @@ HRESULT GameInstance::Open_Level(_uint iLevelIndex, Level* pNewLevel)
 
 #pragma endregion
 
-void GameInstance::Free()
+void GameInstance::Release_Engine()
 {
-	__super::Free();
-
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pLevel_Manager);
+
+	GameInstance::DestroyInstance();
+}
+
+
+void GameInstance::Free()
+{
+	__super::Free();
 }

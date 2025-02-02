@@ -10,6 +10,8 @@ Loader::Loader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 unsigned int APIENTRY LoadingMain(void* pArg)
 {
+	CoInitializeEx(nullptr, 0);
+
 	Loader* pLoader = static_cast<Loader*>(pArg);
 
 	if (FAILED(pLoader->Loading()))
@@ -54,7 +56,7 @@ HRESULT Loader::Loading()
 	// ¾²·¹µå ´Ý±â
 	LeaveCriticalSection(&m_CriticalSection);
 
-	return S_OK;
+	return hr;
 }
 
 void Loader::Show_LoadingState()

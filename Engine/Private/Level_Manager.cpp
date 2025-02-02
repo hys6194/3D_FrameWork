@@ -30,7 +30,7 @@ HRESULT Level_Manager::Change_Level(_uint iLevelIndex, Level* pNewLevel)
 		return E_FAIL;
 
 	// 이전 레벨에서 생성한 객체들을 정리한다
-	if (m_pCurrentLevel != nullptr)
+	if (nullptr != m_pCurrentLevel)
 	{
 		Safe_Release(m_pCurrentLevel);
 

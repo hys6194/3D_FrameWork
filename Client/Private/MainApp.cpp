@@ -18,6 +18,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.isWindowed = true;
 	EngineDesc.iWidth_VP = g_iWinSizeX;
 	EngineDesc.iHeight_VP = g_iWinSizeY;
+	EngineDesc.iNumLevels = LEVEL_END;
 
 
 	// 엔진 초기화
@@ -33,7 +34,6 @@ HRESULT CMainApp::Initialize()
 
 void CMainApp::Update(_float fTimeDelta)
 {
-
 	if (nullptr == m_pGameInstance)
 		return;
 
