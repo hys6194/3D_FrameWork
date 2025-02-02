@@ -1,21 +1,35 @@
 #pragma once
 
-
+#include "Client_Defines.h"
 #include "Level.h"
 
-class Level_Loading : public Level
+// 로딩 씬에서 리소스들을 불러오기 위해 Loader 클래스를 호출하는 레벨(씬)
+
+BEGIN(Client)
+
+class Level_Loading final : public Level
 {
 private:
 	Level_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~Level_Loading() = default;
 
 public:
-	virtual HRESULT Initialize() override;
+	virtual HRESULT Initialize(LEVEL eLevelID);
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+
+private:
+	_uint			m_iLevelID;
+
+	//Loader클래스가 있어야 리소스들을 읽어올 수 있음
+	class Loader* m_pLoader = { nullptr };
+
+
+
 public:
-	static Level_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static Level_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevelID);
 	virtual void Free() override;
 };
 
+END

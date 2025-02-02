@@ -1,9 +1,11 @@
 #pragma once
 
-
+#include "Client_Defines.h"
 #include "Level.h"
 
-class Level_Logo : public Level
+BEGIN(Client)
+
+class Level_Logo final : public Level
 {
 private:
 	Level_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -19,3 +21,4 @@ public:
 	virtual void Free() override;
 };
 
+END

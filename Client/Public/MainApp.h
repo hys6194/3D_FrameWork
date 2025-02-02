@@ -34,7 +34,7 @@ private:
 #endif
 
 private:
-	HRESULT Start_Level();
+	HRESULT Start_Level(LEVEL eLevelID);
 
 public:
 	static CMainApp* Create();

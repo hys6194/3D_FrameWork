@@ -22,7 +22,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
+	if (FAILED(Start_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
 	return S_OK;
@@ -52,7 +52,7 @@ HRESULT CMainApp::Render()
 		m_fTimeAcc = 0.f;
 	}	
 
-	SetWindowText(g_hWnd, m_szFPS);
+	//SetWindowText(g_hWnd, m_szFPS);
 	
 #endif
 
@@ -63,12 +63,11 @@ HRESULT CMainApp::Render()
 	return S_OK;
 }
 
-HRESULT CMainApp::Start_Level()
+HRESULT CMainApp::Start_Level(LEVEL eLevelID)
 {
-	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	FAILED_CHECK_RETURN(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext)), E_FAIL);
+	// 어떤 레벨을 Create할 지 알아야 하기 때문에 LEVEL enum을 인자로 받아와서 호출한다.
+	FAILED_CHECK_RETURN(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, eLevelID)), E_FAIL);
+	
 
 	return S_OK;
 }

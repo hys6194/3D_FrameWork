@@ -9,7 +9,7 @@ BEGIN(Engine)
 
 class ENGINE_DLL Level abstract : public Base
 {
-private:
+protected:
 	Level(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~Level() = default;
 

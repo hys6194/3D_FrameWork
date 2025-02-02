@@ -1,7 +1,7 @@
 #include "Level_GamePlay.h"
 
 Level_GamePlay::Level_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:Level { pDevice , pContext }
+	: Level { pDevice , pContext }
 {
 }
 
@@ -34,4 +34,5 @@ Level_GamePlay* Level_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 
 void Level_GamePlay::Free()
 {
+	__super::Free();
 }
