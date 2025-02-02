@@ -21,7 +21,7 @@ private:
 	_uint								m_iNumLevels = { };
 	class GameInstance*					m_pGameInstance = { nullptr };
 
-	map<const _wstring, class Layer*>* m_pLayers = { nullptr };
+	map<const _wstring, class Layer*>*	m_pLayers = { nullptr };
 	//   map<const _wstring, class Layer*>*
 	// = map<const _wstring, list<GameObject*>>
 

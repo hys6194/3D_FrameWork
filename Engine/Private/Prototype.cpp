@@ -106,6 +106,6 @@ void Prototype_Manager::Free()
 
 	Safe_Delete_Array(m_pPrototype);
 
-	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 }

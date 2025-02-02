@@ -25,7 +25,7 @@ HRESULT Object_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const wstring
         return E_FAIL;
 
     // 복제할 원형 객체를 찾아서 복제해온다
-    GameObject* pGameObject = dynamic_cast<GameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, iLevelIndex, strPrototypeTag, pArg));
+    GameObject* pGameObject = dynamic_cast<GameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, iPrototypeLevelIndex, strPrototypeTag, pArg));
     if (nullptr == pGameObject)
         return E_FAIL;
 
@@ -37,8 +37,7 @@ HRESULT Object_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const wstring
 
         pLayer->Add_GameObject(pGameObject);
 
-        m_pLayers[iLevelIndex].emplace(pLayer);
-
+        //m_pLayers[iLevelIndex].emplace(pLayer);
     }
     else
         pLayer->Add_GameObject(pGameObject);
@@ -49,10 +48,10 @@ HRESULT Object_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const wstring
 Layer* Object_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 {
     auto iter = m_pLayers[iLevelIndex].find(strLayerTag);
-
+    
     if (iter == m_pLayers[iLevelIndex].end())
         return nullptr; 
-
+    
     return iter->second;
 }
 

@@ -9,7 +9,6 @@ GameObject::GameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     Safe_AddRef(m_pDevice);
     Safe_AddRef(m_pContext);
     Safe_AddRef(m_pGameInstance);
-
 }
 
 GameObject::GameObject(const GameObject& Prototype)
@@ -20,7 +19,6 @@ GameObject::GameObject(const GameObject& Prototype)
     Safe_AddRef(m_pDevice);
     Safe_AddRef(m_pContext);
     Safe_AddRef(m_pGameInstance);
-
 }
 
 HRESULT GameObject::Initialize_Prototype()
@@ -50,16 +48,11 @@ HRESULT GameObject::Render()
     return S_OK;
 }
 
-GameObject* GameObject::Clone(void* pArg)
-{
-    return nullptr;
-}
-
 void GameObject::Free()
 {
     __super::Free();
 
-    Safe_Release(m_pDevice);
     Safe_Release(m_pContext);
+    Safe_Release(m_pDevice);
     Safe_Release(m_pGameInstance);
 }

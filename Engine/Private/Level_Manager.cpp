@@ -61,4 +61,8 @@ Level_Manager* Level_Manager::Create()
 
 void Level_Manager::Free()
 {
+	__super::Free();
+
+	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pCurrentLevel);
 }

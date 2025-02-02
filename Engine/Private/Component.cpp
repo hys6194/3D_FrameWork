@@ -18,9 +18,8 @@ Component::Component(const Component& Prototype)
 
 void Component::Free()
 {
-
 	__super::Free();
 
-	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 }
