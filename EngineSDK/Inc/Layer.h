@@ -16,6 +16,9 @@ private:
 
 public:
 	HRESULT Add_GameObject(class GameObject* pGameObject);
+	void Priority_Update(_float fTimeDelta);
+	void Update(_float fTimeDelta);
+	void Late_Update(_float fTimeDelta);
 
 private:
 	// 특정 게임 오브젝트들은 키 값으로 사용할 것

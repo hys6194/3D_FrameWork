@@ -50,7 +50,7 @@ public:
 #pragma endregion
 
 #pragma region Object_MANAGER
-
+	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 #pragma endregion
 
 

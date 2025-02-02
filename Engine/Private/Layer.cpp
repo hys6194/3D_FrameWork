@@ -13,6 +13,24 @@ HRESULT Layer::Add_GameObject(GameObject* pGameObject)
     return S_OK;
 }
 
+void Layer::Priority_Update(_float fTimeDelta)
+{
+	for (auto& pGameObject : m_GameObjects)
+		pGameObject->Priority_Update(fTimeDelta);
+}
+
+void Layer::Update(_float fTimeDelta)
+{
+	for (auto& pGameObject : m_GameObjects)
+		pGameObject->Update(fTimeDelta);
+}
+
+void Layer::Late_Update(_float fTimeDelta)
+{
+	for (auto& pGameObject : m_GameObjects)
+		pGameObject->Late_Update(fTimeDelta);
+}
+
 Layer* Layer::Create()
 {
     return new Layer;

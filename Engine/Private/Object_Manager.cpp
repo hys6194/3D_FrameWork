@@ -45,6 +45,46 @@ HRESULT Object_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const wstring
     return S_OK;
 }
 
+void Object_Manager::Priority_Update(_float fTimeDelta)
+{
+    for (size_t i = 0; i < m_iNumLevels; i++)
+    {
+        for (auto& Pair : m_pLayers[i])
+            Pair.second->Priority_Update(fTimeDelta);
+    }
+
+
+}
+
+void Object_Manager::Update(_float fTimeDelta)
+{
+    for (size_t i = 0; i < m_iNumLevels; i++)
+    {
+        for (auto& Pair : m_pLayers[i])
+            Pair.second->Update(fTimeDelta);
+    }
+}
+
+void Object_Manager::Late_Update(_float fTimeDelta)
+{
+    for (size_t i = 0; i < m_iNumLevels; i++)
+    {
+        for (auto& Pair : m_pLayers[i])
+            Pair.second->Late_Update(fTimeDelta);
+    }
+}
+
+void Object_Manager::Clear(_uint iLevelIndex)
+{
+    if (iLevelIndex >= m_iNumLevels)
+        return;
+
+    for (auto& Pair : m_pLayers[iLevelIndex])
+        Safe_Release(Pair.second);
+
+    m_pLayers[iLevelIndex].clear();
+}
+
 Layer* Object_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 {
     auto iter = m_pLayers[iLevelIndex].find(strLayerTag);

@@ -46,11 +46,14 @@
     <Filter Include="01.Utility\03. GameObjects">
       <UniqueIdentifier>{f85a78ff-a3a9-42e3-87a9-86b175c2ec8b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03. GameObjects\Object_Manager">
+    <Filter Include="01.Utility\03. GameObjects\Manager">
       <UniqueIdentifier>{0cb3988e-fa00-46c9-a474-f2c481eb30a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03. GameObjects\Object_Manager\Layers">
+    <Filter Include="01.Utility\03. GameObjects\Manager\Layers">
       <UniqueIdentifier>{c0d18d7b-2f65-4d54-8d41-de9e2db9a6c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. GameObjects\UIObject">
+      <UniqueIdentifier>{e97c1dba-a312-4b32-a8c5-2ff819489bb1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,10 +112,13 @@
       <Filter>01.Utility\04. Component</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Object_Manager.h">
-      <Filter>01.Utility\03. GameObjects\Object_Manager</Filter>
+      <Filter>01.Utility\03. GameObjects\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Layer.h">
-      <Filter>01.Utility\03. GameObjects\Object_Manager\Layers</Filter>
+      <Filter>01.Utility\03. GameObjects\Manager\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIObject.h">
+      <Filter>01.Utility\03. GameObjects\UIObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -147,10 +153,13 @@
       <Filter>01.Utility\04. Component</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Object_Manager.cpp">
-      <Filter>01.Utility\03. GameObjects\Object_Manager</Filter>
+      <Filter>01.Utility\03. GameObjects\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Layer.cpp">
-      <Filter>01.Utility\03. GameObjects\Object_Manager\Layers</Filter>
+      <Filter>01.Utility\03. GameObjects\Manager\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIObject.cpp">
+      <Filter>01.Utility\03. GameObjects\UIObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
