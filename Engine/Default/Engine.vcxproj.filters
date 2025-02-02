@@ -40,8 +40,17 @@
     <Filter Include="01.Utility\02. Prototype">
       <UniqueIdentifier>{88fea85d-6bec-424b-8366-417734915cfb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03. Component">
+    <Filter Include="01.Utility\04. Component">
       <UniqueIdentifier>{6f7e760a-3255-4d10-93f6-e8048d17fbc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. GameObjects">
+      <UniqueIdentifier>{f85a78ff-a3a9-42e3-87a9-86b175c2ec8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. GameObjects\Object_Manager">
+      <UniqueIdentifier>{0cb3988e-fa00-46c9-a474-f2c481eb30a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. GameObjects\Object_Manager\Layers">
+      <UniqueIdentifier>{c0d18d7b-2f65-4d54-8d41-de9e2db9a6c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +102,18 @@
     <ClInclude Include="..\Public\Prototype.h">
       <Filter>01.Utility\02. Prototype</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\GameObject.h">
+      <Filter>01.Utility\03. GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Component.h">
+      <Filter>01.Utility\04. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Object_Manager.h">
+      <Filter>01.Utility\03. GameObjects\Object_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Layer.h">
+      <Filter>01.Utility\03. GameObjects\Object_Manager\Layers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -118,6 +139,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Prototype.cpp">
       <Filter>01.Utility\02. Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameObject.cpp">
+      <Filter>01.Utility\03. GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Component.cpp">
+      <Filter>01.Utility\04. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Object_Manager.cpp">
+      <Filter>01.Utility\03. GameObjects\Object_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Layer.cpp">
+      <Filter>01.Utility\03. GameObjects\Object_Manager\Layers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

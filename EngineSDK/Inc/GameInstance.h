@@ -42,11 +42,25 @@ public:
 	HRESULT Open_Level(_uint iLevelIndex, class Level* pNewLevel);
 #pragma endregion
 
+#pragma region PROTOTYPE_MANAGER
+	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, Base* pPrototype);
+
+	// 왜 pArg = nullptr로 디폴트 인자값으로? -> pArg가 필요할 수도 없을수도 있기 때문에
+	Base* Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
+#pragma endregion
+
+#pragma region Object_MANAGER
+
+#pragma endregion
+
+
 
 private:
 	class CGraphic_Device* m_pGraphic_Device = { nullptr };
 	class CTimer_Manager* m_pTimer_Manager = { nullptr };
 	class Level_Manager* m_pLevel_Manager = { nullptr };
+	class Prototype_Manager* m_pPrototype_Manager = { nullptr };
+	class Object_Manager* m_pObject_Manager = { nullptr };
 
 public:	
 	virtual void Free() override;

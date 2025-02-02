@@ -79,4 +79,6 @@ Level_Loading* Level_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
 void Level_Loading::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pLoader);
 }

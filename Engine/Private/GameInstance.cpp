@@ -4,6 +4,8 @@
 #include "Timer_Manager.h"
 #include "AbstractFactory.h"
 #include "Level_Manager.h"
+#include "Prototype.h"
+#include "Object_Manager.h"	
 
 IMPLEMENT_SINGLETON(GameInstance)
 
@@ -87,11 +89,29 @@ HRESULT GameInstance::Open_Level(_uint iLevelIndex, Level* pNewLevel)
 
 #pragma endregion
 
+#pragma region PROTOTYPE_MANAGER
+
+HRESULT GameInstance::Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, Base* pPrototype)
+{
+	return m_pPrototype_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);
+}
+
+Base* GameInstance::Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
+{
+	return m_pPrototype_Manager->Clone_Prototype(ePrototypeType, iLevelIndex, strPrototypeTag, pArg);
+}
+#pragma endregion
+
+#pragma region OBJECT_MANAGER
+
+#pragma endregion
+
 void GameInstance::Release_Engine()
 {
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pLevel_Manager);
+	Safe_Release(m_pPrototype_Manager);
 
 	GameInstance::DestroyInstance();
 }

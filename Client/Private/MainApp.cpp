@@ -99,6 +99,9 @@ void CMainApp::Free()
 	__super::Free();
 
 	/*내 멤버를 정리한다. */
+	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 
-	
+	m_pGameInstance->Release_Engine();
+	Safe_Release(m_pGameInstance);
 }
