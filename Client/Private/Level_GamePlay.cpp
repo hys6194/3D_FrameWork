@@ -1,25 +1,23 @@
 #include "Level_GamePlay.h"
 
-#include "GameInstance.h"
-
 Level_GamePlay::Level_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: Level{ pDevice, pContext }
+	: Level { pDevice , pContext }
 {
 }
 
 HRESULT Level_GamePlay::Initialize()
 {
-	return S_OK;
+    return S_OK;
 }
 
 void Level_GamePlay::Update(_float fTimeDelta)
 {
-	SetWindowText(g_hWnd, TEXT("게임 플레이 레벨입니다"));
+	SetWindowText(g_hWnd, TEXT("현재 레벨 : 게임플레이 레벨"));
 }
 
 HRESULT Level_GamePlay::Render()
 {
-	return S_OK;
+    return S_OK;
 }
 
 Level_GamePlay* Level_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -28,7 +26,7 @@ Level_GamePlay* Level_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 
 	if (FAILED(pInstance->Initialize()))
 	{
-		MSG_BOX("Failed To Created : CLevel_GamePlay");
+		MSG_BOX("Failed Create Level_GamePlay");
 		Safe_Release(pInstance);
 	}
 

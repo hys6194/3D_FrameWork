@@ -2,6 +2,10 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
+
+#include "DirectXTK/DDSTextureLoader.h"
+#include "DirectXTK/WICTextureLoader.h"
+
 using namespace DirectX;
 
 #include <vector>
@@ -24,6 +28,9 @@ using namespace std;
 #include <dinput.h>
 
 #pragma warning(disable : 4251)
+
+
+
 
 #ifdef _DEBUG
 

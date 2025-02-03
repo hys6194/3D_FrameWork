@@ -3,11 +3,9 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
-/* 로고장면을 보여준다. */
-
 BEGIN(Client)
 
-class Level_Logo : public Level
+class Level_Logo final : public Level
 {
 private:
 	Level_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

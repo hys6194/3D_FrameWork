@@ -1,96 +1,102 @@
 #include "Prototype.h"
 
+#include "GameObject.h"
+#include "Component.h"
 
-
-Prototype::Prototype(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+Prototype_Manager::Prototype_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
-	, m_pContext { pContext }
+	, m_pContext{ pContext }
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 }
 
-HRESULT Prototype::Initialize(_uint iNumLevel)
+HRESULT Prototype_Manager::Initialize(_uint iNumLevels)
 {
-	m_iNumLevel = iNumLevel;
+	m_iNumLevels = iNumLevels;
 
-	m_pPrototype = new PROTOTYPES[m_iNumLevel];
+	m_pPrototype = new PROTOTYPES[iNumLevels];
 
 	return S_OK;
 }
 
-HRESULT Prototype::Add_Prototype(const _wstring& szPrototypeName, _uint iLevelIndex, Base* pPrototype)
+HRESULT Prototype_Manager::Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, Base* pPrototype)
 {
-	if (iLevelIndex >= m_iNumLevel ||
-		nullptr != Find_Prototype(szPrototypeName, iLevelIndex))
+	//m_iNumLevels = iNumLevels;
+
+	//if (nullptr == pPrototype)
+	//	return E_FAIL;
+
+	//m_pPrototype[m_iNumLevels].emplace(strPrototypeTag, pPrototype);
+
+	if(iLevelIndex >= m_iNumLevels ||
+		nullptr != Find_Prototype(iLevelIndex, strPrototypeTag))
 		return E_FAIL;
 
-	m_pPrototype[iLevelIndex].emplace(szPrototypeName, pPrototype);
+	m_pPrototype[iLevelIndex].emplace(strPrototypeTag, pPrototype);
 
 	return S_OK;
 }
 
-Base* Prototype::Clone_Prototype(PROTOTYPE ePrototype, const _wstring& szPrototypeName, _uint iLevelIndex, void* pArg)
+Base* Prototype_Manager::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
 {
-	if (iLevelIndex >= m_iNumLevel)
+	if (iLevelIndex >= m_iNumLevels)
 		return nullptr;
 
-	Base* pPrototype = Find_Prototype(szPrototypeName, iLevelIndex);
-	if (nullptr == pPrototype)
+	Base* pPrototype = Find_Prototype(iLevelIndex, strPrototypeTag);
+	if(nullptr == pPrototype)
 		return nullptr;
 
 	Base* pObject = { nullptr };
 
 	if (PROTOTYPE::TYPE_GAMEOBJECT == ePrototype)
-		//pObject = dynamic_cast<GameObject*>(pObject)->Clone(pArg);	
-
-	if (PROTOTYPE::TYPE_COMPONENT == ePrototype)
-		//pObject = dynamic_cast<Component*>(pObject)->Clone(pArg);
-
+		pObject = dynamic_cast<GameObject*>(pPrototype)->Clone(pArg);
+	else
+		pObject = dynamic_cast<Component*>(pPrototype)->Clone(pArg);
 
 	return pObject;
+
 }
 
-void Prototype::Clear(_uint iLevelIndex)
+void Prototype_Manager::Clear(_uint iLevelIndex)
 {
-	if (iLevelIndex >= m_iNumLevel)
+	if (iLevelIndex >= m_iNumLevels)
 		return;
 
 	for (auto& Pair : m_pPrototype[iLevelIndex])
 		Safe_Release(Pair.second);
 
 	m_pPrototype[iLevelIndex].clear();
-
 }
 
-Base* Prototype::Find_Prototype(const _wstring& szPrototypeName, _uint iLevelIndex)
+Base* Prototype_Manager::Find_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag)
 {
-	auto iter = m_pPrototype[iLevelIndex].find(szPrototypeName);
-
+	auto iter = m_pPrototype[iLevelIndex].find(strPrototypeTag);
+	
 	if (iter == m_pPrototype[iLevelIndex].end())
 		return nullptr;
 
 	return iter->second;
 }
 
-Prototype* Prototype::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevel)
+Prototype_Manager* Prototype_Manager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevels)
 {
-	Prototype* pInstance = new Prototype(pDevice, pContext);
+	Prototype_Manager* pInstance = new Prototype_Manager(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(iNumLevel)))
+	if (FAILED(pInstance->Initialize(iNumLevels)))
 	{
-		MSG_BOX("Failed to Created : Prototype");
+		MSG_BOX("Failed to Created : Prototype_Manager");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void Prototype::Free()
+void Prototype_Manager::Free()
 {
 	__super::Free();
 
-	for (size_t i = 0; i < m_iNumLevel; i++)
+	for (_uint i = 0; i < m_iNumLevels; ++i)
 	{
 		for (auto& Pair : m_pPrototype[i])
 			Safe_Release(Pair.second);

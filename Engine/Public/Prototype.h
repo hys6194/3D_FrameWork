@@ -1,46 +1,49 @@
 #pragma once
 
 #include "Base.h"
-
-// 원형객체를 만드는 클래스
-// GameObject나 Component들을 레벨별로 구분해서 모아둘 클래스이기도 하다
-// 원형객체를 만들되 내보낼 때 사본객체를 내보낼 예저우
+#include "Engine_Enum.h"
 
 BEGIN(Engine)
 
-class Prototype : public Base
+class Prototype_Manager final : public Base
 {
 private:
-	Prototype(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~Prototype() = default;
+	Prototype_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~Prototype_Manager() = default;
 
 public:
-	// 레벨별로 Prototype을 만들 함수
-	HRESULT Initialize(_uint iNumLevel);
-	HRESULT Add_Prototype(const _wstring& szPrototypeName, _uint iLevelIndex, Base* pPrototype);
-	Base* Clone_Prototype(PROTOTYPE ePrototype, const _wstring& szPrototypeName, _uint iLevelIndex, void* pArg);
+	HRESULT Initialize(_uint iNumLevels);
+	// 어떤 레벨, 프로토타입 이름, 프로토타입의 주소를 받아와 원본객체 생성
+	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, Base* pPrototype);
+
+	// 사본 객체 생성하고 map 컨테이너에 대입
+	Base* Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg);
+	
+	// 어떤 레벨의 원본객체를 삭제할 지
 	void Clear(_uint iLevelIndex);
 
 private:
-	ID3D11Device*						m_pDevice = { nullptr };
-	ID3D11DeviceContext*				m_pContext = { nullptr };
-	_uint								m_iNumLevel = {};
+	ID3D11Device*				m_pDevice = { nullptr };
+	ID3D11DeviceContext*		m_pContext = { nullptr };
+	_uint						m_iNumLevels = {};
 
 private:
-	// 원형객체들을 레벨별로 나누어서 보관하기 위해 맵으로 저장
-	// 키값으로 레벨의 이름을 가져와서 찾고 꺼내기 위함
-	map<const _wstring, Base*>*		    m_pPrototype = { nullptr };
-	typedef map<const _wstring, Base*>		PROTOTYPES;
 
+	// 원형객체들을 레벨별로 나누어서 보관하기위해
+	map<const wstring, Base*>* m_pPrototype = { nullptr };
+	typedef map<const wstring, Base*> PROTOTYPES;
+
+	// EngineDesc에 VECTOR 타입을 넣지 않았는데 왜?
+	// memcpy할 때 컴파일러가 터짐
+	// 
+	// Clone 함수는 언제?
+	// -> Prototype을 가진 Object를 만들 때 만들 예정
 private:
-	// 베이스 포인터의 이유 = 베이스 상속받잖아요;
-	Base* Find_Prototype(const _wstring& szPrototypeName, _uint iLevelIndex);
+	Base* Find_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag);
 
 public:
-	static Prototype* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevel);
+	static Prototype_Manager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevels);
 	virtual void Free() override;
-
 };
 
 END
-

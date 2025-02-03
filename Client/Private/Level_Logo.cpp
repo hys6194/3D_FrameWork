@@ -4,7 +4,7 @@
 #include "GameInstance.h"
 
 Level_Logo::Level_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: Level{ pDevice, pContext }
+	:Level{ pDevice , pContext }
 {
 }
 
@@ -15,9 +15,8 @@ HRESULT Level_Logo::Initialize()
 
 void Level_Logo::Update(_float fTimeDelta)
 {
-	SetWindowText(g_hWnd, TEXT("로고레벨."));
+	SetWindowText(g_hWnd, TEXT("현재 레벨 : 로고 레벨"));
 
-	// 로고 레벨에서 스페이스 바를 누르게 되면, GamePlay 레벨로 전환
 	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
@@ -36,7 +35,7 @@ Level_Logo* Level_Logo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 	if (FAILED(pInstance->Initialize()))
 	{
-		MSG_BOX("Failed To Created : Level_Logo");
+		MSG_BOX("Failed Create Level_Logo");
 		Safe_Release(pInstance);
 	}
 

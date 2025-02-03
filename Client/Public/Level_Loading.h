@@ -3,30 +3,32 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
-// 로딩 장면을 보여주는 곳. 배경에 이미지를 띄우고 로딩바가 움직이는 레벨
-// 다음 레벨에 대한 자원을 준비한다의 기능을 하는 Loader를 만들어 준다
+// 로딩 씬에서 리소스들을 불러오기 위해 Loader 클래스를 호출하는 레벨(씬)
 
 BEGIN(Client)
 
-class Level_Loading : public Level
+class Level_Loading final : public Level
 {
 private:
 	Level_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~Level_Loading() = default;
 
 public:
-	// 레벨 ID를 받아와서 만들어주는 작업을 할 것
-	// override 빠짐-> 여기에서 인자값을 새로 받아서 완전히 다른 함수로 변형
-	virtual HRESULT Initialize(LEVEL eNextLevelID);
+	virtual HRESULT Initialize(LEVEL eLevelID);
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
-	
+
+
 private:
+	//_uint			m_iLevelID; -> _uint로 읽어서 가져올 게 아니라 enum으로 받아와야함
+
+	//Loader클래스가 있어야 리소스들을 읽어올 수 있음
 	class Loader*		m_pLoader = { nullptr };
-	LEVEL				m_eNextLevelID = { LEVEL_END };
+	LEVEL				m_eLevelID = {};
+
 
 public:
-	static Level_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
+	static Level_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevelID);
 	virtual void Free() override;
 };
 

@@ -1,40 +1,42 @@
 #include "Level_Loading.h"
 #include "Loader.h"
 
-// Level을 상속받는 클래스가 생기면 주기적으로 추가해야 함
-#include "Level_Logo.h"
-#include "Level_GamePlay.h"
+#include "Level_Logo.h" 
+#include "Level_GamePlay.h" 
 #include "GameInstance.h"
 
 Level_Loading::Level_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: Level{ pDevice, pContext }
+	:Level{ pDevice , pContext }
 {
 }
 
-HRESULT Level_Loading::Initialize(LEVEL eNextLevelID)
+HRESULT Level_Loading::Initialize(LEVEL eLevelID)
 {
-	m_eNextLevelID = eNextLevelID;
+	m_eLevelID = eLevelID;
 
-	// 로딩레벨의 본래 역할인 다음 레벨을 위한 자원을 준비하는 작업을 여기서 수행
-	m_pLoader = Loader::Create(m_pDevice, m_pContext, m_eNextLevelID);
-	if (FAILED(nullptr == m_pLoader))
+	m_pLoader = Loader::Create(m_pDevice, m_pContext, eLevelID);
+
+	if (nullptr == m_pLoader)
+	{
 		return E_FAIL;
+	}
 
-	//로딩 레벨의 장면을 담당해줄 객체들을 여기서 만들어 줄 것
 	return S_OK;
 }
 
 void Level_Loading::Update(_float fTimeDelta)
 {
+	// 여기서 레벨을 Create하여 리소스들을 다 읽어오게 되면 다음 레벨을 연다
+
 	m_pLoader->Show_LoadingState();
 
-	if(true == m_pLoader->IsFinished())
+	if (true == m_pLoader->isFinished())
 	{
 		if (GetKeyState(VK_RETURN) & 0x8000)
 		{
 			Level* pLevel = { nullptr };
 
-			switch (m_eNextLevelID)
+			switch (m_eLevelID)
 			{
 			case LEVEL_LOGO:
 				pLevel = Level_Logo::Create(m_pDevice, m_pContext);
@@ -49,11 +51,11 @@ void Level_Loading::Update(_float fTimeDelta)
 			if (nullptr == pLevel)
 				return;
 
-			if (FAILED(m_pGameInstance->Open_Level(m_eNextLevelID, pLevel)))
+			if (FAILED(m_pGameInstance->Open_Level(m_eLevelID, pLevel)))
 				return;
+
 		}
 	}
-
 }
 
 HRESULT Level_Loading::Render()
@@ -61,13 +63,13 @@ HRESULT Level_Loading::Render()
 	return S_OK;
 }
 
-Level_Loading* Level_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID)
+Level_Loading* Level_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevelID)
 {
 	Level_Loading* pInstance = new Level_Loading(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(eNextLevelID)))
+	if (FAILED(pInstance->Initialize(eLevelID)))
 	{
-		MSG_BOX("Failed To Created : Level_Loading");
+		MSG_BOX("Failed Create Level_Loading");
 		Safe_Release(pInstance);
 	}
 
