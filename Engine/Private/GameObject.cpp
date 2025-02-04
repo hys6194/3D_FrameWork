@@ -28,6 +28,11 @@ HRESULT GameObject::Initialize_Prototype()
 
 HRESULT GameObject::Initialize(void* pArg)
 {
+    GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+
+    // 멤버 변수에 키값을 받아와서 어떤 오브젝트인지 UIObject에 전달
+    lstrcpy(m_szGameObjectTag, pDesc->szGameObjectTag);
+
     return S_OK;
 }
 
@@ -37,6 +42,7 @@ void GameObject::Priority_Update(_float fTimeDelta)
 
 void GameObject::Update(_float fTimeDelta)
 {
+
 }
 
 void GameObject::Late_Update(_float fTimeDelta)

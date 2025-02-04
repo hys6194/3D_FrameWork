@@ -22,6 +22,7 @@ class ENGINE_DLL GameObject abstract : public Base
 public:
 	typedef struct tagGameObjectDesc : public Transform::TRANSFORM_DESC
 	{
+		// 오브젝트의 이름
 		_tchar			szGameObjectTag[MAX_PATH];
 	}GAMEOBJECT_DESC;
 
@@ -40,10 +41,12 @@ public:
 
 
 protected:
-	ID3D11Device* m_pDevice = { nullptr };
-	ID3D11DeviceContext* m_pContext = { nullptr };
+	ID3D11Device*				m_pDevice = { nullptr };
+	ID3D11DeviceContext*		m_pContext = { nullptr };
 
-	class GameInstance* m_pGameInstance = { nullptr };
+	class GameInstance*			m_pGameInstance = { nullptr };
+
+	_tchar						m_szGameObjectTag[MAX_PATH] = {};
 
 public:
 	virtual GameObject* Clone(void* pArg) = 0;

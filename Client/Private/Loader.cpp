@@ -1,4 +1,7 @@
 #include "Loader.h"
+#include "GameInstance.h"
+
+#include "BackGround.h"
 
 Loader::Loader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -75,6 +78,9 @@ HRESULT Loader::Loading_Logo()
 	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
 
 	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"),
+		BackGround::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("로딩 완료."));
 

@@ -5,7 +5,9 @@
 
 BEGIN(Client)
 
-class BackGround : public UIObject
+// 직교 투영으로 만들 거라서 UIObject라는 클래스를 만들어서 상속받을 예정
+
+class BackGround final : public UIObject
 {
 private:
 	BackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
