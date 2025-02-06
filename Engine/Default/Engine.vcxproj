@@ -119,8 +119,7 @@
       <AdditionalLibraryDirectories>../ThirdPartyLib/</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>cd /d "$(SolutionDir)" &amp;&amp; call ./Copy.bat</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -144,6 +143,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;dxguid.lib;DirectXTK.lib;Effects11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>cd /d "$(SolutionDir)" &amp;&amp; call ./Copy.bat</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\AbstractFactory.h" />
