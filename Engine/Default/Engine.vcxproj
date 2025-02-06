@@ -119,8 +119,7 @@
       <AdditionalLibraryDirectories>../ThirdPartyLib/</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>cd /d "$(SolutionDir)" &amp;&amp; call ./Copy.bat</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -144,6 +143,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;dxguid.lib;DirectXTK.lib;Effects11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>cd /d "$(SolutionDir)" &amp;&amp; call ./Copy.bat</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\AbstractFactory.h" />
@@ -163,6 +165,7 @@
     <ClInclude Include="..\Public\Level_Manager.h" />
     <ClInclude Include="..\Public\Object_Manager.h" />
     <ClInclude Include="..\Public\Prototype.h" />
+    <ClInclude Include="..\Public\Renderer.h" />
     <ClInclude Include="..\Public\Timer.h" />
     <ClInclude Include="..\Public\Timer_Manager.h" />
     <ClInclude Include="..\Public\UIObject.h" />
@@ -179,6 +182,7 @@
     <ClCompile Include="..\Private\Level_Manager.cpp" />
     <ClCompile Include="..\Private\Object_Manager.cpp" />
     <ClCompile Include="..\Private\Prototype.cpp" />
+    <ClCompile Include="..\Private\Renderer.cpp" />
     <ClCompile Include="..\Private\Timer.cpp" />
     <ClCompile Include="..\Private\Timer_Manager.cpp" />
     <ClCompile Include="..\Private\UIObject.cpp" />
