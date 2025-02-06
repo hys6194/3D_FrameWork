@@ -17,17 +17,35 @@ GameInstance::GameInstance()
 HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext)
 {
 
-	FAILED_CHECK_RETURN(m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext), E_FAIL);
-	FAILED_CHECK_RETURN(m_pTimer_Manager = CTimer_Manager::Create(), E_FAIL);
-	FAILED_CHECK_RETURN(m_pPrototype_Manager = Prototype_Manager::Create(*ppDevice, *ppContext, EngineDesc.iNumLevels), E_FAIL);
-	FAILED_CHECK_RETURN(m_pLevel_Manager = Level_Manager::Create(), E_FAIL);
-	FAILED_CHECK_RETURN(m_pObject_Manager = Object_Manager::Create(EngineDesc.iNumLevels), E_FAIL);
+	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext);
+	if (nullptr == m_pGraphic_Device)
+		return E_FAIL;
+
+	m_pTimer_Manager = CTimer_Manager::Create();
+	if (nullptr == m_pTimer_Manager)
+		return E_FAIL;
+
+	m_pPrototype_Manager = Prototype_Manager::Create(*ppDevice, *ppContext, EngineDesc.iNumLevels);
+	if (nullptr == m_pPrototype_Manager)
+		return E_FAIL;	
+
+	m_pLevel_Manager = Level_Manager::Create();
+	if (nullptr == m_pLevel_Manager)
+		return E_FAIL;
+
+	m_pObject_Manager = Object_Manager::Create(EngineDesc.iNumLevels);
+	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+	
+
+	// FAILED_CHECK_RETURN 사용 못함 : 주소가 짤림
+
+	//FAILED_CHECK_RETURN(m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext), E_FAIL);
+	//FAILED_CHECK_RETURN(m_pLevel_Manager = Level_Manager::Create(), E_FAIL);
+	//FAILED_CHECK_RETURN(m_pObject_Manager = Object_Manager::Create(EngineDesc.iNumLevels), E_FAIL);
 
 
 
-	//m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext);
-	//if (nullptr == m_pGraphic_Device)
-	//	return E_FAIL;
 	//
 	//m_pTimer_Manager = CTimer_Manager::Create();
 	//if (nullptr == m_pTimer_Manager)

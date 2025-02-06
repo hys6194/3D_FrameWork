@@ -1,6 +1,14 @@
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
+texture2D g_Texture;
+
+sampler DefaultSampler = sampler_state
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+};
+
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -26,7 +34,8 @@ struct PS_OUT
     //float4 vColor : COLOR;
     float4 vColor : SV_TARGET0;
     // 렌더타겟 뷰를 선언한 녀석이 있다, 렌더타겟은 
-    //그래픽 디바이스 초기화 할 때, 백 버퍼를 
+    //그래픽 디바이스 초기화 할 때, 백 버퍼를 생성해서 이를 통해 renderer를 그린다
+    //따라서 SV_TARGET이 옳다
     // 
 };
 
@@ -62,8 +71,17 @@ VS_OUT VS_MAIN(VS_IN In)
 // 픽셀의 색을 정하는 것은 픽셀 쉐이더가 하는 일이다
 PS_OUT PS_MAIN(PS_IN In)
 {
-    PS_OUT Out = { 0 };
+    PS_OUT Out = (PS_OUT) 0;
+    //PS_OUT Out = { 0.f };
     
+    Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    
+    //Out.vColor = In.vTexcoord.y;
+    
+    
+    // 코드로 구현한 알파테스트
+    //if (0.5 < Out.vColor.a)
+    //    discard;
     
     
     return Out;
@@ -72,7 +90,7 @@ PS_OUT PS_MAIN(PS_IN In)
 
 technique11 DefaultTechnique
 {
-    pass DefaultPass0
+    pass DefaultPass0           
     {
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile vs_5_0 PS_MAIN();
@@ -84,6 +102,7 @@ technique11 DefaultTechnique
         //PixelShader = compile vs_5_0 PS_MAIN();
         /* 추후에 내가 플레이어 및 몬스터가 변신한다던가 숨는다던가 
            특수한 상황에 쉐이더 기법을 사용할 때 쓰는 pass*/
+        /*vs_5_0 : 쉐이더 5.0 버전임을 의미*/
     }
 
 

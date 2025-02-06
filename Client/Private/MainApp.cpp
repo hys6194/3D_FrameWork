@@ -20,7 +20,6 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iHeight_VP = g_iWinSizeY;
 	EngineDesc.iNumLevels = LEVEL_END;
 
-
 	// 엔진 초기화
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
@@ -67,6 +66,9 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
 	m_pGameInstance->Clear_DepthStencil_View();
+
+	//m_pGameInstance->Draw_Engine();
+
 	m_pGameInstance->Present();
 
 	return S_OK;
@@ -76,7 +78,6 @@ HRESULT CMainApp::Start_Level(LEVEL eLevelID)
 {
 	// 어떤 레벨을 Create할 지 알아야 하기 때문에 LEVEL enum을 인자로 받아와서 호출한다.
 	FAILED_CHECK_RETURN(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, eLevelID)), E_FAIL);
-	
 
 	return S_OK;
 }

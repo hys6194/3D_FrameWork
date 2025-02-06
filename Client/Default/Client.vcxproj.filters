@@ -111,9 +111,4 @@
       <Filter>98.Default</Filter>
     </Text>
   </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Shader_VtxPosTex.hlsl">
-      <Filter>97.ShaderFiles</Filter>
-    </FxCompile>
-  </ItemGroup>
 </Project>

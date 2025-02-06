@@ -92,7 +92,7 @@ Layer* Object_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag
     if (iter == m_pLayers[iLevelIndex].end())
         return nullptr; 
     
-    return iter->second;
+    return iter->second;    
 }
 
 Object_Manager* Object_Manager::Create(_uint iNumLevels)
