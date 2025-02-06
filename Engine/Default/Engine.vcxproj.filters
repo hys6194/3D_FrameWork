@@ -55,6 +55,9 @@
     <Filter Include="01.Utility\03. GameObjects\UIObject">
       <UniqueIdentifier>{e97c1dba-a312-4b32-a8c5-2ff819489bb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\05.Renderer">
+      <UniqueIdentifier>{10ae064d-1c87-4d24-a92e-8ff1a719b1f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -120,6 +123,9 @@
     <ClInclude Include="..\Public\UIObject.h">
       <Filter>01.Utility\03. GameObjects\UIObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Renderer.h">
+      <Filter>01.Utility\05.Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -160,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UIObject.cpp">
       <Filter>01.Utility\03. GameObjects\UIObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Renderer.cpp">
+      <Filter>01.Utility\05.Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
