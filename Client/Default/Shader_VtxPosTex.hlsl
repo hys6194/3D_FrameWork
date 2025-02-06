@@ -76,7 +76,7 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
     
-    Out.vColor = In.vTexcoord.y;
+    //Out.vColor = In.vTexcoord.y;
     
     
     // 코드로 구현한 알파테스트

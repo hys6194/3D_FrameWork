@@ -32,6 +32,7 @@ HRESULT BackGround::Initialize(void* pArg)
 
 void BackGround::Priority_Update(_float fTimeDelta)
 {
+	int a = 10;
 }
 
 void BackGround::Update(_float fTimeDelta)
