@@ -4,6 +4,8 @@
 #include "Timer_Manager.h"
 #include "AbstractFactory.h"
 #include "Level_Manager.h"
+#include "Prototype.h"
+#include "Object_Manager.h"	
 
 IMPLEMENT_SINGLETON(GameInstance)
 
@@ -15,10 +17,32 @@ GameInstance::GameInstance()
 HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext)
 {
 
-	FAILED_CHECK_RETURN(m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext), E_FAIL);
-	FAILED_CHECK_RETURN(m_pTimer_Manager = CTimer_Manager::Create(), E_FAIL);
-	FAILED_CHECK_RETURN(m_pLevel_Manager = Level_Manager::Create(), E_FAIL);
+	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext);
+	if (nullptr == m_pGraphic_Device)
+		return E_FAIL;
 
+	m_pTimer_Manager = CTimer_Manager::Create();
+	if (nullptr == m_pTimer_Manager)
+		return E_FAIL;
+
+	m_pPrototype_Manager = Prototype_Manager::Create(*ppDevice, *ppContext, EngineDesc.iNumLevels);
+	if (nullptr == m_pPrototype_Manager)
+		return E_FAIL;	
+
+	m_pLevel_Manager = Level_Manager::Create();
+	if (nullptr == m_pLevel_Manager)
+		return E_FAIL;
+
+	m_pObject_Manager = Object_Manager::Create(EngineDesc.iNumLevels);
+	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+	
+
+	//FAILED_CHECK_RETURN 사용 못함 : 주소가 짤리는 듯함
+
+	//FAILED_CHECK_RETURN(m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext), E_FAIL);
+	//FAILED_CHECK_RETURN(m_pLevel_Manager = Level_Manager::Create(), E_FAIL);
+	//FAILED_CHECK_RETURN(m_pObject_Manager = Object_Manager::Create(EngineDesc.iNumLevels), E_FAIL);
 
 	return S_OK;
 }
@@ -28,10 +52,9 @@ void GameInstance::Update_Engine(_float fTimeDelta)
 	m_pLevel_Manager->Update(fTimeDelta);
 }
 
-void GameInstance::Clear(_uint iClearLevelIndex)
+void GameInstance::Clear(_uint iLevelIndex)
 {
-	// 아직 비워놓은 상태
-	// 추후에 기능을 만들 예정
+	// 추후 오브젝트, 컴포넌트들의 Clear함수들을 여기서 호출하여 정리할 것
 }
 
 #pragma region GRAPHIC_DEVICE
@@ -77,11 +100,40 @@ HRESULT GameInstance::Open_Level(_uint iLevelIndex, Level* pNewLevel)
 
 #pragma endregion
 
-void GameInstance::Free()
-{
-	__super::Free();
+#pragma region PROTOTYPE_MANAGER
 
+HRESULT GameInstance::Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, Base* pPrototype)
+{
+	return m_pPrototype_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);
+}
+
+Base* GameInstance::Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
+{
+	return m_pPrototype_Manager->Clone_Prototype(ePrototypeType, iLevelIndex, strPrototypeTag, pArg);
+}
+HRESULT GameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg)
+{
+	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
+}
+#pragma endregion
+
+#pragma region OBJECT_MANAGER
+
+#pragma endregion
+
+void GameInstance::Release_Engine()
+{
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pLevel_Manager);
+	Safe_Release(m_pPrototype_Manager);
+	Safe_Release(m_pObject_Manager);
+
+	GameInstance::DestroyInstance();
+}
+
+
+void GameInstance::Free()
+{
+	__super::Free();
 }

@@ -33,6 +33,9 @@ private:
 	_uint					m_iNumDraw = { };
 #endif
 
+private:
+	HRESULT Start_Level(LEVEL eLevelID);
+
 public:
 	static CMainApp* Create();
 	virtual void Free() override;
