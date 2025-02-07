@@ -1,8 +1,9 @@
 #pragma once
 
-/* 클라이언트 개발자가 만드는 모든 레벨클래스들의 부모가 되는 클래스다. */
-#include "Base.h"
+// 클라이언트에서 레벨을 생성할 때, 상속받아 사용하기 위해 만든 클래스
+// 클라이언트에서 레벨에서 수행할 기능을 직접 만들 것
 
+#include "Base.h"
 
 BEGIN(Engine)
 
@@ -18,15 +19,12 @@ public:
 	virtual HRESULT Render();
 
 protected:
-	ID3D11Device*		 m_pDevice = { nullptr };
-	ID3D11DeviceContext* m_pContext = { nullptr };
-
-	class GameInstance* m_pGameInstance = { nullptr };
+	ID3D11Device*				m_pDevice = { nullptr };
+	ID3D11DeviceContext*		m_pContext = { nullptr };
+	class GameInstance*			m_pGameInstance = { nullptr };
 
 public:
 	virtual void Free() override;
-
-
 };
 
 END

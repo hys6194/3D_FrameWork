@@ -1,36 +1,34 @@
 #pragma once
 
-/* 현재 할당된 레벨을 구동한다.(갱신과 렌더?)  */
-/* 레벨 교체 시에 이전 레벨을 삭제한다. + 이전 레벨용 자원을 정리한다. */
-
 #include "Base.h"
+// 유쌤과의 프로젝트 과정에서 Mgr은 싱글톤으로 관리하고 호출해서 사용하는 방식이었다
+// 정쌤은 Mgr을 GameInstance라는 클래스에 Mgr을 모아서 Mgr함수를 내부적으로 호출하는 방식으로 만들었다
+// 따라서 Mgr들은 싱글톤으로 제작하지 않는다.
 
 BEGIN(Engine)
 
-class Level_Manager final : public Base
+class Level_Manager : public Base
 {
 private:
 	Level_Manager();
 	virtual ~Level_Manager() = default;
 
 public:
-	HRESULT Initialize();
-	void Update(_float fTimeDelta);
-	HRESULT Render();
+	HRESULT						Initialize();
+	void						Update(_float fTimeDelta);
+	HRESULT						Render();
 
 public:
-	// 현재 레벨과, 교체할 레벨을 인자값으로 받아와 교체하는 작업을 만들어 줄 것
-	HRESULT Change_Level(_uint iLevelIndex, class Level* pNewLevel);
+	HRESULT						Change_Level(_uint iLevelIndex, class Level* pNewLevel);
 
 private:
-	class GameInstance*		m_pGameInstance = { nullptr };
-	class Level*			m_pCurrentLevel = { nullptr };
-	_uint					m_iCurrentLevelIndex = {};
+	class GameInstance*			m_pGameInstance = { nullptr }; // 
+	class Level*				m_pCurrentLevel = { nullptr }; // 현재 실행중인 레벨(Level 상속받아서 만든 Client의 Level*)
+	_uint						m_iCurrentLevelIndex = { };	   // enum LEVEL로 인지할 현재 레벨의 상태값
 
 public:
-	// 싱글톤이기 때문에 static
-	static Level_Manager* Create();
-	virtual void Free() override;
+	static Level_Manager*		Create();
+	virtual void				Free() override;
 };
 
 END
