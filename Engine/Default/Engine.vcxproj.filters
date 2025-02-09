@@ -114,9 +114,6 @@
     <ClInclude Include="..\Public\GameObject.h">
       <Filter>01.Utility\03. GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Component.h">
-      <Filter>01.Utility\04. Component</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Object_Manager.h">
       <Filter>01.Utility\03. GameObjects\Manager</Filter>
     </ClInclude>
@@ -131,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Texture.h">
       <Filter>01.Utility\04. Component\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Component.h">
+      <Filter>01.Utility\04. Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +161,6 @@
     <ClCompile Include="..\Private\GameObject.cpp">
       <Filter>01.Utility\03. GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Component.cpp">
-      <Filter>01.Utility\04. Component</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Object_Manager.cpp">
       <Filter>01.Utility\03. GameObjects\Manager</Filter>
     </ClCompile>
@@ -178,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Texture.cpp">
       <Filter>01.Utility\04. Component\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Component.cpp">
+      <Filter>01.Utility\04. Component</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

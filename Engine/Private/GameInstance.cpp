@@ -1,11 +1,11 @@
 #include "GameInstance.h"
+#include "AbstractFactory.h"
 
 #include "Graphic_Device.h"
 #include "Timer_Manager.h"
-#include "AbstractFactory.h"
 #include "Level_Manager.h"
-#include "Prototype.h"
 #include "Object_Manager.h"	
+
 
 IMPLEMENT_SINGLETON(GameInstance)
 
@@ -35,6 +35,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 
 	m_pObject_Manager = Object_Manager::Create(EngineDesc.iNumLevels);
 	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+
+	m_pRenderer = Renderer::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pRenderer)
 		return E_FAIL;
 	
 
@@ -128,6 +132,7 @@ void GameInstance::Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pPrototype_Manager);
 	Safe_Release(m_pObject_Manager);
+	Safe_Release(m_pRenderer);
 
 	GameInstance::DestroyInstance();
 }

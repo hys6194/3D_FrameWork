@@ -54,6 +54,24 @@ HRESULT GameObject::Render()
     return S_OK;
 }
 
+HRESULT GameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag, Component** ppOut, const _wstring& strComponentTag, void* pArg)
+{
+    //
+    Component* pComponent = dynamic_cast<Component*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_COMPONENT, iLevelIndex, strPrototypeTag, pArg));
+    if (nullptr == pComponent)
+        return E_FAIL;
+
+    *ppOut = pComponent;
+
+    if (m_mapComponent.end() == m_mapComponent.find(strPrototypeTag))
+    {
+        m_mapComponent.emplace(strPrototypeTag, pComponent);
+        Safe_AddRef(pComponent);
+    }
+
+    return S_OK;
+}
+
 void GameObject::Free()
 {
     __super::Free();

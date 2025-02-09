@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base.h"
+#include "Prototype.h"
 
 /* GameInstance */
 /* 엔진이 제공해주는 대부분의 기능을 모아둔다. */
@@ -61,6 +62,7 @@ private:
 	class Level_Manager* m_pLevel_Manager = { nullptr };
 	class Prototype_Manager* m_pPrototype_Manager = { nullptr };
 	class Object_Manager* m_pObject_Manager = { nullptr };
+	class Renderer* m_pRenderer = { nullptr };
 
 public:	
 	virtual void Free() override;

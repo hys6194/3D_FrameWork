@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class Texture : public Component
+class ENGINE_DLL Texture : public Component
 {
 private:
 	Texture(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "GameInstance.h"
+
 #include "GameObject.h"
 
 Renderer::Renderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -25,6 +25,8 @@ HRESULT Renderer::Add_RenderObject(RENDERERGROUP eRenderGroup, GameObject* pRend
         return E_FAIL;
 
     m_listRenderer[eRenderGroup].push_back(pRenderObject);
+
+    Safe_AddRef(pRenderObject);
 
     return S_OK;
 }
