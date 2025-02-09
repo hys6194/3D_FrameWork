@@ -119,6 +119,10 @@ HRESULT GameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring&
 {
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
 }
+HRESULT GameInstance::Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, GameObject* pRenderObject)
+{
+	return m_pRenderer->Add_RenderObject(eRenderGroupID, pRenderObject);
+}
 #pragma endregion
 
 #pragma region OBJECT_MANAGER

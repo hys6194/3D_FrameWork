@@ -54,6 +54,9 @@ public:
 	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 #pragma endregion
 
+#pragma region RENDERER
+	HRESULT Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, class GameObject* pRenderObject);
+#pragma endregion
 
 
 private:
