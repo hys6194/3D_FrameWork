@@ -58,6 +58,9 @@
     <Filter Include="01.Utility\05.Renderer">
       <UniqueIdentifier>{10ae064d-1c87-4d24-a92e-8ff1a719b1f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04. Component\Texture">
+      <UniqueIdentifier>{0ba362be-5615-46d4-aea8-a1f5d0f07371}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -126,6 +129,9 @@
     <ClInclude Include="..\Public\Renderer.h">
       <Filter>01.Utility\05.Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Texture.h">
+      <Filter>01.Utility\04. Component\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -169,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Renderer.cpp">
       <Filter>01.Utility\05.Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Texture.cpp">
+      <Filter>01.Utility\04. Component\Texture</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
