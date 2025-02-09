@@ -48,6 +48,19 @@ protected:
 
 	_tchar						m_szGameObjectTag[MAX_PATH] = {};
 
+	// map으로 key값을 통해 쉽게 검색하기 위해서 map으로 선언
+	map<const _wstring, class Component*>			m_mapComponent;
+
+protected:
+	// 왜 GameObject에 함수를 선언? 
+	// map으로 Component를 담고있는 멤버 변수가 GameObject에 존재
+	// 이에, 쉽게 추가 및 검색 기능을 한꺼번에 처리하려고 GameObject에 추가
+	// 왜 Component**형?
+	// 
+	// 
+	HRESULT Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag,
+		Component** ppOut, const _wstring& strComponentTag, void* pArg = nullptr);
+
 public:
 	virtual GameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;

@@ -44,6 +44,21 @@ void Renderer::Draw()
         return;
 }
 
+void Renderer::Clear()
+{
+    for (size_t i = 0; i < RENDER_END; ++i)
+    {
+        for (auto& iter : m_listRenderer[i])
+        {
+            Safe_Release(iter);
+        }
+
+        m_listRenderer[i].clear();
+    }
+
+    
+}
+
 HRESULT Renderer::Render_Priority()
 {
     for (auto& iter : m_listRenderer[RENDER_PRIORITY])

@@ -1,5 +1,7 @@
 #include "BackGround.h"
 
+#include "GameInstance.h"
+
 BackGround::BackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: UIObject{ pDevice, pContext }
 {
@@ -46,6 +48,13 @@ void BackGround::Late_Update(_float fTimeDelta)
 HRESULT BackGround::Render()
 {
     return S_OK;
+}
+
+HRESULT BackGround::Ready_Component()
+{
+	
+
+	return S_OK;
 }
 
 BackGround* BackGround::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

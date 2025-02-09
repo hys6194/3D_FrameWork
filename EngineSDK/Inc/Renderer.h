@@ -17,7 +17,6 @@ public:
 	HRESULT Initialize();
 	HRESULT Add_RenderObject(RENDERERGROUP eRenderGroup, class GameObject* pRenderObject);
 	void Draw();
-	void Clear();
 
 
 private:
