@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.h"
+#include "Renderer.h"
 #include "Prototype.h"
 
 /* GameInstance */
