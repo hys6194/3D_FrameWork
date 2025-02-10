@@ -45,10 +45,10 @@ protected:
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
 	class GameInstance*			m_pGameInstance = { nullptr };
-
 	_tchar						m_szGameObjectTag[MAX_PATH] = {};
 
-	// map으로 key값을 통해 쉽게 검색하기 위해서 map으로 선언
+
+protected:
 	map<const _wstring, class Component*>			m_mapComponent;
 
 protected:

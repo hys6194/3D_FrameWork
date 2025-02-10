@@ -134,6 +134,7 @@ void Renderer::Free()
 {
     __super::Free();
 
+    Clear();
 
     Safe_Release(m_pDevice);
     Safe_Release(m_pContext);
