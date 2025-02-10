@@ -52,7 +52,7 @@ protected:
 		Component** ppOut, const _wstring& strComponentTag, void* pArg = nullptr);
 
 private:
-	HRESULT Set_TransformCom();
+	HRESULT Set_TransformCom(void* pArg);
 
 public:
 	virtual GameObject* Clone(void* pArg) = 0;
