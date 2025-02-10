@@ -25,11 +25,13 @@ HRESULT BackGround::Initialize(void* pArg)
 	// 어디에서? -> Loader클래스에서
 	// 부모 클래스인 UIObject에서 구조체 값을 채워갈 예정
 
-
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-    return S_OK;
+	if (FAILED(Ready_Component()))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 void BackGround::Priority_Update(_float fTimeDelta)
@@ -43,6 +45,7 @@ void BackGround::Update(_float fTimeDelta)
 
 void BackGround::Late_Update(_float fTimeDelta)
 {
+	m_pGameInstance->Add_RenderObject(Renderer::RENDER_PRIORITY, this);
 }
 
 HRESULT BackGround::Render()
@@ -52,7 +55,9 @@ HRESULT BackGround::Render()
 
 HRESULT BackGround::Ready_Component()
 {
-	
+	if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
+		reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
+		return E_FAIL;
 
 	return S_OK;
 }

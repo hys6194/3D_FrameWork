@@ -51,6 +51,9 @@ protected:
 	HRESULT Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag,
 		Component** ppOut, const _wstring& strComponentTag, void* pArg = nullptr);
 
+private:
+	HRESULT Set_TransformCom(void* pArg);
+
 public:
 	virtual GameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;

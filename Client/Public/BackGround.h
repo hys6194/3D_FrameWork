@@ -3,6 +3,10 @@
 #include "Client_Defines.h"
 #include "UIObject.h"
 
+BEGIN(Engine)
+class Texture;
+END
+
 BEGIN(Client)
 
 // 직교 투영으로 만들 거라서 UIObject라는 클래스를 만들어서 상속받을 예정
@@ -21,6 +25,9 @@ public:
 	virtual void Update(_float fTimeDelta) override;
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+
+private:
+	Texture*				m_pTextureCom = { nullptr };
 
 private:
 	HRESULT Ready_Component();

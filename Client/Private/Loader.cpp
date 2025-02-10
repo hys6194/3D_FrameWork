@@ -74,6 +74,9 @@ HRESULT Loader::Loading_Logo()
 	m_IsFin = false;
 
 	lstrcpy(m_szLoading, TEXT("텍스쳐 로딩중."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
+		Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("모델 로딩중."));
 

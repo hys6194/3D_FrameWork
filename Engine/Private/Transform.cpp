@@ -1,26 +1,32 @@
 #include "Transform.h"
 
 Transform::Transform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : Component{ m_pDevice, m_pContext}
+    : Component{ pDevice, pContext }
 {
 }
 
 Transform::Transform(const Transform& Prototype)
     :Component{ Prototype }
+    , m_f4WorldMatrix{ Prototype.m_f4WorldMatrix }
 {
 }
 
 HRESULT Transform::Initialize_Prototype()
 {
+    XMStoreFloat4x4(&m_f4WorldMatrix, XMMatrixIdentity());
+
     return S_OK;
 }
 
 HRESULT Transform::Initialize(void* pArg)
 {
-    TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(pArg);
+    if(nullptr != pArg)
+    {
+        TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(pArg);
 
-    m_fSpeedPerSec = pDesc->fSpeedPerSec;
-    m_fRotationPerSec = pDesc->fRotationPerSec;
+        m_fSpeedPerSec = pDesc->fSpeedPerSec;
+        m_fRotationPerSec = pDesc->fRotationPerSec;
+    }
 
     return S_OK;
 }
