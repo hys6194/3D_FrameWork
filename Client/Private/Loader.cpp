@@ -10,6 +10,7 @@ Loader::Loader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
+	Safe_AddRef(m_pGameInstance);
 }
 
 unsigned int APIENTRY LoadingMain(void* pArg)
@@ -128,6 +129,8 @@ void Loader::Free()
 
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
+
+	Safe_Release(m_pGameInstance);
 
 	//DeleteCriticalSection(&m_CriticalSection);
 }

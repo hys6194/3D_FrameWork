@@ -76,6 +76,11 @@ void GameObject::Free()
 {
     __super::Free();
 
+    for (auto& Pair : m_mapComponent)
+        Safe_Release(Pair.second);
+
+    m_mapComponent.clear();
+
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
     Safe_Release(m_pGameInstance);

@@ -56,9 +56,21 @@ void GameInstance::Update_Engine(_float fTimeDelta)
 	m_pLevel_Manager->Update(fTimeDelta);
 }
 
+void GameInstance::Draw_Engine()
+{
+	m_pRenderer->Draw();
+}
+
 void GameInstance::Clear(_uint iLevelIndex)
 {
 	// 추후 오브젝트, 컴포넌트들의 Clear함수들을 여기서 호출하여 정리할 것
+
+ 	m_pRenderer->Clear();
+
+	m_pObject_Manager->Clear(iLevelIndex);
+
+	m_pPrototype_Manager->Clear(iLevelIndex);
+
 }
 
 #pragma region GRAPHIC_DEVICE

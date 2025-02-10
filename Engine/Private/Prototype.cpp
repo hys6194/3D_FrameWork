@@ -96,7 +96,7 @@ void Prototype_Manager::Free()
 {
 	__super::Free();
 
-	for (_uint i = 0; i < m_iNumLevels; ++i)
+	for (size_t i = 0; i < m_iNumLevels; ++i)
 	{
 		for (auto& Pair : m_pPrototype[i])
 			Safe_Release(Pair.second);

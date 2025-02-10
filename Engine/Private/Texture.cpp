@@ -25,6 +25,8 @@ HRESULT Texture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNum
     // 경로를 받아올 tchar 자료형
     _tchar		szEXT[MAX_PATH] = {};
 
+    _wsplitpath_s(pTextureFilePath, nullptr, 0, nullptr, 0, nullptr, 0, szEXT, MAX_PATH);
+
     for (size_t i = 0; i < iNumTextures; ++ i)
     {
         // 경로에서 서식문자를 답고있는것을 치환
