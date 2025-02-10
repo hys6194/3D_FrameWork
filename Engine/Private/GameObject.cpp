@@ -28,10 +28,24 @@ HRESULT GameObject::Initialize_Prototype()
 
 HRESULT GameObject::Initialize(void* pArg)
 {
-    GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+    if (nullptr != pArg)
+    {
+        GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+        lstrcpy(m_szGameObjectTag, pDesc->szGameObjectTag);
+    }
+    
+    m_pTransformCom = Transform::Create(m_pDevice, m_pContext);
+    if (nullptr == m_pTransformCom)
+        return E_FAIL;
+    
+    if(FAILED(m_pTransformCom->Initialize(pArg)))
+        return E_FAIL;
 
     // 멤버 변수에 키값을 받아와서 어떤 오브젝트인지 UIObject에 전달
-    lstrcpy(m_szGameObjectTag, pDesc->szGameObjectTag);
+    m_mapComponent.emplace(g_strTransformTag, m_pTransformCom);
+
+    Safe_AddRef(m_pTransformCom);
+
 
     return S_OK;
 }
@@ -79,7 +93,9 @@ void GameObject::Free()
     for (auto& Pair : m_mapComponent)
         Safe_Release(Pair.second);
 
-    m_mapComponent.clear();
+    m_mapComponent.clear();   
+
+    Safe_Release(m_pTransformCom);
 
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.h"
+#include "Transform.h"
 
 BEGIN(Engine)
 
@@ -33,7 +33,8 @@ protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
-	class GameInstance*			m_pGameInstance = { nullptr };
+	class GameInstance*			m_pGameInstance = { nullptr };	
+	class Transform*			m_pTransformCom = { nullptr };
 	_tchar						m_szGameObjectTag[MAX_PATH] = {};
 
 
