@@ -34,12 +34,7 @@ HRESULT GameObject::Initialize(void* pArg)
         lstrcpy(m_szGameObjectTag, pDesc->szGameObjectTag);
     }
     
-    m_pTransformCom = Transform::Create(m_pDevice, m_pContext);
-    if (nullptr == m_pTransformCom)
-        return E_FAIL;
-    
-    if(FAILED(m_pTransformCom->Initialize(pArg)))
-        return E_FAIL;
+    Set_TransformCom();
 
     // 멤버 변수에 키값을 받아와서 어떤 오브젝트인지 UIObject에 전달
     m_mapComponent.emplace(g_strTransformTag, m_pTransformCom);
@@ -84,6 +79,16 @@ HRESULT GameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototyp
     }
 
     return S_OK;
+}
+
+HRESULT GameObject::Set_TransformCom()
+{
+    m_pTransformCom = Transform::Create(m_pDevice, m_pContext);
+    if (nullptr == m_pTransformCom)
+        return E_FAIL;
+
+    if (FAILED(m_pTransformCom->Initialize(pArg)))
+        return E_FAIL;
 }
 
 void GameObject::Free()
