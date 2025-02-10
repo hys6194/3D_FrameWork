@@ -61,6 +61,9 @@
     <Filter Include="01.Utility\04. Component\Texture">
       <UniqueIdentifier>{0ba362be-5615-46d4-aea8-a1f5d0f07371}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04. Component\Transform">
+      <UniqueIdentifier>{468396b3-4227-4903-8942-e5d334676d47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -132,6 +135,9 @@
     <ClInclude Include="..\Public\Component.h">
       <Filter>01.Utility\04. Component</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Transform.h">
+      <Filter>01.Utility\04. Component\Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -178,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Component.cpp">
       <Filter>01.Utility\04. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Transform.cpp">
+      <Filter>01.Utility\04. Component\Transform</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

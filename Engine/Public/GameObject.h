@@ -4,17 +4,6 @@
 
 BEGIN(Engine)
 
-class Transform
-{
-public:
-	typedef struct tagTransformDesc
-	{
-		_float			fSpeedPerSec;
-		_float			fRotationPerSec;
-	}TRANSFORM_DESC;
-
-};
-
 // 왜 ENGINE_DLL -> 게임 오브젝트들을 실질적으로 만드는 곳은 Client라서 DLL 내보내기 해야함
 
 class ENGINE_DLL GameObject abstract : public Base
