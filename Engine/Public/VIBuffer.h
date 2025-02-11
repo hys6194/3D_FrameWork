@@ -4,7 +4,7 @@
 
 BEGIN (Engine)
 
-class ENGINE_DLL VIBuffer : public Component
+class ENGINE_DLL VIBuffer abstract : public Component
 {
 protected:
 	VIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -14,6 +14,10 @@ protected:
 public:
 	HRESULT Initialize_Prototype() override;
 	HRESULT Initialize(void* pArg) override;
+
+protected:
+	ID3D11Buffer* m_pVB = { nullptr };
+	ID3D11Buffer* m_pIB = { nullptr };
 
 public:
 	virtual Component* Clone(void* pArg) = 0;
