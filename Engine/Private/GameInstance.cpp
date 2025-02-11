@@ -1,11 +1,11 @@
 #include "GameInstance.h"
+#include "AbstractFactory.h"
 
 #include "Graphic_Device.h"
 #include "Timer_Manager.h"
-#include "AbstractFactory.h"
 #include "Level_Manager.h"
-#include "Prototype.h"
 #include "Object_Manager.h"	
+
 
 IMPLEMENT_SINGLETON(GameInstance)
 
@@ -36,6 +36,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 	m_pObject_Manager = Object_Manager::Create(EngineDesc.iNumLevels);
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
+
+	m_pRenderer = Renderer::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pRenderer)
+		return E_FAIL;
 	
 
 	//FAILED_CHECK_RETURN 사용 못함 : 주소가 짤리는 듯함
@@ -49,12 +53,28 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 
 void GameInstance::Update_Engine(_float fTimeDelta)
 {
+	m_pObject_Manager->Priority_Update(fTimeDelta);
+	m_pObject_Manager->Update(fTimeDelta);
+	m_pObject_Manager->Late_Update(fTimeDelta);
+
 	m_pLevel_Manager->Update(fTimeDelta);
+}
+
+void GameInstance::Draw_Engine()
+{
+	m_pRenderer->Draw();
 }
 
 void GameInstance::Clear(_uint iLevelIndex)
 {
 	// 추후 오브젝트, 컴포넌트들의 Clear함수들을 여기서 호출하여 정리할 것
+
+ 	m_pRenderer->Clear();
+
+	m_pObject_Manager->Clear(iLevelIndex);
+
+	m_pPrototype_Manager->Clear(iLevelIndex);
+
 }
 
 #pragma region GRAPHIC_DEVICE
@@ -115,6 +135,10 @@ HRESULT GameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring&
 {
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
 }
+HRESULT GameInstance::Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, GameObject* pRenderObject)
+{
+	return m_pRenderer->Add_RenderObject(eRenderGroupID, pRenderObject);
+}
 #pragma endregion
 
 #pragma region OBJECT_MANAGER
@@ -128,6 +152,7 @@ void GameInstance::Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pPrototype_Manager);
 	Safe_Release(m_pObject_Manager);
+	Safe_Release(m_pRenderer);
 
 	GameInstance::DestroyInstance();
 }

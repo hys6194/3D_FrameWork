@@ -58,6 +58,39 @@
     <Filter Include="01.Utility\05.Renderer">
       <UniqueIdentifier>{10ae064d-1c87-4d24-a92e-8ff1a719b1f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04. Component\Texture">
+      <UniqueIdentifier>{0ba362be-5615-46d4-aea8-a1f5d0f07371}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Transform">
+      <UniqueIdentifier>{468396b3-4227-4903-8942-e5d334676d47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer">
+      <UniqueIdentifier>{ac06f622-5f19-43d9-9b77-513f52a531bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Cube">
+      <UniqueIdentifier>{f8cf5a8f-6acd-4c45-97fe-e32e060a25b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Particle">
+      <UniqueIdentifier>{67ae12ba-5b60-4ab9-84cd-f4b6df8c5fcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Terrain">
+      <UniqueIdentifier>{d24ca421-4279-44c7-94be-dec0af24f9e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Rect">
+      <UniqueIdentifier>{2fb9d1da-e05e-4aa0-b143-c38cbe209bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Particle\Point">
+      <UniqueIdentifier>{0c431eb0-9045-412b-a0b7-f08e0320e613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Particle\Rect">
+      <UniqueIdentifier>{16f4119b-5a5b-44b5-b921-04ee34bc6be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\FSM">
+      <UniqueIdentifier>{8ce777ad-4781-4982-bfe5-008b78ae3e11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\FSM\State">
+      <UniqueIdentifier>{545afc33-bde6-4e43-8f46-38c74dd80010}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -111,9 +144,6 @@
     <ClInclude Include="..\Public\GameObject.h">
       <Filter>01.Utility\03. GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Component.h">
-      <Filter>01.Utility\04. Component</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Object_Manager.h">
       <Filter>01.Utility\03. GameObjects\Manager</Filter>
     </ClInclude>
@@ -125,6 +155,27 @@
     </ClInclude>
     <ClInclude Include="..\Public\Renderer.h">
       <Filter>01.Utility\05.Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Texture.h">
+      <Filter>01.Utility\04. Component\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Component.h">
+      <Filter>01.Utility\04. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Transform.h">
+      <Filter>01.Utility\04. Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer.h">
+      <Filter>01.Utility\04. Component\VIBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FSM.h">
+      <Filter>01.Utility\04. Component\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State.h">
+      <Filter>01.Utility\04. Component\FSM\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Rect.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Rect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -155,9 +206,6 @@
     <ClCompile Include="..\Private\GameObject.cpp">
       <Filter>01.Utility\03. GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Component.cpp">
-      <Filter>01.Utility\04. Component</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Object_Manager.cpp">
       <Filter>01.Utility\03. GameObjects\Manager</Filter>
     </ClCompile>
@@ -169,6 +217,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\Renderer.cpp">
       <Filter>01.Utility\05.Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Texture.cpp">
+      <Filter>01.Utility\04. Component\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Component.cpp">
+      <Filter>01.Utility\04. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Transform.cpp">
+      <Filter>01.Utility\04. Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FSM.cpp">
+      <Filter>01.Utility\04. Component\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State.cpp">
+      <Filter>01.Utility\04. Component\FSM\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Rect.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Rect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

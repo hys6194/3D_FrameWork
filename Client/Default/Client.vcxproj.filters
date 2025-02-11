@@ -34,6 +34,18 @@
     <Filter Include="97.ShaderFiles">
       <UniqueIdentifier>{86b2e46b-3ea4-4cbe-b18b-7aac2c9a0eaa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Player">
+      <UniqueIdentifier>{13ed6a6f-8217-4ab3-a2f4-b0622dcb94e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\States">
+      <UniqueIdentifier>{911da6e8-64db-42df-9845-39a53d006a92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster">
+      <UniqueIdentifier>{1cc66d14-3059-4d15-923c-cefd99387098}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States">
+      <UniqueIdentifier>{827d9342-792b-4763-8db2-9d36d5a1ad73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

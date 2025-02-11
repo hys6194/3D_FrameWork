@@ -4,12 +4,16 @@
 
 BEGIN(Engine)
 
-class Component abstract : public Base
+class ENGINE_DLL Component abstract : public Base
 {
 protected:
 	Component(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	Component(const Component& Prototype);
 	virtual ~Component() = default;
+
+public:
+	virtual HRESULT Initialize_Prototype();
+	virtual HRESULT Initialize(void* pArg);
 
 protected:
 	ID3D11Device* m_pDevice = { nullptr };

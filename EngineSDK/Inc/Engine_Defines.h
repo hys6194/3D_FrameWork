@@ -32,7 +32,11 @@ using namespace std;
 
 #pragma warning(disable : 4251)
 
-
+namespace Engine
+{
+	// Transform을 어디에서든 끌고오기 위해서 전역으로 선언
+	const wstring g_strTransformTag = TEXT("Com_Transform");
+}
 
 
 #ifdef _DEBUG

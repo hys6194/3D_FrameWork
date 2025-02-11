@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Base.h"
-#include "Engine_Enum.h"
+// 외부로 보여줄 만한 컴포넌트들의 헤더를 모아둔다
+#include "Texture.h"
 
 BEGIN(Engine)
 

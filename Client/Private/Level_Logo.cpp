@@ -11,7 +11,8 @@ Level_Logo::Level_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT Level_Logo::Initialize()
 {
-	FAILED_CHECK_RETURN(Ready_Layer_BackGround(TEXT("Layer_BackGround")), E_FAIL);
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -45,7 +46,8 @@ HRESULT Level_Logo::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	UIDesc.fSpeedPerSec = 10.f;
 	UIDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"), LEVEL_LOGO, pLayerTag, &UIDesc), E_FAIL);
+	if(FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"), LEVEL_LOGO, pLayerTag, &UIDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

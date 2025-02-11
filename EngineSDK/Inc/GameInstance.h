@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Base.h"
+#include "Renderer.h"
+#include "Prototype.h"
 
 /* GameInstance */
 /* 엔진이 제공해주는 대부분의 기능을 모아둔다. */
@@ -21,6 +22,7 @@ private:
 public:
 	HRESULT Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext);
 	void Update_Engine(_float fTimeDelta);
+	void Draw_Engine();
 	void Release_Engine();
 	void Clear(_uint iLevelIndex);
 
@@ -53,6 +55,9 @@ public:
 	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 #pragma endregion
 
+#pragma region RENDERER
+	HRESULT Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, class GameObject* pRenderObject);
+#pragma endregion
 
 
 private:
@@ -61,6 +66,7 @@ private:
 	class Level_Manager* m_pLevel_Manager = { nullptr };
 	class Prototype_Manager* m_pPrototype_Manager = { nullptr };
 	class Object_Manager* m_pObject_Manager = { nullptr };
+	class Renderer* m_pRenderer = { nullptr };
 
 public:	
 	virtual void Free() override;
