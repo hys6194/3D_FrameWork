@@ -1,0 +1,36 @@
+#pragma once
+
+#include "Component.h"
+
+
+BEGIN(Engine)
+
+class FSM : public Component
+{
+protected:
+	FSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~FSM() = default;
+
+public:
+	HRESULT Initialize_Prototype();
+	HRESULT Initialize(void* pArg);
+
+public:
+	HRESULT Add_State(const _wstring& strStateTag);
+	HRESULT Find_State();
+	HRESULT Delete_State();
+	//HRESULT Find_State();
+
+
+private:
+	//map<const _wstring&, class State*> m_mapFSM;
+
+
+public:
+	static FSM* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual Component* Clone(void* pArg);
+	virtual void Free() override;
+
+};
+
+END
