@@ -3,6 +3,15 @@
 #include <Windows.h>
 #include <process.h>
 
+#include <Vfw.h>
+#pragma comment(lib, "vfw32.lib")
+
+#include <io.h>
+
+#include "../Bin/fmod/fmod.h"
+#include "../Bin/fmod/fmod.hpp"
+#pragma comment(lib, "../Bin/fmod/fmodex_vc.lib")
+
 /* 현재 프로젝트에서 사용하기위한 공통적인 정의를 모아둔다. */
 namespace Client
 {
