@@ -91,6 +91,15 @@
     <Filter Include="01.Utility\04. Component\FSM\State">
       <UniqueIdentifier>{545afc33-bde6-4e43-8f46-38c74dd80010}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\07. Light">
+      <UniqueIdentifier>{326ed0e3-36c9-4cc8-99c9-0d66e4ff0f50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\06.PipeLine">
+      <UniqueIdentifier>{8ddc8fdf-66a2-4970-adf9-cf55cbb971de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07. Light\Manager">
+      <UniqueIdentifier>{6da7aedd-63d1-4297-a741-8fe7c95bc18c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -177,6 +186,12 @@
     <ClInclude Include="..\Public\VIBuffer_Rect.h">
       <Filter>01.Utility\04. Component\VIBuffer\Rect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Light.h">
+      <Filter>01.Utility\07. Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Light_Manager.h">
+      <Filter>01.Utility\07. Light\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -238,6 +253,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Rect.cpp">
       <Filter>01.Utility\04. Component\VIBuffer\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light.cpp">
+      <Filter>01.Utility\07. Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light_Manager.cpp">
+      <Filter>01.Utility\07. Light\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

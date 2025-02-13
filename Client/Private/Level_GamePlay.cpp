@@ -1,4 +1,5 @@
 #include "Level_GamePlay.h"
+#include "GameInstance.h"
 
 Level_GamePlay::Level_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: Level { pDevice , pContext }
@@ -7,6 +8,9 @@ Level_GamePlay::Level_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 HRESULT Level_GamePlay::Initialize()
 {
+	if (FAILED(Ready_Lights()))
+		return E_FAIL;
+
     return S_OK;
 }
 
@@ -18,6 +22,22 @@ void Level_GamePlay::Update(_float fTimeDelta)
 HRESULT Level_GamePlay::Render()
 {
     return S_OK;
+}
+
+HRESULT Level_GamePlay::Ready_Lights()
+{
+	LIGHT_DESC		LightDesc{};
+
+	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 Level_GamePlay* Level_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

@@ -59,6 +59,12 @@ public:
 	HRESULT Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, class GameObject* pRenderObject);
 #pragma endregion
 
+#pragma region Light_Manager
+	HRESULT Add_Light(const LIGHT_DESC& pDesc);
+	const LIGHT_DESC* Get_LightDesc(_uint iLightIndex)const;
+#pragma endregion
+
+
 
 private:
 	class CGraphic_Device* m_pGraphic_Device = { nullptr };
@@ -67,6 +73,7 @@ private:
 	class Prototype_Manager* m_pPrototype_Manager = { nullptr };
 	class Object_Manager* m_pObject_Manager = { nullptr };
 	class Renderer* m_pRenderer = { nullptr };
+	class Light_Manager* m_pLight_Manager = { nullptr };
 
 public:	
 	virtual void Free() override;

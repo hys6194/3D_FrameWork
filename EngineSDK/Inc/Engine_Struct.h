@@ -26,6 +26,19 @@ namespace Engine
 		XMFLOAT2		vTexcoord;
 	}VTXNORTEX;
 
+	typedef struct tagLightDesc
+	{
+		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
+
+		TYPE			eType;				// ºûÀÇ 
+		XMFLOAT4		vDirection;			// ºûÀÇ 
+		XMFLOAT4		vPosition;			// ºûÀÇ 
+		float			fRange;				// ºûÀÇ 
+		XMFLOAT4		vDiffuse;			// ºûÀÇ 
+		XMFLOAT4		vAmbient;			// ºûÀÇ 
+		XMFLOAT4		vSpecular;			// ºûÀÇ 
+	}LIGHT_DESC;
+
 }
 
 
