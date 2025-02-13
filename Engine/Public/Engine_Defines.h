@@ -1,4 +1,5 @@
 #pragma once
+#define  NOMINMAX  
 
 #include <d3d11.h>
 #include <DirectXMath.h>
@@ -8,6 +9,9 @@
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
 #include "Fx11/d3dx11effect.h"
+#include "assimp/scene.h"
+#include "assimp/Importer.hpp"
+#include "assimp/postprocess.h"
 
 using namespace DirectX;
 

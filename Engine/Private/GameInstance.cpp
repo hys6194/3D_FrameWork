@@ -4,6 +4,7 @@
 #include "Graphic_Device.h"
 #include "Timer_Manager.h"
 #include "Level_Manager.h"
+#include "Light_Manager.h"
 #include "Object_Manager.h"	
 
 
@@ -39,6 +40,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 
 	m_pRenderer = Renderer::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pRenderer)
+		return E_FAIL;
+
+	m_pLight_Manager = Light_Manager::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pLight_Manager)
 		return E_FAIL;
 	
 
@@ -134,18 +139,36 @@ Base* GameInstance::Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex,
 {
 	return m_pPrototype_Manager->Clone_Prototype(ePrototypeType, iLevelIndex, strPrototypeTag, pArg);
 }
+
+#pragma endregion
+
+#pragma region OBJECT_MANAGER
+
 HRESULT GameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
 }
+
+#pragma endregion
+
+#pragma region RENDERER
+
 HRESULT GameInstance::Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, GameObject* pRenderObject)
 {
 	return m_pRenderer->Add_RenderObject(eRenderGroupID, pRenderObject);
 }
 #pragma endregion
 
-#pragma region OBJECT_MANAGER
+#pragma region Light_Manager
 
+HRESULT GameInstance::Add_Light(const LIGHT_DESC& pDesc)
+{
+	return m_pLight_Manager->Add_Light(pDesc);
+}
+const LIGHT_DESC* GameInstance::Get_LightDesc(_uint iLightIndex) const
+{
+	return m_pLight_Manager->Get_LightDesc(iLightIndex);
+}
 #pragma endregion
 
 void GameInstance::Release_Engine()
@@ -156,6 +179,8 @@ void GameInstance::Release_Engine()
 	Safe_Release(m_pPrototype_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pRenderer);
+
+	Safe_Release(m_pLight_Manager);
 
 	GameInstance::DestroyInstance();
 }
