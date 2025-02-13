@@ -3,8 +3,6 @@
 VIBuffer::VIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: Component{ pDevice, pContext }
 {
-	Safe_AddRef(m_pVB);
-	Safe_AddRef(m_pIB);
 }
 
 VIBuffer::VIBuffer(const VIBuffer& Prototype)

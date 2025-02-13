@@ -55,7 +55,11 @@ HRESULT BackGround::Render()
 
 HRESULT BackGround::Ready_Component()
 {
-	if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
+	//if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
+	//	reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
+	//	return E_FAIL;
+
+	if (FAILED(__super::Add_Component(LEVEL_MENU, TEXT("Prototype_Component_Texture_BackGround"),
 		reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
 		return E_FAIL;
 
