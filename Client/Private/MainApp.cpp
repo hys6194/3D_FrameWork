@@ -25,7 +25,7 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	// 레벨 시작
-	if (FAILED(Start_Level(LEVEL_LOGO)))
+	if (FAILED(Start_Level(LEVEL_MENU)))
 		return E_FAIL;
 
 	return S_OK;
@@ -77,7 +77,8 @@ HRESULT CMainApp::Render()
 HRESULT CMainApp::Start_Level(LEVEL eLevelID)
 {
 	// 어떤 레벨을 Create할 지 알아야 하기 때문에 LEVEL enum을 인자로 받아와서 호출한다.
-	FAILED_CHECK_RETURN(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, eLevelID)), E_FAIL);
+	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, eLevelID))))
+		return E_FAIL;
 
 	return S_OK;
 }

@@ -47,6 +47,7 @@ private:
 
 private:
 	HRESULT Loading_Logo();
+	HRESULT Loading_Menu();
 	HRESULT	Loading_GamePlay();
 
 public:

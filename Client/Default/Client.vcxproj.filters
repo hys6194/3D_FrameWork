@@ -46,6 +46,9 @@
     <Filter Include="02.GameObjects\Monster\States">
       <UniqueIdentifier>{827d9342-792b-4763-8db2-9d36d5a1ad73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\Menu">
+      <UniqueIdentifier>{4bb641bb-efd7-400f-ab05-70b36082e136}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -80,6 +83,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\BackGround.h">
       <Filter>02.GameObjects\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Menu.h">
+      <Filter>01.Levels\Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\BackGround.cpp">
       <Filter>02.GameObjects\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Menu.cpp">
+      <Filter>01.Levels\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
