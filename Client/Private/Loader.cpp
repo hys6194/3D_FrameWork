@@ -50,6 +50,9 @@ HRESULT Loader::Loading()
 	// Initialize에서 받아온 레벨값에 따라서 Loding 레벨을 선택한다
 	switch (m_eNextLevelID)
 	{
+	case LEVEL_MENU:
+		hr = Loading_Menu();
+		break;
 	case LEVEL_LOGO:
 		hr = Loading_Logo();
 		break;
@@ -84,6 +87,33 @@ HRESULT Loader::Loading_Logo()
 
 	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"),
+		BackGround::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("로딩 완료."));
+
+	m_IsFin = true;
+
+	return S_OK;
+}
+
+HRESULT Loader::Loading_Menu()
+{
+	m_IsFin = false;
+
+	lstrcpy(m_szLoading, TEXT("텍스쳐 로딩중."));
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, TEXT("Prototype_Component_Texture_BackGround"),
+		Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("모델 로딩중."));
+
+	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
+
+	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, TEXT("Prototype_GameObject_BackGround"),
 		BackGround::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 

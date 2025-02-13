@@ -2,6 +2,7 @@
 #include "Loader.h"
 
 #include "Level_Logo.h" 
+#include "Level_Menu.h" 
 #include "Level_GamePlay.h" 
 #include "GameInstance.h"
 
@@ -40,6 +41,9 @@ void Level_Loading::Update(_float fTimeDelta)
 			{
 			case LEVEL_LOGO:
 				pLevel = Level_Logo::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL_MENU:
+				pLevel = Level_Menu::Create(m_pDevice, m_pContext);
 				break;
 			case LEVEL_GAMEPLAY:
 				pLevel = Level_GamePlay::Create(m_pDevice, m_pContext);
