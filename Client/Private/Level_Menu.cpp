@@ -26,6 +26,8 @@ void Level_Menu::Update(_float fTimeDelta)
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
 			return;
 	}
+
+	return;
 }
 
 HRESULT Level_Menu::Render()

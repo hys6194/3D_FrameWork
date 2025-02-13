@@ -62,6 +62,9 @@ void GameInstance::Update_Engine(_float fTimeDelta)
 
 void GameInstance::Draw_Engine()
 {
+	if (nullptr == m_pRenderer)
+		return;
+
 	m_pRenderer->Draw();
 }
 

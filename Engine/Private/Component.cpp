@@ -18,12 +18,12 @@ Component::Component(const Component& Prototype)
 
 HRESULT Component::Initialize_Prototype()
 {
-	return S_OK;
+	return E_NOTIMPL;
 }
 
 HRESULT Component::Initialize(void* pArg)
 {
-	return S_OK;
+	return E_NOTIMPL;
 }
 
 void Component::Free()
