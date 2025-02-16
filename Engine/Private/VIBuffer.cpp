@@ -52,6 +52,7 @@ HRESULT VIBuffer::Render()
 	m_pContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, Offsets);
 	m_pContext->IASetIndexBuffer(m_pIB, m_eIndexFormat, 0);
 	m_pContext->IASetPrimitiveTopology(m_eTopology);
+	m_pContext->IASetInputLayout();
 
 	D3D11_INPUT_ELEMENT_DESC        ElementDesc[2] = 
 	{
