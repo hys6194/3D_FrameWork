@@ -100,6 +100,9 @@
     <Filter Include="01.Utility\07. Light\Manager">
       <UniqueIdentifier>{6da7aedd-63d1-4297-a741-8fe7c95bc18c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04. Component\Shader">
+      <UniqueIdentifier>{3ea4c636-429d-4454-ab76-a436e0ac9456}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -192,6 +195,7 @@
     <ClInclude Include="..\Public\Light_Manager.h">
       <Filter>01.Utility\07. Light\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -260,5 +264,6 @@
     <ClCompile Include="..\Private\Light_Manager.cpp">
       <Filter>01.Utility\07. Light\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Shader.cpp" />
   </ItemGroup>
 </Project>
