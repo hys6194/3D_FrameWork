@@ -53,13 +53,13 @@ HRESULT BackGround::Render()
 	_float4x4			f4Matrix;
 
 	// 항등행렬로 만들기
-	XMStoreFloat4x4(&f4Matrix, XMMatrixIdentity());
+ 	XMStoreFloat4x4(&f4Matrix, XMMatrixIdentity());
 
 	m_pShaderCom->Apply_Matirx("g_WorldMatrix", &f4Matrix);
 	m_pShaderCom->Apply_Matirx("g_ViewMatrix", &f4Matrix);
 	m_pShaderCom->Apply_Matirx("g_ProjMatrix", &f4Matrix);
 
-	m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texuture", 0);
+	m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0);
 
 	m_pShaderCom->Begin(0);
 

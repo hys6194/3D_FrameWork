@@ -21,14 +21,15 @@ HRESULT UIObject::Initialize(void* pArg)
 	// ____super::Initialize(pArg)에서 Add_Prototype하면서 키값으로 받아온 원본객체의 이름을 저장
 	// 그 후, Object_Manager에서 Clone하면서 Initialize에서 만든 UIDesc을 pArg로 받아오고 그 값을 
 	// __super::Initialize(pArg)로 전달해서 m_szGameObjectTag에 담아서 알고 있는 구조이다
+	if (nullptr != pArg)
+	{
+		UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
 
-
-	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
-
-	m_fX = pDesc->fX;
-	m_fY = pDesc->fY;
-	m_fSizeX = pDesc->fSizeX;
-	m_fSizeY = pDesc->fSizeY;
+		m_fX = pDesc->fX;
+		m_fY = pDesc->fY;
+		m_fSizeX = pDesc->fSizeX;
+		m_fSizeY = pDesc->fSizeY;
+	}
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
