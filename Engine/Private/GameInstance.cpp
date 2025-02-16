@@ -2,10 +2,10 @@
 #include "AbstractFactory.h"
 
 #include "Graphic_Device.h"
+#include "Object_Manager.h"	
 #include "Timer_Manager.h"
 #include "Level_Manager.h"
 #include "Light_Manager.h"
-#include "Object_Manager.h"	
 
 
 IMPLEMENT_SINGLETON(GameInstance)

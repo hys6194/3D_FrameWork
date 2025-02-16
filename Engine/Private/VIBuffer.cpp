@@ -52,16 +52,6 @@ HRESULT VIBuffer::Render()
 	m_pContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, Offsets);
 	m_pContext->IASetIndexBuffer(m_pIB, m_eIndexFormat, 0);
 	m_pContext->IASetPrimitiveTopology(m_eTopology);
-	m_pContext->IASetInputLayout();
-
-	D3D11_INPUT_ELEMENT_DESC        ElementDesc[2] = 
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-	};
-
-	ID3D11InputLayout* pInputLayout = { nullptr };
-
 	m_pContext->DrawIndexed(m_iNumIndices, 0, 0);
 
 

@@ -1,4 +1,11 @@
 
+/* hlsl에서의 행렬타입 */
+// float2x2, float3x3, float4x4 == matrix, float1x4
+
+/* hlsl에서의 벡터타입 */
+// float2, float3, float4 == vector 
+
+/* 상수집합 == 컨스턴트테이블 */ 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 texture2D g_Texture;
@@ -12,13 +19,13 @@ sampler DefaultSampler = sampler_state
 struct VS_IN
 {
     float3 vPosition : POSITION;
-    float2 vTexcoord : TEXCOORD;
+    float2 vTexcoord : TEXCOORD0;
 };
 
 struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
-    float2 vTexcoord : TEXCOORD;
+    float2 vTexcoord : TEXCOORD0;
     
     // 
 };
@@ -26,7 +33,7 @@ struct VS_OUT
 struct PS_IN
 {
     float4 vPosition : SV_POSITION;
-    float2 vTexcoord : TEXCOORD;
+    float2 vTexcoord : TEXCOORD0;
 };
 
 struct PS_OUT
@@ -36,7 +43,6 @@ struct PS_OUT
     // 렌더타겟 뷰를 선언한 녀석이 있다, 렌더타겟은 
     //그래픽 디바이스 초기화 할 때, 백 버퍼를 생성해서 이를 통해 renderer를 그린다
     //따라서 SV_TARGET이 옳다
-    // 
 };
 
 
@@ -76,6 +82,8 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
     
+    Out.vColor.rg = Out.vColor.b;
+    
     //Out.vColor = In.vTexcoord.y;
     
     
@@ -90,16 +98,21 @@ PS_OUT PS_MAIN(PS_IN In)
 
 technique11 DefaultTechnique
 {
-    pass DefaultPass0           
+    // 적용하고 싶은 셰이더 기법들을 캡슐화한다
+    // 셰이더의 진입점 함수를 지정한다.
+
+    // 일반 렌더링
+    pass DefaultPass0
     {
         VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile vs_5_0 PS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass SpecialPass0
+    // 특수 렌더링
+    pass DefaultPass1
     {
-        //VertexShader = compile vs_5_0 VS_MAIN();
-        //PixelShader = compile vs_5_0 PS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN();
         /* 추후에 내가 플레이어 및 몬스터가 변신한다던가 숨는다던가 
            특수한 상황에 쉐이더 기법을 사용할 때 쓰는 pass*/
         /*vs_5_0 : 쉐이더 5.0 버전임을 의미*/

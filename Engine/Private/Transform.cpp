@@ -125,6 +125,17 @@ HRESULT Transform::LookAt(_vector vAt)
     return S_OK;
 }
 
+void Transform::SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ)
+{
+    _vector			vRight = Get_State(STATE_RIGHT);
+    _vector			vUp = Get_State(STATE_UP);
+    _vector			vLook = Get_State(STATE_LOOK);
+
+    Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * fScaleX);
+    Set_State(STATE_UP, XMVector3Normalize(vUp) * fScaleY);
+    Set_State(STATE_LOOK, XMVector3Normalize(vLook) * fScaleZ);
+}
+
 Transform* Transform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     Transform* pInstance = new Transform(pDevice, pContext);

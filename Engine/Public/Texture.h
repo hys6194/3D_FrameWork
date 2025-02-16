@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Texture : public Component
+class ENGINE_DLL Texture final : public Component
 {
 private:
 	Texture(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -14,6 +14,9 @@ private:
 public:
 	HRESULT Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures);
 	HRESULT Initialize(void* pArg);
+
+public:
+	HRESULT Apply_SR(class Shader* pShader, const _char* pConstantName, _uint iTextureIndex) const;
 
 private:
 

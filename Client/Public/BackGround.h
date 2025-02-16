@@ -4,7 +4,9 @@
 #include "UIObject.h"
 
 BEGIN(Engine)
+class Shader;
 class Texture;
+class VIBuffer_Rect;
 END
 
 BEGIN(Client)
@@ -15,7 +17,7 @@ class BackGround final : public UIObject
 {
 private:
 	BackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	BackGround(BackGround& Prototype);
+	BackGround(const BackGround& Prototype);
 	virtual ~BackGround() = default;
 
 public:
@@ -27,7 +29,9 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	Texture*				m_pTextureCom = { nullptr };
+	Texture*				m_pTextureCom = { nullptr };	
+	Shader*					m_pShaderCom = { nullptr };
+	VIBuffer_Rect*			m_pVIBufferCom = { nullptr };
 
 private:
 	HRESULT Ready_Component();
