@@ -1,6 +1,6 @@
 #pragma once
 
-#define NOMINMAX
+//#define NOMINMAX
 
 #include <Windows.h>
 #include <process.h>

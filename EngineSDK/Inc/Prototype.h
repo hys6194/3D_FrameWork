@@ -1,7 +1,9 @@
 #pragma once
 
 // 외부로 보여줄 만한 컴포넌트들의 헤더를 모아둔다
+#include "Shader.h"
 #include "Texture.h"
+#include "VIBuffer_Rect.h"
 
 BEGIN(Engine)
 

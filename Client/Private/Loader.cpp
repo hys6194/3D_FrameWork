@@ -76,21 +76,39 @@ HRESULT Loader::Loading_Logo()
 {
 	m_IsFin = false;
 
-	lstrcpy(m_szLoading, TEXT("텍스쳐 로딩중."));
+	/* 로고용 자원을 로드합니다.  */
+	lstrcpy(m_szLoading, TEXT("텍스쳐를(을) 로딩중입니다."));
+
+	/* Prototype_Component_Texture_BackGround */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
 		Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoading, TEXT("모델 로딩중."));
+	lstrcpy(m_szLoading, TEXT("모델를(을) 로딩중입니다."));
 
-	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
+	/* Prototype_Component_VIBuffer_Rect */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_VIBuffer_Rect"),
+		VIBuffer_Rect::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
-	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
+	lstrcpy(m_szLoading, TEXT("셰이더를(을) 로딩중입니다."));
+	/* Prototype_Component_Shader_VtxPosTex */
+	///* D3D11_INPUT_ELEMENT_DESC : 내 정점을 구성하는 멤버변수 하나의 정보를 표현하기위한 구조체. */
+	D3D11_INPUT_ELEMENT_DESC        ElementDesc[2] = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+	};
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Shader_VtxPosTex"),
+		Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), ElementDesc, 2))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("원형객체를(을) 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"),
 		BackGround::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoading, TEXT("로딩 완료."));
+	lstrcpy(m_szLoading, TEXT("로딩을 완료하였습니다."));
 
 	m_IsFin = true;
 
@@ -109,7 +127,21 @@ HRESULT Loader::Loading_Menu()
 
 	lstrcpy(m_szLoading, TEXT("모델 로딩중."));
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, TEXT("Prototype_Component_VIBuffer_Rect"),
+		VIBuffer_Rect::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
+
+	D3D11_INPUT_ELEMENT_DESC        ElementDesc[2] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+	};
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, TEXT("Prototype_Component_Shader_VtxPosTex"),
+		Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), ElementDesc, 2))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
 
@@ -165,5 +197,5 @@ void Loader::Free()
 
 	Safe_Release(m_pGameInstance);
 
-	//DeleteCriticalSection(&m_CriticalSection);
+	DeleteCriticalSection(&m_CriticalSection);
 }

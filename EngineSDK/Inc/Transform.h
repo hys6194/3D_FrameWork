@@ -49,6 +49,9 @@ public:
 	HRESULT Go_Left(_float fTimeDelta);
 	HRESULT LookAt(_vector vAt);
 
+public:
+	void SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ);
+
 private:
 	// 객체의 월드 변환을 위한 상태를 가진다
 	_float4x4			m_f4WorldMatrix = {};

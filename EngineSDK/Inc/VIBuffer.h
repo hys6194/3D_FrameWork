@@ -33,7 +33,7 @@ protected:
 	_uint						m_iNumVertices = {};		// 버텍스 버퍼의 개수
 
 	// 인덱스와 다음 인덱스 까지의 바이트 단위 간격
-	_uint						m_iIndexStride = {};		// 버텍스 버퍼 하나의 크기(한 정점이 차지하는 메모리 크기)
+	_uint						m_iIndexStride = {};		// 인덱스스 버퍼 하나의 크기(한 정점이 차지하는 메모리 크기)
 	_uint						m_iNumIndices = {};			// 정점 데이터를 효율적으로 참조하고 도형의 연결 순서를 정의하는 값.
 
 	_uint						m_iNumVertexBuffers = {};	// 버텍스 버퍼의 개수

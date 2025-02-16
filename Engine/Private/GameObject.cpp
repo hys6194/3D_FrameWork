@@ -72,9 +72,9 @@ HRESULT GameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototyp
 
     *ppOut = pComponent;
 
-    if (m_mapComponent.end() == m_mapComponent.find(strPrototypeTag))
+    if (m_mapComponent.end() == m_mapComponent.find(strComponentTag))
     {
-        m_mapComponent.emplace(strPrototypeTag, pComponent);
+        m_mapComponent.emplace(strComponentTag, pComponent);
         Safe_AddRef(pComponent);
     }
 

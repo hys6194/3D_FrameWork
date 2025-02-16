@@ -56,7 +56,6 @@ HRESULT VIBuffer_Rect::Initialize_Prototype()
 
 #pragma endregion
 
-
 #pragma region INDEXBUFFER
 	ZeroMemory(&m_BufferDesc, sizeof(m_BufferDesc));
 	m_BufferDesc.ByteWidth = m_iIndexStride * m_iNumIndices;
