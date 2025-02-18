@@ -51,6 +51,7 @@ public:
 
 public:
 	void SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ);
+	HRESULT Apply_SR(class Shader* pShader, const _char* pConstantName);
 
 private:
 	// 객체의 월드 변환을 위한 상태를 가진다

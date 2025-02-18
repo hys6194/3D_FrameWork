@@ -210,6 +210,9 @@
     <ClInclude Include="..\Public\Mesh.h">
       <Filter>01.Utility\04. Component\Model\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\공부 모음\쥬신 파일 모음\7개월\18일차_Terrain\Engine\Public\VIBuffer_Terrain.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -286,6 +289,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Mesh.cpp">
       <Filter>01.Utility\04. Component\Model\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\공부 모음\쥬신 파일 모음\7개월\18일차_Terrain\Engine\Private\VIBuffer_Terrain.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Terrain</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

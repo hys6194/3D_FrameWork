@@ -17,29 +17,44 @@ namespace Engine
 	{
 		XMFLOAT3		vPosition;
 		XMFLOAT2		vTexcoord;
+
+		const static unsigned int					iNumElements = 2;
+		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		};
 	}VTXPOSTEX;
 
-	typedef struct tagVertexNormalTexcoord
+	typedef struct ENGINE_DLL tagVertexNormalTexcoord
 	{
 		XMFLOAT3		vPosition;
 		XMFLOAT3		vNormal;
 		XMFLOAT2		vTexcoord;
+
+		const static unsigned int					iNumElements = 3;
+		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		};
 	}VTXNORTEX;
 
-	typedef struct tagLightDesc
+	typedef struct ENGINE_DLL tagLightDesc
 	{
 		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
 
-		TYPE			eType;				// ºûÀÇ 
-		XMFLOAT4		vDirection;			// ºûÀÇ 
-		XMFLOAT4		vPosition;			// ºûÀÇ 
-		float			fRange;				// ºûÀÇ 
-		XMFLOAT4		vDiffuse;			// ºûÀÇ 
-		XMFLOAT4		vAmbient;			// ºûÀÇ 
-		XMFLOAT4		vSpecular;			// ºûÀÇ 
+		TYPE			eType;				// ±¤¿ø Å¸ÀÔ
+		XMFLOAT4		vDirection;			// ±¤¿øÀÇ ·è ¹æÇâ
+		XMFLOAT4		vPosition;			// ±¤¿ø À§Ä¡
+		float			fRange;				// ±¤¿ø ±æÀÌ
+		XMFLOAT4		vDiffuse;			// ³­¹Ý»ç
+		XMFLOAT4		vAmbient;			// ¿¥ºñ¾ðÆ® (¹Ý»ç±¤)
+		XMFLOAT4		vSpecular;			// Á¤¹Ý»ç
 	}LIGHT_DESC;
 
-	typedef struct tagVerticesMesh
+	typedef struct ENGINE_DLL tagVerticesMesh
 	{
 		XMFLOAT3		vPosition;
 		XMFLOAT3		vNormal;
@@ -49,10 +64,10 @@ namespace Engine
 		const static unsigned int					iNumElements = 4;
 		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
 		{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 	}VTXMESH;
 }

@@ -28,6 +28,7 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 
 HRESULT Loader::Initialize(LEVEL eNextLevelID)
 {
+	// 멀티 쓰레드를 사용할 시 값이 제대로 초기화가 안되는 현상이 있음
 	m_eNextLevelID = eNextLevelID;
 
 	InitializeCriticalSection(&m_CriticalSection);
@@ -106,7 +107,7 @@ HRESULT Loader::Loading_Logo()
 
 	lstrcpy(m_szLoading, TEXT("원형객체를(을) 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"),
-		BackGround::Create(m_pDevice, m_pContext))))
+		BackGround::Create(m_pDevice, m_pContext, LEVEL_LOGO))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("로딩을 완료하였습니다."));
@@ -134,12 +135,6 @@ HRESULT Loader::Loading_Menu()
 
 	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
 
-	D3D11_INPUT_ELEMENT_DESC        ElementDesc[2] =
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-	};
-
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), ElementDesc, 2))))
 		return E_FAIL;
@@ -147,7 +142,7 @@ HRESULT Loader::Loading_Menu()
 	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, TEXT("Prototype_GameObject_BackGround"),
-		BackGround::Create(m_pDevice, m_pContext))))
+		BackGround::Create(m_pDevice, m_pContext, LEVEL_MENU))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("로딩 완료."));
@@ -164,17 +159,18 @@ HRESULT Loader::Loading_GamePlay()
 	lstrcpy(m_szLoading, TEXT("텍스쳐 로딩중."));
 
 	lstrcpy(m_szLoading, TEXT("모델 로딩중."));
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-		Model::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Fiona/Fiona.fbx"))))
-		return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+	//	Model::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Fiona/Fiona.fbx"))))
+	//	return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
 
 	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
+	//	Monster::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
-		Monster::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 	lstrcpy(m_szLoading, TEXT("로딩 완료."));
 
 	m_IsFin = true;

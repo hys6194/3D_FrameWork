@@ -80,7 +80,7 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
     
-    //Out.vColor.rg = Out.vColor.b;
+    Out.vColor.rg = Out.vColor.b;
     
     //Out.vColor = In.vTexcoord.y;
     

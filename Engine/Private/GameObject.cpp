@@ -33,8 +33,14 @@ HRESULT GameObject::Initialize(void* pArg)
         GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
         lstrcpy(m_szGameObjectTag, pDesc->szGameObjectTag);
     }
-    
-    Set_TransformCom(pArg);
+   // m_pTransformCom = Transform::Create(m_pDevice, m_pContext);
+   // if (nullptr == m_pTransformCom)
+   //     return E_FAIL;
+   // if (FAILED(m_pTransformCom->Initialize(pArg)))
+   //     return E_FAIL;
+
+    HRESULT hr;
+    hr = Set_TransformCom(pArg);
 
     // 멤버 변수에 키값을 받아와서 어떤 오브젝트인지 UIObject에 전달
     m_mapComponent.emplace(g_strTransformTag, m_pTransformCom);
@@ -42,7 +48,7 @@ HRESULT GameObject::Initialize(void* pArg)
     Safe_AddRef(m_pTransformCom);
 
 
-    return S_OK;
+    return hr;
 }
 
 void GameObject::Priority_Update(_float fTimeDelta)

@@ -5,7 +5,7 @@ Mesh::Mesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 }
 
-Mesh::Mesh(const Mesh& Prtotype)
+Mesh::Mesh(const Mesh& Prototype)
     : VIBuffer{ Prototype }
 {
 }
