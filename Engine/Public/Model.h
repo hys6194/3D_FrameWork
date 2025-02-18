@@ -3,7 +3,7 @@
 
 BEGIN (Engine)
 
-class Model : public Component
+class ENGINE_DLL Model : public Component
 {
 private:
 	Model(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -17,7 +17,8 @@ public:
 private:
 	const aiScene*				m_pAIScene = { nullptr };
 	Assimp::Importer			m_Importer;
-	 
+
+
 	vector<class Mesh*>			m_vecMesh;
 
 public:
