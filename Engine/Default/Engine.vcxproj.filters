@@ -199,6 +199,7 @@
       <Filter>01.Utility\04. Component\Shader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Model.h" />
+    <ClInclude Include="..\Public\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -271,5 +272,6 @@
       <Filter>01.Utility\04. Component\Shader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Model.cpp" />
+    <ClCompile Include="..\Private\Mesh.cpp" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,12 @@
 #include "Monster.h"
 
 Monster::Monster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:GameObject{ pDevice , pContext }
 {
 }
 
 Monster::Monster(const Monster& Prototype)
+	: GameObject{ Prototype }
 {
 }
 

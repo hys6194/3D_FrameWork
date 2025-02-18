@@ -11,15 +11,19 @@ private:
 	virtual ~Model() = default;
 
 public:
-	HRESULT Initialize_Prototype(const _char* pFilePath);
-	HRESULT Initialize(void* pArg);
+	virtual HRESULT Initialize_Prototype(const _char* pFilePath);
+	virtual HRESULT Initialize(void* pArg);
+	virtual HRESULT Render();
 
 private:
 	const aiScene*				m_pAIScene = { nullptr };
 	Assimp::Importer			m_Importer;
 
-
+	_uint						m_iNumMeshes = {};
 	vector<class Mesh*>			m_vecMesh;
+
+private:
+	HRESULT Ready_Meshes();
 
 public:
 	static Model* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pFilePath);

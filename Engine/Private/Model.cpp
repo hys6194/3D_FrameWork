@@ -1,4 +1,5 @@
 #include "Model.h"
+#include "Mesh.h"
 
 Model::Model(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :Component{ pDevice , pContext }
@@ -18,12 +19,32 @@ HRESULT Model::Initialize_Prototype(const _char* pFilePath)
     if (nullptr == m_pAIScene)
         return E_FAIL;
 
+    FAILED_CHECK_RETURN(Ready_Meshes(), E_FAIL);
 
     return S_OK;
 }
 
 HRESULT Model::Initialize(void* pArg)
 {
+    return S_OK;
+}
+
+HRESULT Model::Render()
+{
+    return S_OK;
+}
+
+HRESULT Model::Ready_Meshes()
+{
+    // Assimp를 통해 읽어온 모델의 메쉬의 개수를 받아온다
+    m_iNumMeshes = m_pAIScene->mNumMeshes;
+
+    for (size_t i = 0; i < m_iNumMeshes; ++i)
+    {
+        Mesh* pMesh = Mesh::Create();
+    }
+
+
     return S_OK;
 }
 
