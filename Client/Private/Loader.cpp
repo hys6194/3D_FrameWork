@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "BackGround.h"
+#include "Monster.h"
 
 Loader::Loader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -163,11 +164,17 @@ HRESULT Loader::Loading_GamePlay()
 	lstrcpy(m_szLoading, TEXT("텍스쳐 로딩중."));
 
 	lstrcpy(m_szLoading, TEXT("모델 로딩중."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+		Model::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Fiona/Fiona.fbx"))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
 
 	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
+		Monster::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	lstrcpy(m_szLoading, TEXT("로딩 완료."));
 
 	m_IsFin = true;

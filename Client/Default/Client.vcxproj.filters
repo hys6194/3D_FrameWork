@@ -87,6 +87,7 @@
     <ClInclude Include="..\Public\Level_Menu.h">
       <Filter>01.Levels\Menu</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Monster.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -126,6 +127,7 @@
     <ClCompile Include="..\Private\Level_Menu.cpp">
       <Filter>01.Levels\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Monster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">
