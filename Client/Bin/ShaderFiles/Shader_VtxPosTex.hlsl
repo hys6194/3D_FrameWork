@@ -26,8 +26,6 @@ struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
-    
-    // 
 };
 
 struct PS_IN
@@ -82,7 +80,7 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
     
-    Out.vColor.rg = Out.vColor.b;
+    //Out.vColor.rg = Out.vColor.b;
     
     //Out.vColor = In.vTexcoord.y;
     

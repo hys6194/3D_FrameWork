@@ -103,6 +103,12 @@
     <Filter Include="01.Utility\04. Component\Shader">
       <UniqueIdentifier>{3ea4c636-429d-4454-ab76-a436e0ac9456}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04. Component\Model">
+      <UniqueIdentifier>{79a5c8e7-7688-4016-b60e-c138eab1d786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Model\Mesh">
+      <UniqueIdentifier>{15abd9aa-0f1a-466e-9a82-4ef88bfc6673}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -198,8 +204,12 @@
     <ClInclude Include="..\Public\Shader.h">
       <Filter>01.Utility\04. Component\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Model.h" />
-    <ClInclude Include="..\Public\Mesh.h" />
+    <ClInclude Include="..\Public\Model.h">
+      <Filter>01.Utility\04. Component\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mesh.h">
+      <Filter>01.Utility\04. Component\Model\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -271,7 +281,11 @@
     <ClCompile Include="..\Private\Shader.cpp">
       <Filter>01.Utility\04. Component\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Model.cpp" />
-    <ClCompile Include="..\Private\Mesh.cpp" />
+    <ClCompile Include="..\Private\Model.cpp">
+      <Filter>01.Utility\04. Component\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mesh.cpp">
+      <Filter>01.Utility\04. Component\Model\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

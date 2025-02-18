@@ -23,12 +23,12 @@ HRESULT VIBuffer_Rect::Initialize_Prototype()
 #pragma region VERTEXBUFFER
 	// 구조체 초기화
 	ZeroMemory(&m_BufferDesc, sizeof(m_BufferDesc));
-	m_BufferDesc.ByteWidth = m_iVertexStride * m_iNumVertices;
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	m_BufferDesc.StructureByteStride = m_iVertexStride;
-	m_BufferDesc.CPUAccessFlags = 0;
-	m_BufferDesc.MiscFlags = 0;
+	m_BufferDesc.ByteWidth = m_iVertexStride * m_iNumVertices;   // 버퍼의 크기를 바이트 단위로 지정
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;					 // 버퍼의 사용 방법 지정
+	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;			 // 무슨 버퍼로 사용할지 설정
+	m_BufferDesc.StructureByteStride = m_iVertexStride;			 // 구조화된 버퍼에서 각 구조체의 크기를 바이트 단위로 지정하는 변수
+	m_BufferDesc.CPUAccessFlags = 0;							 // CPU가 리소스를 접근할 권한을 설정
+	m_BufferDesc.MiscFlags = 0;									 // 추가적인 버퍼 특성을 지정
 
 	VTXPOSTEX* pVertices = new VTXPOSTEX[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXPOSTEX) * m_iNumVertices);
