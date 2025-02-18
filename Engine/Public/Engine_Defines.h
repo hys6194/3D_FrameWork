@@ -1,6 +1,7 @@
 #pragma once
 //#define  NOMINMAX  
 
+#pragma warning(disable : 4251)
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
@@ -35,7 +36,6 @@ using namespace std;
 #define DIRECTINPUT_VERSION	0x0800
 #include <dinput.h>
 
-#pragma warning(disable : 4251)
 
 namespace Engine
 {

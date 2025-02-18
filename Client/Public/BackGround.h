@@ -38,6 +38,7 @@ private:
 
 private:
 	HRESULT Ready_Component();
+	HRESULT Apply_SR();
 
 public:
 	static BackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevel);

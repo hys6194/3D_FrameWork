@@ -19,6 +19,9 @@ namespace Engine
 		XMFLOAT2		vTexcoord;
 
 		const static unsigned int					iNumElements = 2;
+
+		/* Prototype_Component_Shader_VtxPosTex */
+		// D3D11_INPUT_ELEMENT_DESC : 내 정점을 구성하는 멤버 변수 하나의 정보를 표현하기위한 구조체
 		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},

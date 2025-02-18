@@ -33,6 +33,8 @@ private:
 
 private:
 	HRESULT Ready_Components();
+	HRESULT Apply_SR();
+
 
 public:
 	static Terrain* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

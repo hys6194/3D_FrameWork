@@ -91,7 +91,7 @@ HRESULT Shader::Begin(_uint iPassIndex)
     return S_OK;
 }
 
-HRESULT Shader::Apply_Matrix(const _char* pConstantName, const _float4x4* pMatrix)
+HRESULT Shader::Apply_Matrix(const _float4x4* pMatrix, const _char* pConstantName)
 {
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
     if (nullptr == pVariable)

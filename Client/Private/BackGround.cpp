@@ -56,20 +56,28 @@ void BackGround::Late_Update(_float fTimeDelta)
 
 HRESULT BackGround::Render()
 {
-	_float4x4			f4Matrix;
+	//_float4x4			f4Matrix;
+	//
+	//// 항등행렬로 만들기
+ 	//XMStoreFloat4x4(&f4Matrix, XMMatrixIdentity());
+	//
+	//m_pShaderCom->Apply_Matrix(&f4Matrix, "g_WorldMatrix");
+	//m_pShaderCom->Apply_Matrix(&f4Matrix, "g_ViewMatrix");
+	//m_pShaderCom->Apply_Matrix(&f4Matrix, "g_ProjMatrix");
+	//
+  	//m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0);
 
-	// 항등행렬로 만들기
- 	XMStoreFloat4x4(&f4Matrix, XMMatrixIdentity());
+	if (FAILED(Apply_SR()))
+		return E_FAIL;
 
-	m_pShaderCom->Apply_Matrix("g_WorldMatrix", &f4Matrix);
-	m_pShaderCom->Apply_Matrix("g_ViewMatrix", &f4Matrix);
-	m_pShaderCom->Apply_Matrix("g_ProjMatrix", &f4Matrix);
+	if (FAILED(m_pShaderCom->Begin(0)))
+		return E_FAIL;
 
-  	m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0);
+	if (FAILED(m_pVIBufferCom->Apply_Input_Assembler()))
+		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
-
-	m_pVIBufferCom->Render();
+	if (FAILED(m_pVIBufferCom->Render()))
+		return E_FAIL;
 
 
     return S_OK;
@@ -119,6 +127,22 @@ HRESULT BackGround::Ready_Component()
 	}
 
 	return S_OK;
+}
+
+HRESULT BackGround::Apply_SR()
+{
+	if (FAILED(m_pTransformCom->Apply_SR(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Apply_Matrix(&m_ViewMatrix, "g_ViewMatrix")))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Apply_Matrix(&m_ProjMatrix, "g_ProjMatrix")))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0)))
+		return E_FAIL; 
+	
+	return S_OK;
+
 }
 
 BackGround* BackGround::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevel)

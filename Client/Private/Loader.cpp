@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "BackGround.h"
+#include "Terrain.h"
 #include "Monster.h"
 
 Loader::Loader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -136,7 +137,7 @@ HRESULT Loader::Loading_Menu()
 	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), ElementDesc, 2))))
+		Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
@@ -158,18 +159,26 @@ HRESULT Loader::Loading_GamePlay()
 
 	lstrcpy(m_szLoading, TEXT("텍스쳐 로딩중."));
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
+		Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg")))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoading, TEXT("모델 로딩중."));
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-	//	Model::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Fiona/Fiona.fbx"))))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		VIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::ElementDesc, VTXNORTEX::iNumElements))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
-	//	Monster::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Terrain"),
+		Terrain::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("로딩 완료."));
 

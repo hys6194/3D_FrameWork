@@ -142,7 +142,7 @@ HRESULT Transform::Apply_SR(Shader* pShader, const _char* pConstantName)
     if (nullptr == pShader)
         return E_FAIL;
 
-    return pShader->Apply_Matrix(pConstantName, &m_f4WorldMatrix);
+    return pShader->Apply_Matrix(&m_f4WorldMatrix, pConstantName);
 }
 
 Transform* Transform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

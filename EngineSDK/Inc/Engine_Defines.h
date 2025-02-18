@@ -1,11 +1,13 @@
 #pragma once
 //#define  NOMINMAX  
 
+#pragma warning(disable : 4251)
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 #include <d3dcompiler.h>
 
+#include "DirectXTK/VertexTypes.h"
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
 #include "Fx11/d3dx11effect.h"
@@ -34,7 +36,6 @@ using namespace std;
 #define DIRECTINPUT_VERSION	0x0800
 #include <dinput.h>
 
-#pragma warning(disable : 4251)
 
 namespace Engine
 {
