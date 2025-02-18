@@ -91,7 +91,7 @@ HRESULT Texture::Initialize(void* pArg)
 
 HRESULT Texture::Apply_SR(Shader* pShader, const _char* pConstantName, _uint iTextureIndex) const
 {
-    if (iTextureIndex < m_iNumTextures)
+    if (iTextureIndex >= m_iNumTextures)
         return E_FAIL;
 
 

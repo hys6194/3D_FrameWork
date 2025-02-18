@@ -8,7 +8,12 @@ Model::Model(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 Model::Model(const Model& Prototype)
     : Component{ Prototype }
+    , m_pAIScene{ Prototype.m_pAIScene }
+    , m_iNumMeshes{ Prototype.m_iNumMeshes }
+    , m_vecMesh{ Prototype.m_vecMesh }
 {
+    for (auto& pMesh : m_vecMesh)
+        Safe_AddRef(pMesh);
 }
 
 HRESULT Model::Initialize_Prototype(const _char* pFilePath)
@@ -41,9 +46,16 @@ HRESULT Model::Ready_Meshes()
 
     for (size_t i = 0; i < m_iNumMeshes; ++i)
     {
-        Mesh* pMesh = Mesh::Create();
-    }
+        const aiMesh* pAIMesh = m_pAIScene->mMeshes[i];
 
+        Mesh* pMesh = Mesh::Create(m_pDevice, m_pContext, pAIMesh);
+
+        if (nullptr == pMesh)
+            return E_FAIL;
+
+        m_vecMesh.push_back(pMesh);
+
+    }
 
     return S_OK;
 }

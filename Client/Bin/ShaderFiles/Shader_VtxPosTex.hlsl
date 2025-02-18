@@ -26,8 +26,6 @@ struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
-    
-    // 
 };
 
 struct PS_IN

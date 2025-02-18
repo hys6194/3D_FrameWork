@@ -48,7 +48,8 @@ HRESULT Level_Menu::Ready_Layer_LogoPlayer(const _tchar* pLayerTag)
 	UIDesc.fSpeedPerSec = 10.f;
 	UIDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
-	if(FAILED(m_pGameInstance->Add_GameObject(LEVEL_MENU, TEXT("Prototype_GameObject_BackGround"), LEVEL_MENU, pLayerTag, &UIDesc)))
+	if(FAILED(m_pGameInstance->Add_GameObject(LEVEL_MENU, TEXT("Prototype_GameObject_BackGround"), 
+		LEVEL_MENU, pLayerTag, &UIDesc)))
 		return E_FAIL;
 
 	return S_OK;

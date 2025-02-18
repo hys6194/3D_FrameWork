@@ -28,7 +28,7 @@ HRESULT Shader::Initialize_Prototype(const _tchar* pShaderFilePath, const D3D11_
 #endif
 
     // ÀÎÀÚ·Î Àü´ÞÇØÁØ ¼ÎÀÌ´õÆÄÀÏÀ» ºôµåÇÏ°í °´Ã¼È­ÇÑ´Ù.
-    // D3D_COMPILE_STANDARD_FILE_INCLUDE = ¿ÉÆ¼¸¶ÀÌÂ¡ ½ºÅµ
+    // D3DCOMPILE_SKIP_OPTIMIZATION = ¿ÉÆ¼¸¶ÀÌÂ¡ ½ºÅµ
     if (FAILED(D3DX11CompileEffectFromFile(pShaderFilePath, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, iHlslFlag,
         0, m_pDevice, &m_pEffect, nullptr)))
         return E_FAIL;
@@ -91,7 +91,7 @@ HRESULT Shader::Begin(_uint iPassIndex)
     return S_OK;
 }
 
-HRESULT Shader::Apply_Matirx(const _char* pConstantName, const _float4x4* pMatrix)
+HRESULT Shader::Apply_Matrix(const _float4x4* pMatrix, const _char* pConstantName)
 {
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
     if (nullptr == pVariable)

@@ -21,7 +21,7 @@ private:
 	virtual ~BackGround() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype() override;
+	virtual HRESULT Initialize_Prototype(LEVEL eLevel);
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Priority_Update(_float fTimeDelta) override;
 	virtual void Update(_float fTimeDelta) override;
@@ -34,10 +34,14 @@ private:
 	VIBuffer_Rect*			m_pVIBufferCom = { nullptr };
 
 private:
+	LEVEL					m_eLevel = { LEVEL_END };
+
+private:
 	HRESULT Ready_Component();
+	HRESULT Apply_SR();
 
 public:
-	static BackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static BackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevel);
 	virtual GameObject* Clone(void* pArg);
 	virtual void Free() override;
 

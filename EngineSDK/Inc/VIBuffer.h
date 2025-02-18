@@ -16,6 +16,9 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual HRESULT Render();
 
+public:
+	HRESULT Apply_Input_Assembler();
+
 protected:
 	// 정점들의 메모리 공간을 의미하는 컴객체
 	ID3D11Buffer* m_pVB = { nullptr };

@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "Shader.h"
 
 Transform::Transform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : Component{ pDevice, pContext }
@@ -134,6 +135,14 @@ void Transform::SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ)
     Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * fScaleX);
     Set_State(STATE_UP, XMVector3Normalize(vUp) * fScaleY);
     Set_State(STATE_LOOK, XMVector3Normalize(vLook) * fScaleZ);
+}
+
+HRESULT Transform::Apply_SR(Shader* pShader, const _char* pConstantName)
+{
+    if (nullptr == pShader)
+        return E_FAIL;
+
+    return pShader->Apply_Matrix(&m_f4WorldMatrix, pConstantName);
 }
 
 Transform* Transform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
