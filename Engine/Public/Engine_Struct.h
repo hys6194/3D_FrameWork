@@ -41,19 +41,6 @@ namespace Engine
 		};
 	}VTXNORTEX;
 
-	typedef struct ENGINE_DLL tagLightDesc
-	{
-		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
-
-		TYPE			eType;				// 광원 타입
-		XMFLOAT4		vDirection;			// 광원의 룩 방향
-		XMFLOAT4		vPosition;			// 광원 위치
-		float			fRange;				// 광원 길이
-		XMFLOAT4		vDiffuse;			// 난반사
-		XMFLOAT4		vAmbient;			// 엠비언트 (반사광)
-		XMFLOAT4		vSpecular;			// 정반사
-	}LIGHT_DESC;
-
 	typedef struct ENGINE_DLL tagVerticesMesh
 	{
 		XMFLOAT3		vPosition;
@@ -70,6 +57,19 @@ namespace Engine
 			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 	}VTXMESH;
+
+	typedef struct ENGINE_DLL tagLightDesc
+	{
+		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
+
+		TYPE			eType;				// 광원 타입
+		XMFLOAT4		vDirection;			// 광원의 룩 방향
+		XMFLOAT4		vPosition;			// 광원 위치
+		float			fRange;				// 광원 길이
+		XMFLOAT4		vDiffuse;			// 난반사
+		XMFLOAT4		vAmbient;			// 엠비언트 (반사광)
+		XMFLOAT4		vSpecular;			// 정반사
+	}LIGHT_DESC;
 }
 
 
