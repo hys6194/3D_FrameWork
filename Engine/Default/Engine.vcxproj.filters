@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\Shader.h">
       <Filter>01.Utility\04. Component\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Model.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -269,5 +270,6 @@
     <ClCompile Include="..\Private\Shader.cpp">
       <Filter>01.Utility\04. Component\Shader</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Model.cpp" />
   </ItemGroup>
 </Project>

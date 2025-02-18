@@ -1,4 +1,5 @@
 #include "Light_Manager.h"
+#include "Light.h"
 
 Light_Manager::Light_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : m_pDevice{ pDevice }
@@ -15,9 +16,11 @@ HRESULT Light_Manager::Initialize()
 
 HRESULT Light_Manager::Add_Light(const LIGHT_DESC& pDesc)
 {
-    Light* pLight;
+    Light* pLight = Light::Create(m_pDevice, m_pContext, pDesc);
 
-    
+    if (nullptr == pLight)
+        return E_FAIL;
+
     m_listLights.push_back(pLight);
 
     return S_OK;
@@ -40,6 +43,9 @@ void Light_Manager::Free()
 {
     __super::Free();
 
+    for (auto& iter : m_listLights)
+        Safe_Release(iter);
+    m_listLights.clear();
 
     Safe_Release(m_pDevice);
     Safe_Release(m_pContext);
