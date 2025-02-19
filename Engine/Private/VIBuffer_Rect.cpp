@@ -57,7 +57,7 @@ HRESULT VIBuffer_Rect::Initialize_Prototype()
 #pragma endregion
 
 #pragma region INDEXBUFFER
-	ZeroMemory(&m_BufferDesc, sizeof(m_BufferDesc));
+	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
 	m_BufferDesc.ByteWidth = m_iIndexStride * m_iNumIndices;
 	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;

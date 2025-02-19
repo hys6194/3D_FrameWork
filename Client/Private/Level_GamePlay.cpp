@@ -24,6 +24,15 @@ HRESULT Level_GamePlay::Render()
     return S_OK;
 }
 
+HRESULT Level_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Terrain"),
+		LEVEL_GAMEPLAY, pLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT Level_GamePlay::Ready_Lights()
 {
 	LIGHT_DESC		LightDesc{};

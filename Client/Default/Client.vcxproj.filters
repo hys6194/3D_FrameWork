@@ -49,7 +49,7 @@
     <Filter Include="01.Levels\Menu">
       <UniqueIdentifier>{4bb641bb-efd7-400f-ab05-70b36082e136}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\Terrain">
+    <Filter Include="02.GameObjects\Terrain">
       <UniqueIdentifier>{4f73d9e3-1950-4eba-8996-1b2a3576fb31}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -94,7 +94,7 @@
       <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Terrain.h">
-      <Filter>01.Levels\Terrain</Filter>
+      <Filter>02.GameObjects\Terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -139,7 +139,7 @@
       <Filter>02.GameObjects\Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
-      <Filter>01.Levels\Terrain</Filter>
+      <Filter>02.GameObjects\Terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

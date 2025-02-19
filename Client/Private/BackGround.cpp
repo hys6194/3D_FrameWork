@@ -9,6 +9,7 @@ BackGround::BackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 BackGround::BackGround(const BackGround& Prototype)
 	:UIObject{ Prototype }
+	, m_eLevel{ Prototype.m_eLevel}
 {
 }
 
@@ -41,7 +42,6 @@ HRESULT BackGround::Initialize(void* pArg)
 
 void BackGround::Priority_Update(_float fTimeDelta)
 {
-	m_eLevel;
 	int a = 10;
 }
 
@@ -87,9 +87,7 @@ HRESULT BackGround::Ready_Component()
 {
 	// 다른 객체가 검색할 수 있도록 맵에 보관한다
 
-	m_eLevel;
-
-	switch (LEVEL_MENU)
+	switch (m_eLevel)
 	{
 		case LEVEL_LOGO :
 			if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),

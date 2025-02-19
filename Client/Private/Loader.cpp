@@ -95,15 +95,9 @@ HRESULT Loader::Loading_Logo()
 		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("셰이더를(을) 로딩중입니다."));
-	/* Prototype_Component_Shader_VtxPosTex */
-	///* D3D11_INPUT_ELEMENT_DESC : 내 정점을 구성하는 멤버변수 하나의 정보를 표현하기위한 구조체. */
-	D3D11_INPUT_ELEMENT_DESC        ElementDesc[2] = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-	};
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), ElementDesc, 2))))
+		Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("원형객체를(을) 로딩중입니다."));
