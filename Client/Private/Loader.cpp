@@ -1,6 +1,7 @@
 #include "Loader.h"
 #include "GameInstance.h"
 
+#include "Camera_Free.h"
 #include "BackGround.h"
 #include "Terrain.h"
 #include "Monster.h"
@@ -172,6 +173,10 @@ HRESULT Loader::Loading_GamePlay()
 	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Terrain"),
 		Terrain::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
+		Camera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("로딩 완료."));

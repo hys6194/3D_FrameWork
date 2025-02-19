@@ -126,6 +126,34 @@ HRESULT Transform::LookAt(_vector vAt)
     return S_OK;
 }
 
+void Transform::Turn(_fvector vAxis, _float fTimeDelta)
+{
+    _matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_fRotationPerSec * fTimeDelta);
+
+    _vector		vRight = Get_State(STATE_RIGHT);
+    _vector		vUp = Get_State(STATE_UP);
+    _vector		vLook = Get_State(STATE_LOOK);
+
+    Set_State(STATE_RIGHT, XMVector4Transform(vRight, RotationMatrix));
+    Set_State(STATE_UP, XMVector4Transform(vUp, RotationMatrix));
+    Set_State(STATE_LOOK, XMVector4Transform(vLook, RotationMatrix));
+}
+
+void Transform::Rotation(_fvector vAxis, _float fRadian)
+{
+    _matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
+
+    _float3		vScaled = Update_Scale();
+
+    _vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
+    _vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
+    _vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
+
+    Set_State(STATE_RIGHT, XMVector4Transform(vRight, RotationMatrix));
+    Set_State(STATE_UP, XMVector4Transform(vUp, RotationMatrix));
+    Set_State(STATE_LOOK, XMVector4Transform(vLook, RotationMatrix));
+}
+
 void Transform::SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ)
 {
     _vector			vRight = Get_State(STATE_RIGHT);

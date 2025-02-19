@@ -5,6 +5,7 @@
 #include "Object_Manager.h"	
 #include "Timer_Manager.h"
 #include "Level_Manager.h"
+#include "Input_Device.h"
 #include "PipeLine.h"
 #include "Light_Manager.h"
 
@@ -21,6 +22,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 
 	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext);
 	if (nullptr == m_pGraphic_Device)
+		return E_FAIL;
+
+	m_pInput_Device = CInput_Device::Create(EngineDesc.hInstance, EngineDesc.hWnd);
+	if (nullptr == m_pInput_Device)
 		return E_FAIL;
 
 	m_pTimer_Manager = CTimer_Manager::Create();
@@ -63,6 +68,8 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 
 void GameInstance::Update_Engine(_float fTimeDelta)
 {
+	m_pInput_Device->Update();
+
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);
 	m_pObject_Manager->Late_Update(fTimeDelta);
@@ -91,6 +98,7 @@ void GameInstance::Clear(_uint iLevelIndex)
 }
 
 #pragma region GRAPHIC_DEVICE
+
 HRESULT GameInstance::Clear_BackBuffer_View(_float4 vClearColor)
 {
 	return m_pGraphic_Device->Clear_BackBuffer_View(vClearColor);
@@ -105,6 +113,25 @@ HRESULT GameInstance::Present()
 {
 	return m_pGraphic_Device->Present();
 }
+
+#pragma endregion
+
+#pragma region INPUT_DEVICE
+
+_byte GameInstance::Get_DIKeyState(_ubyte byKeyID)
+{
+	return m_pInput_Device->Get_DIKeyState(byKeyID);
+}
+_byte GameInstance::Get_DIMouseState(MOUSEKEYSTATE eMouse)
+{
+	return m_pInput_Device->Get_DIMouseState(eMouse);
+}
+_long GameInstance::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
+{
+	return m_pInput_Device->Get_DIMouseMove(eMouseState);
+
+}
+
 #pragma endregion
 
 #pragma region TIMER_MANAGER
@@ -183,9 +210,9 @@ void GameInstance::Set_Transform(PipeLine::TRANSFORMSTATE eState, const _float4x
 {
 	return m_pPipeLine->Set_Transform(eState, pMatrix);
 }
-HRESULT GameInstance::Bind_ShaderResource(CShader* pShader, const _char* pConstantName, PipeLine::TRANSFORMSTATE eState)
+HRESULT GameInstance::Bind_VP_Transform_ShaderResource(Shader* pShader, const _char* pConstantName, PipeLine::TRANSFORMSTATE eState)
 {
-	return E_NOTIMPL;
+	return m_pPipeLine->Bind_SR(pShader, pConstantName, eState);
 }
 
 #pragma endregion
@@ -205,6 +232,7 @@ const LIGHT_DESC* GameInstance::Get_LightDesc(_uint iLightIndex) const
 void GameInstance::Release_Engine()
 {
 	Safe_Release(m_pGraphic_Device);
+	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pPrototype_Manager);

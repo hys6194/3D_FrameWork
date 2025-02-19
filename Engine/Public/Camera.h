@@ -27,6 +27,9 @@ public:
 	virtual HRESULT Render() override;
 
 protected:
+	HRESULT Renew_Matrices();
+
+protected:
 	_float					m_fFov = { };
 	_float					m_fAspect = { };
 	_float					m_fNear = { };

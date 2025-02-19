@@ -1,6 +1,8 @@
 #include "Camera.h"
 #include "Transform.h"
 
+#include "GameInstance.h"
+
 Camera::Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:GameObject {pDevice, pContext}
 {
@@ -54,6 +56,17 @@ void Camera::Late_Update(_float fTimeDelta)
 
 HRESULT Camera::Render()
 {
+	return S_OK;
+}
+
+HRESULT Camera::Renew_Matrices()
+{
+	_matrix		ViewMatrix = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+	_matrix		ProjMatrix = XMMatrixPerspectiveFovLH(m_fFov, m_fAspect, m_fNear, m_fFar);
+
+	m_pGameInstance->Set_Transform(PipeLine::D3DTS_VIEW, ViewMatrix);
+	m_pGameInstance->Set_Transform(PipeLine::D3DTS_PROJ, ProjMatrix);
+
 	return S_OK;
 }
 

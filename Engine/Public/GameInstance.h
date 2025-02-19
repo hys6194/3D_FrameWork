@@ -34,6 +34,13 @@ public:
 	HRESULT				Present();
 #pragma endregion
 
+#pragma region INPUT_DEVICE
+	_byte				Get_DIKeyState(_ubyte byKeyID);
+	_byte				Get_DIMouseState(MOUSEKEYSTATE eMouse);
+	_long				Get_DIMouseMove(MOUSEMOVESTATE eMouseState);
+
+#pragma endregion
+
 #pragma region TIMER_MANAGER
 public:
 	_float				Get_TimeDelta(const _wstring& strTimerTag);
@@ -65,7 +72,7 @@ public:
 	_matrix				Get_Transform_Matrix(PipeLine::TRANSFORMSTATE eState);
 	void				Set_Transform(PipeLine::TRANSFORMSTATE eState, _fmatrix Matrix);
 	void				Set_Transform(PipeLine::TRANSFORMSTATE eState, const _float4x4* pMatrix);
-	HRESULT				Bind_ShaderResource(class CShader* pShader, const _char* pConstantName, PipeLine::TRANSFORMSTATE eState);
+	HRESULT				Bind_VP_Transform_ShaderResource(class Shader* pShader, const _char* pConstantName, PipeLine::TRANSFORMSTATE eState);
 #pragma endregion
 
 
@@ -78,6 +85,7 @@ public:
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
+	class CInput_Device*			m_pInput_Device = { nullptr };
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
 	class Level_Manager*			m_pLevel_Manager = { nullptr };
 	class Prototype_Manager*		m_pPrototype_Manager = { nullptr };

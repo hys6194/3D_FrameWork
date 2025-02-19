@@ -1,5 +1,6 @@
 #include "Level_GamePlay.h"
 #include "GameInstance.h"
+#include "Camera_Free.h"
 
 Level_GamePlay::Level_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: Level { pDevice , pContext }
@@ -8,6 +9,13 @@ Level_GamePlay::Level_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 HRESULT Level_GamePlay::Initialize()
 {
+
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
 
@@ -24,10 +32,32 @@ HRESULT Level_GamePlay::Render()
     return S_OK;
 }
 
-HRESULT Level_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
+HRESULT Level_GamePlay::Ready_Layer_Terrain(const _tchar* pLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Terrain"),
 		LEVEL_GAMEPLAY, pLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT Level_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
+{
+	Camera_Free::CAMERA_FREE_DESC   Desc{};
+
+	Desc.vEye = _float3(0.f, 10.f, -10.f);
+	Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Desc.fFov = XMConvertToRadians(60.f);
+	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	Desc.fNear = 0.1f;
+	Desc.fFar = 300.f;
+	Desc.fMouseSensor = 0.05f;
+	lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Camera"));
+	Desc.fSpeedPerSec = 10.f;
+	Desc.fRotationPerSec = XMConvertToRadians(90.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
+		LEVEL_GAMEPLAY, pLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;
