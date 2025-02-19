@@ -65,9 +65,9 @@ HRESULT BackGround::Render()
 	//m_pShaderCom->Bind_Matrix(&f4Matrix, "g_ViewMatrix");
 	//m_pShaderCom->Bind_Matrix(&f4Matrix, "g_ProjMatrix");
 	//
-  	//m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0);
+  	//m_pTextureCom->Bind_SR(m_pShaderCom, "g_Texture", 0);
 
-	if (FAILED(Apply_SR()))
+	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Begin(0)))
@@ -129,16 +129,16 @@ HRESULT BackGround::Ready_Component()
 	return S_OK;
 }
 
-HRESULT BackGround::Apply_SR()
+HRESULT BackGround::Bind_SR()
 {
-	if (FAILED(m_pTransformCom->Apply_SR(m_pShaderCom, "g_WorldMatrix")))
+	if (FAILED(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix(&m_ViewMatrix, "g_ViewMatrix")))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix(&m_ProjMatrix, "g_ProjMatrix")))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0)))
+	if (FAILED(m_pTextureCom->Bind_SR(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL; 
 	
 	return S_OK;

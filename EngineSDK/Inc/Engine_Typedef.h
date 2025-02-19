@@ -29,9 +29,15 @@ namespace Engine
 	typedef		XMFLOAT3					_float3;	// 연산용
 	typedef		XMFLOAT4					_float4;	// 연산용
 	typedef		XMVECTOR					_vector;	// 저장용
+	typedef		FXMVECTOR					_fvector;
+	typedef		GXMVECTOR					_gvector;
+	typedef		HXMVECTOR					_hvector;
+	typedef		CXMVECTOR					_cvector;
 
-	typedef		XMFLOAT4X4					_float4x4;	// 연산용
-	typedef		XMMATRIX					_matrix;	// 저장용
+	typedef		XMFLOAT4X4					_float4x4;	// 저장용
+	typedef		XMMATRIX					_matrix;	// 연산용
+	typedef		FXMMATRIX					_fmatrix;	// 인라인 함수에서 매개변수로 전달할 때 최적회 되어 있음
+	typedef		CXMMATRIX					_cmatrix;	// 함수 인자로 사용할 때 유용
 
 
 

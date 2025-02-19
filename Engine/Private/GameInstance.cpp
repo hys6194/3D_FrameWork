@@ -5,6 +5,7 @@
 #include "Object_Manager.h"	
 #include "Timer_Manager.h"
 #include "Level_Manager.h"
+#include "PipeLine.h"
 #include "Light_Manager.h"
 
 
@@ -40,6 +41,10 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 
 	m_pRenderer = Renderer::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pRenderer)
+		return E_FAIL;
+
+	m_pPipeLine = PipeLine::Create();
+	if (nullptr == m_pPipeLine)
 		return E_FAIL;
 
 	m_pLight_Manager = Light_Manager::Create(*ppDevice, *ppContext);
@@ -157,6 +162,32 @@ HRESULT GameInstance::Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, G
 {
 	return m_pRenderer->Add_RenderObject(eRenderGroupID, pRenderObject);
 }
+
+#pragma endregion
+
+#pragma region PIPELINE
+
+const _float4x4* GameInstance::Get_Transform_Float4x4(PipeLine::TRANSFORMSTATE eState)
+{
+	return m_pPipeLine->Get_Transform_Float4x4(eState);
+}
+_matrix GameInstance::Get_Transform_Matrix(PipeLine::TRANSFORMSTATE eState)
+{
+	return m_pPipeLine->Get_Transform_Matrix(eState);
+}
+void GameInstance::Set_Transform(PipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)
+{
+	return m_pPipeLine->Set_Transform(eState, Matrix);
+}
+void GameInstance::Set_Transform(PipeLine::TRANSFORMSTATE eState, const _float4x4* pMatrix)
+{
+	return m_pPipeLine->Set_Transform(eState, pMatrix);
+}
+HRESULT GameInstance::Bind_ShaderResource(CShader* pShader, const _char* pConstantName, PipeLine::TRANSFORMSTATE eState)
+{
+	return E_NOTIMPL;
+}
+
 #pragma endregion
 
 #pragma region Light_Manager
@@ -179,7 +210,7 @@ void GameInstance::Release_Engine()
 	Safe_Release(m_pPrototype_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pRenderer);
-
+	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
 
 	GameInstance::DestroyInstance();

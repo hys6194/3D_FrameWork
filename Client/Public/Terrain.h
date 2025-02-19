@@ -33,7 +33,7 @@ private:
 
 private:
 	HRESULT Ready_Components();
-	HRESULT Apply_SR();
+	HRESULT Bind_SR();
 
 
 public:

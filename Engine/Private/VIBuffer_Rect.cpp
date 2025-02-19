@@ -13,12 +13,12 @@ VIBuffer_Rect::VIBuffer_Rect(const VIBuffer_Rect& Prototype)
 HRESULT VIBuffer_Rect::Initialize_Prototype()
 {
 	m_iVertexStride = sizeof(VTXPOSTEX);
-	m_iNumVertices = 4;									// 정점 개수
-	m_iIndexStride = 2;									// 인덱스 버퍼의 데이터 크기 2 또는 4byte로 설정함
-	m_iNumIndices = 6;									// 인덱스 버퍼의 개수
-	m_iNumVertexBuffers = 1;							// 
-	m_eIndexFormat = DXGI_FORMAT_R16_UINT;				// 16비트 정수로 세팅(인덱스 버퍼 전용)
-	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	// 연속으로 삼각형을 그리겠다는 세팅
+	m_iNumVertices = 4;											// 정점 개수
+	m_iIndexStride = 2;											// 인덱스 버퍼의 데이터 크기 2 또는 4byte로 설정함
+	m_iNumIndices = 6;											// 인덱스 버퍼의 개수
+	m_iNumVertexBuffers = 1;									// 
+	m_eIndexFormat = DXGI_FORMAT_R16_UINT;						// 16비트 정수로 세팅(인덱스 버퍼 전용)
+	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;			// 연속으로 삼각형을 그리겠다는 세팅
 
 #pragma region VERTEXBUFFER
 	// 구조체 초기화

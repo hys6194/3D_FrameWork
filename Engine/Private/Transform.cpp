@@ -137,7 +137,7 @@ void Transform::SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ)
     Set_State(STATE_LOOK, XMVector3Normalize(vLook) * fScaleZ);
 }
 
-HRESULT Transform::Apply_SR(Shader* pShader, const _char* pConstantName)
+HRESULT Transform::Bind_SR(Shader* pShader, const _char* pConstantName)
 {
     if (nullptr == pShader)
         return E_FAIL;

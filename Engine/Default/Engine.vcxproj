@@ -153,6 +153,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\..\..\..\공부 모음\쥬신 파일 모음\7개월\18일차_Terrain\Engine\Public\VIBuffer_Terrain.h" />
     <ClInclude Include="..\Public\AbstractFactory.h" />
     <ClInclude Include="..\Public\Base.h" />
+    <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
@@ -189,6 +190,7 @@ call Copy.bat</Command>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\공부 모음\쥬신 파일 모음\7개월\18일차_Terrain\Engine\Private\VIBuffer_Terrain.cpp" />
     <ClCompile Include="..\Private\Base.cpp" />
+    <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\FSM.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />

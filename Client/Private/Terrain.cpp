@@ -46,7 +46,7 @@ void Terrain::Late_Update(_float fTimeDelta)
 
 HRESULT Terrain::Render()
 {
-	if (FAILED(Apply_SR()))
+	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Begin(0)))
@@ -87,16 +87,16 @@ HRESULT Terrain::Ready_Components()
 	return S_OK;
 }
 
-HRESULT Terrain::Apply_SR()
+HRESULT Terrain::Bind_SR()
 {
-	if (FAILED(m_pTransformCom->Apply_SR(m_pShaderCom, "g_WorldMatrix")))
+	if (FAILED(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 	//if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 	//	return E_FAIL;
 	//if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 	//	return E_FAIL;	
 
-	m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0);
+	m_pTextureCom->Bind_SR(m_pShaderCom, "g_Texture", 0);
 
 	return S_OK;
 }
