@@ -95,7 +95,7 @@ HRESULT Texture::Apply_SR(Shader* pShader, const _char* pConstantName, _uint iTe
         return E_FAIL;
 
 
-    return pShader->Apply_ShaderResourceView(pConstantName, m_vecSRV[iTextureIndex]);
+    return pShader->Bind_SRV(pConstantName, m_vecSRV[iTextureIndex]);
 }
 
 Texture* Texture::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pTextureFilePath, _uint iNumTextures)

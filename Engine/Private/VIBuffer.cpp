@@ -41,12 +41,14 @@ HRESULT VIBuffer::Render()
 	return S_OK;
 }
 
-HRESULT VIBuffer::Apply_Input_Assembler()
+HRESULT VIBuffer::Bind_Input_Assembler()
 {
-
 	// 본래 렌더에서 호출하던 코드들이었음
 	// 왜 분리하였는가?
+	// 
 	// Render에서 바인딩하고 Render하는 구조라서 한번 바인딩하고 여러번 Render하기 위해서 분리하였음
+	// 
+	// 
 
 	ID3D11Buffer* pVertexBuffers[] =
 	{

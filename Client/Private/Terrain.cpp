@@ -52,7 +52,7 @@ HRESULT Terrain::Render()
 	if (FAILED(m_pShaderCom->Begin(0)))
 		return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Apply_Input_Assembler()))
+	if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Render()))

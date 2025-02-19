@@ -61,9 +61,9 @@ HRESULT BackGround::Render()
 	//// 항등행렬로 만들기
  	//XMStoreFloat4x4(&f4Matrix, XMMatrixIdentity());
 	//
-	//m_pShaderCom->Apply_Matrix(&f4Matrix, "g_WorldMatrix");
-	//m_pShaderCom->Apply_Matrix(&f4Matrix, "g_ViewMatrix");
-	//m_pShaderCom->Apply_Matrix(&f4Matrix, "g_ProjMatrix");
+	//m_pShaderCom->Bind_Matrix(&f4Matrix, "g_WorldMatrix");
+	//m_pShaderCom->Bind_Matrix(&f4Matrix, "g_ViewMatrix");
+	//m_pShaderCom->Bind_Matrix(&f4Matrix, "g_ProjMatrix");
 	//
   	//m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0);
 
@@ -73,7 +73,7 @@ HRESULT BackGround::Render()
 	if (FAILED(m_pShaderCom->Begin(0)))
 		return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Apply_Input_Assembler()))
+	if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Render()))
@@ -133,9 +133,9 @@ HRESULT BackGround::Apply_SR()
 {
 	if (FAILED(m_pTransformCom->Apply_SR(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Apply_Matrix(&m_ViewMatrix, "g_ViewMatrix")))
+	if (FAILED(m_pShaderCom->Bind_Matrix(&m_ViewMatrix, "g_ViewMatrix")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Apply_Matrix(&m_ProjMatrix, "g_ProjMatrix")))
+	if (FAILED(m_pShaderCom->Bind_Matrix(&m_ProjMatrix, "g_ProjMatrix")))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0)))

@@ -91,7 +91,7 @@ HRESULT Shader::Begin(_uint iPassIndex)
     return S_OK;
 }
 
-HRESULT Shader::Apply_Matrix(const _float4x4* pMatrix, const _char* pConstantName)
+HRESULT Shader::Bind_Matrix(const _float4x4* pMatrix, const _char* pConstantName)
 {
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
     if (nullptr == pVariable)
@@ -104,7 +104,7 @@ HRESULT Shader::Apply_Matrix(const _float4x4* pMatrix, const _char* pConstantNam
     return pMatrixVariable->SetMatrix(reinterpret_cast<const _float*>(pMatrix));
 }
 
-HRESULT Shader::Apply_ShaderResourceView(const _char* pConstantName, ID3D11ShaderResourceView* pSRV)
+HRESULT Shader::Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* pSRV)
 {
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
     if (nullptr == pVariable)
