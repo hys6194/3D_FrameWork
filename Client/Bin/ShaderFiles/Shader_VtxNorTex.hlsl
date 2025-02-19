@@ -1,20 +1,20 @@
 // 빛 연산을 처리하는 hlsl 파일
 // 추후에 pass를 늘려서 빛연산 처리 방식을 달리한다
 
-matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
+matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 // 빛의 방향
-float4 g_vLightDir = float4(1.f, -1.f, 1.f, 0.f);
+float4      g_vLightDir = float4(1.f, -1.f, 1.f, 0.f);
 
 // 빛 색
-float4 g_vLightDiffuse = float4(1.f, 1.f, 1.f, 1.f);
+float4      g_vLightDiffuse = float4(1.f, 1.f, 1.f, 1.f);
 
-float4 g_vLightAmbient = float4(1.f, 1.f, 1.f, 1.f);
-float4 g_vLightSpecular = float4(1.f, 1.f, 1.f, 1.f);
+float4      g_vLightAmbient = float4(1.f, 1.f, 1.f, 1.f);
+float4      g_vLightSpecular = float4(1.f, 1.f, 1.f, 1.f);
 
-texture2D g_DiffuseTexture;
-float4 g_vMtrlAmbient = float4(0.3f, 0.3f, 0.3f, 1.f);
-float4 g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);
+texture2D   g_DiffuseTexture;
+float4      g_vMtrlAmbient = float4(0.3f, 0.3f, 0.3f, 1.f);
+float4      g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);
 
 float4 g_vCamPosition;
 
@@ -64,11 +64,6 @@ VS_OUT VS_MAIN(VS_IN In)
     matWVP = mul(matWV, g_ProjMatrix);
     
     // 퐁 쉐이딩
-    //Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
-    //Out.vNormal = mul(vector(In.vNormal, 0.f), g_WorldMatrix);
-    //Out.vTexcoord = In.vTexcoord;
-    
-    // 블린 퐁
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
     Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;

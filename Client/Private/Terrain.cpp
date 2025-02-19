@@ -111,7 +111,7 @@ HRESULT Terrain::Bind_SR()
 		return E_FAIL;
 
 
-	m_pTextureCom->Bind_SR(m_pShaderCom, "g_Texture", 0);
+	//m_pTextureCom->Bind_SR(m_pShaderCom, "g_Texture", 0);
 
 	return S_OK;
 }
