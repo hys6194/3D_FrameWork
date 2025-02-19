@@ -5,6 +5,17 @@ PipeLine::PipeLine()
 {
 }
 
+void PipeLine::Update()
+{
+	for (size_t i = 0; i < D3DTS_END; i++)
+	{
+		XMStoreFloat4x4(&m_TransformInverseMatrices[i],
+			XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_TransformMatrices[i])));
+	}
+
+	memcpy(&m_vCamPosition, &m_TransformInverseMatrices[D3DTS_VIEW].m[3][0], sizeof(_float4));
+}
+
 void PipeLine::Set_Transform(TRANSFORMSTATE eState, _fmatrix Matrix)
 {
     XMStoreFloat4x4(&m_TransformMatrices[eState], Matrix);

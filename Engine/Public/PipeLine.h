@@ -26,6 +26,9 @@ private:
 	virtual ~PipeLine() = default;
 
 public:
+	void Update();
+
+public:
 	const _float4x4* Get_Transform_Float4x4(TRANSFORMSTATE eState)
 	{
 		return &m_TransformMatrices[eState];
@@ -34,6 +37,21 @@ public:
 	_matrix Get_Transform_Matrix(TRANSFORMSTATE eState)
 	{
 		return XMLoadFloat4x4(&m_TransformMatrices[eState]);
+	}
+
+	const _float4x4* Get_Transform_Inverse_Float4x4(TRANSFORMSTATE eState) const
+	{
+		return &m_TransformInverseMatrices[eState];
+	}
+
+	_matrix Get_Transform_Inverse_Matrix(TRANSFORMSTATE eState) const 
+	{
+		return XMLoadFloat4x4(&m_TransformInverseMatrices[eState]);
+	}
+
+	const _float4* Get_CamPosition() const 
+	{
+		return &m_vCamPosition;
 	}
 
 public:
@@ -45,7 +63,10 @@ public:
 	HRESULT Bind_SR(class Shader* pShader, const _char* pConstantName, TRANSFORMSTATE eState);
 
 private:
-	_float4x4			m_TransformMatrices[D3DTS_END] = {};
+	_float4x4			m_TransformMatrices[D3DTS_END] = {};	
+	_float4x4			m_TransformInverseMatrices[D3DTS_END] = {};
+	_float4				m_vCamPosition = {};
+
 
 
 public:

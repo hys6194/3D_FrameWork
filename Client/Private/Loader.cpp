@@ -155,7 +155,7 @@ HRESULT Loader::Loading_GamePlay()
 	lstrcpy(m_szLoading, TEXT("텍스쳐 로딩중."));
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
-		Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg")))))
+		Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.dds")))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoading, TEXT("모델 로딩중."));

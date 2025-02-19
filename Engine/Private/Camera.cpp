@@ -20,6 +20,9 @@ HRESULT Camera::Initialize_Prototype()
 
 HRESULT Camera::Initialize(void* pArg)
 {
+	if (nullptr == pArg)
+		return E_FAIL;
+
 	CAMERA_DESC* pDesc = static_cast<CAMERA_DESC*>(pArg);
 
 	m_fFov = pDesc->fFov;

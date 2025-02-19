@@ -202,6 +202,23 @@ _matrix GameInstance::Get_Transform_Matrix(PipeLine::TRANSFORMSTATE eState)
 {
 	return m_pPipeLine->Get_Transform_Matrix(eState);
 }
+
+const _float4x4* GameInstance::Get_Transform_Inverse_Float4x4(PipeLine::TRANSFORMSTATE eState) const
+{
+	return m_pPipeLine->Get_Transform_Inverse_Float4x4(eState);
+}
+
+_matrix GameInstance::Get_Transform_Inverse_Matrix(PipeLine::TRANSFORMSTATE eState) const
+{
+	return m_pPipeLine->Get_Transform_Inverse_Matrix(eState);
+}
+
+const _float4* GameInstance::Get_CamPosition() const
+{
+	return m_pPipeLine->Get_CamPosition();
+}
+
+
 void GameInstance::Set_Transform(PipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)
 {
 	return m_pPipeLine->Set_Transform(eState, Matrix);

@@ -91,6 +91,15 @@ HRESULT Shader::Begin(_uint iPassIndex)
     return S_OK;
 }
 
+HRESULT Shader::Bind_RawValue(const _char* pConstantName, const void* pData, _uint iLength)
+{
+    ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+    if (nullptr == pVariable)
+        return E_FAIL;
+
+    return pVariable->SetRawValue(pData, 0, iLength);
+}
+
 HRESULT Shader::Bind_Matrix(const _float4x4* pMatrix, const _char* pConstantName)
 {
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);

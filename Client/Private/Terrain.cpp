@@ -104,6 +104,12 @@ HRESULT Terrain::Bind_SR()
 	if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ProjMatrix", PipeLine::D3DTS_PROJ)))
 		return E_FAIL;
 
+	if (FAILED(m_pTextureCom->Bind_SR(m_pShaderCom, "g_DiffuseTexture", 0)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
+		return E_FAIL;
+
 
 	m_pTextureCom->Bind_SR(m_pShaderCom, "g_Texture", 0);
 

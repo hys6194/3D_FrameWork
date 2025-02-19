@@ -70,6 +70,9 @@ public:
 #pragma region PIPELINE
 	const _float4x4*	Get_Transform_Float4x4(PipeLine::TRANSFORMSTATE eState);
 	_matrix				Get_Transform_Matrix(PipeLine::TRANSFORMSTATE eState);
+	const _float4x4*	Get_Transform_Inverse_Float4x4(PipeLine::TRANSFORMSTATE eState) const;
+	_matrix				Get_Transform_Inverse_Matrix(PipeLine::TRANSFORMSTATE eState) const;
+	const _float4*		Get_CamPosition() const;
 	void				Set_Transform(PipeLine::TRANSFORMSTATE eState, _fmatrix Matrix);
 	void				Set_Transform(PipeLine::TRANSFORMSTATE eState, const _float4x4* pMatrix);
 	HRESULT				Bind_VP_Transform_ShaderResource(class Shader* pShader, const _char* pConstantName, PipeLine::TRANSFORMSTATE eState);
