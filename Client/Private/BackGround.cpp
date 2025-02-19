@@ -9,6 +9,7 @@ BackGround::BackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 BackGround::BackGround(const BackGround& Prototype)
 	:UIObject{ Prototype }
+	, m_eLevel{ Prototype.m_eLevel}
 {
 }
 
@@ -41,7 +42,6 @@ HRESULT BackGround::Initialize(void* pArg)
 
 void BackGround::Priority_Update(_float fTimeDelta)
 {
-	m_eLevel;
 	int a = 10;
 }
 
@@ -61,19 +61,19 @@ HRESULT BackGround::Render()
 	//// 항등행렬로 만들기
  	//XMStoreFloat4x4(&f4Matrix, XMMatrixIdentity());
 	//
-	//m_pShaderCom->Apply_Matrix(&f4Matrix, "g_WorldMatrix");
-	//m_pShaderCom->Apply_Matrix(&f4Matrix, "g_ViewMatrix");
-	//m_pShaderCom->Apply_Matrix(&f4Matrix, "g_ProjMatrix");
+	//m_pShaderCom->Bind_Matrix(&f4Matrix, "g_WorldMatrix");
+	//m_pShaderCom->Bind_Matrix(&f4Matrix, "g_ViewMatrix");
+	//m_pShaderCom->Bind_Matrix(&f4Matrix, "g_ProjMatrix");
 	//
-  	//m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0);
+  	//m_pTextureCom->Bind_SR(m_pShaderCom, "g_Texture", 0);
 
-	if (FAILED(Apply_SR()))
+	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Begin(0)))
 		return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Apply_Input_Assembler()))
+	if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Render()))
@@ -87,9 +87,7 @@ HRESULT BackGround::Ready_Component()
 {
 	// 다른 객체가 검색할 수 있도록 맵에 보관한다
 
-	m_eLevel;
-
-	switch (LEVEL_MENU)
+	switch (m_eLevel)
 	{
 		case LEVEL_LOGO :
 			if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
@@ -129,16 +127,16 @@ HRESULT BackGround::Ready_Component()
 	return S_OK;
 }
 
-HRESULT BackGround::Apply_SR()
+HRESULT BackGround::Bind_SR()
 {
-	if (FAILED(m_pTransformCom->Apply_SR(m_pShaderCom, "g_WorldMatrix")))
+	if (FAILED(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Apply_Matrix(&m_ViewMatrix, "g_ViewMatrix")))
+	if (FAILED(m_pShaderCom->Bind_Matrix(&m_ViewMatrix, "g_ViewMatrix")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Apply_Matrix(&m_ProjMatrix, "g_ProjMatrix")))
+	if (FAILED(m_pShaderCom->Bind_Matrix(&m_ProjMatrix, "g_ProjMatrix")))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0)))
+	if (FAILED(m_pTextureCom->Bind_SR(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL; 
 	
 	return S_OK;

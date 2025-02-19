@@ -14,6 +14,7 @@ HRESULT CMainApp::Initialize()
 	// 엔진 사용준비
 	ENGINE_DESC			EngineDesc{};
 
+	EngineDesc.hInstance = g_hInstance;
 	EngineDesc.hWnd = g_hWnd;
 	EngineDesc.isWindowed = true;
 	EngineDesc.iWidth_VP = g_iWinSizeX;

@@ -18,6 +18,13 @@ HRESULT Terrain::Initialize_Prototype()
 
 HRESULT Terrain::Initialize(void* pArg)
 {
+ 	GameObject::GAMEOBJECT_DESC	Desc{};
+
+	lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Terrain"));
+	Desc.fSpeedPerSec = 0.f;
+	Desc.fRotationPerSec = 0.f;
+
+
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -46,13 +53,13 @@ void Terrain::Late_Update(_float fTimeDelta)
 
 HRESULT Terrain::Render()
 {
-	if (FAILED(Apply_SR()))
+	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Begin(0)))
 		return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Apply_Input_Assembler()))
+	if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Render()))
@@ -70,33 +77,41 @@ HRESULT Terrain::Ready_Components()
 	/* 다른 객체가 검색 할 수 있도록 맵에도 보관한다 . */
 
 	/* Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_BackGround"),
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
 		reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
 		return E_FAIL;
 
 	/* Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Rect"),
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
 		reinterpret_cast<Component**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
 		return E_FAIL;
 
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxPosTex"),
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
 		reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader"))))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT Terrain::Apply_SR()
+HRESULT Terrain::Bind_SR()
 {
-	if (FAILED(m_pTransformCom->Apply_SR(m_pShaderCom, "g_WorldMatrix")))
+	if (FAILED(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
-	//if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-	//	return E_FAIL;
-	//if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-	//	return E_FAIL;	
 
-	m_pTextureCom->Apply_SR(m_pShaderCom, "g_Texture", 0);
+	if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ViewMatrix", PipeLine::D3DTS_VIEW)))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ProjMatrix", PipeLine::D3DTS_PROJ)))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom->Bind_SR(m_pShaderCom, "g_DiffuseTexture", 0)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
+		return E_FAIL;
+
+
+	//m_pTextureCom->Bind_SR(m_pShaderCom, "g_Texture", 0);
 
 	return S_OK;
 }
@@ -133,7 +148,7 @@ void Terrain::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
-	//Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pVIBufferCom);
 
 
 }

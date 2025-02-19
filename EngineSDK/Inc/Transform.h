@@ -27,6 +27,11 @@ public:
 		return XMLoadFloat4x4(&m_f4WorldMatrix).r[eState];
 	}
 
+	const _float4x4* Get_WorldMatrix_Ptr() 
+	{
+		return &m_f4WorldMatrix;
+	}
+
 	void Set_State(STATE eState, _vector vState)
 	{
 		XMStoreFloat4(reinterpret_cast<_float4*>(&m_f4WorldMatrix.m[eState][0]), vState);
@@ -42,16 +47,18 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
-	_float3  Update_Scale();
-	HRESULT Go_Straight(_float fTimeDelta);
-	HRESULT Go_Backward(_float fTimeDelta);
-	HRESULT Go_Right(_float fTimeDelta);
-	HRESULT Go_Left(_float fTimeDelta);
-	HRESULT LookAt(_vector vAt);
+	_float3		Update_Scale();
+	HRESULT		Go_Straight(_float fTimeDelta);
+	HRESULT		Go_Backward(_float fTimeDelta);
+	HRESULT		Go_Right(_float fTimeDelta);
+	HRESULT		Go_Left(_float fTimeDelta);
+	HRESULT		LookAt(_vector vAt);
+	void		Turn(_fvector vAxis, _float fTimeDelta);
+	void		Rotation(_fvector vAxis, _float fRadian);
 
 public:
 	void SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ);
-	HRESULT Apply_SR(class Shader* pShader, const _char* pConstantName);
+	HRESULT Bind_SR(class Shader* pShader, const _char* pConstantName);
 
 private:
 	// 객체의 월드 변환을 위한 상태를 가진다

@@ -40,8 +40,9 @@ HRESULT Level_Menu::Ready_Layer_LogoPlayer(const _tchar* pLayerTag)
 	UIObject::UIOBJECT_DESC			 UIDesc = {};
 
 	// 선생님은 가로, 세로 1인 길이로 그리려고 0.5로 준 것이다
-	UIDesc.fX = g_iWinSizeX * 0.5f;
-	UIDesc.fY = g_iWinSizeY * 0.5f;
+	// /2 빠른 연산
+	UIDesc.fX = g_iWinSizeX >> 1;
+	UIDesc.fY = g_iWinSizeY >> 1;
 	UIDesc.fSizeX = g_iWinSizeX;
 	UIDesc.fSizeY = g_iWinSizeY;
 	lstrcpy(UIDesc.szGameObjectTag, TEXT("GAMEOBJECT_UI_BACKGROUND"));

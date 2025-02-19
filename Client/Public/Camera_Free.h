@@ -1,22 +1,24 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Camera.h"
 
 BEGIN(Engine)
-class Shader;
-class Texture;
-class VIBuffer_Terrain;
 END
 
 BEGIN(Client)
 
-class Terrain final : public GameObject
+class Camera_Free final : public Camera
 {
+public:
+	typedef struct tagCameraFreeDesc : public Camera::CAMERA_DESC
+	{
+		_float			fMouseSensor;
+	}CAMERA_FREE_DESC;
 private:
-	Terrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Terrain(const Terrain& Prototype);
-	virtual ~Terrain() = default;
+	Camera_Free(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	Camera_Free(const Camera_Free& Prototype);
+	virtual ~Camera_Free() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -27,17 +29,13 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	Shader* m_pShaderCom = { nullptr };
-	Texture* m_pTextureCom = { nullptr };
-	VIBuffer_Terrain* m_pVIBufferCom = { nullptr };
+	_float					m_fMouseSensor = {};
 
 private:
-	HRESULT Ready_Components();
-	HRESULT Bind_SR();
-
+	HRESULT Ready_Components();	
 
 public:
-	static Terrain* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static Camera_Free* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual GameObject* Clone(void* pArg);
 	virtual void Free() override;
 };

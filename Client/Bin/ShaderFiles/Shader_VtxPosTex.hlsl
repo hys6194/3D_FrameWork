@@ -12,7 +12,12 @@ texture2D g_Texture;
 
 sampler DefaultSampler = sampler_state
 {
-    Filter = MIN_MAG_MIP_LINEAR;
+    filter = min_mag_mip_linear;
+
+    // 샘플링 방식
+    // 픽셀이 끝나면 다시 되돌아가는 방식
+    AddressU = WRAP;
+    AddressV = WRAP;
 };
 
 
@@ -52,9 +57,11 @@ struct PS_OUT
 
 // 반환값을 구조체 타입으로 선언해주었는데, 이는 VS_MAIN에서 행렬을 곱해주어 
 // VS의 데이터를 뷰 스페이스로 변환하여 정점연산을 마무리한다
+/* VS_IN에 들어온 정점의 위치벡터 -> 로컬스페이스*/ 
 VS_OUT VS_MAIN(VS_IN In)
 {
-    VS_OUT Out;
+    /* 받아온 정점정보를 가지고 필요한 연산을 수행해 나간다 */
+    VS_OUT Out = (VS_OUT) 0;
     
     matrix matWV, matWVP;
     
@@ -78,7 +85,9 @@ PS_OUT PS_MAIN(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
     //PS_OUT Out = { 0.f };
     
-    Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    // sampling 할 때 텍스쳐를 가로 세로로 얼만큼 할 것인지 정하고 위에서 정한 sampling 옵션으로 픽셀의 값 결정
+    //Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord * 2.f);
     
     Out.vColor.rg = Out.vColor.b;
     

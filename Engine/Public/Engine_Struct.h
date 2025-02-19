@@ -5,6 +5,7 @@ namespace Engine
 {
 	typedef struct tagEngineDesc
 	{
+		HINSTANCE		hInstance;
 		HWND			hWnd;
 		bool			isWindowed;
 		unsigned int	iWidth_VP;
@@ -13,7 +14,7 @@ namespace Engine
 
 	}ENGINE_DESC;
 
-	typedef struct tagVertexPositionTexcoord
+	typedef struct ENGINE_DLL tagVertexPositionTexcoord
 	{
 		XMFLOAT3		vPosition;
 		XMFLOAT2		vTexcoord;
