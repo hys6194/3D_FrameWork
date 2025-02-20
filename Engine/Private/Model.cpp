@@ -14,7 +14,7 @@ Model::Model(const Model& Prototype)
 {
     for (auto& pMesh : m_vecMesh)
         Safe_AddRef(pMesh);
-}
+} 
 
 HRESULT Model::Initialize_Prototype(const _char* pFilePath)
 {

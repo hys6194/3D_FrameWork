@@ -39,6 +39,7 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
 		// pAIMesh->mVertices 또한 float3 자료형을 사용 중이다
 		//따라서 효율적인 memcpy를 통해 메모리 복사를 한다
 		
+		// 여기에서 메쉬가 가지고 있는 정보들을 전달해주는 것이 좋다
 		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
 		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
 
@@ -46,7 +47,7 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
 		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
 		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
 	}
-
+	
 	ZeroMemory(&m_InitialData, sizeof(m_InitialData));
 	m_InitialData.pSysMem = pVertices;
 
