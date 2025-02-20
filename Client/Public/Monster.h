@@ -28,6 +28,11 @@ public:
 private:
 	Shader* m_pShaderCom = { nullptr };
 	Model* m_pModelCom = { nullptr };
+
+private:
+	HRESULT Ready_Component();
+	HRESULT Bind_SR();
+
 public:
 	static  Monster* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual GameObject* Clone(void* pArg);

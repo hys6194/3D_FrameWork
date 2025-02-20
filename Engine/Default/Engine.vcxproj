@@ -150,7 +150,6 @@ call Copy.bat</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\공부 모음\쥬신 파일 모음\7개월\18일차_Terrain\Engine\Public\VIBuffer_Terrain.h" />
     <ClInclude Include="..\Public\AbstractFactory.h" />
     <ClInclude Include="..\Public\Base.h" />
     <ClInclude Include="..\Public\Camera.h" />
@@ -186,10 +185,10 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\UIObject.h" />
     <ClInclude Include="..\Public\VIBuffer.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect.h" />
+    <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
     <ClInclude Include="클래스 정의.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\공부 모음\쥬신 파일 모음\7개월\18일차_Terrain\Engine\Private\VIBuffer_Terrain.cpp" />
     <ClCompile Include="..\Private\Base.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
@@ -218,6 +217,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\UIObject.cpp" />
     <ClCompile Include="..\Private\VIBuffer.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
