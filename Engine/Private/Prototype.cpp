@@ -40,7 +40,8 @@ HRESULT Prototype_Manager::Add_Prototype(_uint iLevelIndex, const wstring& strPr
 
 Base* Prototype_Manager::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
 {
-	if (iLevelIndex >= m_iNumLevels)
+
+ 	if (iLevelIndex >= m_iNumLevels)
 		return nullptr;
 
 	Base* pPrototype = Find_Prototype(iLevelIndex, strPrototypeTag);

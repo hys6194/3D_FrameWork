@@ -19,12 +19,17 @@ Model::Model(const Model& Prototype)
 HRESULT Model::Initialize_Prototype(const _char* pFilePath)
 {
 
-    _uint iFlag = aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
+    _uint iFlag = aiProcess_PreTransformVertices | 
+                  aiProcess_ConvertToLeftHanded | 
+                  aiProcessPreset_TargetRealtime_Fast;
 
 
     // FBX 파일로부터 읽어야할 정보들을 받아와 저장함
     m_pAIScene = m_Importer.ReadFile(pFilePath, iFlag);
     NULL_CHECK_RETURN(m_pAIScene, E_FAIL);
+
+    //if (nullptr == m_pAIScene)
+    //    return E_FAIL;
 
     // aiScene안에 담겨있는 모든 정보들을 우리가 사용하기에 좋은 형태로 변환하여 사용
     // Assimp는 행렬의 정보를 가로로 저장하고 있는 것이 아닌, 세로로 받고 있어, 이를 수정해야 함
@@ -57,7 +62,6 @@ HRESULT Model::Ready_Meshes()
     // 정점과 인덱스의 모든 정보를 받아올 수 있음
     m_iNumMeshes = m_pAIScene->mNumMeshes;
 
-
     for (size_t i = 0; i < m_iNumMeshes; ++i)
     {
         const aiMesh* pAIMesh = m_pAIScene->mMeshes[i];
@@ -89,7 +93,7 @@ Model* Model::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const
 
 Component* Model::Clone(void* pArg)
 {
-    Component* pInstance = new Model(m_pDevice, m_pContext);
+    Component* pInstance = new Model(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
