@@ -101,7 +101,7 @@ HRESULT Transform::Go_Left(_float fTimeDelta)
     _vector vRight = Get_State(STATE_RIGHT);
 
     // Right 벡터의 방향으로 fSpeedPerSec의 값만큼 fTimeDelta 초 만큼 이동한다
-    vPos += XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
+    vPos -= XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
 
     // 계산한 Vector를 position에 대입한다
     Set_State(STATE_POSITION, vPos);

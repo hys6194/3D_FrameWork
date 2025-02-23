@@ -9,6 +9,8 @@ Level_GamePlay::Level_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 HRESULT Level_GamePlay::Initialize()
 {
+	if (FAILED(Ready_Lights()))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
@@ -16,7 +18,7 @@ HRESULT Level_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Lights()))
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
     return S_OK;
@@ -59,6 +61,14 @@ HRESULT Level_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
 		LEVEL_GAMEPLAY, pLayerTag, &Desc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT Level_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
+{
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
+		LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
 
 	return S_OK;
 }

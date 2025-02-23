@@ -21,40 +21,31 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 {
 
 	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext);
-	if (nullptr == m_pGraphic_Device)
-		return E_FAIL;
+	NULL_CHECK_RETURN(m_pGraphic_Device, E_FAIL);
 
 	m_pInput_Device = CInput_Device::Create(EngineDesc.hInstance, EngineDesc.hWnd);
-	if (nullptr == m_pInput_Device)
-		return E_FAIL;
+	NULL_CHECK_RETURN(m_pInput_Device, E_FAIL);
 
 	m_pTimer_Manager = CTimer_Manager::Create();
-	if (nullptr == m_pTimer_Manager)
-		return E_FAIL;
+	NULL_CHECK_RETURN(m_pTimer_Manager, E_FAIL);
 
 	m_pPrototype_Manager = Prototype_Manager::Create(*ppDevice, *ppContext, EngineDesc.iNumLevels);
-	if (nullptr == m_pPrototype_Manager)
-		return E_FAIL;	
+	NULL_CHECK_RETURN(m_pPrototype_Manager, E_FAIL);
 
 	m_pLevel_Manager = Level_Manager::Create();
-	if (nullptr == m_pLevel_Manager)
-		return E_FAIL;
+	NULL_CHECK_RETURN(m_pLevel_Manager, E_FAIL);
 
 	m_pObject_Manager = Object_Manager::Create(EngineDesc.iNumLevels);
-	if (nullptr == m_pObject_Manager)
-		return E_FAIL;
+	NULL_CHECK_RETURN(m_pObject_Manager, E_FAIL);
 
 	m_pRenderer = Renderer::Create(*ppDevice, *ppContext);
-	if (nullptr == m_pRenderer)
-		return E_FAIL;
+	NULL_CHECK_RETURN(m_pRenderer, E_FAIL);
 
 	m_pPipeLine = PipeLine::Create();
-	if (nullptr == m_pPipeLine)
-		return E_FAIL;
+	NULL_CHECK_RETURN(m_pPipeLine, E_FAIL);
 
 	m_pLight_Manager = Light_Manager::Create(*ppDevice, *ppContext);
-	if (nullptr == m_pLight_Manager)
-		return E_FAIL;
+	NULL_CHECK_RETURN(m_pLight_Manager, E_FAIL);
 	
 
 	//FAILED_CHECK_RETURN 사용 못함 : 주소가 짤리는 듯함

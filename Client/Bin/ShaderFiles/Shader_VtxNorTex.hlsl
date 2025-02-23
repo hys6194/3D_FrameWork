@@ -16,7 +16,7 @@ texture2D   g_DiffuseTexture;
 float4      g_vMtrlAmbient = float4(0.3f, 0.3f, 0.3f, 1.f);
 float4      g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);
 
-float4 g_vCamPosition;
+float4      g_vCamPosition;
 
 
 sampler DefaultSampler = sampler_state
@@ -86,8 +86,10 @@ PS_OUT PS_MAIN(PS_IN In)
     // float fShade = max(dot(normalize(g_vLightDir) * -1.f, normalize(In.vNormal)), 0.f);
     // 
     // Out.vColor = g_vLightDiffuse * vDiffuse * fShade;
+    
     vector vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord * 30.f);
     
+    // 0보다 작으면 0 return, 1 보다 크면 1 return
     float fShade = saturate(dot(normalize(g_vLightDir) * -1.f, In.vNormal));
     
     vector vLook = In.vWorldPos - g_vCamPosition;
