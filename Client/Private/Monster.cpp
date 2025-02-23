@@ -65,33 +65,53 @@ HRESULT Monster::Ready_Component()
 
 HRESULT Monster::Bind_SR()
 {
-	FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix"));
+	FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix"), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ViewMatrix", PipeLine::D3DTS_VIEW), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ProjMatrix", PipeLine::D3DTS_PROJ), E_FAIL);
 
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)));
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 
 	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
 	NULL_CHECK_RETURN(pLightDesc, E_FAIL);
 
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)));
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)));
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)));
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)));
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)), E_FAIL);
 
 	return S_OK;
 }
 
 Monster* Monster::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	return nullptr;
+	Monster* pInstance = new Monster(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed To Created : CMonster");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 GameObject* Monster::Clone(void* pArg)
 {
-	return nullptr;
+	Monster* pInstance = new Monster(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed To Cloned : CMonster");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void Monster::Free()
 {
+	__super::Free();
+
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pModelCom);
 }

@@ -70,6 +70,7 @@ namespace Engine
 		XMFLOAT3		vTangent;			// ¡¢º± ∫§≈Õ
 
 
+
 		const static unsigned int					iNumElements = 4;
 		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
 		{

@@ -160,9 +160,16 @@ HRESULT Loader::Loading_GamePlay()
 
 	lstrcpy(m_szLoading, TEXT("모델 로딩중."));
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		VIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+	//	VIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
+	//	return E_FAIL;
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		VIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp"))), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+		Model::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Fiona/Fiona.fbx")), E_FAIL);
+
 
 	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
 

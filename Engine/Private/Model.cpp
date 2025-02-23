@@ -36,6 +36,15 @@ HRESULT Model::Initialize(void* pArg)
 
 HRESULT Model::Render()
 {
+    // 렌더할 때 꼭 Bind_Input_Assembler 하는 것을 잊지 말자
+    for (auto& iter : m_vecMesh)
+    {
+        iter->Bind_Input_Assembler();
+        iter->Render();
+    }
+
+
+
     return S_OK;
 }
 
@@ -92,7 +101,7 @@ void Model::Free()
 {
     __super::Free();
 
-    for (auto& pMesh : m_Meshes)
+    for (auto& pMesh : m_vecMesh)
         Safe_Release(pMesh);
 
     m_Importer.FreeScene();
