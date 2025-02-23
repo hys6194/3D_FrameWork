@@ -19,7 +19,7 @@ public:
 	{
 		auto iter = m_listLights.begin();
 
-		for (size_t i = 0; i < LIGHT_DESC::TYPE_END; ++i)
+		for (size_t i = 0; i < iLightIndex; ++i)
 			++iter;
 
 			if (iter == m_listLights.end())

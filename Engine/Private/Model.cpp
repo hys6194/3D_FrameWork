@@ -18,11 +18,16 @@ Model::Model(const Model& Prototype)
 
 HRESULT Model::Initialize_Prototype(const _char* pFilePath)
 {
+
     _uint iFlag = aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
 
+
+    // FBX 파일로부터 읽어야할 정보들을 받아와 저장함
     m_pAIScene = m_Importer.ReadFile(pFilePath, iFlag);
     NULL_CHECK_RETURN(m_pAIScene, E_FAIL);
 
+    // aiScene안에 담겨있는 모든 정보들을 우리가 사용하기에 좋은 형태로 변환하여 사용
+    // Assimp는 행렬의 정보를 가로로 저장하고 있는 것이 아닌, 세로로 받고 있어, 이를 수정해야 함
     if (FAILED(Ready_Meshes()))
         return E_FAIL;
 
@@ -42,8 +47,6 @@ HRESULT Model::Render()
         iter->Bind_Input_Assembler();
         iter->Render();
     }
-
-
 
     return S_OK;
 }

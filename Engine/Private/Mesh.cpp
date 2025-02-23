@@ -33,7 +33,7 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
 	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
 
-	VTXMESH* pVertices = new VTXMESH[m_iNumVertices];
+	VTXMESH*		pVertices = new VTXMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
 
 	for (size_t i = 0; i < m_iNumVertices; ++i)

@@ -57,7 +57,8 @@ HRESULT VIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
 
 			// 2월 6일 복습 부분
 
-			pVertices[iIndex].vPosition = _float3(j, pPixel[iIndex] & 0x000000ff, i);
+			// 맵 높이 설정
+			pVertices[iIndex].vPosition = _float3(j, (pPixel[iIndex] & 0x000000ff) / 10.f, i);
 			pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
 
 			// vTexcoord의 경우, i값과 k값이 1,1이 되어야 함

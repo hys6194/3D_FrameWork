@@ -16,7 +16,7 @@ texture2D   g_DiffuseTexture;
 float4      g_vMtrlAmbient = float4(0.3f, 0.3f, 0.3f, 1.f);
 float4      g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);
 
-float4 g_vCamPosition;
+float4      g_vCamPosition;
 
 
 sampler DefaultSampler = sampler_state
