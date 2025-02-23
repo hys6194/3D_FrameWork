@@ -21,10 +21,10 @@ HRESULT Model::Initialize_Prototype(const _char* pFilePath)
     _uint iFlag = aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
 
     m_pAIScene = m_Importer.ReadFile(pFilePath, iFlag);
-    if (nullptr == m_pAIScene)
-        return E_FAIL;
+    NULL_CHECK_RETURN(m_pAIScene, E_FAIL);
 
-    FAILED_CHECK_RETURN(Ready_Meshes(), E_FAIL);
+    if (FAILED(Ready_Meshes()))
+        return E_FAIL;
 
     return S_OK;
 }
