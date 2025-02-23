@@ -42,7 +42,9 @@ HRESULT Model::Render()
 HRESULT Model::Ready_Meshes()
 {
     // Assimp를 통해 읽어온 모델의 메쉬의 개수를 받아온다
+    // 정점과 인덱스의 모든 정보를 받아올 수 있음
     m_iNumMeshes = m_pAIScene->mNumMeshes;
+
 
     for (size_t i = 0; i < m_iNumMeshes; ++i)
     {
@@ -89,6 +91,9 @@ Component* Model::Clone(void* pArg)
 void Model::Free()
 {
     __super::Free();
+
+    for (auto& pMesh : m_Meshes)
+        Safe_Release(pMesh);
 
     m_Importer.FreeScene();
 }

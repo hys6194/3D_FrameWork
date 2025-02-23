@@ -15,6 +15,9 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
 	m_iVertexStride = sizeof(VTXMESH);
 	m_iNumVertices = pAIMesh->mNumVertices;
 	m_iIndexStride = 4;
+
+	// mNumFaces = 면의 개수를 의미 -> 모든 면을 삼각형으로만 그려놨었다 그래서 삼각형의 개수를 넣어줘야 하는 것임
+	// 따라서 면의 개수 * 3을 해야 인덱스의 개수가 된다
 	m_iNumIndices = pAIMesh->mNumFaces * 3;
 	m_iNumVertexBuffers = 1;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
@@ -37,7 +40,7 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
 	{
 		// vPosition은 float3의 자료형을 사용하고 있음 
 		// pAIMesh->mVertices 또한 float3 자료형을 사용 중이다
-		//따라서 효율적인 memcpy를 통해 메모리 복사를 한다
+		// 따라서 효율적인 memcpy를 통해 메모리 복사를 한다
 		
 		// 여기에서 메쉬가 가지고 있는 정보들을 전달해주는 것이 좋다
 		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
@@ -51,7 +54,8 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
 	ZeroMemory(&m_InitialData, sizeof(m_InitialData));
 	m_InitialData.pSysMem = pVertices;
 
-	FAILED_CHECK_RETURN(__super::Create_Buffer(&m_pVB), E_FAIL);
+	if (FAILED(__super::Create_Buffer(&m_pVB)))
+		return E_FAIL;
 
 	Safe_Delete_Array(pVertices);
 
@@ -73,6 +77,7 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
 
 	_uint	iNumIndices = { };
 
+	// 몇 번째 면의 0, 1, 2 인덱스의 정보를 담아주는 것
 	for (size_t i = 0; i < pAIMesh->mNumFaces; ++i)
 	{
 		pIndices[iNumIndices++] = pAIMesh->mFaces[i].mIndices[0];

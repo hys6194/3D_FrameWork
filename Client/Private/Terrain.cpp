@@ -110,6 +110,16 @@ HRESULT Terrain::Bind_SR()
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
 		return E_FAIL;
 
+	// 0번째 빛 즉, 햇빛을 가져온 것
+	// 추후에 내가 여러 빛을 만들어서 사용한다 가정하였을 때, 제일 0번째는 해가 되기 때문
+	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
+	if (nullptr == pLightDesc)
+		return E_FAIL;
+
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)));
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)));
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)));
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)));
 
 	//m_pTextureCom->Bind_SR(m_pShaderCom, "g_Texture", 0);
 

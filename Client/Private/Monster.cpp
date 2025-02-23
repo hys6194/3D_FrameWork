@@ -14,7 +14,7 @@ Monster::Monster(const Monster& Prototype)
 
 HRESULT Monster::Initialize_Prototype()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT Monster::Initialize(void* pArg)
@@ -24,9 +24,11 @@ HRESULT Monster::Initialize(void* pArg)
 	lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Monster"));
 	Desc.fSpeedPerSec = 0.f;
 	Desc.fRotationPerSec = 0.f;
+	if (FAILED(__super::Initialize(&Desc)))
+		return E_FAIL;
 
-	FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
-	FAILED_CHECK_RETURN(Ready_Component(), E_FAIL);	
+	if (FAILED(Ready_Component()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -50,6 +52,14 @@ HRESULT Monster::Render()
 
 HRESULT Monster::Ready_Component()
 {
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+		reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model"))))
+		return E_FAIL;
+
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
+		reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -57,8 +67,17 @@ HRESULT Monster::Bind_SR()
 {
 	FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix"));
 	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ViewMatrix", PipeLine::D3DTS_VIEW), E_FAIL);
-	//FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix"));
-	//FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix"));
+	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ProjMatrix", PipeLine::D3DTS_PROJ), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)));
+
+	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
+	NULL_CHECK_RETURN(pLightDesc, E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)));
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)));
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)));
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)));
 
 	return S_OK;
 }
