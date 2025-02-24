@@ -10,7 +10,7 @@ Mesh::Mesh(const Mesh& Prototype)
 {
 }
 
-HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
+HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {
 	m_iMaterialIndex = pAIMesh->mMaterialIndex;
 
@@ -46,7 +46,15 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
 		
 		// 여기에서 메쉬가 가지고 있는 정보들을 전달해주는 것이 좋다
 		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
+
+		// 동차 좌표로 만들어 준다 
+		// w 값을 1로 만들어서 위치 좌표로 만들어 준다는 의미
+		XMStoreFloat3(&pVertices[i].vPosition,
+			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PreTransformMatrix));
+
 		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
+		XMStoreFloat3(&pVertices[i].vNormal,
+			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vNormal), PreTransformMatrix));
 
 		// 0번째정점에 선언되어 있는 Texcoord를 설정하려고 하는 것이기에 [0][i]
 		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
@@ -106,11 +114,11 @@ HRESULT Mesh::Initialize(void* pArg)
     return S_OK;
 }
 
-Mesh* Mesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh)
+Mesh* Mesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {
 	Mesh* pInstance = new Mesh(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(pAIMesh)))
+	if (FAILED(pInstance->Initialize_Prototype(pAIMesh, PreTransformMatrix)))
 	{
 		MSG_BOX("Failed To Created : Mesh");
 		Safe_Release(pInstance);

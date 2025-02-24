@@ -29,6 +29,9 @@ HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath
 {
     m_eModelType = eType;
 
+    // 모델의 회전을 미리 적용시키기 위해 받아온 행렬
+    XMStoreFloat4x4(&m_PreTransformMatrix, PreTransformMatrix);
+
     _uint iFlag = aiProcess_ConvertToLeftHanded | 
                   aiProcessPreset_TargetRealtime_Fast;
 
@@ -72,7 +75,7 @@ HRESULT Model::Bind_Material(Shader* pShader, const _char* pConstantName, aiText
 {
     _uint       iMaterialIndex = m_vecMesh[iMeshIndex]->Get_MaterialIndex();
 
-    return m_vecMaterial[iMaterialIndex]->Bind_ShaderResource(pShader, pConstantName, eMaterialType, iTextureIndex);
+    return m_vecMaterial[iMaterialIndex]->Bind_SR(pShader, pConstantName, eMaterialType, iTextureIndex);
 }
 
 HRESULT Model::Ready_Meshes()
@@ -113,7 +116,7 @@ HRESULT Model::Ready_Materials(const _char* pModelFilePath)
     return S_OK;
 }
 
-Model* Model::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity())
+Model* Model::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
     Model* pInstance = new Model(pDevice, pContext);
 
