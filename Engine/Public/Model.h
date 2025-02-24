@@ -11,22 +11,32 @@ private:
 	virtual ~Model() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(const _char* pFilePath);
+	virtual HRESULT Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg);
 	virtual HRESULT Render();
 
-private:
-	const aiScene*				m_pAIScene = { nullptr };
-	Assimp::Importer			m_Importer;
-
-	_uint						m_iNumMeshes = {};
-	vector<class Mesh*>			m_vecMesh;
+public:
+	HRESULT Bind_Material(class Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
 
 private:
-	HRESULT Ready_Meshes();
+	const aiScene*						m_pAIScene = { nullptr };
+	Assimp::Importer					m_Importer;
+	MODELTYPE							m_eModelType = {};
+	_float4x4							m_PreTransformMatrix = {};
+
+	_uint								m_iNumMeshes = {};
+	vector<class Mesh*>					m_vecMesh;
+
+	_uint								m_iNumMaterials = {};
+	vector<class MeshMaterial*>		m_vecMaterial;
+
+private:
+	HRESULT Ready_Meshes();	
+	HRESULT Ready_Materials(const _char* pModelFilePath);
+
 
 public:
-	static Model* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pFilePath);
+	static Model* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity());
 	Component* Clone(void* pArg);
 	virtual void Free() override;
 };
