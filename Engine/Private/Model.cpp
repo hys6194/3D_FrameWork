@@ -51,6 +51,9 @@ HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath
     if (FAILED(Ready_Meshes()))
         return E_FAIL;
 
+    if (FAILED(Ready_Materials(pModelFilePath)))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -59,14 +62,17 @@ HRESULT Model::Initialize(void* pArg)
     return S_OK;
 }
 
-HRESULT Model::Render()
+HRESULT Model::Render(_uint iMeshIndex)
 {
     // 렌더할 때 꼭 Bind_Input_Assembler 하는 것을 잊지 말자
-    for (auto& iter : m_vecMesh)
+    /*for (auto& iter : m_vecMesh)
     {
         iter->Bind_Input_Assembler();
         iter->Render();
-    }
+    }*/
+
+    m_vecMesh[iMeshIndex]->Bind_Input_Assembler();
+    m_vecMesh[iMeshIndex]->Render();
 
     return S_OK;
 }
@@ -88,10 +94,8 @@ HRESULT Model::Ready_Meshes()
     {
         const aiMesh* pAIMesh = m_pAIScene->mMeshes[i];
 
-        Mesh* pMesh = Mesh::Create(m_pDevice, m_pContext, pAIMesh);
-
-        if (nullptr == pMesh)
-            return E_FAIL;
+        Mesh* pMesh = Mesh::Create(m_pDevice, m_pContext, pAIMesh, XMLoadFloat4x4(&m_PreTransformMatrix));
+        NULL_CHECK_RETURN(pMesh, E_FAIL);
 
         m_vecMesh.push_back(pMesh);
 

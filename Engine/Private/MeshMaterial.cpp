@@ -44,6 +44,8 @@ HRESULT MeshMaterial::Initialize(const aiMaterial* pAIMaterial, const _char* pMo
 
 			_tchar		szTextureFilePath[MAX_PATH] = {};
 
+			// MultiByteToWideChar : 멀티바이트 문자열(예: ANSI, UTF-8 등)을 
+			// 와이드 문자 문자열(UTF-16)로 변환하는 Windows API 함수
 			MultiByteToWideChar(CP_ACP, 0, szFullPath, strlen(szFullPath),
 				szTextureFilePath, MAX_PATH);
 

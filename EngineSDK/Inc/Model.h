@@ -13,7 +13,13 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg);
-	virtual HRESULT Render();
+	virtual HRESULT Render(_uint iMeshIndex);
+
+public:
+	_uint Get_NumMeshes() const 
+	{
+		return m_iNumMeshes;
+	}
 
 public:
 	HRESULT Bind_Material(class Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);

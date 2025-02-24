@@ -72,7 +72,7 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;    
     
-    vector      vDiffuse = 1.f;       
+    vector vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
     
     //float fShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
     float fShade = saturate(dot(normalize(g_vLightDir) * -1.f, In.vNormal));
