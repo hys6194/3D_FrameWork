@@ -1,5 +1,7 @@
 #include "Model.h"
 #include "Mesh.h"
+#include "Shader.h"
+#include "MeshMaterial.h"
 
 Model::Model(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :Component{ pDevice , pContext }
@@ -11,21 +13,31 @@ Model::Model(const Model& Prototype)
     , m_pAIScene{ Prototype.m_pAIScene }
     , m_iNumMeshes{ Prototype.m_iNumMeshes }
     , m_vecMesh{ Prototype.m_vecMesh }
+    , m_eModelType{ Prototype.m_eModelType }
+    , m_PreTransformMatrix{ Prototype.m_PreTransformMatrix }
+    , m_iNumMaterials{ Prototype.m_iNumMaterials }
+    , m_vecMaterial{ Prototype.m_vecMaterial }
 {
+    for (auto& pMaterial : m_vecMaterial)
+        Safe_AddRef(pMaterial);
+
     for (auto& pMesh : m_vecMesh)
         Safe_AddRef(pMesh);
 } 
 
-HRESULT Model::Initialize_Prototype(const _char* pFilePath)
+HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
+    m_eModelType = eType;
 
-    _uint iFlag = aiProcess_PreTransformVertices | 
-                  aiProcess_ConvertToLeftHanded | 
+    _uint iFlag = aiProcess_ConvertToLeftHanded | 
                   aiProcessPreset_TargetRealtime_Fast;
+
+    if (MODELTYPE::TYPE_NONANIM == eType)
+        iFlag |= aiProcess_PreTransformVertices;
 
 
     // FBX 파일로부터 읽어야할 정보들을 받아와 저장함
-    m_pAIScene = m_Importer.ReadFile(pFilePath, iFlag);
+    m_pAIScene = m_Importer.ReadFile(pModelFilePath, iFlag);
     NULL_CHECK_RETURN(m_pAIScene, E_FAIL);
 
     //if (nullptr == m_pAIScene)
@@ -56,6 +68,13 @@ HRESULT Model::Render()
     return S_OK;
 }
 
+HRESULT Model::Bind_Material(Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex)
+{
+    _uint       iMaterialIndex = m_vecMesh[iMeshIndex]->Get_MaterialIndex();
+
+    return m_vecMaterial[iMaterialIndex]->Bind_ShaderResource(pShader, pConstantName, eMaterialType, iTextureIndex);
+}
+
 HRESULT Model::Ready_Meshes()
 {
     // Assimp를 통해 읽어온 모델의 메쉬의 개수를 받아온다
@@ -78,11 +97,27 @@ HRESULT Model::Ready_Meshes()
     return S_OK;
 }
 
-Model* Model::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pFilePath)
+HRESULT Model::Ready_Materials(const _char* pModelFilePath)
+{
+    m_iNumMaterials = m_pAIScene->mNumMaterials;
+
+    for (size_t i = 0; i < m_iNumMaterials; ++i)
+    {
+        MeshMaterial* pMeshMaterial = MeshMaterial::Create(m_pDevice, m_pContext,
+            m_pAIScene->mMaterials[i], pModelFilePath);
+
+        m_vecMaterial.push_back(pMeshMaterial);
+
+    }
+
+    return S_OK;
+}
+
+Model* Model::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity())
 {
     Model* pInstance = new Model(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize_Prototype(pFilePath)))
+    if (FAILED(pInstance->Initialize_Prototype(eType, pModelFilePath, PreTransformMatrix)))
     {
         MSG_BOX("Failed To Created : Model");
         Safe_Release(pInstance);
@@ -108,8 +143,15 @@ void Model::Free()
 {
     __super::Free();
 
+    for (auto& pMaterial : m_vecMaterial)
+        Safe_Release(pMaterial);
+
+    m_vecMaterial.clear();
+
     for (auto& pMesh : m_vecMesh)
         Safe_Release(pMesh);
+
+    m_vecMesh.clear();
 
     m_Importer.FreeScene();
 }

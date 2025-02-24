@@ -12,6 +12,8 @@ Mesh::Mesh(const Mesh& Prototype)
 
 HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
 {
+	m_iMaterialIndex = pAIMesh->mMaterialIndex;
+
 	m_iVertexStride = sizeof(VTXMESH);
 	m_iNumVertices = pAIMesh->mNumVertices;
 	m_iIndexStride = 4;
