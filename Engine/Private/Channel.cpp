@@ -24,8 +24,8 @@ HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class CBo
 		});
 
 
-	m_iNumFrameKeys = (max(pAIChannel->mNumScalingKeys, pAIChannel->mNumRotationKeys));
-	m_iNumFrameKeys = (max(m_iNumFrameKeys, pAIChannel->mNumPositionKeys));
+	m_iNumFrameKeys = max(pAIChannel->mNumScalingKeys, pAIChannel->mNumRotationKeys);
+	m_iNumFrameKeys = max(m_iNumFrameKeys, pAIChannel->mNumPositionKeys);
 
 	_float3     vScale{};
 	_float4     vRotation{};
@@ -48,10 +48,10 @@ HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class CBo
 
 		if(i < pAIChannel->mNumRotationKeys)
 		{
-			vRotation.x = pAIChannel->mRotationKeys[i].mValue.x, sizeof(_float4);
-			vRotation.y = pAIChannel->mRotationKeys[i].mValue.y, sizeof(_float4);
-			vRotation.z = pAIChannel->mRotationKeys[i].mValue.z, sizeof(_float4);
-			vRotation.w = pAIChannel->mRotationKeys[i].mValue.w, sizeof(_float4);
+			vRotation.x = pAIChannel->mRotationKeys[i].mValue.x;
+			vRotation.y = pAIChannel->mRotationKeys[i].mValue.y;
+			vRotation.z = pAIChannel->mRotationKeys[i].mValue.z;
+			vRotation.w = pAIChannel->mRotationKeys[i].mValue.w;
 			Desc.fCurrentTimeline = pAIChannel->mRotationKeys[i].mTime;
 		}
 
