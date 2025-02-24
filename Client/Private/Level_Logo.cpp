@@ -11,7 +11,8 @@ Level_Logo::Level_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT Level_Logo::Initialize()
 {
-	FAILED_CHECK_RETURN(Ready_Layer_BackGround(TEXT("Layer_BackGround")), E_FAIL);
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -45,7 +46,8 @@ HRESULT Level_Logo::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	UIDesc.fSpeedPerSec = 10.f;
 	UIDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"), LEVEL_LOGO, pLayerTag, &UIDesc), E_FAIL);
+	if(FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"), LEVEL_LOGO, pLayerTag, &UIDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -67,3 +69,25 @@ void Level_Logo::Free()
 {
 	__super::Free();
 }
+
+
+//// 동영상 재생 코드
+//m_hVideo = MCIWndCreate(g_hWnd,		// 부모의 윈도우 핸들
+//	nullptr,	// mci 윈도우를 사용하는 인스턴스 핸들
+//	WS_CHILD | WS_VISIBLE | MCIWNDF_NOPLAYBAR,
+//	L"../Video/THQ_LogoBasic.wmv");	// 재생할 파일 경로 전달
+//
+//// MoveWindow : 재생할 동영상의 크기를 설정
+//
+//MoveWindow(m_hVideo, 0, 0, WINCX, WINCY, FALSE);
+//
+//MCIWndPlay(m_hVideo);
+// 
+// 
+//// 동영상 끝났을 때 || 스페이스 바 눌렀을 때 전환
+//if (MCIWndGetLength(m_hVideo) <= MCIWndGetPosition(m_hVideo) ||
+//	CKeyMgr::Get_Instance()->Key_Down(VK_SPACE))
+//{
+//	CSceneMgr::Get_Instance()->Scene_Change(SC_MENU);
+//	return;
+//}

@@ -1,19 +1,8 @@
 #pragma once
 
-#include "Base.h"
+#include "Transform.h"
 
 BEGIN(Engine)
-
-class Transform
-{
-public:
-	typedef struct tagTransformDesc
-	{
-		_float			fSpeedPerSec;
-		_float			fRotationPerSec;
-	}TRANSFORM_DESC;
-
-};
 
 // 왜 ENGINE_DLL -> 게임 오브젝트들을 실질적으로 만드는 곳은 Client라서 DLL 내보내기 해야함
 
@@ -44,9 +33,26 @@ protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
-	class GameInstance*			m_pGameInstance = { nullptr };
-
+	class GameInstance*			m_pGameInstance = { nullptr };	
+	class Transform*			m_pTransformCom = { nullptr };
 	_tchar						m_szGameObjectTag[MAX_PATH] = {};
+
+
+protected:
+	map<const _wstring, class Component*>			m_mapComponent;
+
+protected:
+	// 왜 GameObject에 함수를 선언? 
+	// map으로 Component를 담고있는 멤버 변수가 GameObject에 존재
+	// 이에, 쉽게 추가 및 검색 기능을 한꺼번에 처리하려고 GameObject에 추가
+	// 왜 Component**형?
+	// 
+	// 
+	HRESULT Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag,
+		Component** ppOut, const _wstring& strComponentTag, void* pArg = nullptr);
+
+private:
+	HRESULT Set_TransformCom(void* pArg);
 
 public:
 	virtual GameObject* Clone(void* pArg) = 0;

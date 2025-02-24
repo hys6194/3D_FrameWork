@@ -16,6 +16,16 @@ Component::Component(const Component& Prototype)
 	Safe_AddRef(m_pContext);
 }
 
+HRESULT Component::Initialize_Prototype()
+{
+	return E_NOTIMPL;
+}
+
+HRESULT Component::Initialize(void* pArg)
+{
+	return E_NOTIMPL;
+}
+
 void Component::Free()
 {
 	__super::Free();

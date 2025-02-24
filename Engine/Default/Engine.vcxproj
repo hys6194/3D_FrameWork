@@ -108,18 +108,19 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../Public/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxguid.lib;DirectXTKd.lib;Effects11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxguid.lib;dinput8.lib;DirectXTKd.lib;Effects11d.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>cd /d "$(SolutionDir)" &amp;&amp; call ./Copy.bat</Command>
+      <Command>cd /d $(SolutionDir)
+call Copy.bat</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -132,7 +133,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../Public/</AdditionalIncludeDirectories>
     </ClCompile>
@@ -141,15 +142,17 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxguid.lib;DirectXTK.lib;Effects11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxguid.lib;dinput8.lib;DirectXTK.lib;Effects11.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>cd /d "$(SolutionDir)" &amp;&amp; call ./Copy.bat</Command>
+      <Command>cd /d $(SolutionDir)
+call Copy.bat</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\AbstractFactory.h" />
     <ClInclude Include="..\Public\Base.h" />
+    <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
@@ -157,35 +160,66 @@
     <ClInclude Include="..\Public\Engine_Macro.h" />
     <ClInclude Include="..\Public\Engine_Struct.h" />
     <ClInclude Include="..\Public\Engine_Typedef.h" />
+    <ClInclude Include="..\Public\FSM.h" />
     <ClInclude Include="..\Public\GameInstance.h" />
     <ClInclude Include="..\Public\GameObject.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
+    <ClInclude Include="..\Public\Input_Device.h" />
     <ClInclude Include="..\Public\Layer.h" />
     <ClInclude Include="..\Public\Level.h" />
     <ClInclude Include="..\Public\Level_Manager.h" />
+    <ClInclude Include="..\Public\Light.h" />
+    <ClInclude Include="..\Public\Light_Manager.h" />
+    <ClInclude Include="..\Public\Mesh.h" />
+    <ClInclude Include="..\Public\MeshMaterial.h" />
+    <ClInclude Include="..\Public\Model.h" />
     <ClInclude Include="..\Public\Object_Manager.h" />
+    <ClInclude Include="..\Public\PipeLine.h" />
     <ClInclude Include="..\Public\Prototype.h" />
     <ClInclude Include="..\Public\Renderer.h" />
+    <ClInclude Include="..\Public\Shader.h" />
+    <ClInclude Include="..\Public\State.h" />
+    <ClInclude Include="..\Public\Texture.h" />
     <ClInclude Include="..\Public\Timer.h" />
     <ClInclude Include="..\Public\Timer_Manager.h" />
+    <ClInclude Include="..\Public\Transform.h" />
     <ClInclude Include="..\Public\UIObject.h" />
+    <ClInclude Include="..\Public\VIBuffer.h" />
+    <ClInclude Include="..\Public\VIBuffer_Rect.h" />
+    <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
     <ClInclude Include="클래스 정의.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp" />
+    <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
+    <ClCompile Include="..\Private\FSM.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />
     <ClCompile Include="..\Private\GameObject.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
+    <ClCompile Include="..\Private\Input_Device.cpp" />
     <ClCompile Include="..\Private\Layer.cpp" />
     <ClCompile Include="..\Private\Level.cpp" />
     <ClCompile Include="..\Private\Level_Manager.cpp" />
+    <ClCompile Include="..\Private\Light.cpp" />
+    <ClCompile Include="..\Private\Light_Manager.cpp" />
+    <ClCompile Include="..\Private\Mesh.cpp" />
+    <ClCompile Include="..\Private\MeshMaterial.cpp" />
+    <ClCompile Include="..\Private\Model.cpp" />
     <ClCompile Include="..\Private\Object_Manager.cpp" />
+    <ClCompile Include="..\Private\PipeLine.cpp" />
     <ClCompile Include="..\Private\Prototype.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
+    <ClCompile Include="..\Private\Shader.cpp" />
+    <ClCompile Include="..\Private\State.cpp" />
+    <ClCompile Include="..\Private\Texture.cpp" />
     <ClCompile Include="..\Private\Timer.cpp" />
     <ClCompile Include="..\Private\Timer_Manager.cpp" />
+    <ClCompile Include="..\Private\Transform.cpp" />
     <ClCompile Include="..\Private\UIObject.cpp" />
+    <ClCompile Include="..\Private\VIBuffer.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Rect.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

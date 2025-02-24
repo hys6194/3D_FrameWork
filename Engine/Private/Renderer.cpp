@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "GameInstance.h"
+
 #include "GameObject.h"
 
 Renderer::Renderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -26,6 +26,8 @@ HRESULT Renderer::Add_RenderObject(RENDERERGROUP eRenderGroup, GameObject* pRend
 
     m_listRenderer[eRenderGroup].push_back(pRenderObject);
 
+    Safe_AddRef(pRenderObject);
+
     return S_OK;
 }
 
@@ -42,6 +44,21 @@ void Renderer::Draw()
 
     if (FAILED(Render_UI()))
         return;
+}
+
+void Renderer::Clear()
+{
+    for (size_t i = 0; i < RENDER_END; ++i)
+    {
+        for (auto& iter : m_listRenderer[i])
+        {
+            Safe_Release(iter);
+        }
+
+        m_listRenderer[i].clear();
+    }
+
+    
 }
 
 HRESULT Renderer::Render_Priority()
@@ -117,7 +134,8 @@ void Renderer::Free()
 {
     __super::Free();
 
+    Clear();
 
-    Safe_Release(m_pDevice);
     Safe_Release(m_pContext);
+    Safe_Release(m_pDevice);
 }

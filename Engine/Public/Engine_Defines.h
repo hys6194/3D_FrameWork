@@ -1,13 +1,19 @@
 #pragma once
+//#define  NOMINMAX  
 
+#pragma warning(disable : 4251)
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 #include <d3dcompiler.h>
 
+#include "DirectXTK/VertexTypes.h"
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
 #include "Fx11/d3dx11effect.h"
+#include "assimp/scene.h"
+#include "assimp/Importer.hpp"
+#include "assimp/postprocess.h"
 
 using namespace DirectX;
 
@@ -30,9 +36,12 @@ using namespace std;
 #define DIRECTINPUT_VERSION	0x0800
 #include <dinput.h>
 
-#pragma warning(disable : 4251)
 
-
+namespace Engine
+{
+	// Transform을 어디에서든 끌고오기 위해서 전역으로 선언
+	const wstring g_strTransformTag = TEXT("Com_Transform");
+}
 
 
 #ifdef _DEBUG

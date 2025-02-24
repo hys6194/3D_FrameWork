@@ -40,7 +40,8 @@ HRESULT Prototype_Manager::Add_Prototype(_uint iLevelIndex, const wstring& strPr
 
 Base* Prototype_Manager::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
 {
-	if (iLevelIndex >= m_iNumLevels)
+
+ 	if (iLevelIndex >= m_iNumLevels)
 		return nullptr;
 
 	Base* pPrototype = Find_Prototype(iLevelIndex, strPrototypeTag);
@@ -96,7 +97,7 @@ void Prototype_Manager::Free()
 {
 	__super::Free();
 
-	for (_uint i = 0; i < m_iNumLevels; ++i)
+	for (size_t i = 0; i < m_iNumLevels; ++i)
 	{
 		for (auto& Pair : m_pPrototype[i])
 			Safe_Release(Pair.second);

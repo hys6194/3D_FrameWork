@@ -108,7 +108,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../Public/;../../EngineSDK/Inc/</AdditionalIncludeDirectories>
     </ClCompile>
@@ -147,12 +147,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\BackGround.h" />
+    <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
+    <ClInclude Include="..\Public\Level_Menu.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
+    <ClInclude Include="..\Public\Monster.h" />
+    <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
@@ -160,11 +164,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\BackGround.cpp" />
+    <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
+    <ClCompile Include="..\Private\Level_Menu.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
+    <ClCompile Include="..\Private\Monster.cpp" />
+    <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="Client.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +184,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,6 +5,7 @@ namespace Engine
 {
 	typedef struct tagEngineDesc
 	{
+		HINSTANCE		hInstance;
 		HWND			hWnd;
 		bool			isWindowed;
 		unsigned int	iWidth_VP;
@@ -13,6 +14,85 @@ namespace Engine
 
 	}ENGINE_DESC;
 
+	typedef struct ENGINE_DLL tagVertexPositionTexcoord
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT2		vTexcoord;
+
+		const static unsigned int					iNumElements = 2;
+
+		/* Prototype_Component_Shader_VtxPosTex */
+		// D3D11_INPUT_ELEMENT_DESC : 내 정점을 구성하는 멤버 변수 하나의 정보를 표현하기위한 구조체
+		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		};
+	}VTXPOSTEX;
+
+	typedef struct ENGINE_DLL tagVertexNormalTexcoord
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexcoord;
+
+		const static unsigned int					iNumElements = 3;
+		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		};
+	}VTXNORTEX;
+
+	typedef struct ENGINE_DLL tagVerticesMesh
+	{
+		XMFLOAT3		vPosition;			// 위치 벡터
+		XMFLOAT3		vNormal;			// 법선 벡터
+		XMFLOAT2		vTexcoord;			// UV 벡터
+		XMFLOAT3		vTangent;			// 접선 벡터
+
+		const static unsigned int					iNumElements = 4;
+		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		};
+	}VTXMESH;
+
+	typedef struct ENGINE_DLL tagVerticesAnimMesh
+	{
+		XMFLOAT3		vPosition;			// 위치 벡터
+		XMFLOAT3		vNormal;			// 법선 벡터
+		XMFLOAT2		vTexcoord;			// UV 벡터
+		XMFLOAT3		vTangent;			// 접선 벡터
+
+
+
+		const static unsigned int					iNumElements = 4;
+		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		};
+	}VTXANIMESH;
+
+	typedef struct ENGINE_DLL tagLightDesc
+	{
+		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
+
+		TYPE			eType;				// 광원 타입
+		XMFLOAT4		vDirection;			// 광원의 룩 방향
+		XMFLOAT4		vPosition;			// 광원 위치
+		float			fRange;				// 광원 길이
+		XMFLOAT4		vDiffuse;			// 난반사
+		XMFLOAT4		vAmbient;			// 엠비언트 (반사광)
+		XMFLOAT4		vSpecular;			// 정반사
+	}LIGHT_DESC;
 }
 
 

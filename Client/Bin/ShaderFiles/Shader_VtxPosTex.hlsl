@@ -1,32 +1,42 @@
 
+/* hlsl에서의 행렬타입 */
+// float2x2, float3x3, float4x4 == matrix, float1x4
+
+/* hlsl에서의 벡터타입 */
+// float2, float3, float4 == vector 
+
+/* 상수집합 == 컨스턴트테이블 */ 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 texture2D g_Texture;
 
 sampler DefaultSampler = sampler_state
 {
-    Filter = MIN_MAG_MIP_LINEAR;
+    filter = min_mag_mip_linear;
+
+    // 샘플링 방식
+    // 픽셀이 끝나면 다시 되돌아가는 방식
+    AddressU = WRAP;
+    AddressV = WRAP;
 };
 
 
 struct VS_IN
 {
     float3 vPosition : POSITION;
-    float2 vTexcoord : TEXCOORD;
+    float2 vTexcoord : TEXCOORD0;
 };
 
 struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
-    float2 vTexcoord : TEXCOORD;
-    
-    // 
+    float2 vTexcoord : TEXCOORD0;
 };
 
 struct PS_IN
 {
     float4 vPosition : SV_POSITION;
-    float2 vTexcoord : TEXCOORD;
+    float2 vTexcoord : TEXCOORD0;
 };
 
 struct PS_OUT
@@ -36,7 +46,6 @@ struct PS_OUT
     // 렌더타겟 뷰를 선언한 녀석이 있다, 렌더타겟은 
     //그래픽 디바이스 초기화 할 때, 백 버퍼를 생성해서 이를 통해 renderer를 그린다
     //따라서 SV_TARGET이 옳다
-    // 
 };
 
 
@@ -48,9 +57,11 @@ struct PS_OUT
 
 // 반환값을 구조체 타입으로 선언해주었는데, 이는 VS_MAIN에서 행렬을 곱해주어 
 // VS의 데이터를 뷰 스페이스로 변환하여 정점연산을 마무리한다
+/* VS_IN에 들어온 정점의 위치벡터 -> 로컬스페이스*/ 
 VS_OUT VS_MAIN(VS_IN In)
 {
-    VS_OUT Out;
+    /* 받아온 정점정보를 가지고 필요한 연산을 수행해 나간다 */
+    VS_OUT Out = (VS_OUT) 0;
     
     matrix matWV, matWVP;
     
@@ -74,7 +85,11 @@ PS_OUT PS_MAIN(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
     //PS_OUT Out = { 0.f };
     
-    Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    // sampling 할 때 텍스쳐를 가로 세로로 얼만큼 할 것인지 정하고 위에서 정한 sampling 옵션으로 픽셀의 값 결정
+    //Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord * 2.f);
+    
+    Out.vColor.rg = Out.vColor.b;
     
     //Out.vColor = In.vTexcoord.y;
     
@@ -90,16 +105,21 @@ PS_OUT PS_MAIN(PS_IN In)
 
 technique11 DefaultTechnique
 {
-    pass DefaultPass0           
+    // 적용하고 싶은 셰이더 기법들을 캡슐화한다
+    // 셰이더의 진입점 함수를 지정한다.
+
+    // 일반 렌더링
+    pass DefaultPass0
     {
         VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile vs_5_0 PS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass SpecialPass0
+    // 특수 렌더링
+    pass DefaultPass1
     {
-        //VertexShader = compile vs_5_0 VS_MAIN();
-        //PixelShader = compile vs_5_0 PS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN();
         /* 추후에 내가 플레이어 및 몬스터가 변신한다던가 숨는다던가 
            특수한 상황에 쉐이더 기법을 사용할 때 쓰는 pass*/
         /*vs_5_0 : 쉐이더 5.0 버전임을 의미*/

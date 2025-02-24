@@ -33,12 +33,13 @@ void Layer::Late_Update(_float fTimeDelta)
 
 Layer* Layer::Create()
 {
-    return new Layer;
+      return new Layer;
 }
 
 void Layer::Free()
 {
-	__super::Free();
+
+ 	__super::Free();
 
 	for (auto& pGameObject : m_GameObjects)
 		Safe_Release(pGameObject);

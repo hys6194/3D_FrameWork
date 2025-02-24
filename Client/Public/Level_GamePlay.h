@@ -17,6 +17,12 @@ public:
 	virtual HRESULT Render() override;
 
 public:
+	HRESULT Ready_Layer_Terrain(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Monster(const _tchar* pLayerTag);
+	HRESULT Ready_Lights();
+
+public:
 	static Level_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;
 };

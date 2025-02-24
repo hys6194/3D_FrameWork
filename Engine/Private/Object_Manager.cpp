@@ -37,7 +37,7 @@ HRESULT Object_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const wstring
 
         pLayer->Add_GameObject(pGameObject);
 
-        //m_pLayers[iLevelIndex].emplace(pLayer);
+        m_pLayers[iLevelIndex].emplace(strLayerTag, pLayer);
     }
     else
         pLayer->Add_GameObject(pGameObject);
