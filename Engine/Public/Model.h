@@ -16,6 +16,9 @@ public:
 	virtual HRESULT Render(_uint iMeshIndex);
 
 public:
+	void Play_Animation();
+
+public:
 	_uint Get_NumMeshes() const 
 	{
 		return m_iNumMeshes;
@@ -23,7 +26,7 @@ public:
 
 public:
 	HRESULT Bind_Material(class Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
-
+	HRESULT Bind_BoneMatrix(class Shader* pShader, const _char* pConstantName, _uint iMeshIndex);
 private:
 	const aiScene*						m_pAIScene = { nullptr };
 	Assimp::Importer					m_Importer;
@@ -36,7 +39,7 @@ private:
 	_uint								m_iNumMaterials = {};
 	vector<class MeshMaterial*>			m_vecMaterial;
 
-	_uint								m_iBoneIndex = { };
+
 	vector<class Bone*>					m_vecBone = {};
 
 private:

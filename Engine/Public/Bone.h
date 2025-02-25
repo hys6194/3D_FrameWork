@@ -11,14 +11,22 @@ private:
 	virtual ~Bone() = default;
 
 public:
-	_bool Compare_Name(_char cName)
+	_matrix Get_CombinedTransformationMatrix() const {
+		return XMLoadFloat4x4(&m_matCombinedTransform);
+	}
+
+	void Set_TransformationMatrix(_fmatrix fTransformMatrix)
 	{
-		return strcmp(m_szName, &cName);
+		XMStoreFloat4x4(&m_matTransform, fTransformMatrix);
 	}
 
 public:
 	HRESULT Initialize(const aiNode* pAINode, _int iParentBoneIndex);
 	void Update_CombinedTransformationMatrix(const vector<class Bone*>& Bones);
+	_bool Compare_Name(const _char* pName)
+	{
+		return !strcmp(m_szName, pName);
+	}
 
 private:
 

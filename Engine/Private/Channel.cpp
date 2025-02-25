@@ -142,7 +142,7 @@ void Channel::Update_TransformationMatrices(const vector<class Bone*>& pBone, _f
 	_matrix     TransformationMatrix =
 		XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation);
 
-	pBone[m_iBoneIndex]->Set_CombinedTransformationMatrix(
+	pBone[m_iBoneIndex]->Set_TransformationMatrix(
 		TransformationMatrix);
 
 	//pBones[m_iBoneIndex]->Set_TransformationMatrix(

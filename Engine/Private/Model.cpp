@@ -1,8 +1,8 @@
 #include "Model.h"
 #include "Mesh.h"
+#include "Bone.h"
 #include "Shader.h"
 #include "MeshMaterial.h"
-#include "Bone.h"
 
 Model::Model(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :Component{ pDevice , pContext }
@@ -18,7 +18,11 @@ Model::Model(const Model& Prototype)
     , m_PreTransformMatrix{ Prototype.m_PreTransformMatrix }
     , m_iNumMaterials{ Prototype.m_iNumMaterials }
     , m_vecMaterial{ Prototype.m_vecMaterial }
+    , m_vecBone{Prototype.m_vecBone}
 {
+    //for (auto& pBone : m_vecBone)
+    //    Safe_AddRef(m_vecBone);
+
     for (auto& pMaterial : m_vecMaterial)
         Safe_AddRef(pMaterial);
 
@@ -78,11 +82,29 @@ HRESULT Model::Render(_uint iMeshIndex)
     return S_OK;
 }
 
+void Model::Play_Animation()
+{
+
+
+
+    for (auto& pBone : m_vecBone)
+    {
+        pBone->Update_CombinedTransformationMatrix(m_vecBone);
+    }
+}
+
 HRESULT Model::Bind_Material(Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex)
 {
     _uint       iMaterialIndex = m_vecMesh[iMeshIndex]->Get_MaterialIndex();
 
     return m_vecMaterial[iMaterialIndex]->Bind_SR(pShader, pConstantName, eMaterialType, iTextureIndex);
+}
+
+HRESULT Model::Bind_BoneMatrix(Shader* pShader, const _char* pConstantName, _uint iMeshIndex)
+{
+    m_vecMesh[iMeshIndex]->Bind_BoneMatrix(pShader, pConstantName, m_vecBone);
+
+    return E_NOTIMPL;
 }
 
 HRESULT Model::Ready_Meshes()
@@ -95,7 +117,7 @@ HRESULT Model::Ready_Meshes()
     {
         const aiMesh* pAIMesh = m_pAIScene->mMeshes[i];
 
-        Mesh* pMesh = Mesh::Create(m_pDevice, m_pContext, pAIMesh, m_eModelType, XMLoadFloat4x4(&m_PreTransformMatrix));
+        Mesh* pMesh = Mesh::Create(m_pDevice, m_pContext, pAIMesh, m_eModelType, m_vecBone, XMLoadFloat4x4(&m_PreTransformMatrix));
         NULL_CHECK_RETURN(pMesh, E_FAIL);
 
         m_vecMesh.push_back(pMesh);

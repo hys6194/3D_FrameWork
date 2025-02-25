@@ -1,4 +1,6 @@
 #include "Mesh.h"
+#include "Bone.h"
+#include "Shader.h"
 
 Mesh::Mesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : VIBuffer{ pDevice, pContext }
@@ -10,20 +12,9 @@ Mesh::Mesh(const Mesh& Prototype)
 {
 }
 
-HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix, MODELTYPE eType)
+HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix, MODELTYPE eType, const vector<class Bone*>& Bones)
 {
-	m_iMaterialIndex = pAIMesh->mMaterialIndex;
 
-	m_iVertexStride = sizeof(VTXMESH);
-	m_iNumVertices = pAIMesh->mNumVertices;
-	m_iIndexStride = 4;
-
-	// mNumFaces = 면의 개수를 의미 -> 모든 면을 삼각형으로만 그려놨었다 그래서 삼각형의 개수를 넣어줘야 하는 것임
-	// 따라서 면의 개수 * 3을 해야 인덱스의 개수가 된다
-	m_iNumIndices = pAIMesh->mNumFaces * 3;
-	m_iNumVertexBuffers = 1;
-	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
 
 #pragma region VERTEXBUFFER
 
@@ -114,16 +105,29 @@ HRESULT Mesh::Initialize(void* pArg)
     return S_OK;
 }
 
+HRESULT Mesh::Bind_BoneMatrix(Shader* pShader, const _char* pContantName, const vector<class Bone*>& Bones)
+{
+	ZeroMemory(m_matBone, sizeof(_float4x4) * 512);
+
+
+
+	return E_NOTIMPL;
+}
+
 HRESULT Mesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {
+	m_iMaterialIndex = pAIMesh->mMaterialIndex;
+
 	m_iVertexStride = sizeof(VTXMESH);
-	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
-	m_BufferDesc.ByteWidth = m_iVertexStride * m_iNumVertices;
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	m_BufferDesc.StructureByteStride = m_iVertexStride;
-	m_BufferDesc.CPUAccessFlags = 0;
-	m_BufferDesc.MiscFlags = 0;
+	m_iNumVertices = pAIMesh->mNumVertices;
+	m_iIndexStride = 4;
+
+	// mNumFaces = 면의 개수를 의미 -> 모든 면을 삼각형으로만 그려놨었다 그래서 삼각형의 개수를 넣어줘야 하는 것임
+	// 따라서 면의 개수 * 3을 해야 인덱스의 개수가 된다
+	m_iNumIndices = pAIMesh->mNumFaces * 3;
+	m_iNumVertexBuffers = 1;
+	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
+	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 	VTXMESH* pVertices = new VTXMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
@@ -307,11 +311,11 @@ HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh)
 	return S_OK;
 }
 
-Mesh* Mesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh, MODELTYPE eType, _fmatrix PreTransformMatrix)
+Mesh* Mesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh, MODELTYPE eType, const vector<class Bone*>& Bones, _fmatrix PreTransformMatrix)
 {
 	Mesh* pInstance = new Mesh(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(pAIMesh, PreTransformMatrix, eType)))
+	if (FAILED(pInstance->Initialize_Prototype(pAIMesh, PreTransformMatrix, eType, Bones)))
 	{
 		MSG_BOX("Failed To Created : Mesh");
 		Safe_Release(pInstance);
