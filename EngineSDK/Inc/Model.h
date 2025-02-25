@@ -34,11 +34,15 @@ private:
 	vector<class Mesh*>					m_vecMesh;
 
 	_uint								m_iNumMaterials = {};
-	vector<class MeshMaterial*>		m_vecMaterial;
+	vector<class MeshMaterial*>			m_vecMaterial;
+
+	_uint								m_iBoneIndex = { };
+	vector<class Bone*>					m_vecBone = {};
 
 private:
 	HRESULT Ready_Meshes();	
 	HRESULT Ready_Materials(const _char* pModelFilePath);
+	HRESULT Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);
 
 
 public:
