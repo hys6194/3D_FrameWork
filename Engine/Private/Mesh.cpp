@@ -228,6 +228,74 @@ HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh)
 		}
 	}
 
+
+
+	// 관익이 형 코드
+	//m_iNumBones = pAIMesh->mNumBones;
+	//
+	//// For Debug 
+	//// vector<int> vertexCounter;
+	//// vertexCounter.resize(m_iNumVertices);
+	//
+	//// 중복된 본이 들어가는 것을 막는다
+	//vector<set<const char*>> vertexBones;
+	//vertexBones.resize(m_iNumVertices);
+	//
+	//for (size_t i = 0; i < m_iNumBones; ++i)
+	//{
+	//	/* i번째 뼈는 몇개의 정점에 영향을 주는가?! */
+	//	_uint      iNumWeights = pAIMesh->mBones[i]->mNumWeights;
+	//
+	//	/* 이 메시에게 영향을 주는 뼈의 이름과 같은 이름을 가진 뼈를
+	//	모델이 들고 있는 뼈들에게서 찾자. */
+	//
+	//	_uint      iBoneIndex = {};
+	//
+	//	auto   iter = find_if(m_vecBone.begin(), Bones.end(), [&](CBone* pBone)->_bool
+	//		{
+	//			if (true == pBone->Compare_Name(pAIMesh->mBones[i]->mName.data))
+	//				return true;
+	//
+	//			++iBoneIndex;
+	//
+	//			return false;
+	//		});
+	//
+	//	m_Bones.push_back(iBoneIndex);
+	//
+	//	const char* boneName = pAIMesh->mBones[i]->mName.data;
+	//
+	//	_float4x4      OffsetMatrix;
+	//
+	//	memcpy(&OffsetMatrix, &pAIMesh->mBones[i]->mOffsetMatrix, sizeof(_float4x4));
+	//
+	//	XMStoreFloat4x4(&OffsetMatrix,
+	//		XMMatrixTranspose(XMLoadFloat4x4(&OffsetMatrix)));
+	//
+	//	m_OffsetMatrix.push_back(OffsetMatrix);
+	//
+	//	for (size_t j = 0; j < iNumWeights; ++j)
+	//	{
+	//		aiVertexWeight& vertexWeight = pAIMesh->mBones[i]->mWeights[j];
+	//
+	//		if (vertexBones[vertexWeight.mVertexId].find(boneName) != vertexBones[vertexWeight.mVertexId].end())
+	//			continue;
+	//
+	//		vertexBones[vertexWeight.mVertexId].insert(boneName);
+	//
+	//		// For Debug
+	//		// vertexCounter[vertexWeight.mVertexId]++;
+	//
+	//		if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight0.x)
+	//		{
+	//			
+	//		}
+	//
+	//
+	//	}
+	//}
+
+
 	ZeroMemory(&m_InitialData, sizeof m_InitialData);
 	m_InitialData.pSysMem = pVertices;
 
