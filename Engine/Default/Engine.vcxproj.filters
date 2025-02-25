@@ -124,6 +124,9 @@
     <Filter Include="01.Utility\04. Component\Model\Animation">
       <UniqueIdentifier>{a6220df9-393f-4d75-80cc-ca18ede9a0eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04. Component\Model\Animation\Channel">
+      <UniqueIdentifier>{fceafd58-e64a-4269-b16b-ed61c9ab4964}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -243,6 +246,9 @@
     <ClInclude Include="..\Public\MeshMaterial.h">
       <Filter>01.Utility\04. Component\Model\Material</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Channel.h">
+      <Filter>01.Utility\04. Component\Model\Animation\Channel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -337,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\MeshMaterial.cpp">
       <Filter>01.Utility\04. Component\Model\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Channel.cpp">
+      <Filter>01.Utility\04. Component\Model\Animation\Channel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

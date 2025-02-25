@@ -4,15 +4,15 @@
 
 BEGIN(Engine)
 
-class Channel : public CBase
+class Channel : public Base
 {
 private:
 	Channel(); 
 	virtual ~Channel() = default;
 
 public:
-	HRESULT Initialize(const aiNodeAnim* pAIChannel, const vector<class CBone*>& pBone);
-	void Update_TransformationMatrices(const vector<class CBone*>& pBone, _float fCurrentTrackPosition);
+	HRESULT Initialize(const aiNodeAnim* pAIChannel, const vector<class Bone*>& pBone);
+	void Update_TransformationMatrices(const vector<class Bone*>& pBone, _float fCurrentTrackPosition);
 
 private:
 	_char				m_szName[MAX_PATH] = {};
@@ -25,7 +25,7 @@ private:
 	vector<KEYFRAME>	m_vecFrame = {};
 
 public:
-	static Channel* Create(const aiNodeAnim* pAIChannel, const vector<class CBone*>& pBone);
+	static Channel* Create(const aiNodeAnim* pAIChannel, const vector<class Bone*>& pBone);
 	virtual void Free() override;
 
 };

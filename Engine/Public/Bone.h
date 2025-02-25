@@ -11,6 +11,12 @@ private:
 	virtual ~Bone() = default;
 
 public:
+	_bool Compare_Name(_char cName)
+	{
+		return strcmp(m_szName, &cName);
+	}
+
+public:
 	HRESULT Initialize(const aiNode* pAINode, _int iParentBoneIndex);
 	void Update_CombinedTransformationMatrix(const vector<class Bone*>& Bones);
 
