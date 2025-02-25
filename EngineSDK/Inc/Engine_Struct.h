@@ -14,6 +14,14 @@ namespace Engine
 
 	}ENGINE_DESC;
 
+	typedef struct tagKeyFrame
+	{
+		XMFLOAT3		vScale;
+		XMFLOAT4		vRotation;
+		XMFLOAT3		vTranslation;
+		float			fTrackPosition;
+	}KEYFRAME;
+
 	typedef struct ENGINE_DLL tagVertexPositionTexcoord
 	{
 		XMFLOAT3		vPosition;
@@ -70,14 +78,19 @@ namespace Engine
 		XMFLOAT3		vTangent;			// 접선 벡터
 
 
+		XMUINT4			vBlendIndex;		// 뼈의 인덱스 개수
+		XMFLOAT4		vBlendWeight;		// 뼈의 가중치, 0 ~ 1 사이의 값으로 사용
 
-		const static unsigned int					iNumElements = 4;
+
+		const static unsigned int					iNumElements = 6;
 		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
 			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0},
 			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "BLENDINDEX", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0, 44, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "BLENDWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 60, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 	}VTXANIMESH;
 

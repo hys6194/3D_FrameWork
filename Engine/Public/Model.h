@@ -13,11 +13,20 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg);
-	virtual HRESULT Render();
+	virtual HRESULT Render(_uint iMeshIndex);
+
+public:
+	void Play_Animation();
+
+public:
+	_uint Get_NumMeshes() const 
+	{
+		return m_iNumMeshes;
+	}
 
 public:
 	HRESULT Bind_Material(class Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
-
+	HRESULT Bind_BoneMatrix(class Shader* pShader, const _char* pConstantName, _uint iMeshIndex);
 private:
 	const aiScene*						m_pAIScene = { nullptr };
 	Assimp::Importer					m_Importer;
@@ -28,11 +37,15 @@ private:
 	vector<class Mesh*>					m_vecMesh;
 
 	_uint								m_iNumMaterials = {};
-	vector<class MeshMaterial*>		m_vecMaterial;
+	vector<class MeshMaterial*>			m_vecMaterial;
+
+
+	vector<class Bone*>					m_vecBone = {};
 
 private:
 	HRESULT Ready_Meshes();	
 	HRESULT Ready_Materials(const _char* pModelFilePath);
+	HRESULT Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);
 
 
 public:

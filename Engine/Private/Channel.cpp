@@ -5,13 +5,13 @@ Channel::Channel()
 {
 }
 
-HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class CBone*>& pBone)
+HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class Bone*>& pBone)
 {
 	// 현재 재생중인 애니메이션의 이름 저장
 	strcpy_s(m_szName, pAIChannel->mNodeName.data);
 
 	// 현재 채널과 이름이 같은 뼈를 모델이 저장하고 있는 전체 뼈중에서 몇번째에 해당하는지 찾아낸다.
-	auto iter = find_if(pBone.begin(), pBone.end(), [&](CBone* pBone)->_bool
+	auto iter = find_if(pBone.begin(), pBone.end(), [&](Bone* pBone)->_bool
 		{
 			if (true == pBone->Compare_Name(m_szName))
 				return true;
@@ -40,7 +40,7 @@ HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class CBo
 		if(i < pAIChannel->mNumScalingKeys)
 		{
 			memcpy(&vScale, &pAIChannel->mScalingKeys[i].mValue, sizeof(_float3));
-			Desc.fCurrentTimeline = pAIChannel->mScalingKeys[i].mTime;
+			Desc.fTrackPosition = pAIChannel->mScalingKeys[i].mTime;
 		}
 
 		// 아래 코드는 절대 안됨 Assimp는 _float4를 저장할 때 x,y,z,w가 아닌, w,x,y,z로 저장하고 있기 때문
@@ -52,13 +52,13 @@ HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class CBo
 			vRotation.y = pAIChannel->mRotationKeys[i].mValue.y;
 			vRotation.z = pAIChannel->mRotationKeys[i].mValue.z;
 			vRotation.w = pAIChannel->mRotationKeys[i].mValue.w;
-			Desc.fCurrentTimeline = pAIChannel->mRotationKeys[i].mTime;
+			Desc.fTrackPosition = pAIChannel->mRotationKeys[i].mTime;
 		}
 
 		if(i < pAIChannel->mNumRotationKeys)
 		{
 			memcpy(&vPosition, &pAIChannel->mPositionKeys[i].mValue, sizeof(_float3));
-			Desc.fCurrentTimeline = pAIChannel->mPositionKeys[i].mTime;
+			Desc.fTrackPosition = pAIChannel->mPositionKeys[i].mTime;
 		}
 
 		Desc.vScale = vScale;
@@ -73,7 +73,7 @@ HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class CBo
 	return S_OK;
 }
 
-void Channel::Update_TransformationMatrices(const vector<class CBone*>& pBone, _float fCurrentTrackPosition)
+void Channel::Update_TransformationMatrices(const vector<class Bone*>& pBone, _float fCurrentTrackPosition)
 {
 	// 이 함수에서는 특정 프레임에서의 애니메이션 보간 작업을 수행해야 한다
 	// 현재 특정 프레임에 대한 정보를 이 클래스에서 꺼내서 사용하고 있다
@@ -91,7 +91,7 @@ void Channel::Update_TransformationMatrices(const vector<class CBone*>& pBone, _
 	// 즉, 키 프레임은 이미 마지막이지만 애니메이션이 진행되고 있을 때
 	// 선형 보간 없이 마지막 키프레임의 상태를 취한다
 	// 간혹가다 키프레임은 넘어갔는데 애니메이션이 계속 진행되는 모델이 있으므로 다음과 같이 처리한다
-	if (fCurrentTrackPosition >= tLastKeyFrame.fCurrentTimeline)
+	if (fCurrentTrackPosition >= tLastKeyFrame.fTrackPosition)
 	{
 		vScale = XMLoadFloat3(&tLastKeyFrame.vScale);
 		vRotation = XMLoadFloat4(&tLastKeyFrame.vRotation);
@@ -106,14 +106,14 @@ void Channel::Update_TransformationMatrices(const vector<class CBone*>& pBone, _
 		// 인자값으로 처음 받아온 인덱스는 0에서부터 시작하고, 만약 다음 키프레임의 값보다 크거나 같다면
 		// 1을 증가시켜 다음 키프레임 인덱스의 키프레임의 위치를 가져온다
 		// 이를 보고도 이해가 가지 않는다면, 노션의 노트 정리를 통해 이해하는 것이 좋다
-		if (fCurrentTrackPosition >= m_vecFrame[m_iCurrentKeyFrameIndex + 1].fCurrentTimeline)
+		if (fCurrentTrackPosition >= m_vecFrame[m_iCurrentKeyFrameIndex + 1].fTrackPosition)
 			++m_iCurrentKeyFrameIndex;
 
 		// 이전 키 프레임과 현재 프레임의 비율을 구할 것
 		// 인자로 받아온 프레임 위치 - 현재 프레임위치 / 다음 프레임의 위치 - 현재 프레임 위치로
 		// 인자로 받아온 프레임과 현재 프레임의 위치, 다음 프레임의 위치 비율을 구한다
-		_float fRatio = (fCurrentTrackPosition - m_vecFrame[m_iCurrentKeyFrameIndex].fCurrentTimeline) /
-			(m_vecFrame[m_iCurrentKeyFrameIndex + 1].fCurrentTimeline - m_vecFrame[m_iCurrentKeyFrameIndex].fCurrentTimeline);
+		_float fRatio = (fCurrentTrackPosition - m_vecFrame[m_iCurrentKeyFrameIndex].fTrackPosition) /
+			(m_vecFrame[m_iCurrentKeyFrameIndex + 1].fTrackPosition - m_vecFrame[m_iCurrentKeyFrameIndex].fTrackPosition);
 
 
 		_vector vCurScale, vCurRotation, vCurTranslation;
@@ -142,7 +142,7 @@ void Channel::Update_TransformationMatrices(const vector<class CBone*>& pBone, _
 	_matrix     TransformationMatrix =
 		XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation);
 
-	pBone[m_iBoneIndex]->Set_CombinedTransformationMatrix(
+	pBone[m_iBoneIndex]->Set_TransformationMatrix(
 		TransformationMatrix);
 
 	//pBones[m_iBoneIndex]->Set_TransformationMatrix(
@@ -152,7 +152,7 @@ void Channel::Update_TransformationMatrices(const vector<class CBone*>& pBone, _
 }
 
 
-Channel* Channel::Create(const aiNodeAnim* pAIChannel, const vector<class CBone*>& pBone)
+Channel* Channel::Create(const aiNodeAnim* pAIChannel, const vector<class Bone*>& pBone)
 {
 	Channel* pInstance = new Channel();
 

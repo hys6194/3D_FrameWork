@@ -1,4 +1,6 @@
 #include "Mesh.h"
+#include "Bone.h"
+#include "Shader.h"
 
 Mesh::Mesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : VIBuffer{ pDevice, pContext }
@@ -10,20 +12,9 @@ Mesh::Mesh(const Mesh& Prototype)
 {
 }
 
-HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
+HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix, MODELTYPE eType, const vector<class Bone*>& Bones)
 {
-	m_iMaterialIndex = pAIMesh->mMaterialIndex;
 
-	m_iVertexStride = sizeof(VTXMESH);
-	m_iNumVertices = pAIMesh->mNumVertices;
-	m_iIndexStride = 4;
-
-	// mNumFaces = 면의 개수를 의미 -> 모든 면을 삼각형으로만 그려놨었다 그래서 삼각형의 개수를 넣어줘야 하는 것임
-	// 따라서 면의 개수 * 3을 해야 인덱스의 개수가 된다
-	m_iNumIndices = pAIMesh->mNumFaces * 3;
-	m_iNumVertexBuffers = 1;
-	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
 
 #pragma region VERTEXBUFFER
 
@@ -46,7 +37,15 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh)
 		
 		// 여기에서 메쉬가 가지고 있는 정보들을 전달해주는 것이 좋다
 		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
+
+		// 동차 좌표로 만들어 준다 
+		// w 값을 1로 만들어서 위치 좌표로 만들어 준다는 의미
+		XMStoreFloat3(&pVertices[i].vPosition,
+			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PreTransformMatrix));
+
 		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
+		XMStoreFloat3(&pVertices[i].vNormal,
+			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vNormal), PreTransformMatrix));
 
 		// 0번째정점에 선언되어 있는 Texcoord를 설정하려고 하는 것이기에 [0][i]
 		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
@@ -106,11 +105,217 @@ HRESULT Mesh::Initialize(void* pArg)
     return S_OK;
 }
 
-Mesh* Mesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh)
+HRESULT Mesh::Bind_BoneMatrix(Shader* pShader, const _char* pContantName, const vector<class Bone*>& Bones)
+{
+	ZeroMemory(m_matBone, sizeof(_float4x4) * 512);
+
+
+
+	return E_NOTIMPL;
+}
+
+HRESULT Mesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
+{
+	m_iMaterialIndex = pAIMesh->mMaterialIndex;
+
+	m_iVertexStride = sizeof(VTXMESH);
+	m_iNumVertices = pAIMesh->mNumVertices;
+	m_iIndexStride = 4;
+
+	// mNumFaces = 면의 개수를 의미 -> 모든 면을 삼각형으로만 그려놨었다 그래서 삼각형의 개수를 넣어줘야 하는 것임
+	// 따라서 면의 개수 * 3을 해야 인덱스의 개수가 된다
+	m_iNumIndices = pAIMesh->mNumFaces * 3;
+	m_iNumVertexBuffers = 1;
+	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
+	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+	VTXMESH* pVertices = new VTXMESH[m_iNumVertices];
+	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
+
+	for (size_t i = 0; i < m_iNumVertices; i++)
+	{
+		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
+		XMStoreFloat3(&pVertices[i].vPosition,
+			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PreTransformMatrix));
+
+		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
+		XMStoreFloat3(&pVertices[i].vNormal,
+			XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), PreTransformMatrix));
+
+		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2)); ;
+		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
+	}
+
+	ZeroMemory(&m_InitialData, sizeof m_InitialData);
+	m_InitialData.pSysMem = pVertices;
+
+	if (FAILED(__super::Create_Buffer(&m_pVB)))
+		return E_FAIL;
+
+	Safe_Delete_Array(pVertices);
+
+	return S_OK;
+}
+
+// 뼈를 회전하고 정점을 붙이는 구조임
+
+HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh)
+{
+	m_iVertexStride = sizeof(VTXANIMESH);
+	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
+	m_BufferDesc.ByteWidth = m_iVertexStride * m_iNumVertices;
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_BufferDesc.StructureByteStride = m_iVertexStride;
+	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.MiscFlags = 0;
+
+	VTXANIMESH* pVertices = new VTXANIMESH[m_iNumVertices];
+	ZeroMemory(pVertices, sizeof(VTXANIMESH) * m_iNumVertices);
+
+	for (size_t i = 0; i < m_iNumVertices; i++)
+	{
+		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
+		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
+		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2)); ;
+		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
+	}
+
+	/* 이 메시에 영향을 주는 뼈의 갯수 .*/
+	m_iNumBones = pAIMesh->mNumBones;
+
+	for (size_t i = 0; i < m_iNumBones; i++)
+	{
+		/* i번째 뼈는 몇개의 정점에 영향을 주는가?! */
+		_uint		iNumWeights = pAIMesh->mBones[i]->mNumWeights;
+
+		for (size_t j = 0; j < iNumWeights; j++)
+		{
+			/* i번째 뼈가 영향을 주는 j번째 정점의 정보를 알아보자. */
+			/* i번째 뼈가 영향을 주는 j번째 정점의 인덱스 */
+			// pAIMesh->mBones[i]->mWeights[j].mVertexId
+
+			/* i번째 뼈가 영향을 주는 j번째 정점의 가중치(i번째 뼈는 j번째 정점에 얼마나 영향(0.f ~ 1.f)을 줄꺼야!!) */
+			// pAIMesh->mBones[i]->mWeights[j].mWeight			
+
+			if (0.f == pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendWeight.x)
+			{
+				/* pAIMesh->mBones[i]->mWeights[j].mVertexId번째 정점에 영향을 주는 첫번째 뼈*/
+				/*pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendIndex.x*/
+				pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendIndex.x = i;
+				pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendWeight.x = pAIMesh->mBones[i]->mWeights[j].mWeight;
+			}
+
+			else if (0.f == pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendWeight.y)
+			{
+				/* pAIMesh->mBones[i]->mWeights[j].mVertexId번째 정점에 영향을 주는 두번째 뼈*/
+				/*pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendIndex.y*/
+				pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendIndex.y = i;
+				pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendWeight.y = pAIMesh->mBones[i]->mWeights[j].mWeight;
+			}
+
+			else if (0.f == pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendWeight.z)
+			{
+				/* pAIMesh->mBones[i]->mWeights[j].mVertexId번째 정점에 영향을 주는 세번째 뼈*/
+				/*pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendIndex.z*/
+				pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendIndex.z = i;
+				pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendWeight.z = pAIMesh->mBones[i]->mWeights[j].mWeight;
+			}
+
+			else
+			{
+				/* pAIMesh->mBones[i]->mWeights[j].mVertexId번째 정점에 영향을 주는 네번째 뼈*/
+				/*pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendIndex.w*/
+				pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendIndex.w = i;
+				pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendWeight.w = pAIMesh->mBones[i]->mWeights[j].mWeight;
+			}
+		}
+	}
+
+
+
+	// 관익이 형 코드
+	//m_iNumBones = pAIMesh->mNumBones;
+	//
+	//// For Debug 
+	//// vector<int> vertexCounter;
+	//// vertexCounter.resize(m_iNumVertices);
+	//
+	//// 중복된 본이 들어가는 것을 막는다
+	//vector<set<const char*>> vertexBones;
+	//vertexBones.resize(m_iNumVertices);
+	//
+	//for (size_t i = 0; i < m_iNumBones; ++i)
+	//{
+	//	/* i번째 뼈는 몇개의 정점에 영향을 주는가?! */
+	//	_uint      iNumWeights = pAIMesh->mBones[i]->mNumWeights;
+	//
+	//	/* 이 메시에게 영향을 주는 뼈의 이름과 같은 이름을 가진 뼈를
+	//	모델이 들고 있는 뼈들에게서 찾자. */
+	//
+	//	_uint      iBoneIndex = {};
+	//
+	//	auto   iter = find_if(m_vecBone.begin(), Bones.end(), [&](CBone* pBone)->_bool
+	//		{
+	//			if (true == pBone->Compare_Name(pAIMesh->mBones[i]->mName.data))
+	//				return true;
+	//
+	//			++iBoneIndex;
+	//
+	//			return false;
+	//		});
+	//
+	//	m_Bones.push_back(iBoneIndex);
+	//
+	//	const char* boneName = pAIMesh->mBones[i]->mName.data;
+	//
+	//	_float4x4      OffsetMatrix;
+	//
+	//	memcpy(&OffsetMatrix, &pAIMesh->mBones[i]->mOffsetMatrix, sizeof(_float4x4));
+	//
+	//	XMStoreFloat4x4(&OffsetMatrix,
+	//		XMMatrixTranspose(XMLoadFloat4x4(&OffsetMatrix)));
+	//
+	//	m_OffsetMatrix.push_back(OffsetMatrix);
+	//
+	//	for (size_t j = 0; j < iNumWeights; ++j)
+	//	{
+	//		aiVertexWeight& vertexWeight = pAIMesh->mBones[i]->mWeights[j];
+	//
+	//		if (vertexBones[vertexWeight.mVertexId].find(boneName) != vertexBones[vertexWeight.mVertexId].end())
+	//			continue;
+	//
+	//		vertexBones[vertexWeight.mVertexId].insert(boneName);
+	//
+	//		// For Debug
+	//		// vertexCounter[vertexWeight.mVertexId]++;
+	//
+	//		if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight0.x)
+	//		{
+	//			
+	//		}
+	//
+	//
+	//	}
+	//}
+
+
+	ZeroMemory(&m_InitialData, sizeof m_InitialData);
+	m_InitialData.pSysMem = pVertices;
+
+	if (FAILED(__super::Create_Buffer(&m_pVB)))
+		return E_FAIL;
+
+	Safe_Delete_Array(pVertices);
+
+	return S_OK;
+}
+
+Mesh* Mesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh, MODELTYPE eType, const vector<class Bone*>& Bones, _fmatrix PreTransformMatrix)
 {
 	Mesh* pInstance = new Mesh(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(pAIMesh)))
+	if (FAILED(pInstance->Initialize_Prototype(pAIMesh, PreTransformMatrix, eType, Bones)))
 	{
 		MSG_BOX("Failed To Created : Mesh");
 		Safe_Release(pInstance);

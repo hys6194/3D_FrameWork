@@ -52,11 +52,22 @@ HRESULT Monster::Render()
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(0)))
-		return E_FAIL;
+	_uint iNumMeshes = m_pModelCom->Get_NumMeshes();
 
-	if (FAILED(m_pModelCom->Render()))
-		return E_FAIL;
+	for (size_t i = 0; i < iNumMeshes; ++i)
+	{
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture",
+			aiTextureType_DIFFUSE, i, 0)))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Begin(0)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(i)))
+			return E_FAIL;
+
+	}
+
 
 	return S_OK;
 }

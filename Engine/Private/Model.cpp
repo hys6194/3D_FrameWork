@@ -1,5 +1,6 @@
 #include "Model.h"
 #include "Mesh.h"
+#include "Bone.h"
 #include "Shader.h"
 #include "MeshMaterial.h"
 
@@ -17,7 +18,11 @@ Model::Model(const Model& Prototype)
     , m_PreTransformMatrix{ Prototype.m_PreTransformMatrix }
     , m_iNumMaterials{ Prototype.m_iNumMaterials }
     , m_vecMaterial{ Prototype.m_vecMaterial }
+    , m_vecBone{Prototype.m_vecBone}
 {
+    //for (auto& pBone : m_vecBone)
+    //    Safe_AddRef(m_vecBone);
+
     for (auto& pMaterial : m_vecMaterial)
         Safe_AddRef(pMaterial);
 
@@ -28,6 +33,9 @@ Model::Model(const Model& Prototype)
 HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
     m_eModelType = eType;
+
+    // 모델의 회전을 미리 적용시키기 위해 받아온 행렬
+    XMStoreFloat4x4(&m_PreTransformMatrix, PreTransformMatrix);
 
     _uint iFlag = aiProcess_ConvertToLeftHanded | 
                   aiProcessPreset_TargetRealtime_Fast;
@@ -48,6 +56,9 @@ HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath
     if (FAILED(Ready_Meshes()))
         return E_FAIL;
 
+    if (FAILED(Ready_Materials(pModelFilePath)))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -56,23 +67,44 @@ HRESULT Model::Initialize(void* pArg)
     return S_OK;
 }
 
-HRESULT Model::Render()
+HRESULT Model::Render(_uint iMeshIndex)
 {
     // 렌더할 때 꼭 Bind_Input_Assembler 하는 것을 잊지 말자
-    for (auto& iter : m_vecMesh)
+    /*for (auto& iter : m_vecMesh)
     {
         iter->Bind_Input_Assembler();
         iter->Render();
-    }
+    }*/
+
+    m_vecMesh[iMeshIndex]->Bind_Input_Assembler();
+    m_vecMesh[iMeshIndex]->Render();
 
     return S_OK;
+}
+
+void Model::Play_Animation()
+{
+
+
+
+    for (auto& pBone : m_vecBone)
+    {
+        pBone->Update_CombinedTransformationMatrix(m_vecBone);
+    }
 }
 
 HRESULT Model::Bind_Material(Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex)
 {
     _uint       iMaterialIndex = m_vecMesh[iMeshIndex]->Get_MaterialIndex();
 
-    return m_vecMaterial[iMaterialIndex]->Bind_ShaderResource(pShader, pConstantName, eMaterialType, iTextureIndex);
+    return m_vecMaterial[iMaterialIndex]->Bind_SR(pShader, pConstantName, eMaterialType, iTextureIndex);
+}
+
+HRESULT Model::Bind_BoneMatrix(Shader* pShader, const _char* pConstantName, _uint iMeshIndex)
+{
+    m_vecMesh[iMeshIndex]->Bind_BoneMatrix(pShader, pConstantName, m_vecBone);
+
+    return E_NOTIMPL;
 }
 
 HRESULT Model::Ready_Meshes()
@@ -85,10 +117,8 @@ HRESULT Model::Ready_Meshes()
     {
         const aiMesh* pAIMesh = m_pAIScene->mMeshes[i];
 
-        Mesh* pMesh = Mesh::Create(m_pDevice, m_pContext, pAIMesh);
-
-        if (nullptr == pMesh)
-            return E_FAIL;
+        Mesh* pMesh = Mesh::Create(m_pDevice, m_pContext, pAIMesh, m_eModelType, m_vecBone, XMLoadFloat4x4(&m_PreTransformMatrix));
+        NULL_CHECK_RETURN(pMesh, E_FAIL);
 
         m_vecMesh.push_back(pMesh);
 
@@ -113,7 +143,26 @@ HRESULT Model::Ready_Materials(const _char* pModelFilePath)
     return S_OK;
 }
 
-Model* Model::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity())
+HRESULT Model::Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex)
+{
+    Bone* pBone = Bone::Create(pAINode, iParentBoneIndex);
+    if (nullptr == pBone)
+        return E_FAIL;
+
+    m_vecBone.push_back(pBone);
+
+    _uint       iNumBones = m_vecBone.size();
+
+    /* 이 뼈의 자식뼈의 갯수 */
+    for (size_t i = 0; i < pAINode->mNumChildren; i++)
+    {
+        Ready_Bones(pAINode->mChildren[i], iNumBones - 1);
+    };
+
+    return S_OK;
+}
+
+Model* Model::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
     Model* pInstance = new Model(pDevice, pContext);
 
