@@ -229,6 +229,7 @@
       <Filter>01.Utility\04. Component\VIBuffer\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MeshMaterial.h" />
+    <ClInclude Include="..\Public\Bone.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -319,5 +320,6 @@
       <Filter>01.Utility\04. Component\VIBuffer\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MeshMaterial.cpp" />
+    <ClCompile Include="..\Private\Bone.cpp" />
   </ItemGroup>
 </Project>

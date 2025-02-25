@@ -2,6 +2,7 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "MeshMaterial.h"
+#include "Bone.h"
 
 Model::Model(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :Component{ pDevice , pContext }
@@ -94,7 +95,7 @@ HRESULT Model::Ready_Meshes()
     {
         const aiMesh* pAIMesh = m_pAIScene->mMeshes[i];
 
-        Mesh* pMesh = Mesh::Create(m_pDevice, m_pContext, pAIMesh, XMLoadFloat4x4(&m_PreTransformMatrix));
+        Mesh* pMesh = Mesh::Create(m_pDevice, m_pContext, pAIMesh, m_eModelType, XMLoadFloat4x4(&m_PreTransformMatrix));
         NULL_CHECK_RETURN(pMesh, E_FAIL);
 
         m_vecMesh.push_back(pMesh);
@@ -116,6 +117,25 @@ HRESULT Model::Ready_Materials(const _char* pModelFilePath)
         m_vecMaterial.push_back(pMeshMaterial);
 
     }
+
+    return S_OK;
+}
+
+HRESULT Model::Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex)
+{
+    Bone* pBone = Bone::Create(pAINode, iParentBoneIndex);
+    if (nullptr == pBone)
+        return E_FAIL;
+
+    m_vecBone.push_back(pBone);
+
+    _uint       iNumBones = m_vecBone.size();
+
+    /* ÀÌ »ÀÀÇ ÀÚ½Ä»ÀÀÇ °¹¼ö */
+    for (size_t i = 0; i < pAINode->mNumChildren; i++)
+    {
+        Ready_Bones(pAINode->mChildren[i], iNumBones - 1);
+    };
 
     return S_OK;
 }

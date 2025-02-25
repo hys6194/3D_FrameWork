@@ -59,14 +59,19 @@ HRESULT MeshMaterial::Initialize(const aiMaterial* pAIMaterial, const _char* pMo
 			if (FAILED(hr))
 				return E_FAIL;
 
-			m_Materials[i].push_back(pSRV);
+			m_vecMaterial[i].push_back(pSRV);
 		}
 	}
 }
 
 HRESULT MeshMaterial::Bind_SR(Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iTextureIndex)
 {
-    return pShader->Bind_SRV(pConstantName, m_Materials[eMaterialType][iTextureIndex]);
+	if (m_vecMaterial[eMaterialType].empty() ||
+		iTextureIndex >= m_vecMaterial[eMaterialType].size())
+		return E_FAIL;
+
+
+    return pShader->Bind_SRV(pConstantName, m_vecMaterial[eMaterialType][iTextureIndex]);
 }
 
 MeshMaterial* MeshMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMaterial* pAIMaterial, const _char* pModelFilePath)
@@ -90,10 +95,10 @@ void MeshMaterial::Free()
 	// 노션에서 그림으로 그려냈으니 그걸 참고하면 좋다
 	for (size_t i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
 	{
-		for (auto& pSRV : m_Materials[i])
+		for (auto& pSRV : m_vecMaterial[i])
 			Safe_Release(pSRV);
 
-		m_Materials[i].clear();
+		m_vecMaterial[i].clear();
 	}
 
 	Safe_Release(m_pContext);

@@ -1,6 +1,10 @@
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
+/* 모델 전체의 뼈정보(x) */
+/* 특정 메시에게 영향을 주는 뼈들의 정보(o) */
+matrix g_BoneMatrices[512];
+
 float4      g_vLightDir;
 float4      g_vLightDiffuse;
 float4      g_vLightAmbient;
@@ -25,6 +29,8 @@ struct VS_IN
     float3 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;    
     float3 vTangent : TANGENT;
+    uint4  vBlendIndex : BLENDINDEX;
+    float4 vBlendWeight : BLENDWEIGHT;
 };
 
 struct VS_OUT
@@ -38,16 +44,22 @@ struct VS_OUT
 VS_OUT VS_MAIN(VS_IN In)
 {  
     VS_OUT Out = (VS_OUT)0;    
+    
+    matrix BoneMatrix = ;
 
     matrix matWV, matWVP;    
     
     matWV = mul(g_WorldMatrix, g_ViewMatrix);    
     matWVP = mul(matWV, g_ProjMatrix);
     
-    Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+    vector  vPosition = mul(vector(In.vPosition, 1.f), BoneMatrix);
+    
+    Out.vPosition = mul(vPosition, matWVP);    
     Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+    
+    
     
     return Out;
 }
@@ -75,7 +87,7 @@ PS_OUT PS_MAIN(PS_IN In)
     vector vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
     
     if (vDiffuse.a < 0.3f)
-        discard;
+        discard;        
     
     //float fShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
     float fShade = saturate(dot(normalize(g_vLightDir) * -1.f, In.vNormal));
