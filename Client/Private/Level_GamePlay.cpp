@@ -70,6 +70,14 @@ HRESULT Level_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
 		LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
 
+	//for (size_t i = 0; i < 10; i++)
+	//{
+	//	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
+	//		LEVEL_GAMEPLAY, pLayerTag)))
+	//		return E_FAIL;
+	//}
+
+
 	return S_OK;
 }
 

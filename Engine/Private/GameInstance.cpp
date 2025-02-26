@@ -88,6 +88,17 @@ void GameInstance::Clear(_uint iLevelIndex)
 
 }
 
+_float GameInstance::Random_Normalize()
+{
+	// 0과 1사이의 소수를 뽑아내기 위한 함수
+	return static_cast<_float>(rand()) / RAND_MAX;
+}
+
+_float GameInstance::Random(_float fMin, _float fMax)
+{
+	return fMin + Random_Normalize() * (fMax - fMin);
+}
+
 #pragma region GRAPHIC_DEVICE
 
 HRESULT GameInstance::Clear_BackBuffer_View(_float4 vClearColor)

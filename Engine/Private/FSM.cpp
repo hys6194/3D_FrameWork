@@ -1,4 +1,5 @@
 #include "FSM.h"
+#include "State.h"
 
 FSM::FSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : Component{ pDevice ,pContext }
@@ -17,9 +18,12 @@ HRESULT FSM::Initialize(void* pArg)
     return S_OK;
 }
 
-HRESULT FSM::Add_State(const _wstring& strStateTag)
+HRESULT FSM::Add_State(_uint iStateIndex, const _wstring& strStateTag, class State* pState)
 {
-
+    if (FAILED(Find_State()))
+    {
+        
+    }
 
     return S_OK;
 }

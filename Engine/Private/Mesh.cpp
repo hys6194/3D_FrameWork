@@ -14,43 +14,26 @@ Mesh::Mesh(const Mesh& Prototype)
 
 HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix, MODELTYPE eType, const vector<class Bone*>& Bones)
 {
+	strcpy_s(m_szName, pAIMesh->mName.data);
 
+	m_iMaterialIndex = pAIMesh->mMaterialIndex;
+	m_iNumVertices = pAIMesh->mNumVertices;
+	m_iIndexStride = 4;
+	m_iNumIndices = pAIMesh->mNumFaces * 3;
+	m_iNumVertexBuffers = 1;
+	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
+	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 #pragma region VERTEXBUFFER
 
-	ZeroMemory(&m_BufferDesc, sizeof(m_BufferDesc));
-	m_BufferDesc.ByteWidth = m_iVertexStride * m_iNumVertices;		
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;	
-	m_BufferDesc.StructureByteStride = m_iVertexStride;
-	m_BufferDesc.CPUAccessFlags = 0;
-	m_BufferDesc.MiscFlags = 0;
+	HRESULT hr = eType == MODELTYPE::TYPE_NONANIM ?
+		Ready_VertexBuffer_NonAnim(pAIMesh, PreTransformMatrix) :
+		Ready_VertexBuffer_Anim(pAIMesh, Bones);
 
-	VTXMESH*		pVertices = new VTXMESH[m_iNumVertices];
-	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
+	if (FAILED(hr))
+		return E_FAIL;
 
-	for (size_t i = 0; i < m_iNumVertices; ++i)
-	{
-		// vPosition은 float3의 자료형을 사용하고 있음 
-		// pAIMesh->mVertices 또한 float3 자료형을 사용 중이다
-		// 따라서 효율적인 memcpy를 통해 메모리 복사를 한다
-		
-		// 여기에서 메쉬가 가지고 있는 정보들을 전달해주는 것이 좋다
-		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
-
-		// 동차 좌표로 만들어 준다 
-		// w 값을 1로 만들어서 위치 좌표로 만들어 준다는 의미
-		XMStoreFloat3(&pVertices[i].vPosition,
-			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PreTransformMatrix));
-
-		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
-		XMStoreFloat3(&pVertices[i].vNormal,
-			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vNormal), PreTransformMatrix));
-
-		// 0번째정점에 선언되어 있는 Texcoord를 설정하려고 하는 것이기에 [0][i]
-		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
-		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
-	}
+	
 	
 	ZeroMemory(&m_InitialData, sizeof(m_InitialData));
 	m_InitialData.pSysMem = pVertices;
@@ -109,7 +92,14 @@ HRESULT Mesh::Bind_BoneMatrix(Shader* pShader, const _char* pContantName, const 
 {
 	ZeroMemory(m_matBone, sizeof(_float4x4) * 512);
 
+	for (size_t i = 0; i < m_iNumBones; i++)
+	{
+		XMStoreFloat4x4(&m_matBone[i],
+			XMLoadFloat4x4(&m_OffsetMatrix[i]) *
+			Bones[m_vecBone[i]]->Get_CombinedTransformationMatrix());
+	}
 
+	pShader->Bind_Matrix(pContantName, m_matBone);
 
 	return E_NOTIMPL;
 }
@@ -132,17 +122,26 @@ HRESULT Mesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTran
 	VTXMESH* pVertices = new VTXMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
 
-	for (size_t i = 0; i < m_iNumVertices; i++)
+	for (size_t i = 0; i < m_iNumVertices; ++i)
 	{
+		// vPosition은 float3의 자료형을 사용하고 있음 
+		// pAIMesh->mVertices 또한 float3 자료형을 사용 중이다
+		// 따라서 효율적인 memcpy를 통해 메모리 복사를 한다
+
+		// 여기에서 메쉬가 가지고 있는 정보들을 전달해주는 것이 좋다
 		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
+
+		// 동차 좌표로 만들어 준다 
+		// w 값을 1로 만들어서 위치 좌표로 만들어 준다는 의미
 		XMStoreFloat3(&pVertices[i].vPosition,
 			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PreTransformMatrix));
 
 		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vNormal,
-			XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), PreTransformMatrix));
+			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vNormal), PreTransformMatrix));
 
-		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2)); ;
+		// 0번째정점에 선언되어 있는 Texcoord를 설정하려고 하는 것이기에 [0][i]
+		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
 		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
 	}
 
@@ -159,7 +158,7 @@ HRESULT Mesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTran
 
 // 뼈를 회전하고 정점을 붙이는 구조임
 
-HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh)
+HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const vector<Bone*>& Bones)
 {
 	m_iVertexStride = sizeof(VTXANIMESH);
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
@@ -187,7 +186,35 @@ HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh)
 	for (size_t i = 0; i < m_iNumBones; i++)
 	{
 		/* i번째 뼈는 몇개의 정점에 영향을 주는가?! */
-		_uint		iNumWeights = pAIMesh->mBones[i]->mNumWeights;
+		aiBone* pAIBone = pAIMesh->mBones[i];
+
+		_uint		iNumWeights = pAIBone->mNumWeights;
+
+		/* 이 메시에게 영향을 주는 뼈의 이름과 같은 이름을 가진 뼈를
+		모델이 들고 있는 뼈들에게서 찾자. */
+
+		_uint		iBoneIndex = {};
+
+		auto	iter = find_if(Bones.begin(), Bones.end(), [&](Bone* pBone)->_bool
+			{
+				if (true == pBone->Compare_Name(pAIBone->mName.data))
+					return true;
+
+				++iBoneIndex;
+
+				return false;
+			});
+
+		m_vecBone.push_back(iBoneIndex);
+
+		_float4x4		OffsetMatrix;
+
+		memcpy(&OffsetMatrix, &pAIBone->mOffsetMatrix, sizeof(_float4x4));
+
+		XMStoreFloat4x4(&OffsetMatrix,
+			XMMatrixTranspose(XMLoadFloat4x4(&OffsetMatrix)));
+
+		m_OffsetMatrix.push_back(OffsetMatrix);
 
 		for (size_t j = 0; j < iNumWeights; j++)
 		{
@@ -198,12 +225,13 @@ HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh)
 			/* i번째 뼈가 영향을 주는 j번째 정점의 가중치(i번째 뼈는 j번째 정점에 얼마나 영향(0.f ~ 1.f)을 줄꺼야!!) */
 			// pAIMesh->mBones[i]->mWeights[j].mWeight			
 
-			if (0.f == pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendWeight.x)
+			if (0.f == pVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.x)
 			{
 				/* pAIMesh->mBones[i]->mWeights[j].mVertexId번째 정점에 영향을 주는 첫번째 뼈*/
 				/*pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendIndex.x*/
+				/* 이 메시에 영향을 주는 뼈들중 몇번째?(vBlendIndex)*/
 				pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendIndex.x = i;
-				pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendWeight.x = pAIMesh->mBones[i]->mWeights[j].mWeight;
+				pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendWeight.x = pAIBone->mWeights[j].mWeight;
 			}
 
 			else if (0.f == pVertices[pAIMesh->mBones[i]->mWeights[j].mVertexId].vBlendWeight.y)
@@ -232,73 +260,29 @@ HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh)
 		}
 	}
 
+	if (0 == m_iNumBones)
+	{
+		m_iNumBones = 1;
 
+		_uint		iBoneIndex = {};
 
-	// 관익이 형 코드
-	//m_iNumBones = pAIMesh->mNumBones;
-	//
-	//// For Debug 
-	//// vector<int> vertexCounter;
-	//// vertexCounter.resize(m_iNumVertices);
-	//
-	//// 중복된 본이 들어가는 것을 막는다
-	//vector<set<const char*>> vertexBones;
-	//vertexBones.resize(m_iNumVertices);
-	//
-	//for (size_t i = 0; i < m_iNumBones; ++i)
-	//{
-	//	/* i번째 뼈는 몇개의 정점에 영향을 주는가?! */
-	//	_uint      iNumWeights = pAIMesh->mBones[i]->mNumWeights;
-	//
-	//	/* 이 메시에게 영향을 주는 뼈의 이름과 같은 이름을 가진 뼈를
-	//	모델이 들고 있는 뼈들에게서 찾자. */
-	//
-	//	_uint      iBoneIndex = {};
-	//
-	//	auto   iter = find_if(m_vecBone.begin(), Bones.end(), [&](CBone* pBone)->_bool
-	//		{
-	//			if (true == pBone->Compare_Name(pAIMesh->mBones[i]->mName.data))
-	//				return true;
-	//
-	//			++iBoneIndex;
-	//
-	//			return false;
-	//		});
-	//
-	//	m_Bones.push_back(iBoneIndex);
-	//
-	//	const char* boneName = pAIMesh->mBones[i]->mName.data;
-	//
-	//	_float4x4      OffsetMatrix;
-	//
-	//	memcpy(&OffsetMatrix, &pAIMesh->mBones[i]->mOffsetMatrix, sizeof(_float4x4));
-	//
-	//	XMStoreFloat4x4(&OffsetMatrix,
-	//		XMMatrixTranspose(XMLoadFloat4x4(&OffsetMatrix)));
-	//
-	//	m_OffsetMatrix.push_back(OffsetMatrix);
-	//
-	//	for (size_t j = 0; j < iNumWeights; ++j)
-	//	{
-	//		aiVertexWeight& vertexWeight = pAIMesh->mBones[i]->mWeights[j];
-	//
-	//		if (vertexBones[vertexWeight.mVertexId].find(boneName) != vertexBones[vertexWeight.mVertexId].end())
-	//			continue;
-	//
-	//		vertexBones[vertexWeight.mVertexId].insert(boneName);
-	//
-	//		// For Debug
-	//		// vertexCounter[vertexWeight.mVertexId]++;
-	//
-	//		if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight0.x)
-	//		{
-	//			
-	//		}
-	//
-	//
-	//	}
-	//}
+		auto	iter = find_if(Bones.begin(), Bones.end(), [&](Bone* pBone)->_bool
+			{
+				if (true == pBone->Compare_Name(m_szName))
+					return true;
 
+				++iBoneIndex;
+
+				return false;
+			});
+
+		_float4x4 OffsetMatrix;
+		XMStoreFloat4x4(&OffsetMatrix, XMMatrixIdentity());
+
+		m_OffsetMatrix.push_back(OffsetMatrix);
+
+		m_vecBone.push_back(iBoneIndex);
+	}
 
 	ZeroMemory(&m_InitialData, sizeof m_InitialData);
 	m_InitialData.pSysMem = pVertices;
@@ -341,3 +325,70 @@ void Mesh::Free()
 {
     __super::Free();
 }
+
+
+
+// 관익이 형 코드
+//m_iNumBones = pAIMesh->mNumBones;
+//
+//// For Debug 
+//// vector<int> vertexCounter;
+//// vertexCounter.resize(m_iNumVertices);
+//
+//// 중복된 본이 들어가는 것을 막는다
+//vector<set<const char*>> vertexBones;
+//vertexBones.resize(m_iNumVertices);
+//
+//for (size_t i = 0; i < m_iNumBones; ++i)
+//{
+//	/* i번째 뼈는 몇개의 정점에 영향을 주는가?! */
+//	_uint      iNumWeights = pAIMesh->mBones[i]->mNumWeights;
+//
+//	/* 이 메시에게 영향을 주는 뼈의 이름과 같은 이름을 가진 뼈를
+//	모델이 들고 있는 뼈들에게서 찾자. */
+//
+//	_uint      iBoneIndex = {};
+//
+//	auto   iter = find_if(m_vecBone.begin(), Bones.end(), [&](CBone* pBone)->_bool
+//		{
+//			if (true == pBone->Compare_Name(pAIMesh->mBones[i]->mName.data))
+//				return true;
+//
+//			++iBoneIndex;
+//
+//			return false;
+//		});
+//
+//	m_Bones.push_back(iBoneIndex);
+//
+//	const char* boneName = pAIMesh->mBones[i]->mName.data;
+//
+//	_float4x4      OffsetMatrix;
+//
+//	memcpy(&OffsetMatrix, &pAIMesh->mBones[i]->mOffsetMatrix, sizeof(_float4x4));
+//
+//	XMStoreFloat4x4(&OffsetMatrix,
+//		XMMatrixTranspose(XMLoadFloat4x4(&OffsetMatrix)));
+//
+//	m_OffsetMatrix.push_back(OffsetMatrix);
+//
+//	for (size_t j = 0; j < iNumWeights; ++j)
+//	{
+//		aiVertexWeight& vertexWeight = pAIMesh->mBones[i]->mWeights[j];
+//
+//		if (vertexBones[vertexWeight.mVertexId].find(boneName) != vertexBones[vertexWeight.mVertexId].end())
+//			continue;
+//
+//		vertexBones[vertexWeight.mVertexId].insert(boneName);
+//
+//		// For Debug
+//		// vertexCounter[vertexWeight.mVertexId]++;
+//
+//		if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight0.x)
+//		{
+//			
+//		}
+//
+//
+//	}
+//}

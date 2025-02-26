@@ -27,6 +27,9 @@ public:
 	void				Release_Engine();
 	void				Clear(_uint iLevelIndex);
 
+	_float				Random_Normalize();
+	_float				Random(_float fMin, _float fMax);
+
 
 #pragma region GRAPHIC_DEVICE
 	HRESULT				Clear_BackBuffer_View(_float4 vClearColor);	

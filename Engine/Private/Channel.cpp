@@ -64,7 +64,7 @@ HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class Bon
 		Desc.vScale = vScale;
 		Desc.vRotation = vRotation;
 		Desc.vTranslation = vPosition;
-		                                                        
+																
 		m_vecFrame.push_back(Desc);
 	}
 
@@ -73,8 +73,12 @@ HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class Bon
 	return S_OK;
 }
 
-void Channel::Update_TransformationMatrices(const vector<class Bone*>& pBone, _float fCurrentTrackPosition)
+void Channel::Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fCurrentTrackPosition, _uint* pKeyFrameIndex)
 {
+	// 마지막 키프레임을 기준으로 애니메이션이 작동되는 것을 막기위해 KeyFrame의 위치를 초기화
+	if (0.f == fCurrentTrackPosition)
+		(*pKeyFrameIndex) = 0;
+
 	// 이 함수에서는 특정 프레임에서의 애니메이션 보간 작업을 수행해야 한다
 	// 현재 특정 프레임에 대한 정보를 이 클래스에서 꺼내서 사용하고 있다
 	// Initialize에서 저장한 Scale, Rotation, Translation에 대한 정보를 통해 Matrix를 만들고,
@@ -106,48 +110,54 @@ void Channel::Update_TransformationMatrices(const vector<class Bone*>& pBone, _f
 		// 인자값으로 처음 받아온 인덱스는 0에서부터 시작하고, 만약 다음 키프레임의 값보다 크거나 같다면
 		// 1을 증가시켜 다음 키프레임 인덱스의 키프레임의 위치를 가져온다
 		// 이를 보고도 이해가 가지 않는다면, 노션의 노트 정리를 통해 이해하는 것이 좋다
-		if (fCurrentTrackPosition >= m_vecFrame[m_iCurrentKeyFrameIndex + 1].fTrackPosition)
-			++m_iCurrentKeyFrameIndex;
+		// 
+		// 나중에 프레임 드랍이 생겼을 때, fTimeDelta값이 큰 값으로 들어가게 되면서 뼈가 뒤틀리는 현상이 일어난다
+		// 즉, KeyFrame값이 가르키는 값이 그 다음 프레임보다 더 큰 값으로 가르키게 되면서 일어나는 오류이다
+		// 그래서 while문으로 루프를 돌려 이를 해결한다
+		//if (fCurrentTrackPosition >= m_vecFrame[(*pKeyFrameIndex) + 1].fTrackPosition)
+		//	++(*pKeyFrameIndex);
+
+		while (fCurrentTrackPosition >= m_vecFrame[(*pKeyFrameIndex) + 1].fTrackPosition)
+			++(*pKeyFrameIndex);
+
 
 		// 이전 키 프레임과 현재 프레임의 비율을 구할 것
 		// 인자로 받아온 프레임 위치 - 현재 프레임위치 / 다음 프레임의 위치 - 현재 프레임 위치로
 		// 인자로 받아온 프레임과 현재 프레임의 위치, 다음 프레임의 위치 비율을 구한다
-		_float fRatio = (fCurrentTrackPosition - m_vecFrame[m_iCurrentKeyFrameIndex].fTrackPosition) /
-			(m_vecFrame[m_iCurrentKeyFrameIndex + 1].fTrackPosition - m_vecFrame[m_iCurrentKeyFrameIndex].fTrackPosition);
+		_float fRatio = (fCurrentTrackPosition - m_vecFrame[(*pKeyFrameIndex)].fTrackPosition) /
+			(m_vecFrame[(*pKeyFrameIndex) + 1].fTrackPosition - m_vecFrame[(*pKeyFrameIndex)].fTrackPosition);
 
 
 		_vector vCurScale, vCurRotation, vCurTranslation;
 		_vector vNextScale, vNextRotation, vNextTranslation;
 
-		vCurScale = XMLoadFloat3(&m_vecFrame[m_iCurrentKeyFrameIndex].vScale);
-		vNextScale = XMLoadFloat3(&m_vecFrame[m_iCurrentKeyFrameIndex + 1].vScale);
+		vCurScale = XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex)].vScale);
+		vNextScale = XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex) + 1].vScale);
 
-		vCurRotation = XMLoadFloat4(&m_vecFrame[m_iCurrentKeyFrameIndex].vRotation);
-		vNextRotation = XMLoadFloat4(&m_vecFrame[m_iCurrentKeyFrameIndex + 1].vRotation);
+		vCurRotation = XMLoadFloat4(&m_vecFrame[(*pKeyFrameIndex)].vRotation);
+		vNextRotation = XMLoadFloat4(&m_vecFrame[(*pKeyFrameIndex) + 1].vRotation);
 		
-		vCurTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[m_iCurrentKeyFrameIndex].vTranslation), 1.f);
-		vNextTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[m_iCurrentKeyFrameIndex + 1].vTranslation), 1.f);
+		vCurTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex)].vTranslation), 1.f);
+		vNextTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex) + 1].vTranslation), 1.f);
 
 		vScale = XMVectorLerp(vCurScale, vNextScale, fRatio);
 		vRotation = XMQuaternionSlerp(vCurRotation, vNextRotation, fRatio);
 		vTranslation = XMVectorLerp(vCurTranslation, vNextTranslation, fRatio);
-
-
-		// XMMatrixAffineTransformation : 로컬 스페이스에서의 Scale, Rotation, Translation의 행렬을 곱하여 월드 스페이스에서의 행렬로 만들어주는 행렬 곱셈 함수
-		// 인자로 들어가는 값이 무조건 로컬 스페이스에서의 데이터 값이 아님. 개발자의 편의를 위해서 만든 유틸리티 함수임 
-		// 다만 Scale, Rotation, Translation을 곱하는 경우가 로컬 스페이스 상에서의 데이터임을 알아야 한다.
-
+		
 	}
 
-	_matrix     TransformationMatrix =
-		XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation);
+	// XMMatrixAffineTransformation : 로컬 스페이스에서의 Scale, Rotation, Translation의 행렬을 곱하여 월드 스페이스에서의 행렬로 만들어주는 행렬 곱셈 함수
+	// 인자로 들어가는 값이 무조건 로컬 스페이스에서의 데이터 값이 아님. 개발자의 편의를 위해서 만든 유틸리티 함수임 
+	// 다만 Scale, Rotation, Translation을 곱하는 경우가 로컬 스페이스 상에서의 데이터임을 알아야 한다.
+
+	//_matrix     TransformationMatrix =
+	//	XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation);
+	//
+	//pBone[m_iBoneIndex]->Set_CombinedTransformationMatrix(
+	//	TransformationMatrix);
 
 	pBone[m_iBoneIndex]->Set_TransformationMatrix(
-		TransformationMatrix);
-
-	//pBones[m_iBoneIndex]->Set_TransformationMatrix(
-	//	XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation));
-
+		XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation));
 
 }
 
@@ -160,7 +170,6 @@ Channel* Channel::Create(const aiNodeAnim* pAIChannel, const vector<class Bone*>
 	{
 		MSG_BOX("Failed To Created Create : Channel");
 		Safe_Release(pInstance);
-		pInstance = nullptr;
 	}
 
 	return pInstance;
@@ -169,7 +178,6 @@ Channel* Channel::Create(const aiNodeAnim* pAIChannel, const vector<class Bone*>
 void Channel::Free()
 {
 	__super::Free();
-
 
 	m_vecFrame.clear();
 }
