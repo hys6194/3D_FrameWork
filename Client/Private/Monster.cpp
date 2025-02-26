@@ -31,6 +31,21 @@ HRESULT Monster::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
+	m_pTransformCom->Set_State(Transform::STATE_POSITION,
+		XMVectorSet(m_pGameInstance->Random(0, 10), 1.f,
+			m_pGameInstance->Random(0, 10), 1.f));
+
+	// 재생할 애니메이션의 상태를 지정한다
+	// 추후에 애니메이션의 관리를 ENUM으로 관리할수 있지 않을까 싶음
+
+	// 뼈와 애니메이션을 공유하고 있는 문제로, 
+	m_pModelCom->Set_AnimationIndex(rand() % 24, true);
+
+	// rand 값으로 넣게 되었을 때, 제일 마지막에 출력이 되는 녀석을 기준으로 애니메이션이 출력이되면서 가속화되는 현상은 없어진다
+	// 
+	// m_pModelCom->Set_AnimationIndex(rand() % 10, true);
+	// m_pModelCom->Set_AnimationIndex(rand() % 10, true);
+
 	return S_OK;
 }
 
@@ -40,7 +55,10 @@ void Monster::Priority_Update(_float fTimeDelta)
 
 void Monster::Update(_float fTimeDelta)
 {
+	if (true == m_pModelCom->Play_Animation(fTimeDelta))
+		int a = 10;
 }
+
 
 void Monster::Late_Update(_float fTimeDelta)
 {
@@ -59,6 +77,8 @@ HRESULT Monster::Render()
 		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture",
 			aiTextureType_DIFFUSE, i, 0)))
 			return E_FAIL;
+
+		m_pModelCom->Bind_BoneMatrix(m_pShaderCom, "g_BoneMatrices", i);
 
 		if (FAILED(m_pShaderCom->Begin(0)))
 			return E_FAIL;
@@ -109,7 +129,7 @@ HRESULT Monster::Bind_SR()
 	//if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ProjMatrix", PipeLine::D3DTS_PROJ)))
 	//	return E_FAIL;
 	//
-	////if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
+	////if (FAILED(m_pTextureCom->Bind_SR(m_pShaderCom, "g_DiffuseTexture", 0)))
 	////	return E_FAIL;	
 	//
 	//if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
@@ -139,7 +159,7 @@ Monster* Monster::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed To Created : CMonster");
+		MSG_BOX("Failed To Created : Monster");
 		Safe_Release(pInstance);
 	}
 

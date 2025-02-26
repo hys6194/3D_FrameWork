@@ -170,7 +170,7 @@ HRESULT Transform::Bind_SR(Shader* pShader, const _char* pConstantName)
     if (nullptr == pShader)
         return E_FAIL;
 
-    return pShader->Bind_Matrix(&m_f4WorldMatrix, pConstantName);
+    return pShader->Bind_Matrix(pConstantName, &m_f4WorldMatrix);
 }
 
 Transform* Transform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

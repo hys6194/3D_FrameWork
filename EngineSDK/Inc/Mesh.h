@@ -3,7 +3,8 @@
 #include "VIBuffer.h"	
 
 BEGIN(Engine)
-class Mesh : public VIBuffer
+
+class ENGINE_DLL Mesh : public VIBuffer
 {
 private:
 	Mesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -24,9 +25,10 @@ public:
 
 private:
 	HRESULT Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
-	HRESULT Ready_VertexBuffer_Anim(const aiMesh* pAIMesh);
+	HRESULT Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const vector<Bone*>& Bones);
 
 private:
+	_char				m_szName[MAX_PATH] = {};
 	_uint				m_iMaterialIndex = {};
 	_uint				m_iNumBones = {};
 	vector<_float4x4>	m_OffsetMatrix;

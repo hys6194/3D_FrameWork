@@ -22,7 +22,7 @@ public:
 
 
 private:
-	map<const _wstring&, class State*> m_mapFSM;
+	//map<const _wstring&, class State*> m_mapFSM;
 
 
 public:
