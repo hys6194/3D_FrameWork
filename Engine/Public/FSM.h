@@ -16,14 +16,13 @@ public:
 	HRESULT Initialize(void* pArg);
 
 public:
-	HRESULT Add_State(const _wstring& strStateTag);
+	HRESULT Add_State(_uint iStateIndex, const _wstring& strStateTag, class State* pState);
 	HRESULT Find_State();
 	HRESULT Delete_State();
-	//HRESULT Find_State();
 
 
 private:
-	//map<const _wstring&, class State*> m_mapFSM;
+	map<const _wstring&, class State*> m_mapFSM;
 
 
 public:

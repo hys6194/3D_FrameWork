@@ -42,12 +42,6 @@ HRESULT GameObject::Initialize(void* pArg)
     HRESULT hr;
     hr = Set_TransformCom(pArg);
 
-    // 멤버 변수에 키값을 받아와서 어떤 오브젝트인지 UIObject에 전달
-    m_mapComponent.emplace(g_strTransformTag, m_pTransformCom);
-
-    Safe_AddRef(m_pTransformCom);
-
-
     return hr;
 }
 
@@ -95,6 +89,11 @@ HRESULT GameObject::Set_TransformCom(void* pArg)
 
     if (FAILED(m_pTransformCom->Initialize(pArg)))
         return E_FAIL;
+
+    // 멤버 변수에 키값을 받아와서 어떤 오브젝트인지 UIObject에 전달
+    m_mapComponent.emplace(g_strTransformTag, m_pTransformCom);
+
+    Safe_AddRef(m_pTransformCom);
 
     return S_OK;
 }

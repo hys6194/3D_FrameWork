@@ -152,7 +152,9 @@ call Copy.bat</Command>
   <ItemGroup>
     <ClInclude Include="..\Public\AbstractFactory.h" />
     <ClInclude Include="..\Public\Base.h" />
+    <ClInclude Include="..\Public\Bone.h" />
     <ClInclude Include="..\Public\Camera.h" />
+    <ClInclude Include="..\Public\Channel.h" />
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
@@ -171,6 +173,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\Light.h" />
     <ClInclude Include="..\Public\Light_Manager.h" />
     <ClInclude Include="..\Public\Mesh.h" />
+    <ClInclude Include="..\Public\MeshMaterial.h" />
     <ClInclude Include="..\Public\Model.h" />
     <ClInclude Include="..\Public\Object_Manager.h" />
     <ClInclude Include="..\Public\PipeLine.h" />
@@ -190,7 +193,9 @@ call Copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp" />
+    <ClCompile Include="..\Private\Bone.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
+    <ClCompile Include="..\Private\Channel.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\FSM.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />
@@ -203,6 +208,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\Light.cpp" />
     <ClCompile Include="..\Private\Light_Manager.cpp" />
     <ClCompile Include="..\Private\Mesh.cpp" />
+    <ClCompile Include="..\Private\MeshMaterial.cpp" />
     <ClCompile Include="..\Private\Model.cpp" />
     <ClCompile Include="..\Private\Object_Manager.cpp" />
     <ClCompile Include="..\Private\PipeLine.cpp" />
