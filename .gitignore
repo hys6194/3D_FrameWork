@@ -9,3 +9,8 @@
 *.exe
 *.ipch
 *.db
+*.db-wal
+*.db-shm
+*.opendb
+*.bin
+.vs/3D_PersonProject/v17/HierarchyCache.v1.txt

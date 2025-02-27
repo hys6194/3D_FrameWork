@@ -39,7 +39,7 @@ HRESULT Monster::Initialize(void* pArg)
 	// 추후에 애니메이션의 관리를 ENUM으로 관리할수 있지 않을까 싶음
 
 	// 뼈와 애니메이션을 공유하고 있는 문제로, 
-	m_pModelCom->Set_AnimationIndex(rand() % 24, true);
+	m_pModelCom->Set_AnimationIndex(3, true);
 
 	// rand 값으로 넣게 되었을 때, 제일 마지막에 출력이 되는 녀석을 기준으로 애니메이션이 출력이되면서 가속화되는 현상은 없어진다
 	// 
@@ -94,22 +94,20 @@ HRESULT Monster::Render()
 
 HRESULT Monster::Ready_Component()
 {
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-		reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model"))))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+		reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")) ,E_FAIL);
 
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
-		reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader"))))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+		reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
 	return S_OK;
 }
 
 HRESULT Monster::Bind_SR()
 {
-	FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix"), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ViewMatrix", PipeLine::D3DTS_VIEW), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ProjMatrix", PipeLine::D3DTS_PROJ), E_FAIL);
+	FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
 	
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 	
@@ -121,12 +119,12 @@ HRESULT Monster::Bind_SR()
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)), E_FAIL);
 
-	//if (FAILED(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix")))
+	//if (FAILED(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom)))
 	//	return E_FAIL;
 	//
-	//if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ViewMatrix", PipeLine::D3DTS_VIEW)))
+	//if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ViewMatrix", m_pShaderCom,  PipeLine::D3DTS_VIEW)))
 	//	return E_FAIL;
-	//if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ProjMatrix", PipeLine::D3DTS_PROJ)))
+	//if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ)))
 	//	return E_FAIL;
 	//
 	////if (FAILED(m_pTextureCom->Bind_SR(m_pShaderCom, "g_DiffuseTexture", 0)))

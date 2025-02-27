@@ -96,15 +96,15 @@ HRESULT Terrain::Ready_Components()
 
 HRESULT Terrain::Bind_SR()
 {
-	if (FAILED(m_pTransformCom->Bind_SR(m_pShaderCom, "g_WorldMatrix")))
+	if (FAILED(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ViewMatrix", PipeLine::D3DTS_VIEW)))
+	if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ViewMatrix", m_pShaderCom,  PipeLine::D3DTS_VIEW)))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource(m_pShaderCom, "g_ProjMatrix", PipeLine::D3DTS_PROJ)))
+	if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ProjMatrix", m_pShaderCom,  PipeLine::D3DTS_PROJ)))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_SR(m_pShaderCom, "g_DiffuseTexture", 0)))
+	if (FAILED(m_pTextureCom->Bind_SR("g_DiffuseTexture", m_pShaderCom, 0)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))

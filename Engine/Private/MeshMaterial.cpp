@@ -62,6 +62,9 @@ HRESULT MeshMaterial::Initialize(const aiMaterial* pAIMaterial, const _char* pMo
 			m_vecMaterial[i].push_back(pSRV);
 		}
 	}
+
+
+	return S_OK;
 }
 
 HRESULT MeshMaterial::Bind_SR(Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iTextureIndex)
