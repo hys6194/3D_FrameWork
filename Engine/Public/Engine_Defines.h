@@ -12,9 +12,9 @@
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
 #include "Fx11/d3dx11effect.h"
-#include "assimp/scene.h"
-#include "assimp/Importer.hpp"
-#include "assimp/postprocess.h"
+#include "assimp_Old/scene.h"
+#include "assimp_Old/Importer.hpp"
+#include "assimp_Old/postprocess.h"
 
 using namespace DirectX;
 
