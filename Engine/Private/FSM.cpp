@@ -20,10 +20,7 @@ HRESULT FSM::Initialize(void* pArg)
 
 HRESULT FSM::Add_State(_uint iStateIndex, const _wstring& strStateTag, class State* pState)
 {
-    if (FAILED(Find_State()))
-    {
-        
-    }
+ 
 
     return S_OK;
 }

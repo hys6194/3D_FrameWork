@@ -26,7 +26,7 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	// 레벨 시작
-	if (FAILED(Start_Level(LEVEL_MENU)))
+	if (FAILED(Start_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
 	return S_OK;
@@ -65,7 +65,7 @@ HRESULT CMainApp::Render()
 	
 #endif
 
-	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
+	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 0.f));
 	m_pGameInstance->Clear_DepthStencil_View();
 
 	m_pGameInstance->Draw_Engine();

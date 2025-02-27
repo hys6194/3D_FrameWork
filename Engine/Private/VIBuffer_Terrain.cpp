@@ -38,7 +38,7 @@ HRESULT VIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
 
 	m_iNumVertices = m_iNumVerticesX * m_iNumVerticesZ;
 	m_iIndexStride = 4;
-	m_iNumIndices = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2 * 3;	// 버텍스 버퍼 * 2 = 사각형에 존재하는 삼각형 * 인덱스 버퍼
+	m_iNumIndices = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2 * 3;
 	m_iNumVertexBuffers = 1;
 	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
@@ -68,11 +68,9 @@ HRESULT VIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
 		}
 	}
 
-	
-
-
 #pragma endregion
 
+#pragma region INDEXBUFFER
 	_uint* pIndices = new _uint[m_iNumIndices];
 	ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
 
@@ -97,10 +95,12 @@ HRESULT VIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
 			pIndices[iNumIndices++] = iIndices[1];
 			pIndices[iNumIndices++] = iIndices[2];
 
+
 			// 인덱스에 해당하는 노말벡터를 구해서 빛 반사에 적용할 것
 
 			// 0 -> 1, 1->2 방향의 벡터를 구하고 이에 외적하는 벡터로 노말 벡터를 구한다
 			// 이를 각각 인덱스들에 더해준다 
+
 			vSourDir = XMLoadFloat3(&pVertices[iIndices[1]].vPosition) - XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
 			vDestDir = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) - XMLoadFloat3(&pVertices[iIndices[1]].vPosition);
 			vNormal = XMVector3Normalize(XMVector3Cross(vSourDir, vDestDir));
@@ -130,14 +130,12 @@ HRESULT VIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
 		}
 	}
 
-	// 더했던 모든 노말 벡터들을 노멀라이즈 해준다
 	for (size_t i = 0; i < m_iNumVertices; i++)
 	{
 		XMStoreFloat3(&pVertices[i].vNormal,
 			XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
 	}
-
-#pragma region INDEXBUFFER
+#pragma endregion
 
 
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
@@ -164,22 +162,18 @@ HRESULT VIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
 	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
 
-
 	ZeroMemory(&m_InitialData, sizeof m_InitialData);
 	m_InitialData.pSysMem = pIndices;
 
 	if (FAILED(__super::Create_Buffer(&m_pIB)))
 		return E_FAIL;
 
-
 	Safe_Delete_Array(pVertices);
 	Safe_Delete_Array(pIndices);
 
-#pragma endregion
-
-
 	return S_OK;
 }
+
 
 HRESULT VIBuffer_Terrain::Initialize(void* pArg)
 {

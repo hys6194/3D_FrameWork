@@ -3,23 +3,13 @@
 
 matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
-//// ºûÀÇ ¹æÇâ
-//float4      g_vLightDir = float4(1.f, -1.f, 1.f, 0.f);
-//
-//// ºû »ö
-//float4      g_vLightDiffuse = float4(1.f, 1.f, 1.f, 1.f);
-//
-//float4      g_vLightAmbient = float4(1.f, 1.f, 1.f, 1.f);
-//float4      g_vLightSpecular = float4(1.f, 1.f, 1.f, 1.f);
-
 // ºûÀÇ ¹æÇâ
-float4      g_vLightDir;
+float4 g_vLightDir;
 
-// ºû »ö
-float4      g_vLightDiffuse;
-float4      g_vLightAmbient;
-float4      g_vLightSpecular;
-
+// ºûÀÇ Á¾·ù
+float4 g_vLightDiffuse;
+float4 g_vLightAmbient;
+float4 g_vLightSpecular;
 
 texture2D   g_DiffuseTexture;
 float4      g_vMtrlAmbient = float4(0.3f, 0.3f, 0.3f, 1.f);
@@ -85,9 +75,6 @@ VS_OUT VS_MAIN(VS_IN In)
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    
-    // ±×¸²ÀÚ ¾øÀÌ Ãâ·Â
-    //Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord * 30.f);
     
     // Æþ ¼ÎÀÌµù
     // vector vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord * 30.f);

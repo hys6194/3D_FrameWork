@@ -24,6 +24,8 @@ namespace Client
 
 }
 
+#define TIME60			TEXT("Timer_60")
+
 extern HINSTANCE		g_hInstance;
 extern HWND				g_hWnd;
 
