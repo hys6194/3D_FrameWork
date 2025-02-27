@@ -3,14 +3,23 @@
 
 matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
+//// ºûÀÇ ¹æÇâ
+//float4      g_vLightDir = float4(1.f, -1.f, 1.f, 0.f);
+//
+//// ºû »ö
+//float4      g_vLightDiffuse = float4(1.f, 1.f, 1.f, 1.f);
+//
+//float4      g_vLightAmbient = float4(1.f, 1.f, 1.f, 1.f);
+//float4      g_vLightSpecular = float4(1.f, 1.f, 1.f, 1.f);
+
 // ºûÀÇ ¹æÇâ
-float4      g_vLightDir = float4(1.f, -1.f, 1.f, 0.f);
+float4      g_vLightDir;
 
 // ºû »ö
-float4      g_vLightDiffuse = float4(1.f, 1.f, 1.f, 1.f);
+float4      g_vLightDiffuse;
+float4      g_vLightAmbient;
+float4      g_vLightSpecular;
 
-float4      g_vLightAmbient = float4(1.f, 1.f, 1.f, 1.f);
-float4      g_vLightSpecular = float4(1.f, 1.f, 1.f, 1.f);
 
 texture2D   g_DiffuseTexture;
 float4      g_vMtrlAmbient = float4(0.3f, 0.3f, 0.3f, 1.f);

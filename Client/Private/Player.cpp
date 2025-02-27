@@ -1,0 +1,135 @@
+#include "Player.h"
+#include "GameInstance.h"
+#include "ContainerObject.h"
+#include "Body_Player.h"
+
+Player::Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: ContainerObject{ pDevice, pContext }
+{
+}
+
+Player::Player(const Player& Prototype)
+	: ContainerObject{ Prototype }
+{
+}
+
+HRESULT Player::Initialize_Prototype()
+{
+	return S_OK;
+}
+
+HRESULT Player::Initialize(void* pArg)
+{
+	ContainerObject::CONTAINEROBJ_DESC	Desc{};
+
+	lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Player"));
+	Desc.fSpeedPerSec = 10.f;
+	Desc.fRotationPerSec = XMConvertToRadians(90.f); 
+	Desc.iNumPartObjects = PART_END;
+
+	FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
+	FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
+	FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
+
+	return S_OK;
+}
+
+void Player::Priority_Update(_float fTimeDelta)
+{
+	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+		m_pTransformCom->Go_Backward(fTimeDelta);
+	if (GetKeyState(VK_LEFT) & 0x8000)
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -1.f);
+	if (GetKeyState(VK_RIGHT) & 0x8000)
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+
+	if (GetKeyState(VK_UP) & 0x8000)
+	{
+		m_pTransformCom->Go_Straight(fTimeDelta);
+
+		if (m_iState & STATE_IDLE)
+			m_iState ^= STATE_IDLE;
+		m_iState |= STATE_WALK;
+	}
+	else
+	{
+		m_iState = STATE_IDLE;
+	}
+
+	__super::Priority_Update(fTimeDelta);
+}
+
+void Player::Update(_float fTimeDelta)
+{
+	__super::Update(fTimeDelta);
+}
+
+void Player::Late_Update(_float fTimeDelta)
+{
+	__super::Late_Update(fTimeDelta);
+}
+
+HRESULT Player::Render()
+{
+	return S_OK;
+}
+
+HRESULT Player::Ready_Components()
+{
+
+
+
+	return S_OK;
+}
+
+HRESULT Player::Ready_PartObjects()
+{
+	// Body
+	Body_Player::BODY_PLAYER_DESC		BodyDesc{};
+	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	BodyDesc.pTargetState = &m_iState;
+
+	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY,TEXT("Prototype_GameObject_Player_Body"), PART_BODY, &BodyDesc), E_FAIL);
+
+	// Sword
+	// FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Player_Body"), ), E_FAIL);
+
+	return S_OK;
+}
+
+HRESULT Player::Bind_SR()
+{
+	
+	return S_OK;
+}
+
+Player* Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	Player* pInstance = new Player(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed To Created : Player");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+GameObject* Player::Clone(void* pArg)
+{
+	Player* pInstance = new Player(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed To Cloned : Player");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+void Player::Free()
+{
+	__super::Free();
+}

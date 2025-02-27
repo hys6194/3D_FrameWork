@@ -38,13 +38,16 @@ HRESULT Shader::Initialize_Prototype(const _tchar* pShaderFilePath, const D3D11_
     if (nullptr == pTechnique)
         return E_FAIL;
 
+    // 테크니커 가져오기
     D3DX11_TECHNIQUE_DESC           TechniqueDesc{};
     pTechnique->GetDesc(&TechniqueDesc);
 
+    // hlsl에서 만든 테크니커의 pass들을 가져오기
     m_iNumPasses = TechniqueDesc.Passes;
 
     m_InputLayouts.reserve(m_iNumPasses);
 
+    // 패스들을 순회하면서 pass에 맞는 셰이더 기법처리
     for (size_t i = 0; i < m_iNumPasses; i++)
     {
         ID3D11InputLayout* pInputLayout = { nullptr };

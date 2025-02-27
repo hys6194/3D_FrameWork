@@ -101,6 +101,7 @@ HRESULT Terrain::Bind_SR()
 
 	if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ViewMatrix", m_pShaderCom,  PipeLine::D3DTS_VIEW)))
 		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ProjMatrix", m_pShaderCom,  PipeLine::D3DTS_PROJ)))
 		return E_FAIL;
 
