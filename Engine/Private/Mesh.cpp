@@ -19,10 +19,15 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformM
 	m_iMaterialIndex = pAIMesh->mMaterialIndex;
 	m_iNumVertices = pAIMesh->mNumVertices;
 	m_iIndexStride = 4;
+
+	// mNumFaces = 면의 개수를 의미 -> 모든 면을 삼각형으로만 그려놨었다 그래서 삼각형의 개수를 넣어줘야 하는 것임
+	// 따라서 면의 개수 * 3을 해야 인덱스의 개수가 된다
 	m_iNumIndices = pAIMesh->mNumFaces * 3;
 	m_iNumVertexBuffers = 1;
 	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+
 
 #pragma region VERTEXBUFFER
 
@@ -32,17 +37,6 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformM
 
 	if (FAILED(hr))
 		return E_FAIL;
-
-	
-	
-	ZeroMemory(&m_InitialData, sizeof(m_InitialData));
-	m_InitialData.pSysMem = pVertices;
-
-	if (FAILED(__super::Create_Buffer(&m_pVB)))
-		return E_FAIL;
-
-	Safe_Delete_Array(pVertices);
-
 
 #pragma endregion
 
@@ -99,25 +93,23 @@ HRESULT Mesh::Bind_BoneMatrix(Shader* pShader, const _char* pContantName, const 
 			Bones[m_vecBone[i]]->Get_CombinedTransformationMatrix());
 	}
 
-	pShader->Bind_Matrix(pContantName, m_matBone);
+	pShader->Bind_Matrices(pContantName, m_matBone, m_iNumBones);
 
 	return E_NOTIMPL;
 }
 
 HRESULT Mesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {
-	m_iMaterialIndex = pAIMesh->mMaterialIndex;
+
 
 	m_iVertexStride = sizeof(VTXMESH);
-	m_iNumVertices = pAIMesh->mNumVertices;
-	m_iIndexStride = 4;
-
-	// mNumFaces = 면의 개수를 의미 -> 모든 면을 삼각형으로만 그려놨었다 그래서 삼각형의 개수를 넣어줘야 하는 것임
-	// 따라서 면의 개수 * 3을 해야 인덱스의 개수가 된다
-	m_iNumIndices = pAIMesh->mNumFaces * 3;
-	m_iNumVertexBuffers = 1;
-	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
-	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
+	m_BufferDesc.ByteWidth = m_iVertexStride * m_iNumVertices;
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_BufferDesc.StructureByteStride = m_iVertexStride;
+	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.MiscFlags = 0;
 
 	VTXMESH* pVertices = new VTXMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);

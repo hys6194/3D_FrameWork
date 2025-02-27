@@ -2,6 +2,7 @@
 //#define  NOMINMAX  
 
 #pragma warning(disable : 4251)
+#pragma warning(disable : 4267)
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>

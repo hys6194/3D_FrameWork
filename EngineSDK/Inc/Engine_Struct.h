@@ -77,7 +77,6 @@ namespace Engine
 		XMFLOAT2		vTexcoord;			// UV 벡터
 		XMFLOAT3		vTangent;			// 접선 벡터
 
-
 		XMUINT4			vBlendIndex;		// 뼈의 인덱스 개수
 		XMFLOAT4		vBlendWeight;		// 뼈의 가중치, 0 ~ 1 사이의 값으로 사용
 

@@ -1,16 +1,16 @@
 #include "Shader.h"
 
 Shader::Shader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : Component { pDevice, pContext }
+    : Component{ pDevice, pContext }
 {
 
 }
 
 Shader::Shader(const Shader& Prototype)
     : Component{ Prototype }
-    , m_pEffect { Prototype.m_pEffect }
-    , m_iNumPasses { Prototype.m_iNumPasses }
-    , m_InputLayouts { Prototype.m_InputLayouts }
+    , m_pEffect{ Prototype.m_pEffect }
+    , m_iNumPasses{ Prototype.m_iNumPasses }
+    , m_InputLayouts{ Prototype.m_InputLayouts }
 {
     Safe_AddRef(m_pEffect);
 
@@ -47,9 +47,9 @@ HRESULT Shader::Initialize_Prototype(const _tchar* pShaderFilePath, const D3D11_
 
     for (size_t i = 0; i < m_iNumPasses; i++)
     {
-        ID3D11InputLayout*      pInputLayout = { nullptr };
+        ID3D11InputLayout* pInputLayout = { nullptr };
 
-        ID3DX11EffectPass*      pPass = pTechnique->GetPassByIndex(i);
+        ID3DX11EffectPass* pPass = pTechnique->GetPassByIndex(i);
 
         if (nullptr == pPass)
             return E_FAIL;
@@ -74,15 +74,13 @@ HRESULT Shader::Initialize(void* pArg)
 
 HRESULT Shader::Begin(_uint iPassIndex)
 {
-    
-
 
     if (iPassIndex >= m_iNumPasses)
         return E_FAIL;
 
     m_pContext->IASetInputLayout(m_InputLayouts[iPassIndex]);
 
-    ID3DX11EffectPass*      pPass = m_pEffect->GetTechniqueByIndex(0)->GetPassByIndex(iPassIndex);
+    ID3DX11EffectPass* pPass = m_pEffect->GetTechniqueByIndex(0)->GetPassByIndex(iPassIndex);
     if (nullptr == pPass)
         return E_FAIL;
 
@@ -110,7 +108,7 @@ HRESULT Shader::Bind_Matrix(const _char* pConstantName, const _float4x4* pMatrix
     if (nullptr == pMatrixVariable)
         return E_FAIL;
 
-    return pMatrixVariable->SetMatrix(reinterpret_cast<const _float*>(pMatrix));    
+    return pMatrixVariable->SetMatrix(reinterpret_cast<const _float*>(pMatrix));
 }
 
 HRESULT Shader::Bind_Matrices(const _char* pConstantName, const _float4x4* pMatrix, _uint iNumMatrix)

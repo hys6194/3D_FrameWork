@@ -16,7 +16,7 @@ public:
 	HRESULT Initialize(void* pArg);
 
 public:
-	HRESULT Bind_SR(class Shader* pShader, const _char* pConstantName, _uint iTextureIndex) const;
+	HRESULT Bind_SR(const _char* pConstantName, class Shader* pShader, _uint iTextureIndex) const;
 
 private:
 

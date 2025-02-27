@@ -229,7 +229,7 @@ void GameInstance::Set_Transform(PipeLine::TRANSFORMSTATE eState, const _float4x
 {
 	return m_pPipeLine->Set_Transform(eState, pMatrix);
 }
-HRESULT GameInstance::Bind_VP_Transform_ShaderResource(Shader* pShader, const _char* pConstantName, PipeLine::TRANSFORMSTATE eState)
+HRESULT GameInstance::Bind_VP_Transform_ShaderResource(const _char* pConstantName, Shader* pShader, PipeLine::TRANSFORMSTATE eState)
 {
 	return m_pPipeLine->Bind_SR(pShader, pConstantName, eState);
 }

@@ -78,7 +78,7 @@ public:
 	const _float4*		Get_CamPosition() const;
 	void				Set_Transform(PipeLine::TRANSFORMSTATE eState, _fmatrix Matrix);
 	void				Set_Transform(PipeLine::TRANSFORMSTATE eState, const _float4x4* pMatrix);
-	HRESULT				Bind_VP_Transform_ShaderResource(class Shader* pShader, const _char* pConstantName, PipeLine::TRANSFORMSTATE eState);
+	HRESULT				Bind_VP_Transform_ShaderResource(const _char* pConstantName, Shader* pShader, PipeLine::TRANSFORMSTATE eState);
 #pragma endregion
 
 

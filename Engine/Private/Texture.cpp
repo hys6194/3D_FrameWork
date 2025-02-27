@@ -89,7 +89,7 @@ HRESULT Texture::Initialize(void* pArg)
     return S_OK;
 }
 
-HRESULT Texture::Bind_SR(Shader* pShader, const _char* pConstantName, _uint iTextureIndex) const
+HRESULT Texture::Bind_SR(const _char* pConstantName, class Shader* pShader, _uint iTextureIndex) const
 {
     if (iTextureIndex >= m_iNumTextures)
         return E_FAIL;
