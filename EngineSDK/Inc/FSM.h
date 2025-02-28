@@ -17,7 +17,7 @@ public:
 
 public:
 	HRESULT Add_State(const _wstring& strStateTag, class State* pState);
-	HRESULT Find_State();
+	HRESULT Find_State(const _wstring& strStateTag);
 	HRESULT Delete_State();
 
 

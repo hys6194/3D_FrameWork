@@ -19,27 +19,32 @@ HRESULT FSM::Initialize(void* pArg)
 }
 
 HRESULT FSM::Add_State(const _wstring& strStateTag, class State* pState)
-{;
+{
+    //if (FAILED(Find_State(strStateTag)))
+    //    return E_FAIL;
 
-    if (FAILED(Find_State(strStateTag)))
-        return E_FAIL;
+    if(FAILED(Find_State(strStateTag)))
+        m_mapFSM.emplace(strStateTag, pState);
 
-    m_mapFSM.emplace(strStateTag, pState);
 
     return S_OK;
 }
 
 HRESULT FSM::Find_State(const _wstring& strStateTag)
 {
-    auto iter = find_if(m_mapFSM.begin(), m_mapFSM.end(),[&](State* pState)->_bool 
-    {
-         if (0 != pState->Compare_StateName(strStateTag))
-             return E_FAIL;
-         else
-             return S_OK;
-        
-    });
+    //auto iter = find_if(m_mapFSM.begin(), m_mapFSM.end(),[&](State* pState)->_bool 
+    //{
+    //     if (0 != pState->Compare_StateName(strStateTag))
+    //     {
+    //         MSG_BOX("Failed_Find_State");
+    //         return E_FAIL;
+    //     }
+    //});
 
+    auto iter = m_mapFSM.find(strStateTag);
+
+    if (iter == m_mapFSM.end())
+        return E_FAIL;
 
     return S_OK;
 }
@@ -79,10 +84,10 @@ void FSM::Free()
 {
     __super::Free();
 
-    //for (auto& iter : m_mapFSM)
-    //    Safe_Release(iter);
-    //
-    //m_mapFSM.clear();
+    for (auto& Pair : m_mapFSM)
+        Safe_Release(Pair.second());
+    
+    m_mapFSM.clear();
 
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
