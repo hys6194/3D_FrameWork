@@ -19,6 +19,12 @@ public:
 public:
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
 
+private:
+	_float				m_fTotalTime = {0};
+
+private:
+	HRESULT	Add_Logo(const _tchar* pLayerTag);
+
 public:
 	static Level_Logo* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

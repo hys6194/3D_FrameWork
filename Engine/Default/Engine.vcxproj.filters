@@ -127,6 +127,12 @@
     <Filter Include="01.Utility\04. Component\Model\Animation\Channel">
       <UniqueIdentifier>{fceafd58-e64a-4269-b16b-ed61c9ab4964}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. GameObjects\PartObject">
+      <UniqueIdentifier>{008839ff-e7ad-428d-9309-631de38f659c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. GameObjects\ContainerObject">
+      <UniqueIdentifier>{33843ce5-9e27-42ec-b429-8ac4fb6d9034}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -252,6 +258,12 @@
     <ClInclude Include="..\Public\Mesh.h">
       <Filter>01.Utility\04. Component\Model\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PartObject.h">
+      <Filter>01.Utility\03. GameObjects\PartObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ContainerObject.h">
+      <Filter>01.Utility\03. GameObjects\ContainerObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -352,6 +364,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Mesh.cpp">
       <Filter>01.Utility\04. Component\Model\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ContainerObject.cpp">
+      <Filter>01.Utility\03. GameObjects\ContainerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PartObject.cpp">
+      <Filter>01.Utility\03. GameObjects\PartObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

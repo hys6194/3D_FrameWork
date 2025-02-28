@@ -90,7 +90,11 @@ HRESULT BackGround::Ready_Component()
 	switch (m_eLevel)
 	{
 		case LEVEL_LOGO :
-			if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
+			//if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
+			//	reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
+			//	return E_FAIL;
+
+			if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo1"),
 				reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
 				return E_FAIL;
 
@@ -102,6 +106,8 @@ HRESULT BackGround::Ready_Component()
 			if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Shader_VtxPosTex"),
 				reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader"))))
 				return E_FAIL;
+
+
 
 			break;
 		case LEVEL_MENU :

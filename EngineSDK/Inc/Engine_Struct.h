@@ -93,7 +93,7 @@ namespace Engine
 		};
 	}VTXANIMESH;
 
-	typedef struct ENGINE_DLL tagLightDesc
+	typedef struct tagLightDesc
 	{
 		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
 

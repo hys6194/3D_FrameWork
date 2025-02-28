@@ -5,6 +5,8 @@
 #include "BackGround.h"
 #include "Terrain.h"
 #include "Monster.h"
+#include "Player.h"
+#include "Body_Player.h"
 
 Loader::Loader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -88,6 +90,10 @@ HRESULT Loader::Loading_Logo()
 		Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo1"),
+		Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Logo/UI_StudioLogo_THQNordic1.png")))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoading, TEXT("모델를(을) 로딩중입니다."));
 
 	/* Prototype_Component_VIBuffer_Rect */
@@ -152,60 +158,71 @@ HRESULT Loader::Loading_GamePlay()
 {
 	m_IsFin = false;
 
-	lstrcpy(m_szLoading, TEXT("텍스쳐 로딩중."));
+	/* 게임플레이용 자원을 로드합니다.  */
+	lstrcpy(m_szLoading, TEXT("텍스쳐를(을) 로딩중입니다."));
 
+	/* For.Prototype_Component_Texture_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
 		Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.dds")))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoading, TEXT("모델 로딩중."));
-
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-	//	VIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
-	//	return E_FAIL;
-
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		VIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp"))), E_FAIL);
+	lstrcpy(m_szLoading, TEXT("모델를(을) 로딩중입니다."));
+	/* For.Prototype_Component_VIBuffer_Terrain*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		VIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
+		return E_FAIL;
 
 
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
+	/* For.Prototype_Component_Model_Fiona */
 	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-		Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/Fiona/Fiona.fbx", PreTransformMatrix)), E_FAIL);
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+		Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/Fiona/Fiona.fbx", PreTransformMatrix))))
+		return E_FAIL;
 
+	/* For.Prototype_Component_Model_ForkLift */
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_ForkLift"),
 		Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/ForkLift/ForkLift.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-	//Model::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Fiona/Fiona.fbx"))))
-	//	return E_FAIL;
-
-	lstrcpy(m_szLoading, TEXT("셰이더 로딩중."));
-
+	lstrcpy(m_szLoading, TEXT("셰이더를(을) 로딩중입니다."));
+	/* For.Prototype_Component_Shader_VtxNorTex */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
 		Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::ElementDesc, VTXNORTEX::iNumElements))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Shader_VtxMesh */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
 		Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl"), VTXMESH::ElementDesc, VTXMESH::iNumElements))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Shader_VtxAnimMesh */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
 		Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMESH::ElementDesc, VTXANIMESH::iNumElements))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoading, TEXT("원형객체 로딩중."));
+	lstrcpy(m_szLoading, TEXT("원형객체를(을) 로딩중입니다."));
+	/* Prototype_GameObject_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Terrain"),
 		Terrain::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* Prototype_GameObject_Monster */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
 		Monster::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Player"),
+		Player::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Player_Body"),
+		Body_Player::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* Prototype_GameObject_Camera_Free */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
 		Camera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;

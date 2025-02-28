@@ -21,7 +21,9 @@ void Level_Logo::Update(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, TEXT("현재 레벨 : 로고 레벨"));
 
-	if (GetKeyState(VK_SPACE) & 0x8000)
+	m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
+
+	if (/*GetKeyState(VK_SPACE) & 0x8000 &&*/ 4.f < m_fTotalTime)
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
 			return;

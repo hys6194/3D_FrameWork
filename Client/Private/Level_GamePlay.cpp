@@ -15,6 +15,9 @@ HRESULT Level_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
@@ -77,6 +80,15 @@ HRESULT Level_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 	//		return E_FAIL;
 	//}
 
+
+	return S_OK;
+}
+
+HRESULT Level_GamePlay::Ready_Layer_Player(const _tchar* pLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Player"),
+		LEVEL_GAMEPLAY, pLayerTag)))
+		return E_FAIL;
 
 	return S_OK;
 }
