@@ -11,7 +11,7 @@ Level_Logo::Level_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT Level_Logo::Initialize()
 {
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+	if (FAILED(Ready_Layer_Logo1(TEXT("Layer_Logo1"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -35,15 +35,15 @@ HRESULT Level_Logo::Render()
 	return S_OK;
 }
 
-HRESULT Level_Logo::Ready_Layer_BackGround(const _tchar* pLayerTag)
+HRESULT Level_Logo::Ready_Layer_Logo1(const _tchar* pLayerTag)
 {
 	UIObject::UIOBJECT_DESC			 UIDesc = {};
 
 	// 선생님은 가로, 세로 1인 길이로 그리려고 0.5로 준 것이다
 	UIDesc.fX = g_iWinSizeX  >> 1;
 	UIDesc.fY = g_iWinSizeY >> 1;
-	UIDesc.fSizeX = 800;
-	UIDesc.fSizeY = 200;
+	UIDesc.fSizeX = g_iWinSizeY;
+	UIDesc.fSizeY = g_iWinSizeY;
 	lstrcpy(UIDesc.szGameObjectTag, TEXT("GAMEOBJECT_UI_BACKGROUND"));
 	UIDesc.fSpeedPerSec = 10.f;
 	UIDesc.fRotationPerSec = XMConvertToRadians(180.f);
@@ -51,6 +51,11 @@ HRESULT Level_Logo::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	if(FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"), LEVEL_LOGO, pLayerTag, &UIDesc)))
 		return E_FAIL;
 
+	return S_OK;
+}
+
+HRESULT Level_Logo::Add_Logo(const _tchar* pLayerTag)
+{
 	return S_OK;
 }
 

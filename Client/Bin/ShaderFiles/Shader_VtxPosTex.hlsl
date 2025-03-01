@@ -8,6 +8,8 @@
 /* 상수집합 == 컨스턴트테이블 */ 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
+float g_AlphaPerTime = 0.5f;
+
 texture2D g_Texture;
 
 sampler DefaultSampler = sampler_state
@@ -19,7 +21,6 @@ sampler DefaultSampler = sampler_state
     AddressU = WRAP;
     AddressV = WRAP;
 };
-
 
 struct VS_IN
 {
@@ -74,7 +75,6 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
-
 // w나누기 연산을 수행하는 함수
 // w 나누기를 하면서 2차원 투영 스페이스로 변환되고, 뷰 포트로 변환한다
 // 그 후, 래스터라이즈를 통해 픽셀을 생성한다.
@@ -91,10 +91,13 @@ PS_OUT PS_MAIN(PS_IN In)
     
     //Out.vColor = In.vTexcoord.y;
     
-    // 코드로 구현한 알파테스트
+    ////코드로 구현한 알파테스트
     //if (0.5 < Out.vColor.a)
     //    discard;
     
+    saturate(g_AlphaPerTime);
+    
+    Out.vColor.a = Out.vColor.a * 0;
     
     return Out;
 }
