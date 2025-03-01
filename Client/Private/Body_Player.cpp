@@ -13,6 +13,16 @@ Body_Player::Body_Player(const Body_Player& Prototype)
 {
 }
 
+const _float4x4* Body_Player::Get_f4SocketMatrix(const _wstring& strSocketName)
+{
+    auto iter = m_mapSocketmat.find(strSocketName);
+    if (iter == m_mapSocketmat.end())
+        return nullptr;
+
+
+    return iter->second;
+}
+
 HRESULT Body_Player::Initialize_Prototype()
 {
     return S_OK;
@@ -27,8 +37,9 @@ HRESULT Body_Player::Initialize(void* pArg)
 
     FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
+    FAILED_CHECK_RETURN(Ready_SocketMatrices(), E_FAIL);
 
-    m_pModelCom->Set_AnimationIndex(3);
+    m_pModelCom->Set_AnimationIndex(3, true);
 
     return S_OK;
 }
@@ -39,6 +50,7 @@ void Body_Player::Priority_Update(_float fTimeDelta)
 
 void Body_Player::Update(_float fTimeDelta)
 {
+
     if (*m_pTargetState & Player::STATE_IDLE)
         m_pModelCom->Set_AnimationIndex(3, true);
     if (*m_pTargetState & Player::STATE_WALK)
@@ -46,6 +58,7 @@ void Body_Player::Update(_float fTimeDelta)
 
     m_pModelCom->Play_Animation(fTimeDelta);
 
+    //파츠들의 매트릭스를 부모 매트릭스에 곱하여 고정시킨다
     XMStoreFloat4x4(&m_CombinedWorldMatrix,
         XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentMatrix));
 
@@ -55,7 +68,6 @@ void Body_Player::Update(_float fTimeDelta)
 void Body_Player::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
-
 }
 
 HRESULT Body_Player::Render()
@@ -94,23 +106,34 @@ HRESULT Body_Player::Ready_Components()
     return S_OK;
 }
 
+HRESULT Body_Player::Ready_SocketMatrices()
+{
+    NULL_CHECK_RETURN(m_pShaderCom, E_FAIL);
+
+    // 특정 뼈의 매트릭스를 가져와야 함
+    m_mapSocketmat.emplace(TEXT("Socket_Weapon"), m_pModelCom->Get_BoneMatrix("SWORD"));
+    m_mapSocketmat.emplace(TEXT("Socket_Shadow"), m_pModelCom->Get_BoneMatrix("PlayerShadow"));
+
+    return S_OK;
+}
+
 HRESULT Body_Player::Bind_SR()
 {
-    // Combined된 월드행렬을 반환해야 한다
+    // Combined된 월드행렬을 반환해야 한다 -> 부모의 행렬만 가져오게 되면 로컬 정점에서만 적용된 행렬을 가져오기 때문
     // 
-    //FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pParentMatrix), E_FAIL);
+    // FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pParentMatrix), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 
     const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
     NULL_CHECK_RETURN(pLightDesc, E_FAIL);
 
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)), E_FAIL);
+    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir",      &pLightDesc->vDirection, sizeof(_float4)), E_FAIL);
+    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse",  &pLightDesc->vDiffuse,   sizeof(_float4)), E_FAIL);
+    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient",  &pLightDesc->vAmbient,   sizeof(_float4)), E_FAIL);
+    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular,  sizeof(_float4)), E_FAIL);
    
 
     return S_OK;

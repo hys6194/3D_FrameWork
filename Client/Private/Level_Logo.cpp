@@ -40,10 +40,10 @@ HRESULT Level_Logo::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	UIObject::UIOBJECT_DESC			 UIDesc = {};
 
 	// 선생님은 가로, 세로 1인 길이로 그리려고 0.5로 준 것이다
-	UIDesc.fX = g_iWinSizeX * 0.5f;
-	UIDesc.fY = g_iWinSizeY * 0.5f;
-	UIDesc.fSizeX = g_iWinSizeX;
-	UIDesc.fSizeY = g_iWinSizeY;
+	UIDesc.fX = g_iWinSizeX  >> 1;
+	UIDesc.fY = g_iWinSizeY >> 1;
+	UIDesc.fSizeX = 800;
+	UIDesc.fSizeY = 200;
 	lstrcpy(UIDesc.szGameObjectTag, TEXT("GAMEOBJECT_UI_BACKGROUND"));
 	UIDesc.fSpeedPerSec = 10.f;
 	UIDesc.fRotationPerSec = XMConvertToRadians(180.f);

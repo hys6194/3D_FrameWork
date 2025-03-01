@@ -83,9 +83,6 @@ Component* FSM::Clone(void* pArg)
 void FSM::Free()
 {
     __super::Free();
-
-    for (auto& Pair : m_mapFSM)
-        Safe_Release(Pair.second());
     
     m_mapFSM.clear();
 

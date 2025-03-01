@@ -106,8 +106,8 @@ HRESULT Monster::Ready_Component()
 HRESULT Monster::Bind_SR()
 {
 	FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
 	
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 	
@@ -122,9 +122,9 @@ HRESULT Monster::Bind_SR()
 	//if (FAILED(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom)))
 	//	return E_FAIL;
 	//
-	//if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ViewMatrix", m_pShaderCom,  PipeLine::D3DTS_VIEW)))
+	//if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom,  PipeLine::D3DTS_VIEW)))
 	//	return E_FAIL;
-	//if (FAILED(m_pGameInstance->Bind_VP_Transform_ShaderResource("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ)))
+	//if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ)))
 	//	return E_FAIL;
 	//
 	////if (FAILED(m_pTextureCom->Bind_SR(m_pShaderCom, "g_DiffuseTexture", 0)))

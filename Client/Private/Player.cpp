@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "ContainerObject.h"
 #include "Body_Player.h"
+#include "Weapon.h"
 
 Player::Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: ContainerObject{ pDevice, pContext }
@@ -92,7 +93,14 @@ HRESULT Player::Ready_PartObjects()
 	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY,TEXT("Prototype_GameObject_Player_Body"), PART_BODY, &BodyDesc), E_FAIL);
 
 	// Sword
-	// FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Player_Body"), ), E_FAIL);
+	Weapon::WEAPON_DESC  WDesc{};
+	// WDesc.pSocketMatrix = 바디플레이어에 있는 특정 뼈(손)의 매트릭스를 가져와야 함 -> 바디 플레이어에서 특정 뼈를 가져오는 작업을 해야함
+	WDesc.pSocketMatrix = dynamic_cast<Body_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(TEXT("Socket_Weapon"));
+	WDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	WDesc.pTargetState = &m_iState;
+
+
+	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), PART_WEAPON, &WDesc), E_FAIL);
 
 	return S_OK;
 }
