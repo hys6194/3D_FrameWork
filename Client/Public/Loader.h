@@ -50,6 +50,14 @@ private:
 	HRESULT Loading_Menu();
 	HRESULT	Loading_GamePlay();
 
+
+private:
+	HRESULT Loading_Textures();
+	HRESULT Loading_Models();
+	HRESULT Loading_Shaders();
+	HRESULT Loading_Prototype();
+
+
 public:
 	static Loader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
 	virtual void Free() override;

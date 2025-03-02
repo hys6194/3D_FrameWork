@@ -31,7 +31,7 @@ public:
 public:
 	HRESULT			Add_PartObject(_uint iPrototypeLevel, const wstring& strPrototypeTag, _uint iPartIndex, void * pArg = nullptr);
 
-private:
+protected:
 	_uint						m_iNumPartObjects = {};
 	vector<class PartObject*>	m_vecParts;
 

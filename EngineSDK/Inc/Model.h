@@ -16,6 +16,9 @@ public:
 		return m_iNumMeshes;
 	}
 
+	const _float4x4* Get_BoneMatrix(const _char* pBoneName);
+
+public:
 	void Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop = false);
 
 public:
@@ -40,7 +43,7 @@ private:
 	vector<class Mesh*>					m_vecMesh;
 
 	_uint								m_iNumMaterials = {};
-	vector<class MeshMaterial*>		m_vecMaterial;
+	vector<class MeshMaterial*>			m_vecMaterial;
 
 	vector<class Bone*>					m_vecBone;
 

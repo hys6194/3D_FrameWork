@@ -11,18 +11,19 @@ END
 
 BEGIN(Client)
 
-class Body_Player final : public PartObject
+class Weapon final : public PartObject
 {
 public:
-	typedef struct tagBodyPlayerDesc : public PartObject::PARTOBJ_DESC
+	typedef struct tagWeaponDesc : public PartObject::PARTOBJ_DESC
 	{
+		const _float4x4* pSocketMatrix;
 		const _uint* pTargetState = { nullptr };
-	}BODY_PLAYER_DESC;
+	}WEAPON_DESC;
 
 private:
-	Body_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Body_Player(const Body_Player& Prototype);
-	virtual ~Body_Player() = default;
+	Weapon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	Weapon(const Weapon& Prototype);
+	virtual ~Weapon() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -37,15 +38,16 @@ private:
 	Model*  m_pModelCom = { nullptr };
 
 private:
-	const _uint* m_pTargetState = { nullptr }; //플레이어의 상태를 가져와서 애니메이션의 상태를 변경하려고 함
+	const _float4x4* m_pSocketMatrix = { nullptr };	// 특정 뼈에 붙이려고 하는 소켓의 매트릭스
+	const _uint* m_pTargetState = { nullptr };		//플레이어의 상태를 가져와서 애니메이션의 상태를 변경하려고 함
 
 private:
-	HRESULT Ready_Components();
 	HRESULT Bind_SR();
+	HRESULT Ready_Components();
 
 
 public:
-	static Body_Player* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static Weapon* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual GameObject* Clone(void* pArg);
 	virtual void Free() override;
 };

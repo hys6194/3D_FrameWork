@@ -3,6 +3,9 @@
 #include "Client_Defines.h"
 #include "ContainerObject.h"
 
+BEGIN(Engine)
+class FSM;
+END
 
 BEGIN(Client)
 
@@ -13,7 +16,9 @@ public:
 	enum STATE {
 		STATE_IDLE = 0x00000001,
 		STATE_WALK = 0x00000002,
-		STATE_ATTACK = 0x00000004,
+		STATE_JUMP = 0x00000004,
+		STATE_DOUBLEJUMP = 0x00000008,
+		STATE_ATTACK = 0x00000016,
 		STATE_NONE = 0x00000000,
 	};
 
@@ -37,6 +42,7 @@ public:
 //	CModel*						m_pModelCom = { nullptr };
 private:
 	_uint					m_iState = { STATE_NONE };
+	FSM*					m_pFSMCom = { nullptr };
 
 private:
 	HRESULT Ready_Components();

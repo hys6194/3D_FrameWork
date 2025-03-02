@@ -16,11 +16,7 @@ HRESULT Level_Loading::Initialize(LEVEL eLevelID)
 	m_eLevelID = eLevelID;
 
 	m_pLoader = Loader::Create(m_pDevice, m_pContext, eLevelID);
-
-	if (nullptr == m_pLoader)
-	{
-		return E_FAIL;
-	}
+	NULL_CHECK_RETURN(m_pLoader, E_FAIL);
 
 	return S_OK;
 }
@@ -33,32 +29,31 @@ void Level_Loading::Update(_float fTimeDelta)
 
 	if (true == m_pLoader->isFinished())
 	{
-		if (GetKeyState(VK_RETURN) & 0x8000)
+		Level* pLevel = { nullptr };
+
+		switch (m_eLevelID)
 		{
-			Level* pLevel = { nullptr };
-
-			switch (m_eLevelID)
-			{
-			case LEVEL_LOGO:
-				pLevel = Level_Logo::Create(m_pDevice, m_pContext);
-				break;
-			case LEVEL_MENU:
-				pLevel = Level_Menu::Create(m_pDevice, m_pContext);
-				break;
-			case LEVEL_GAMEPLAY:
-				pLevel = Level_GamePlay::Create(m_pDevice, m_pContext);
-				break;
-			default:
-				break;
-			}
-
-			if (nullptr == pLevel)
-				return;
-
-			if (FAILED(m_pGameInstance->Open_Level(m_eLevelID, pLevel)))
-				return;
-
+		case LEVEL_LOGO:
+			pLevel = Level_Logo::Create(m_pDevice, m_pContext);
+			break;
+		case LEVEL_MENU:
+			pLevel = Level_Menu::Create(m_pDevice, m_pContext);
+			break;
+		case LEVEL_GAMEPLAY:
+			pLevel = Level_GamePlay::Create(m_pDevice, m_pContext);
+			break;
+		default:
+			break;
 		}
+
+		if (nullptr == pLevel) return;
+
+		if (FAILED(m_pGameInstance->Open_Level(m_eLevelID, pLevel)))
+			return;
+		//if (GetKeyState(VK_RETURN) & 0x8000)
+		//{
+		//
+		//}
 	}
 }
 

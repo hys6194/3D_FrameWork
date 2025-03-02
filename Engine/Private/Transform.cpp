@@ -44,7 +44,7 @@ _float3 Transform::Update_Scale()
 HRESULT Transform::Go_Straight(_float fTimeDelta)
 {
     // 위치 가져오기
-    _vector vPos = Get_State(STATE_POSITION);
+    _vector vPos = Get_State(STATE_POS);
 
     // Look 벡터 가져오기
     _vector vLook = Get_State(STATE_LOOK);
@@ -53,7 +53,7 @@ HRESULT Transform::Go_Straight(_float fTimeDelta)
     vPos += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
     // 계산한 Vector를 position에 대입한다
-    Set_State(STATE_POSITION, vPos);
+    Set_State(STATE_POS, vPos);
 
     return S_OK;
 }
@@ -61,7 +61,7 @@ HRESULT Transform::Go_Straight(_float fTimeDelta)
 HRESULT Transform::Go_Backward(_float fTimeDelta)
 {
     // 위치 가져오기
-    _vector vPos = Get_State(STATE_POSITION);
+    _vector vPos = Get_State(STATE_POS);
 
     // Look 벡터 가져오기
     _vector vLook = Get_State(STATE_LOOK);
@@ -70,7 +70,7 @@ HRESULT Transform::Go_Backward(_float fTimeDelta)
     vPos -= XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
     // 계산한 Vector를 position에 대입한다
-    Set_State(STATE_POSITION, vPos);
+    Set_State(STATE_POS, vPos);
 
     return S_OK;
 }
@@ -78,7 +78,7 @@ HRESULT Transform::Go_Backward(_float fTimeDelta)
 HRESULT Transform::Go_Right(_float fTimeDelta)
 {
     // 위치 가져오기
-    _vector vPos = Get_State(STATE_POSITION);
+    _vector vPos = Get_State(STATE_POS);
 
     // Right 벡터 가져오기
     _vector vRight = Get_State(STATE_RIGHT);
@@ -87,7 +87,7 @@ HRESULT Transform::Go_Right(_float fTimeDelta)
     vPos += XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
 
     // 계산한 Vector를 Position에 대입한다
-    Set_State(STATE_POSITION, vPos);
+    Set_State(STATE_POS, vPos);
 
     return S_OK;
 }
@@ -95,7 +95,7 @@ HRESULT Transform::Go_Right(_float fTimeDelta)
 HRESULT Transform::Go_Left(_float fTimeDelta)
 {
     // 위치 가져오기
-    _vector vPos = Get_State(STATE_POSITION);
+    _vector vPos = Get_State(STATE_POS);
 
     // Right 벡터 가져오기
     _vector vRight = Get_State(STATE_RIGHT);
@@ -104,7 +104,15 @@ HRESULT Transform::Go_Left(_float fTimeDelta)
     vPos -= XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
 
     // 계산한 Vector를 position에 대입한다
-    Set_State(STATE_POSITION, vPos);
+    Set_State(STATE_POS, vPos);
+
+    return S_OK;
+}
+
+HRESULT Transform::Jump(_float fTimeDelta)
+{
+    _vector vPos = Get_State(STATE_POS);
+    
 
     return S_OK;
 }
@@ -114,7 +122,7 @@ HRESULT Transform::LookAt(_vector vAt)
     // 카메라에서 쓰이는 함수
 
     _float3 vScale = Update_Scale();
-    _vector vPos = Get_State(STATE_POSITION);
+    _vector vPos = Get_State(STATE_POS);
     _vector vRight = Get_State(STATE_RIGHT);
     _vector vUp = Get_State(STATE_UP);
     _vector vLook = Get_State(STATE_LOOK);

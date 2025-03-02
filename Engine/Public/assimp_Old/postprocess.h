@@ -612,7 +612,7 @@ enum aiPostProcessSteps
  * in your application apply the #aiProcess_TransformUVCoords step, too.
  *  @note Please take the time to read the docs for the steps enabled by this preset.
  *  Some of them offer further configurable properties, while some of them might not be of
- *  use for you so it might be better to not specify them.
+ *  use for you so it might be bettzer to not specify them.
  */
 #define aiProcessPreset_TargetRealtime_Fast ( \
     aiProcess_CalcTangentSpace      |  \

@@ -41,6 +41,22 @@ Model::Model(const Model& Prototype)
         Safe_AddRef(pMesh);
 }
 
+const _float4x4* Model::Get_BoneMatrix(const _char* pBoneName)
+{
+    auto iter = find_if(m_vecBone.begin(), m_vecBone.end(), [&](Bone* pBone)->_bool
+        {
+            if (true == pBone->Compare_Name(pBoneName))
+                return true;
+
+            return false;
+        });
+
+    if (iter == m_vecBone.end())
+        return nullptr;
+
+    return (*iter)->Get_CombinedTransformfloat4x4ptr();
+}
+
 void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop)
 {
 

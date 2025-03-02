@@ -17,7 +17,7 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Logo1(const _tchar* pLayerTag);
 
 private:
 	_float				m_fTotalTime = {0};

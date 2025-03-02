@@ -28,6 +28,9 @@
 	
 #define NULL_CHECK_RETURN_MSG( _ptr, _return, _message )	\
 	{if( _ptr == 0){MessageBox(NULL, _message, L"System Message",MB_OK);return _return;}}
+
+#define NULL_CHECK_NULLPTR( _ptr)	\
+	{if( (_ptr) == nullptr ){return decltype(_ptr){};}}
 	
 #define FAILED_CHECK(_hr)	if( ((HRESULT)(_hr)) < 0 )	\
 	{ MessageBoxW(NULL, L"Failed", L"System Error",MB_OK);  return E_FAIL;}
