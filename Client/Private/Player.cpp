@@ -3,6 +3,7 @@
 #include "ContainerObject.h"
 #include "Body_Player.h"
 #include "Weapon.h"
+#include "State.h"
 
 Player::Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: ContainerObject{ pDevice, pContext }
@@ -52,6 +53,10 @@ void Player::Priority_Update(_float fTimeDelta)
 			m_iState ^= STATE_IDLE;
 		m_iState |= STATE_WALK;
 	}
+
+	//if (GetKeyState(VK_SPACE) & 0x8000)
+	//	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+
 	else
 	{
 		m_iState = STATE_IDLE;
@@ -79,7 +84,6 @@ HRESULT Player::Ready_Components()
 {
 
 
-
 	return S_OK;
 }
 
@@ -100,7 +104,7 @@ HRESULT Player::Ready_PartObjects()
 	WDesc.pTargetState = &m_iState;
 
 
-	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), PART_WEAPON, &WDesc), E_FAIL);
+	//FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), PART_WEAPON, &WDesc), E_FAIL);
 
 	return S_OK;
 }

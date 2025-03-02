@@ -31,7 +31,7 @@ HRESULT Weapon::Initialize(void* pArg)
 
     m_pTransformCom->SetUp_Scaled(0.1f, 0.1f, 0.1f);
     m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
-    m_pTransformCom->Set_State(Transform::STATE_POSITION, XMVectorSet(0.7f, 0.f, 0.f, 1.f));
+    m_pTransformCom->Set_State(Transform::STATE_POS, XMVectorSet(0.7f, 0.f, 0.f, 1.f));
 
     
     //m_pModelCom->Set_AnimationIndex(3);
@@ -97,7 +97,7 @@ HRESULT Weapon::Render()
 
 HRESULT Weapon::Ready_Components()
 {
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_ForkLift"),
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Test"),
         reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),

@@ -38,7 +38,7 @@ HRESULT Camera::Initialize(void* pArg)
 	// float4x4의 한 행을 저장해야 하는데 float3로 하면 행렬 값이 이상해진다
 	// 따라서 XMVectorSetW을 통해 float4 형식으로 바꾼다
 	// 항등으로 만들어야 행렬 변환 때 의도적인 행렬 변환이 이루어 지므로 w값을 1로 세팅
-	m_pTransformCom->Set_State(Transform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&pDesc->vEye), 1.f));
+	m_pTransformCom->Set_State(Transform::STATE_POS, XMVectorSetW(XMLoadFloat3(&pDesc->vEye), 1.f));
 	m_pTransformCom->LookAt(XMVectorSetW(XMLoadFloat3(&pDesc->vAt), 1.f));
 	
 

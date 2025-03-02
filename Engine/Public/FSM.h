@@ -22,8 +22,8 @@ public:
 
 
 private:
-	map<const _wstring, class State*> m_mapFSM;
-
+	map<const _int, class State*> m_mapFSM;
+	vect9<State*>					m_vecFSM;
 
 public:
 	static FSM* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -61,6 +61,15 @@
     <Filter Include="02.GameObjects\Player\Weapon">
       <UniqueIdentifier>{c68ee220-913f-4c35-bb59-0954470ccdc5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Player\States\Idle">
+      <UniqueIdentifier>{dbd283a1-9292-4d91-a81b-f9088f0e09b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\States\Walk">
+      <UniqueIdentifier>{d5ea1b84-2b22-4b18-aaae-47d89340f674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\States\Run">
+      <UniqueIdentifier>{899b674e-1f1a-4778-ba1e-2bada67253a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -116,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Weapon.h">
       <Filter>02.GameObjects\Player\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Test.h">
+      <Filter>02.GameObjects\Player\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Weapon.cpp">
       <Filter>02.GameObjects\Player\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Test.cpp">
+      <Filter>02.GameObjects\Player\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

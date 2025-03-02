@@ -12,7 +12,7 @@ protected:
 
 public:
 	virtual HRESULT Enter_State() = 0;
-	virtual HRESULT Update_State() = 0;
+	virtual void Update_State() = 0;
 	virtual HRESULT Exit_State() = 0;
 
 public:

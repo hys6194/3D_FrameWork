@@ -52,9 +52,9 @@ void Body_Player::Update(_float fTimeDelta)
 {
 
     if (*m_pTargetState & Player::STATE_IDLE)
-        m_pModelCom->Set_AnimationIndex(3, true);
-    if (*m_pTargetState & Player::STATE_WALK)
         m_pModelCom->Set_AnimationIndex(4, true);
+    if (*m_pTargetState & Player::STATE_WALK)
+        m_pModelCom->Set_AnimationIndex(3, true);
 
     m_pModelCom->Play_Animation(fTimeDelta);
 
@@ -97,7 +97,7 @@ HRESULT Body_Player::Render()
 
 HRESULT Body_Player::Ready_Components()
 {
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Test"),
         reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
@@ -105,7 +105,7 @@ HRESULT Body_Player::Ready_Components()
 
     return S_OK;
 }
-
+ 
 HRESULT Body_Player::Ready_SocketMatrices()
 {
     NULL_CHECK_RETURN(m_pShaderCom, E_FAIL);

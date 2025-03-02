@@ -31,7 +31,7 @@ HRESULT Monster::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(Transform::STATE_POSITION,
+	m_pTransformCom->Set_State(Transform::STATE_POS,
 		XMVectorSet(m_pGameInstance->Random(0, 10), 1.f,
 			m_pGameInstance->Random(0, 10), 1.f));
 

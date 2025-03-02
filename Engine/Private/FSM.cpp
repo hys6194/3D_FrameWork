@@ -22,10 +22,13 @@ HRESULT FSM::Add_State(const _wstring& strStateTag, class State* pState)
 {
     //if (FAILED(Find_State(strStateTag)))
     //    return E_FAIL;
+    if (nullptr == pState)
+        return E_FAIL;
 
     if(FAILED(Find_State(strStateTag)))
         m_mapFSM.emplace(strStateTag, pState);
 
+    
 
     return S_OK;
 }

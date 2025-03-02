@@ -17,7 +17,7 @@ public:
 	}TRANSFORM_DESC;
 
 public:
-	enum STATE { STATE_RIGHT, STATE_UP, STATE_LOOK, STATE_POSITION, STATE_END };
+	enum STATE { STATE_RIGHT, STATE_UP, STATE_LOOK, STATE_POS, STATE_END };
 
 public:
 
@@ -52,6 +52,7 @@ public:
 	HRESULT		Go_Backward(_float fTimeDelta);
 	HRESULT		Go_Right(_float fTimeDelta);
 	HRESULT		Go_Left(_float fTimeDelta);
+	HRESULT		Jump(_float fTimeDelta);
 	HRESULT		LookAt(_vector vAt);
 	void		Turn(_fvector vAxis, _float fTimeDelta);
 	void		Rotation(_fvector vAxis, _float fRadian);
