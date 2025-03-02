@@ -1,6 +1,6 @@
 #pragma once
 
-#include"Base.h"
+#include "Base.h"
 
 BEGIN(Engine)
 
@@ -16,9 +16,9 @@ public:
 	virtual HRESULT Exit_State() = 0;
 
 protected:
-	_uint					m_iState;
-	ID3D11Device*			m_pDevice;
-	ID3D11DeviceContext*	m_pContext;
+	_uint					m_iState = {};
+	ID3D11Device* m_pDevice = { nullptr };
+	ID3D11DeviceContext* m_pContext = { nullptr };
 
 
 public:

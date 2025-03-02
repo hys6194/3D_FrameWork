@@ -18,7 +18,7 @@ HRESULT FSM::Initialize(void* pArg)
     return S_OK;
 }
 
-HRESULT FSM::Add_State(const _wstring& strStateTag, class State* pState)
+HRESULT FSM::Add_State(const _uint strStateTag, class State* pState)
 {
     //if (FAILED(Find_State(strStateTag)))
     //    return E_FAIL;
@@ -26,14 +26,14 @@ HRESULT FSM::Add_State(const _wstring& strStateTag, class State* pState)
         return E_FAIL;
 
     if(FAILED(Find_State(strStateTag)))
-        m_mapFSM.emplace(strStateTag, pState);
+        m_mapFSM.insert({ strStateTag, pState });
 
-    
+ 
 
     return S_OK;
 }
 
-HRESULT FSM::Find_State(const _wstring& strStateTag)
+HRESULT FSM::Find_State(const _uint& strStateTag)
 {
     //auto iter = find_if(m_mapFSM.begin(), m_mapFSM.end(),[&](State* pState)->_bool 
     //{

@@ -209,4 +209,7 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
 </Project>

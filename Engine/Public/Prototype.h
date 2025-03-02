@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Terrain.h"
+#include "FSM.h"
 
 BEGIN(Engine)
 

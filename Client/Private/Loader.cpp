@@ -169,8 +169,6 @@ HRESULT Loader::Loading_Textures()
 			Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Logo/UI_StudioLogo_THQNordic1.png")))))
 			return E_FAIL;
 
-
-
 		break;
 	case LEVEL_GAMEPLAY:
 
@@ -322,6 +320,11 @@ HRESULT Loader::Loading_Prototype()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"),
 			Weapon::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
+			FSM::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 
 		break;
 	default:

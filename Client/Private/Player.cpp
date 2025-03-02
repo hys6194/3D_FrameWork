@@ -82,7 +82,7 @@ HRESULT Player::Render()
 
 HRESULT Player::Ready_Components()
 {
-
+	//if(FAILED(__super::Add_Component(LEVEL_GAMEPLAY, )))
 
 	return S_OK;
 }

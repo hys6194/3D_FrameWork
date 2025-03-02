@@ -1,11 +1,15 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "State.h"
+#include "Base.h"
+
+BEGIN(Engine)
+class State;
+END
 
 BEGIN(Client)
 
-class ENGINE_DLL PlayerState_Test : public State
+class PlayerState_Test : public State
 {
 private	:
 	PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
