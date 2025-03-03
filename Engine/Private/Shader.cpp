@@ -83,6 +83,7 @@ HRESULT Shader::Begin(_uint iPassIndex)
 
     m_pContext->IASetInputLayout(m_InputLayouts[iPassIndex]);
 
+    // hlsl에서 만든 테크니커의 몇 번째 테크니커의 무슨 패스를 불러올지 선언
     ID3DX11EffectPass* pPass = m_pEffect->GetTechniqueByIndex(0)->GetPassByIndex(iPassIndex);
     if (nullptr == pPass)
         return E_FAIL;

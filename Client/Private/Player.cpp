@@ -4,6 +4,7 @@
 #include "Body_Player.h"
 #include "Weapon.h"
 #include "State.h"
+#include "PlayerState_Test.h"
 
 Player::Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: ContainerObject{ pDevice, pContext }
@@ -33,6 +34,8 @@ HRESULT Player::Initialize(void* pArg)
 	FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
 
+	FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
+
 	return S_OK;
 }
 
@@ -51,7 +54,7 @@ void Player::Priority_Update(_float fTimeDelta)
 
 		if (m_iState & STATE_IDLE)
 			m_iState ^= STATE_IDLE;
-		m_iState |= STATE_WALK;
+		m_iState |= STATE_RUN;
 	}
 
 	//if (GetKeyState(VK_SPACE) & 0x8000)
@@ -60,6 +63,7 @@ void Player::Priority_Update(_float fTimeDelta)
 	else
 	{
 		m_iState = STATE_IDLE;
+		m_pFSMCom->Change_State(STATE_IDLE);
 	}
 
 	__super::Priority_Update(fTimeDelta);
@@ -82,7 +86,8 @@ HRESULT Player::Render()
 
 HRESULT Player::Ready_Components()
 {
-	//if(FAILED(__super::Add_Component(LEVEL_GAMEPLAY, )))
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
+		reinterpret_cast<Component**>(&m_pFSMCom), TEXT("Com_FSM")), E_FAIL);
 
 	return S_OK;
 }
@@ -105,6 +110,16 @@ HRESULT Player::Ready_PartObjects()
 
 
 	//FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), PART_WEAPON, &WDesc), E_FAIL);
+
+	return S_OK;
+}
+
+HRESULT Player::Ready_States()
+{
+	PlayerState_Test* pState = PlayerState_Test::Create(m_pDevice, m_pContext, STATE_IDLE, this);	
+	NULL_CHECK_RETURN(pState, E_FAIL);
+
+	m_pFSMCom->Add_State(STATE_IDLE, pState);
 
 	return S_OK;
 }
@@ -144,4 +159,6 @@ GameObject* Player::Clone(void* pArg)
 void Player::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pFSMCom);
 }

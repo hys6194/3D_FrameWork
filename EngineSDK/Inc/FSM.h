@@ -1,7 +1,7 @@
 #pragma once
 
+#include "GameObject.h"
 #include "Component.h"
-
 
 BEGIN(Engine)
 
@@ -9,6 +9,7 @@ class ENGINE_DLL FSM : public Component
 {
 protected:
 	FSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	FSM(const FSM& Prototype);
 	virtual ~FSM() = default;
 
 public:
@@ -16,17 +17,24 @@ public:
 	HRESULT Initialize(void* pArg);
 
 public:
-	HRESULT Add_State(const _uint strStateTag, class State* pState);
-	HRESULT Find_State(const _uint& strStateTag);
+	HRESULT Add_State(const _uint& iState, class State* pState);
+	State* Find_State(const _uint& iState);
 	HRESULT Delete_State();
+
+public:
+	HRESULT Change_State(const _uint& iState);
 
 
 private:
-	map<const _uint, class State*> m_mapFSM;
+	map<const _uint, class State*>	m_mapFSM;
+	_uint							m_iCurrentState = {0};
+	State*							m_pCurrentState;
+	GameObject*						m_pOwner;
+
 
 public:
 	static FSM* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual Component* Clone(void* pArg);
+	virtual Component* Clone(void* pArg = nullptr);
 	virtual void Free() override;
 
 };

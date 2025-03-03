@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "Camera_Free.h"
+#include "TP_Camera.h"
 #include "BackGround.h"
 #include "Terrain.h"
 #include "Monster.h"
@@ -315,6 +316,10 @@ HRESULT Loader::Loading_Prototype()
 		/* Prototype_GameObject_Camera_Free */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
 			Camera_Free::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TP_Camera"),
+			TP_Camera::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"),

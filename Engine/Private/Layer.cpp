@@ -31,9 +31,20 @@ void Layer::Late_Update(_float fTimeDelta)
 		pGameObject->Late_Update(fTimeDelta);
 }
 
+GameObject* Layer::Find_Object(const _tchar* strObjectTag)
+{
+	for (auto& iter : m_GameObjects)
+	{
+		if(true == iter->Compare_Name(strObjectTag))
+			return iter;
+	}
+
+	return nullptr;
+}
+
 Layer* Layer::Create()
 {
-      return new Layer;
+	return new Layer;
 }
 
 void Layer::Free()

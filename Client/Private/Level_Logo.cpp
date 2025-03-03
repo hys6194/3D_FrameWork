@@ -23,7 +23,7 @@ void Level_Logo::Update(_float fTimeDelta)
 
 	m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
 
-	if (/*GetKeyState(VK_SPACE) & 0x8000 &&*/ 4.f < m_fTotalTime)
+	if (/*GetKeyState(VK_SPACE) & 0x8000 &&*/ 0.1f < m_fTotalTime)
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
 			return;
@@ -42,8 +42,8 @@ HRESULT Level_Logo::Ready_Layer_Logo1(const _tchar* pLayerTag)
 	// 선생님은 가로, 세로 1인 길이로 그리려고 0.5로 준 것이다
 	UIDesc.fX = g_iWinSizeX  >> 1;
 	UIDesc.fY = g_iWinSizeY >> 1;
-	UIDesc.fSizeX = g_iWinSizeY;
-	UIDesc.fSizeY = g_iWinSizeY;
+	UIDesc.fSizeX = 800;
+	UIDesc.fSizeY = 200;
 	lstrcpy(UIDesc.szGameObjectTag, TEXT("GAMEOBJECT_UI_BACKGROUND"));
 	UIDesc.fSpeedPerSec = 10.f;
 	UIDesc.fRotationPerSec = XMConvertToRadians(180.f);

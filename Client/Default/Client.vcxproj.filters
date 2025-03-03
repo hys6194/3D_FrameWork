@@ -70,6 +70,12 @@
     <Filter Include="02.GameObjects\Player\States\Run">
       <UniqueIdentifier>{899b674e-1f1a-4778-ba1e-2bada67253a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Camera\Free">
+      <UniqueIdentifier>{bfe9057b-f981-4a38-bdbc-938ff585fcef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Camera\ThridPerson">
+      <UniqueIdentifier>{e154e523-bcd0-42ee-8098-1191dfc62c56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -114,9 +120,6 @@
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02.GameObjects\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Camera_Free.h">
-      <Filter>02.GameObjects\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Player.h">
       <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
@@ -128,6 +131,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Test.h">
       <Filter>02.GameObjects\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Free.h">
+      <Filter>02.GameObjects\Camera\Free</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TP_Camera.h">
+      <Filter>02.GameObjects\Camera\ThridPerson</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -174,9 +183,6 @@
     <ClCompile Include="..\Private\Terrain.cpp">
       <Filter>02.GameObjects\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Camera_Free.cpp">
-      <Filter>02.GameObjects\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Player.cpp">
       <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
@@ -188,6 +194,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Test.cpp">
       <Filter>02.GameObjects\Player\States</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Free.cpp">
+      <Filter>02.GameObjects\Camera\Free</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TP_Camera.cpp">
+      <Filter>02.GameObjects\Camera\ThridPerson</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

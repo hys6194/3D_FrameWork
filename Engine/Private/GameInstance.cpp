@@ -3,6 +3,8 @@
 
 #include "Graphic_Device.h"
 #include "Object_Manager.h"	
+#include "Layer.h"
+#include "GameObject.h"
 #include "Timer_Manager.h"
 #include "Level_Manager.h"
 #include "Input_Device.h"
@@ -183,6 +185,16 @@ HRESULT GameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring&
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
 }
 
+Layer* GameInstance::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pObject_Manager->Find_Layer(iLevelIndex, strLayerTag);
+}
+
+GameObject* GameInstance::Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag)
+{
+	return m_pObject_Manager->Get_GameObject(iLevelIndex, strLayerTag, strObjectTag);
+}
+
 #pragma endregion
 
 #pragma region RENDERER
@@ -219,7 +231,6 @@ const _float4* GameInstance::Get_CamPosition() const
 {
 	return m_pPipeLine->Get_CamPosition();
 }
-
 
 void GameInstance::Set_Transform(PipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)
 {
