@@ -52,10 +52,15 @@ HRESULT FSM::Delete_State()
 HRESULT FSM::Change_State(const _uint& iState)
 {
     auto iter = Find_State(iState);
+    if (nullptr == iter || 
+        m_pCurrentState == iter)
+        return E_FAIL;
 
 
 
+    m_pCurrentState = iter;
     m_iCurrentState = iState;
+    m_pCurrentState->Enter_State();
 
     return S_OK;
 }

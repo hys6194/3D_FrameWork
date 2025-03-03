@@ -27,6 +27,7 @@ public:
 private:
 	map<const _uint, class State*>	m_mapFSM;
 	_uint							m_iCurrentState = {0};
+	State*							m_pCurrentState;
 
 
 public:

@@ -15,6 +15,7 @@ GameObject::GameObject(const GameObject& Prototype)
     : m_pDevice{ Prototype.m_pDevice }
     , m_pContext{ Prototype.m_pContext }
     , m_pGameInstance{ Prototype.m_pGameInstance }
+   /* , m_pTransformCom{ Prototype.m_pTransformCom }*/
 {
     Safe_AddRef(m_pDevice);
     Safe_AddRef(m_pContext);
@@ -65,7 +66,7 @@ HRESULT GameObject::Render()
 
 HRESULT GameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag, Component** ppOut, const _wstring& strComponentTag, void* pArg)
 {
-    //
+    // Component 사본객체 생성
     Component* pComponent = dynamic_cast<Component*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_COMPONENT, iLevelIndex, strPrototypeTag, pArg));
     if (nullptr == pComponent)
         return E_FAIL;

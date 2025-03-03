@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "Base.h"
+#include "State.h"
 
 BEGIN(Engine)
 class State;
@@ -22,7 +22,7 @@ public:
 
 public:
 	static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState);
-	virtual void Free() override;
+	virtual void Free();
 };
 
 END
