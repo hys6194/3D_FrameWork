@@ -8,6 +8,11 @@ FSM::FSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     Safe_AddRef(m_pContext);
 }
 
+FSM::FSM(const FSM& Prototype)
+    :Component{ Prototype }
+{
+}
+
 HRESULT FSM::Initialize_Prototype()
 {
     return S_OK;
@@ -18,42 +23,40 @@ HRESULT FSM::Initialize(void* pArg)
     return S_OK;
 }
 
-HRESULT FSM::Add_State(const _uint strStateTag, class State* pState)
+HRESULT FSM::Add_State(const _uint& iState, class State* pState)
 {
-    //if (FAILED(Find_State(strStateTag)))
-    //    return E_FAIL;
     if (nullptr == pState)
         return E_FAIL;
-
-    if(FAILED(Find_State(strStateTag)))
-        m_mapFSM.insert({ strStateTag, pState });
-
- 
+   
+    if(nullptr == Find_State(iState))
+        m_mapFSM.insert({ iState, pState });
 
     return S_OK;
 }
 
-HRESULT FSM::Find_State(const _uint& strStateTag)
+State* FSM::Find_State(const _uint& iState)
 {
-    //auto iter = find_if(m_mapFSM.begin(), m_mapFSM.end(),[&](State* pState)->_bool 
-    //{
-    //     if (0 != pState->Compare_StateName(strStateTag))
-    //     {
-    //         MSG_BOX("Failed_Find_State");
-    //         return E_FAIL;
-    //     }
-    //});
-
-    auto iter = m_mapFSM.find(strStateTag);
+    auto iter = m_mapFSM.find(iState);
 
     if (iter == m_mapFSM.end())
-        return E_FAIL;
+        return nullptr;
 
-    return S_OK;
+    return iter->second;
 }
 
 HRESULT FSM::Delete_State()
 {
+    return S_OK;
+}
+
+HRESULT FSM::Change_State(const _uint& iState)
+{
+    auto iter = Find_State(iState);
+
+
+
+    m_iCurrentState = iState;
+
     return S_OK;
 }
 

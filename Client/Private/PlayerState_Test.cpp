@@ -1,4 +1,5 @@
 #include "PlayerState_Test.h"
+#include "State.h"
 
 PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:State{pDevice, pContext}
