@@ -20,6 +20,8 @@ HRESULT FSM::Initialize_Prototype()
 
 HRESULT FSM::Initialize(void* pArg)
 {
+    m_pOwner = static_cast<GameObject*>(pArg);
+
     return S_OK;
 }
 
@@ -55,8 +57,6 @@ HRESULT FSM::Change_State(const _uint& iState)
     if (nullptr == iter || 
         m_pCurrentState == iter)
         return E_FAIL;
-
-
 
     m_pCurrentState = iter;
     m_iCurrentState = iState;

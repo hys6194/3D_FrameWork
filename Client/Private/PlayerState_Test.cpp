@@ -11,7 +11,7 @@ HRESULT PlayerState_Test::Enter_State()
 	return S_OK;
 }
 
-void PlayerState_Test::Update_State()
+void PlayerState_Test::Update_State(_float fTimeDelta)
 {
 }
 
@@ -22,15 +22,16 @@ HRESULT PlayerState_Test::Exit_State()
 
 PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState)
 {
-	PlayerState_Test* pInstance = new PlayerState_Test( pDevice, pContext );
+	//PlayerState_Test* pInstance = new PlayerState_Test( pDevice, pContext );
 
-	//if (FAILED(pInstance->Enter_State()))
 	//{
 	//	MSG_BOX("Failed To Created : PlayerState_Test");
 	//	Safe_Release(pInstance);
 	//}
 
-	return pInstance;
+	//return pInstance;
+
+	return new PlayerState_Test(pDevice, pContext);
 }
 
 void PlayerState_Test::Free()

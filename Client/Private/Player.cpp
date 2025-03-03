@@ -82,9 +82,8 @@ HRESULT Player::Render()
 
 HRESULT Player::Ready_Components()
 {
-	if(FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
-		reinterpret_cast<Component**>(&m_pFSMCom), TEXT("Com_FSM"), this)))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
+		reinterpret_cast<Component**>(&m_pFSMCom), TEXT("Com_FSM"), this), E_FAIL);
 
 	return S_OK;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameObject.h"
 #include "Component.h"
 
 BEGIN(Engine)
@@ -27,6 +28,8 @@ public:
 private:
 	map<const _uint, class State*>	m_mapFSM;
 	_uint							m_iCurrentState = {0};
+	State*							m_pCurrentState;
+	GameObject*						m_pOwner;
 
 
 public:

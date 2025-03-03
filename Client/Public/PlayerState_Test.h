@@ -17,7 +17,7 @@ private	:
 
 public:
 	virtual HRESULT Enter_State();
-	virtual void Update_State();
+	virtual void Update_State(_float fTimeDelta);
 	virtual HRESULT Exit_State();
 
 public:
