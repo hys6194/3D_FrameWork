@@ -1,6 +1,7 @@
 #include "TP_Camera.h"
 
 #include "GameInstance.h"
+#include "GameObject.h"
 #include "Layer.h"
 
 TP_Camera::TP_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -30,57 +31,25 @@ HRESULT TP_Camera::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;	
 
-	Layer* pLayer = m_pGameInstance->Find_Layer(LEVEL_GAMEPLAY, TEXT("GameObject_Player"));
-
-	pLayer->Get_Object(TEXT("GameObject_Player"));
-
+	m_pPlayer = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
 
 	return S_OK;
 }
 
 void TP_Camera::Priority_Update(_float fTimeDelta)
 {
-	//if (m_pGameInstance->Get_DIKeyState(DIK_W) & 0x80)
-	//{
-	//	m_pTransformCom->Go_Straight(fTimeDelta);
-	//}
-	//if (GetKeyState('S') & 0x8000)
-	//{
-	//	m_pTransformCom->Go_Backward(fTimeDelta);
-	//}
-	//if (GetKeyState('A') & 0x8000)
-	//{
-	//	m_pTransformCom->Go_Left(fTimeDelta);
-	//}
-	//if (GetKeyState('D') & 0x8000)
-	//{
-	//	m_pTransformCom->Go_Right(fTimeDelta);
-	//}
-	//
-	//_long		MouseMove{};
-	//
-	//if (MouseMove = m_pGameInstance->Get_DIMouseMove(MOUSEMOVESTATE::DIMS_X))
-	//{
-	//	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * m_fMouseSensor);
-	//}
-	//
-	//if (MouseMove = m_pGameInstance->Get_DIMouseMove(MOUSEMOVESTATE::DIMS_Y))
-	//{
-	//	m_pTransformCom->Turn(m_pTransformCom->Get_State(Transform::STATE_RIGHT), fTimeDelta * MouseMove * m_fMouseSensor);
-	//}
+	_vector vPos = m_pPlayer->Get_Transform()->Get_State(Transform::STATE_POS);
+	_vector vEye = XMVectorSetW(XMLoadFloat3(&m_vCamEye), 1.f) + vPos;
 
-	// Todo : 플레이어의 위치를 가져와서 카메라의 위치 + 플레이어 위치 해야 함
-	// 카메라가 바라보는 방향은 플레이어의 위치로 한다
+	m_pTransformCom->Set_State(Transform::STATE_POS, vEye);
+	m_pTransformCom->Set_State(Transform::STATE_LOOK, vPos);
 
 	__super::Renew_Matrices();
 }
 
 void TP_Camera::Update(_float fTimeDelta)
 {
-	_vector vecEye = XMVectorSetW(XMLoadFloat3(&m_vCamEye), 1.f);
 
-
-	//m_pTransformCom->Set_State(Transform::STATE_POS, )
 }
 
 void TP_Camera::Late_Update(_float fTimeDelta)
@@ -96,11 +65,7 @@ HRESULT TP_Camera::Render()
 }
 
 HRESULT TP_Camera::Ready_Components()
-{
-	Layer* pLayer = m_pGameInstance->Find_Layer(LEVEL_GAMEPLAY, TEXT("GameObject_Player"));
-
-	pLayer->
-	
+{	
 	return S_OK;
 }
 

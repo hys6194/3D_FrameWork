@@ -190,9 +190,9 @@ Layer* GameInstance::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 	return m_pObject_Manager->Find_Layer(iLevelIndex, strLayerTag);
 }
 
-GameObject* GameInstance::Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag)
+GameObject* GameInstance::Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag)
 {
-	return m_pObject_Manager->Find_Layer(iLevelIndex, strLayerTag)->Get_Object(strLayerTag);
+	return m_pObject_Manager->Get_GameObject(iLevelIndex, strLayerTag, strObjectTag);
 }
 
 #pragma endregion

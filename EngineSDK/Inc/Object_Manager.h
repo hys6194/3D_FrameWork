@@ -22,10 +22,9 @@ public:
 	void Late_Update(_float fTimeDelta);
 	void Clear(_uint iLevelIndex);
 
-
 public:
 	class Layer* Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
-
+	class GameObject* Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
 
 private:
 	_uint								m_iNumLevels = { };

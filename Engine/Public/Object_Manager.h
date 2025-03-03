@@ -24,7 +24,7 @@ public:
 
 public:
 	class Layer* Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
-	class GameObject* Get_Object(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar& strObjectTag);
+	class GameObject* Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
 
 private:
 	_uint								m_iNumLevels = { };

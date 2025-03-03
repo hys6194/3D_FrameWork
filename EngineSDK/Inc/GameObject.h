@@ -29,10 +29,16 @@ public:
 	virtual HRESULT Render();
 
 public:
-	_tchar* Get_ObjectName()
+	_bool Compare_Name(const _tchar* strObjectTag) const
 	{
-		return m_szGameObjectTag;
-	}
+		return !lstrcmp(m_szGameObjectTag, strObjectTag);
+	};
+
+public:
+	Transform* Get_Transform()
+	{
+		return m_pTransformCom;
+	};
 
 
 protected:
@@ -40,7 +46,7 @@ protected:
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
 	class GameInstance*			m_pGameInstance = { nullptr };	
-	class Transform*			m_pTransformCom = { nullptr };
+	Transform*					m_pTransformCom = { nullptr };
 	_tchar						m_szGameObjectTag[MAX_PATH] = {};
 
 

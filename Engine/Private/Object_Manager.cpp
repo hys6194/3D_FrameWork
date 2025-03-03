@@ -95,13 +95,14 @@ Layer* Object_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag
     return iter->second;
 }
 
-GameObject* Object_Manager::Get_Object(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar& strObjectTag)
+GameObject* Object_Manager::Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag)
 {
-    Layer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
-
+    GameObject* pGameObeject = Find_Layer(iLevelIndex, strLayerTag)->Find_Object(strObjectTag);
     
+    if(nullptr == pGameObeject)
+        return nullptr;
 
-    return nullptr;
+    return pGameObeject;
 }
 
 Object_Manager* Object_Manager::Create(_uint iNumLevels)

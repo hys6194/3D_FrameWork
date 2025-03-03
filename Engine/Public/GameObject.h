@@ -28,13 +28,25 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	_bool Compare_Name(const _tchar* strObjectTag) const
+	{
+		return !lstrcmp(m_szGameObjectTag, strObjectTag);
+	};
+
+public:
+	Transform* Get_Transform()
+	{
+		return m_pTransformCom;
+	};
+
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
 	class GameInstance*			m_pGameInstance = { nullptr };	
-	class Transform*			m_pTransformCom = { nullptr };
+	Transform*					m_pTransformCom = { nullptr };
 	_tchar						m_szGameObjectTag[MAX_PATH] = {};
 
 

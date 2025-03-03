@@ -21,7 +21,7 @@ public:
 	void Late_Update(_float fTimeDelta);
 
 public:
-	GameObject* Get_Object(const _wstring& strLayerTag);
+	GameObject* Find_Object(const _tchar* strObjectTag);
 
 
 private:

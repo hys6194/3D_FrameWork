@@ -61,8 +61,7 @@ HRESULT FSM::Change_State(const _uint& iState)
     m_pCurrentState = iter;
     m_iCurrentState = iState;
 
-    m_pCurrentState->Get_Owner();
-    iter->Get_Owner();
+    //m_pCurrentState->Get_Owner()->;
 
     m_pCurrentState->Enter_State();
 
@@ -97,7 +96,6 @@ Component* FSM::Clone(void* pArg)
 
 void FSM::Free()
 {
-
     __super::Free();
 
     for (auto& Pair : m_mapFSM)
