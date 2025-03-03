@@ -47,6 +47,6 @@ void Light_Manager::Free()
         Safe_Release(iter);
     m_listLights.clear();
 
-    Safe_Release(m_pDevice);
-    Safe_Release(m_pContext);
+    //Safe_Release(m_pDevice);
+    //Safe_Release(m_pContext);
 }
