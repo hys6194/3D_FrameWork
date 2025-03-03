@@ -11,6 +11,7 @@ FSM::FSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 FSM::FSM(const FSM& Prototype)
     :Component{ Prototype }
 {
+
 }
 
 HRESULT FSM::Initialize_Prototype()
@@ -20,7 +21,6 @@ HRESULT FSM::Initialize_Prototype()
 
 HRESULT FSM::Initialize(void* pArg)
 {
-    m_pOwner = static_cast<GameObject*>(pArg);
 
     return S_OK;
 }
@@ -60,6 +60,10 @@ HRESULT FSM::Change_State(const _uint& iState)
 
     m_pCurrentState = iter;
     m_iCurrentState = iState;
+
+    m_pCurrentState->Get_Owner();
+    iter->Get_Owner();
+
     m_pCurrentState->Enter_State();
 
     return S_OK;
@@ -93,10 +97,15 @@ Component* FSM::Clone(void* pArg)
 
 void FSM::Free()
 {
+
     __super::Free();
+
+    for (auto& Pair : m_mapFSM)
+        Safe_Release(Pair.second);
     
     m_mapFSM.clear();
 
+    
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
 }

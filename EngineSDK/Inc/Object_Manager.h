@@ -3,7 +3,8 @@
 // 객체들의 원형을 복제한 사본객체들을 오브젝트 매니저에 레벨별로 모아둔다
 // 한 레벨 안에서 개발자가 선택한 기준으로 묶어서 보관한다(Layer)
 
-#include "Base.h" 
+#include "Base.h"
+
 
 BEGIN(Engine)
 
@@ -21,6 +22,11 @@ public:
 	void Late_Update(_float fTimeDelta);
 	void Clear(_uint iLevelIndex);
 
+
+public:
+	class Layer* Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
+
+
 private:
 	_uint								m_iNumLevels = { };
 	class GameInstance*					m_pGameInstance = { nullptr };
@@ -28,9 +34,6 @@ private:
 	map<const _wstring, class Layer*>*	m_pLayers = { nullptr };
 	//   map<const _wstring, class Layer*>*
 	// = map<const _wstring, list<GameObject*>>
-
-private:
-	class Layer* Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
 
 public:
 	static Object_Manager* Create(_uint iNumLevels);

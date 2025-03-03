@@ -64,6 +64,8 @@ public:
 
 #pragma region Object_MANAGER
 	HRESULT				Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
+	class Layer*		Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
+	GameObject			Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag);
 #pragma endregion
 
 #pragma region RENDERER

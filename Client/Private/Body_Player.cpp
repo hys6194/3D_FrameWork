@@ -52,9 +52,9 @@ void Body_Player::Update(_float fTimeDelta)
 {
 
     if (*m_pTargetState & Player::STATE_IDLE)
-        m_pModelCom->Set_AnimationIndex(4, true);
-    if (*m_pTargetState & Player::STATE_WALK)
-        m_pModelCom->Set_AnimationIndex(3, true);
+        m_pModelCom->Set_AnimationIndex(0, true);
+    if (*m_pTargetState & Player::STATE_RUN)
+        m_pModelCom->Set_AnimationIndex(6, true);
 
     m_pModelCom->Play_Animation(fTimeDelta);
 

@@ -15,7 +15,7 @@ public:
 	enum PARTOBJ { PART_BODY, PART_WEAPON, PART_EFFECT, PART_END };
 	enum STATE {
 		STATE_IDLE = 0x00000001,
-		STATE_WALK = 0x00000002,
+		STATE_RUN = 0x00000002,
 		STATE_JUMP = 0x00000004,
 		STATE_DOUBLEJUMP = 0x00000008,
 		STATE_ATTACK = 0x00000016,
@@ -47,6 +47,7 @@ private:
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_PartObjects();
+	HRESULT Ready_States();
 	HRESULT Bind_SR();
 
 public:

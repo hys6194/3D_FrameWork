@@ -21,7 +21,7 @@ public:
 	virtual HRESULT Exit_State();
 
 public:
-	static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState);
+	static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner);
 	virtual void Free();
 };
 

@@ -92,7 +92,16 @@ Layer* Object_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag
     if (iter == m_pLayers[iLevelIndex].end())
         return nullptr; 
     
-    return iter->second;    
+    return iter->second;
+}
+
+GameObject* Object_Manager::Get_Object(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar& strObjectTag)
+{
+    Layer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+    
+
+    return nullptr;
 }
 
 Object_Manager* Object_Manager::Create(_uint iNumLevels)
@@ -120,7 +129,6 @@ void Object_Manager::Free()
         m_pLayers[i].clear();
     }
     Safe_Delete_Array(m_pLayers);
-
 
     Safe_Release(m_pGameInstance);
 }

@@ -31,9 +31,17 @@ void Layer::Late_Update(_float fTimeDelta)
 		pGameObject->Late_Update(fTimeDelta);
 }
 
+GameObject* Layer::Get_Object(const _wstring& strLayerTag)
+{
+	for (auto iter : m_GameObjects)
+		iter->Compare_Name();
+
+	return 
+};
+
 Layer* Layer::Create()
 {
-      return new Layer;
+	return new Layer;
 }
 
 void Layer::Free()

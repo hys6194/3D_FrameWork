@@ -25,7 +25,7 @@ HRESULT Terrain::Initialize(void* pArg)
 	Desc.fRotationPerSec = 0.f;
 
 
-	if (FAILED(__super::Initialize(pArg)))
+	if (FAILED(__super::Initialize(&Desc)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))

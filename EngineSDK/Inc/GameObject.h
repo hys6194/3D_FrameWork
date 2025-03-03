@@ -28,6 +28,12 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	_tchar* Get_ObjectName()
+	{
+		return m_szGameObjectTag;
+	}
+
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };
