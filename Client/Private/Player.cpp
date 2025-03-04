@@ -14,6 +14,7 @@ Player::Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 Player::Player(const Player& Prototype)
 	: ContainerObject{ Prototype }
 {
+	Safe_AddRef(m_pFSMCom);
 }
 
 HRESULT Player::Initialize_Prototype()
@@ -41,12 +42,39 @@ HRESULT Player::Initialize(void* pArg)
 
 void Player::Priority_Update(_float fTimeDelta)
 {
+	_vector vLook = m_pTransformCom->Get_State(Transform::STATE_LOOK);
+	vLook = XMVector4Normalize(vLook);
+
+	
+
 	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+	{
 		m_pTransformCom->Go_Backward(fTimeDelta);
+	}
+
+	//축의 기준 회전
 	if (GetKeyState(VK_LEFT) & 0x8000)
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -1.f);
+	{
+		//if(!XMVector4Equal(vLook, AXIS_X))
+		//m_pTransformCom->Turn(-AXIS_Y, fTimeDelta);
+
+		//m_pTransformCom->Rotation(AXIS_Y, 270.f);
+		//m_pTransformCom->Set_State(Transform::STATE_LOOK, AXIS_X);
+
+
+		m_pTransformCom->Rotation(AXIS_Y, -90.f);
+		m_pTransformCom->Go_Left(fTimeDelta);
+	}
+
+	// Test
+	if (GetKeyState(VK_SPACE) & 0x8000)
+	{
+	}
+
 	if (GetKeyState(VK_RIGHT) & 0x8000)
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+	{
+		m_pTransformCom->Go_Right(fTimeDelta);
+	}
 
 	if (GetKeyState(VK_UP) & 0x8000)
 	{
@@ -57,13 +85,10 @@ void Player::Priority_Update(_float fTimeDelta)
 		m_iState |= STATE_RUN;
 	}
 
-	//if (GetKeyState(VK_SPACE) & 0x8000)
-	//	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
-
 	else
 	{
 		m_iState = STATE_IDLE;
-		m_pFSMCom->Change_State(STATE_IDLE);
+		m_pFSMCom->Change_State(m_iState);
 	}
 
 	__super::Priority_Update(fTimeDelta);

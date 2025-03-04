@@ -1,0 +1,5 @@
+Diffuse=nullSprite
+Opacity=UI_InputArrowDown1ALPHA
+Other[0]=UI_InputArrowDownGleam
+Other[1]=UI_mainMenu_CloudTile
+Other[2]=UI_Menu_NoiseUV1

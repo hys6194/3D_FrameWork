@@ -44,10 +44,8 @@ void TP_Camera::Priority_Update(_float fTimeDelta)
 
 	vLook = XMVector4Normalize(vLook);
 
-
 	m_pTransformCom->Set_State(Transform::STATE_POS, vEye);
 	m_pTransformCom->Set_State(Transform::STATE_LOOK, vLook);
-	//m_pTransformCom->LookAt(vPos);
 
 	__super::Renew_Matrices();
 }

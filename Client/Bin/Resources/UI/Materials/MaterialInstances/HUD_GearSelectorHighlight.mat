@@ -1,0 +1,5 @@
+Diffuse=nullSprite
+Opacity=UI_HUD_GearWheelSelectorHigh_orange_7Slot
+Other[0]=ui_circleRimAlpha_gearSelect
+Other[1]=UI_genericWhiteSquare
+Other[2]=UI_particle_circleSoftEdge1

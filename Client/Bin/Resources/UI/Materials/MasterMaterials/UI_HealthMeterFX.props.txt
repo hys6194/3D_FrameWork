@@ -1,0 +1,53 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[2] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/UI/Textures/HUD/UIFX_sprites/UI_FX_WaveTile11Solid.UI_FX_WaveTile11Solid'
+    ReferencedTextures[1] = Texture2D'/Game/UI/Textures/HUD/UIFX_sprites/UI_FX_WaveTile11SolidDARK.UI_FX_WaveTile11SolidDARK'
+}
+Expressions[11] =
+{
+    Expressions[1] = MaterialExpressionTextureSample'/Game/UI/Materials/MasterMaterials/UI_HealthMeterFX.MaterialExpressionTextureSample_0'
+    Expressions[5] = MaterialExpressionTextureSample'/Game/UI/Materials/MasterMaterials/UI_HealthMeterFX.MaterialExpressionTextureSample_4'
+    Expressions[7] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/UI_HealthMeterFX.MaterialExpressionVectorParameter_0'
+}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] = { ParameterInfos[0]={} }
+            Entries[1] = { ParameterInfos[0]={} }
+            Entries[2] = { ParameterInfos[0]={} }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[0] = {}
+        VectorValues[0] = {}
+        TextureValues[0] = {}
+    }
+    ReferencedTextures[0] = {}
+}
+BlendMode = BLEND_Additive (3)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[0] = {}
+CollectedScalarParameters[0] = {}
+CollectedVectorParameters[1] =
+{
+    CollectedVectorParameters[0] =
+    {
+        Value = { R=-0.03, G=0, B=0, A=1 }
+        Name = Speed(R=x, G=y)
+        Group = None
+    }
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[0] = {}

@@ -40,14 +40,13 @@ private:
 	Model*  m_pModelCom = { nullptr };
 
 private:
-	const _uint* m_pTargetState = { nullptr };				//플레이어의 상태를 가져와서 애니메이션의 상태를 변경하려고 함
+	const _uint* m_pTargetState = { nullptr };				// 플레이어의 상태를 가져와서 애니메이션의 상태를 변경하려고 함
 	map<const _wstring, const _float4x4*> m_mapSocketmat;   // 특정 뼈들의 매트릭스를 가지고 있는 map
 
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_SocketMatrices();
 	HRESULT Bind_SR();
-
 
 public:
 	static Body_Player* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

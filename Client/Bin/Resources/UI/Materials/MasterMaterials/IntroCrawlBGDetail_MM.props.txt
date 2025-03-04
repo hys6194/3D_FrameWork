@@ -1,0 +1,87 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[1] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/UI/Textures/UI_GradientBottomTopADDInvert.UI_GradientBottomTopADDInvert'
+}
+Expressions[29] =
+{
+    Expressions[15] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/IntroCrawlBGDetail_MM.MaterialExpressionScalarParameter_0'
+    Expressions[16] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/IntroCrawlBGDetail_MM.MaterialExpressionScalarParameter_1'
+    Expressions[18] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/IntroCrawlBGDetail_MM.MaterialExpressionScalarParameter_2'
+    Expressions[20] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/IntroCrawlBGDetail_MM.MaterialExpressionTextureSampleParameter2D_2'
+    Expressions[21] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/IntroCrawlBGDetail_MM.MaterialExpressionTextureSampleParameter2D_3'
+    Expressions[22] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/IntroCrawlBGDetail_MM.MaterialExpressionTextureSampleParameter2D_4'
+    Expressions[23] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/IntroCrawlBGDetail_MM.MaterialExpressionTextureSampleParameter2D_1'
+    Expressions[25] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/IntroCrawlBGDetail_MM.MaterialExpressionTextureSampleParameter2D_5'
+    Expressions[27] = MaterialExpressionTextureSample'/Game/UI/Materials/MasterMaterials/IntroCrawlBGDetail_MM.MaterialExpressionTextureSample_0'
+}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] = { ParameterInfos[0]={} }
+            Entries[1] = { ParameterInfos[0]={} }
+            Entries[2] = { ParameterInfos[0]={} }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[0] = {}
+        VectorValues[0] = {}
+        TextureValues[0] = {}
+    }
+    ReferencedTextures[0] = {}
+}
+BlendMode = BLEND_Opaque (0)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[5] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/IntroCrawlPileDetail1RGB.IntroCrawlPileDetail1RGB'
+        Name = RGBTexture
+        Group = None
+    }
+    CollectedTextureParameters[1] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/IntroCrawlPileDetail1RGB.IntroCrawlPileDetail1RGB'
+        Name = RGBTexture
+        Group = None
+    }
+    CollectedTextureParameters[2] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/IntroCrawlPileDetail1RGB.IntroCrawlPileDetail1RGB'
+        Name = RGBTexture
+        Group = None
+    }
+    CollectedTextureParameters[3] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/IntroCrawlPileDetail1MASKRGB.IntroCrawlPileDetail1MASKRGB'
+        Name = RGBCutout
+        Group = None
+    }
+    CollectedTextureParameters[4] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/IntroCrawlPileDetail1MASKRGB.IntroCrawlPileDetail1MASKRGB'
+        Name = RGBCutout
+        Group = None
+    }
+}
+CollectedScalarParameters[3] =
+{
+    CollectedScalarParameters[0] = { Value=1, Name=Layer1Speed, Group=None }
+    CollectedScalarParameters[1] = { Value=0.2, Name=Layer2Speed, Group=None }
+    CollectedScalarParameters[2] = { Value=0.1, Name=Layer3Speed, Group=None }
+}
+CollectedVectorParameters[0] = {}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[0] = {}

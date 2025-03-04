@@ -170,6 +170,10 @@ HRESULT Loader::Loading_Textures()
 			Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Logo/UI_StudioLogo_THQNordic1.png")))))
 			return E_FAIL;
 
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo1"),
+		//	Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Logo/UI_StudioLogo_THQNordic2.png")))))
+		//	return E_FAIL;
+
 		break;
 	case LEVEL_GAMEPLAY:
 

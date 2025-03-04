@@ -13,7 +13,7 @@ class Player final : public ContainerObject
 {
 public:
 	enum PARTOBJ { PART_BODY, PART_WEAPON, PART_EFFECT, PART_END };
-	enum STATE {
+	enum ANIM_STATE {
 		STATE_IDLE = 0x00000001,
 		STATE_RUN = 0x00000002,
 		STATE_JUMP = 0x00000004,

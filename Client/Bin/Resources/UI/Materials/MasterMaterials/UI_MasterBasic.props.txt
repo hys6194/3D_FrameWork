@@ -1,0 +1,86 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[3] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/UI/Textures/HUD/testing/GearSelector/nullSprite.nullSprite'
+    ReferencedTextures[1] = Texture2D'/Game/UI/Textures/HUD/testing/UI_genericWhiteSquare.UI_genericWhiteSquare'
+    ReferencedTextures[2] = Texture2D'/Game/UI/Textures/UI_ParticleTextures/UI_particle_circleSoftEdge1.UI_particle_circleSoftEdge1'
+}
+Expressions[26] =
+{
+    Expressions[2] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionTextureSampleParameter2D_0'
+    Expressions[6] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionScalarParameter_0'
+    Expressions[10] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionScalarParameter_2'
+    Expressions[15] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionScalarParameter_4'
+    Expressions[18] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionTextureSampleParameter2D_3'
+    Expressions[19] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionTextureSampleParameter2D_4'
+    Expressions[20] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionTextureSampleParameter2D_5'
+    Expressions[21] = MaterialExpressionStaticSwitchParameter'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionStaticSwitchParameter_0'
+    Expressions[22] = MaterialExpressionStaticSwitchParameter'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionStaticSwitchParameter_2'
+    Expressions[23] = MaterialExpressionStaticSwitchParameter'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionStaticSwitchParameter_3'
+    Expressions[24] = MaterialExpressionStaticSwitchParameter'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionStaticSwitchParameter_4'
+    Expressions[25] = MaterialExpressionStaticSwitchParameter'/Game/UI/Materials/MasterMaterials/UI_MasterBasic.MaterialExpressionStaticSwitchParameter_5'
+}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] = { ParameterInfos[0]={} }
+            Entries[1] = { ParameterInfos[0]={} }
+            Entries[2] = { ParameterInfos[0]={} }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[0] = {}
+        VectorValues[0] = {}
+        TextureValues[0] = {}
+    }
+    ReferencedTextures[0] = {}
+}
+BlendMode = BLEND_Translucent (2)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[4] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/UI_ParticleTextures/UI_particle_circleSoftEdge1.UI_particle_circleSoftEdge1'
+        Name = BaseTextureWithAlpha
+        Group = None
+    }
+    CollectedTextureParameters[1] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/HUD/testing/GearSelector/nullSprite.nullSprite'
+        Name = Texture2WithAlpha
+        Group = None
+    }
+    CollectedTextureParameters[2] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/HUD/testing/GearSelector/nullSprite.nullSprite'
+        Name = Texture3WithAlpha
+        Group = None
+    }
+    CollectedTextureParameters[3] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/HUD/testing/UI_genericWhiteSquare.UI_genericWhiteSquare'
+        Name = TextureAlphaOverride
+        Group = None
+    }
+}
+CollectedScalarParameters[3] =
+{
+    CollectedScalarParameters[0] = { Value=0, Name=RotationSpeedT1, Group=None }
+    CollectedScalarParameters[1] = { Value=0, Name=RotationSpeedT2, Group=None }
+    CollectedScalarParameters[2] = { Value=0, Name=RotationSpeedT3, Group=None }
+}
+CollectedVectorParameters[0] = {}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[0] = {}

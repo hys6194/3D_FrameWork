@@ -9,6 +9,8 @@ PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT PlayerState_Test::Enter_State()
 {
+	
+
 	return S_OK;
 }
 
@@ -32,8 +34,6 @@ PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceCo
 	pInstance->Set_Owner(pOwner);
 
 	return pInstance;
-
-	//return new PlayerState_Test(pDevice, pContext);
 }
 
 void PlayerState_Test::Free()

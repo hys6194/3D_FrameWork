@@ -1,0 +1,5 @@
+Diffuse=nullSprite
+Opacity=UI_Enhancement_On2
+Other[0]=VFX_gen_radialRays
+Other[1]=UI_genericWhiteSquare
+Other[2]=UI_particle_circleSoftEdge1
