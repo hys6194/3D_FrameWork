@@ -17,7 +17,6 @@ public:
 	_bool Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex);
 	void KeyFrame_Reset();
 private:
-
 	// 애니메이션의 이름
 	_char						m_szName[MAX_PATH] = {};
 
@@ -33,6 +32,7 @@ private:
 	vector<class Channel*>		m_vecChannel = {};
 
 	_bool						m_bIsAnimEnd = { false };
+
 
 
 public:

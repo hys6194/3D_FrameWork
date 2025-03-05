@@ -35,6 +35,8 @@ private:
 	//class Bone*					m_pPreAnimBone;
 	//Bone*							m_pNextAnimBone;
 
+	_float						m_fPreAnimKeyFrame;
+	_float						m_fCurAnimKeyFrame;
 
 
 public:

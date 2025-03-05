@@ -87,6 +87,20 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop)
     m_bIsLoop = isLoop;
 }
 
+_uint Model::Get_AnimationKeyFrame(_uint iAnimationIndex)
+{
+    return m_vecCurrentTrackPosition[iAnimationIndex];
+}
+
+void Model::Interpolation_Model()
+
+{
+    // 여기에서 애니메이션을 보간하는 작업을 하자
+    //m_Animations[m_iCurrentAnimationIndex];
+
+
+}
+
 HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
     m_eModelType = eType;
@@ -103,6 +117,8 @@ HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath
     m_pAIScene = m_Importer.ReadFile(pModelFilePath, iFlag);
     if (nullptr == m_pAIScene)
         return E_FAIL;
+
+    // 여기에서 fbx 파일의 정보를 읽어와야 함
 
     /* 모델의 기본정보는 다 로드를 했다. */
     /* aiScene안에 포함되어있기 떄문에. 우리가 사용하기좋은 형태로 변형, 분리, 보관해주는 작업을 수행해야하낟. */
@@ -150,7 +166,13 @@ _bool Model::Play_Animation(_float fTimeDelta)
     
 
 
-    _bool bIsEnd = m_Animations[m_iCurrentAnimationIndex]->Update_TransformationMatrix(m_vecBone, fTimeDelta, m_bIsLoop, &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], m_vecKeyFrameIndex[m_iCurrentAnimationIndex]);
+    _bool bIsEnd = m_Animations[m_iCurrentAnimationIndex]->
+                   Update_TransformationMatrix(
+                   m_vecBone, 
+                   fTimeDelta, 
+                   m_bIsLoop, 
+                   &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], 
+                   m_vecKeyFrameIndex[m_iCurrentAnimationIndex]);
     
    
     for (auto& pBone : m_vecBone)

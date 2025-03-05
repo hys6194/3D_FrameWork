@@ -21,6 +21,13 @@ public:
 public:
 	void Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop = false);
 
+public:
+	_uint Get_AnimationKeyFrame(_uint iAnimationIndex);
+	
+
+public:
+	void Interpolation_Model();
+
 
 public:
 	virtual HRESULT Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
