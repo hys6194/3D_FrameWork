@@ -4,14 +4,13 @@
 FSM::FSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : Component{ pDevice ,pContext }
 {
-    Safe_AddRef(m_pDevice);
-    Safe_AddRef(m_pContext);
 }
 
 FSM::FSM(const FSM& Prototype)
     :Component{ Prototype }
 {
-
+    Safe_AddRef(m_pDevice);
+    Safe_AddRef(m_pContext);
 }
 
 HRESULT FSM::Initialize_Prototype()
@@ -21,6 +20,7 @@ HRESULT FSM::Initialize_Prototype()
 
 HRESULT FSM::Initialize(void* pArg)
 {
+    // 여기서 뭘 해야할까
 
     return S_OK;
 }
@@ -34,6 +34,11 @@ HRESULT FSM::Add_State(const _uint& iState, class State* pState)
         m_mapFSM.insert({ iState, pState });
 
     return S_OK;
+}
+
+void FSM::Update_State(_float fTimeDelta)
+{
+    m_pCurrentState->Update_State(fTimeDelta);
 }
 
 State* FSM::Find_State(const _uint& iState)
@@ -58,10 +63,13 @@ HRESULT FSM::Change_State(const _uint& iState)
         m_pCurrentState == iter)
         return E_FAIL;
 
+    if(0 != m_iCurrentState)
+        m_pCurrentState->Exit_State();
+
+   //m_pCurrentState->Get_Owner()->
+
     m_pCurrentState = iter;
     m_iCurrentState = iState;
-
-    //m_pCurrentState->Get_Owner()->;
 
     m_pCurrentState->Enter_State();
 
@@ -103,7 +111,6 @@ void FSM::Free()
     
     m_mapFSM.clear();
 
-    
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
 }

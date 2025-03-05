@@ -3,8 +3,6 @@
 #include "ContainerObject.h"
 #include "Body_Player.h"
 #include "Weapon.h"
-#include "State.h"
-#include "PlayerState_Test.h"
 
 Player::Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: ContainerObject{ pDevice, pContext }
@@ -14,7 +12,6 @@ Player::Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 Player::Player(const Player& Prototype)
 	: ContainerObject{ Prototype }
 {
-	Safe_AddRef(m_pFSMCom);
 }
 
 HRESULT Player::Initialize_Prototype()
@@ -35,7 +32,6 @@ HRESULT Player::Initialize(void* pArg)
 	FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
 
-	FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
 
 	return S_OK;
 }
@@ -46,49 +42,47 @@ void Player::Priority_Update(_float fTimeDelta)
 	vLook = XMVector4Normalize(vLook);
 
 	
-
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+	if( (GetAsyncKeyState(VK_DOWN) & 0x8000) ||	(GetAsyncKeyState(VK_LEFT) & 0x8000) ||	(GetAsyncKeyState(VK_RIGHT) & 0x8000) || (GetAsyncKeyState(VK_UP) & 0x8000))
 	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
-	}
-
-	//축의 기준 회전
-	if (GetKeyState(VK_LEFT) & 0x8000)
-	{
-		//if(!XMVector4Equal(vLook, AXIS_X))
-		//m_pTransformCom->Turn(-AXIS_Y, fTimeDelta);
-
-		//m_pTransformCom->Rotation(AXIS_Y, 270.f);
-		//m_pTransformCom->Set_State(Transform::STATE_LOOK, AXIS_X);
-
-
-		m_pTransformCom->Rotation(AXIS_Y, -90.f);
-		m_pTransformCom->Go_Left(fTimeDelta);
-	}
-
-	// Test
-	if (GetKeyState(VK_SPACE) & 0x8000)
-	{
-	}
-
-	if (GetKeyState(VK_RIGHT) & 0x8000)
-	{
-		m_pTransformCom->Go_Right(fTimeDelta);
-	}
-
-	if (GetKeyState(VK_UP) & 0x8000)
-	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
-
 		if (m_iState & STATE_IDLE)
 			m_iState ^= STATE_IDLE;
 		m_iState |= STATE_RUN;
+
+		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+		{
+			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(180.f));
+			m_pTransformCom->Go_Straight(fTimeDelta);
+		}
+
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+		{
+			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
+			m_pTransformCom->Go_Straight(fTimeDelta);
+		}
+
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+		{
+			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
+			m_pTransformCom->Go_Straight(fTimeDelta);
+		}
+
+		if (GetAsyncKeyState(VK_UP) & 0x8000)
+		{
+			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(0.f));
+			m_pTransformCom->Go_Straight(fTimeDelta);
+		}
 	}
 
+
+
+	//// Test
+	//if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	//{
+	//}
+	
 	else
 	{
 		m_iState = STATE_IDLE;
-		m_pFSMCom->Change_State(m_iState);
 	}
 
 	__super::Priority_Update(fTimeDelta);
@@ -111,8 +105,7 @@ HRESULT Player::Render()
 
 HRESULT Player::Ready_Components()
 {
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
-		reinterpret_cast<Component**>(&m_pFSMCom), TEXT("Com_FSM")), E_FAIL);
+
 
 	return S_OK;
 }
@@ -139,15 +132,6 @@ HRESULT Player::Ready_PartObjects()
 	return S_OK;
 }
 
-HRESULT Player::Ready_States()
-{
-	PlayerState_Test* pState = PlayerState_Test::Create(m_pDevice, m_pContext, STATE_IDLE, this);	
-	NULL_CHECK_RETURN(pState, E_FAIL);
-
-	m_pFSMCom->Add_State(STATE_IDLE, pState);
-
-	return S_OK;
-}
 
 HRESULT Player::Bind_SR()
 {
@@ -184,6 +168,4 @@ GameObject* Player::Clone(void* pArg)
 void Player::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pFSMCom);
 }

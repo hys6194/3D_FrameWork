@@ -3,9 +3,9 @@
 #include "Client_Defines.h"
 #include "State.h"
 
-BEGIN(Engine)
-class State;
-END
+//BEGIN(Engine)
+//class State;
+//END
 
 BEGIN(Client)
 

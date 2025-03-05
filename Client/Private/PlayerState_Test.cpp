@@ -16,7 +16,6 @@ HRESULT PlayerState_Test::Enter_State()
 
 void PlayerState_Test::Update_State(_float fTimeDelta)
 {
-	int a = 10;
 }
 
 HRESULT PlayerState_Test::Exit_State()

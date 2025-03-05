@@ -4,7 +4,7 @@
 #include "ContainerObject.h"
 
 BEGIN(Engine)
-class FSM;
+
 END
 
 BEGIN(Client)
@@ -42,12 +42,11 @@ public:
 //	CModel*						m_pModelCom = { nullptr };
 private:
 	_uint					m_iState = { STATE_NONE };
-	FSM*					m_pFSMCom = { nullptr };
+
 
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_PartObjects();
-	HRESULT Ready_States();
 	HRESULT Bind_SR();
 
 public:
