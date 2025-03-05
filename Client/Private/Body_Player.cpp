@@ -61,10 +61,6 @@ void Body_Player::Priority_Update(_float fTimeDelta)
 
 void Body_Player::Update(_float fTimeDelta)
 {
-        //m_pModelCom->Set_AnimationIndex(22, true);
-
-        //m_pModelCom->Play_Animation(fTimeDelta);
-
     m_pFSMCom->Update_State(fTimeDelta);
 
     //파츠들의 매트릭스를 부모 매트릭스에 곱하여 고정시킨다
@@ -109,10 +105,10 @@ HRESULT Body_Player::Ready_Components()
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
         reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
         reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
         reinterpret_cast<Component**>(&m_pFSMCom), TEXT("Com_FSM")), E_FAIL);
 
     return S_OK;

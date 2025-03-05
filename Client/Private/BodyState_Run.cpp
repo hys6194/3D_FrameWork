@@ -37,8 +37,6 @@ BodyState_Run* BodyState_Run::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
         return nullptr;
     }
 
-    //pInstance->Set_Owner(pOwner);
-
     return pInstance;
 }
 

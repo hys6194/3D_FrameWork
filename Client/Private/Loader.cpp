@@ -251,14 +251,14 @@ HRESULT Loader::Loading_Shaders()
 	{
 	case LEVEL_MENU:
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, TEXT(""),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, PRO_SHADER_POS,
 			Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
 			return E_FAIL;
 
 		break;
 	case LEVEL_LOGO:
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Shader_VtxPosTex"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_SHADER_POS,
 			Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
 			return E_FAIL;
 
@@ -266,18 +266,22 @@ HRESULT Loader::Loading_Shaders()
 	case LEVEL_GAMEPLAY:	
 
 		/* For.Prototype_Component_Shader_VtxNorTex */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_SHADER_NOR,
 			Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::ElementDesc, VTXNORTEX::iNumElements))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Shader_VtxMesh */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
 			Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl"), VTXMESH::ElementDesc, VTXMESH::iNumElements))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Shader_VtxAnimMesh */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
 			Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMESH::ElementDesc, VTXANIMESH::iNumElements))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_SHADER_CUBE,
+			Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::ElementDesc, VTXCUBE::iNumElements))))
 			return E_FAIL;
 
 		break;
@@ -293,14 +297,14 @@ HRESULT Loader::Loading_Prototype()
 	{
 	case LEVEL_MENU:
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, TEXT("Prototype_GameObject_BackGround"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, PRO_OBJ_BACK,
 			BackGround::Create(m_pDevice, m_pContext, LEVEL_MENU))))
 			return E_FAIL;
 
 		break;
 	case LEVEL_LOGO:
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_OBJ_BACK,
 			BackGround::Create(m_pDevice, m_pContext, LEVEL_LOGO))))
 			return E_FAIL;
 
@@ -308,33 +312,33 @@ HRESULT Loader::Loading_Prototype()
 	case LEVEL_GAMEPLAY:
 
 		/* Prototype_GameObject_Terrain */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Terrain"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
 			Terrain::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* Prototype_GameObject_Monster */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MONSTER,
 			Monster::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Player"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_PLAYER,
 			Player::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Player_Body"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_BODY,
 			Body_Player::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* Prototype_GameObject_Camera_Free */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_CAM_FREE,
 			Camera_Free::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TP_Camera"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_CAM_3RD,
 			TP_Camera::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_WEAPON,
 			Weapon::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 

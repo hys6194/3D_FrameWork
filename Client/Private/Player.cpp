@@ -41,7 +41,7 @@ void Player::Priority_Update(_float fTimeDelta)
 	_vector vLook = m_pTransformCom->Get_State(Transform::STATE_LOOK);
 	vLook = XMVector4Normalize(vLook);
 
-	
+	// Unaimed
 	if( (GetAsyncKeyState(VK_DOWN) & 0x8000) ||	(GetAsyncKeyState(VK_LEFT) & 0x8000) ||	(GetAsyncKeyState(VK_RIGHT) & 0x8000) || (GetAsyncKeyState(VK_UP) & 0x8000))
 	{
 		if (m_iState & STATE_IDLE)
@@ -74,6 +74,8 @@ void Player::Priority_Update(_float fTimeDelta)
 	}
 
 
+	//if (m_pGameInstance->Get_DIMouseState(MOUSEKEYSTATE::DIM_LB))
+	//	int a = 10;
 
 	//// Test
 	//if (GetAsyncKeyState(VK_SPACE) & 0x8000)
@@ -105,8 +107,6 @@ HRESULT Player::Render()
 
 HRESULT Player::Ready_Components()
 {
-
-
 	return S_OK;
 }
 
@@ -117,7 +117,7 @@ HRESULT Player::Ready_PartObjects()
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pTargetState = &m_iState;
 	
-	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY,TEXT("Prototype_GameObject_Player_Body"), PART_BODY, &BodyDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_BODY, PART_BODY, &BodyDesc), E_FAIL);
 
 	// Sword
 	Weapon::WEAPON_DESC  WDesc{};
@@ -126,7 +126,7 @@ HRESULT Player::Ready_PartObjects()
 	WDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	WDesc.pTargetState = &m_iState;
 
-	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), PART_WEAPON, &WDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_WEAPON, PART_WEAPON, &WDesc), E_FAIL);
 
 	return S_OK;
 }

@@ -82,6 +82,9 @@
     <Filter Include="02.GameObjects\Player\Body\State\Walk">
       <UniqueIdentifier>{d5ea1b84-2b22-4b18-aaae-47d89340f674}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Sky">
+      <UniqueIdentifier>{2bfe7fa5-8490-4a05-aaad-0d8ee9c6d899}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -153,6 +156,9 @@
     <ClInclude Include="..\Public\Const_Key.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Sky.h">
+      <Filter>02.GameObjects\Sky</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -222,6 +228,9 @@
     <ClCompile Include="..\Private\BodyState_Run.cpp">
       <Filter>02.GameObjects\Player\Body\State\Run</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Sky.cpp">
+      <Filter>02.GameObjects\Sky</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">
@@ -239,6 +248,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

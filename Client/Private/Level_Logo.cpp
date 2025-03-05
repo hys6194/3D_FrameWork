@@ -48,8 +48,8 @@ HRESULT Level_Logo::Ready_Layer_Logo1(const _tchar* pLayerTag)
 	UIDesc.fSpeedPerSec = 10.f;
 	UIDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
-	//if(FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"), LEVEL_LOGO, pLayerTag, &UIDesc)))
-	//	return E_FAIL;
+	if(FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, PRO_TEX_LOGO1, LEVEL_LOGO, pLayerTag, &UIDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
