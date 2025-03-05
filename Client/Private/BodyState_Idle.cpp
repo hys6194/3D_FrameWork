@@ -24,6 +24,8 @@ void BodyState_Idle::Update_State(_float fTimeDelta)
 
 HRESULT BodyState_Idle::Exit_State()
 {
+    m_pOwner->Get_Transform();
+
     return S_OK;
 }
 
