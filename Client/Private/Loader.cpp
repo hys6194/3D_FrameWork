@@ -84,7 +84,7 @@ HRESULT Loader::Loading_Logo()
 {
 	m_IsFin = false;
 
-	/*lstrcpy(m_szLoading, TEXT("텍스쳐를(을) 로딩중입니다."));
+	lstrcpy(m_szLoading, TEXT("텍스쳐를(을) 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Textures(), E_FAIL);
 
 	lstrcpy(m_szLoading, TEXT("모델를(을) 로딩중입니다."));
@@ -94,7 +94,7 @@ HRESULT Loader::Loading_Logo()
 	FAILED_CHECK_RETURN(Loading_Shaders(), E_FAIL);
 
 	lstrcpy(m_szLoading, TEXT("원형객체를(을) 로딩중입니다."));
-	FAILED_CHECK_RETURN(Loading_Prototype(), E_FAIL);*/
+	FAILED_CHECK_RETURN(Loading_Prototype(), E_FAIL);
 
 	lstrcpy(m_szLoading, TEXT("로딩 완료."));
 

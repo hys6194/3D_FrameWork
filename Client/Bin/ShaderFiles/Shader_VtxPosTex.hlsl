@@ -6,6 +6,9 @@
 // float2, float3, float4 == vector 
 
 /* 상수집합 == 컨스턴트테이블 */ 
+
+#include "Engine_Shader_Defines.hlsli"
+
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 float g_AlphaPerTime = 0.5f;
@@ -95,9 +98,9 @@ PS_OUT PS_MAIN(PS_IN In)
     //if (0.5 < Out.vColor.a)
     //    discard;
     
-    saturate(g_AlphaPerTime);
-    
-    Out.vColor.a = Out.vColor.a * 0;
+    //saturate(g_AlphaPerTime);
+    //
+    //Out.vColor.a = Out.vColor.a * 0;
     
     return Out;
 }
@@ -111,6 +114,13 @@ technique11 DefaultTechnique
     // 일반 렌더링
     pass DefaultPass0
     {
+
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+
+        // 0xffffffff : 마스크 값으로 특정 색상 
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
     }

@@ -1,5 +1,6 @@
 // 빛 연산을 처리하는 hlsl 파일
 // 추후에 pass를 늘려서 빛연산 처리 방식을 달리한다
+#include "Engine_Shader_Defines.hlsli"
 
 matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 

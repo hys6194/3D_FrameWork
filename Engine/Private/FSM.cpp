@@ -9,8 +9,6 @@ FSM::FSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 FSM::FSM(const FSM& Prototype)
     :Component{ Prototype }
 {
-    //Safe_AddRef(m_pDevice);
-    //Safe_AddRef(m_pContext);
 }
 
 HRESULT FSM::Initialize_Prototype()

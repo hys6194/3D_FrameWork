@@ -23,7 +23,7 @@ void Level_Logo::Update(_float fTimeDelta)
 
 	m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
 
-	if (/*GetKeyState(VK_SPACE) & 0x8000 &&*/ 0.1f < m_fTotalTime)
+	if (/*GetKeyState(VK_SPACE) & 0x8000 &&*/ 1.5f < m_fTotalTime)
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
 			return;
