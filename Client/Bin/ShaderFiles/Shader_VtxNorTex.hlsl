@@ -4,12 +4,12 @@
 matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 // 빛의 방향
-float4 g_vLightDir;
+float4      g_vLightDir;
 
 // 빛의 종류
-float4 g_vLightDiffuse;
-float4 g_vLightAmbient;
-float4 g_vLightSpecular;
+float4      g_vLightDiffuse;
+float4      g_vLightAmbient;
+float4      g_vLightSpecular;
 
 texture2D   g_DiffuseTexture;
 float4      g_vMtrlAmbient = float4(0.3f, 0.3f, 0.3f, 1.f);
@@ -85,7 +85,8 @@ PS_OUT PS_MAIN(PS_IN In)
     
     vector vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord * 30.f);
     
-    // 0보다 작으면 0 return, 1 보다 크면 1 return
+    // 0보다 작으면 0
+    //float fShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
     float fShade = saturate(dot(normalize(g_vLightDir) * -1.f, In.vNormal));
     
     vector vLook = In.vWorldPos - g_vCamPosition;

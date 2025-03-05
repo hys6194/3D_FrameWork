@@ -1,0 +1,5 @@
+Diffuse=nullSprite
+Opacity=UI_FX_WaveTile21Solid
+Other[0]=UI_CoreMockB3
+Other[1]=UI_genericWhiteSquare
+Other[2]=UI_particle_circleSoftEdge1

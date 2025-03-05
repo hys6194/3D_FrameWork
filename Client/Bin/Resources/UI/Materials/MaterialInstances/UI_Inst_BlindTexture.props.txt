@@ -1,0 +1,98 @@
+Parent = Material3'/Game/UI/Materials/MasterMaterials/MainMenuScrollingDetail.MainMenuScrollingDetail'
+ScalarParameterValues[2] =
+{
+    ScalarParameterValues[0] =
+    {
+        ParameterInfo = { Name=NoiseStrength }
+        ParameterValue = 2.91482
+        ParameterName = None
+    }
+    ScalarParameterValues[1] =
+    {
+        ParameterInfo = { Name=RefractionDepthBias }
+        ParameterValue = 0
+        ParameterName = None
+    }
+}
+TextureParameterValues[4] =
+{
+    TextureParameterValues[0] =
+    {
+        ParameterInfo = { Name=alphaOverride }
+        ParameterValue = Texture2D'/Game/UI/Textures/HUD/UI_BlindEffectMask1.UI_BlindEffectMask1'
+        ParameterName = None
+    }
+    TextureParameterValues[1] =
+    {
+        ParameterInfo = { Name=DistTexture }
+        ParameterValue = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+        ParameterName = None
+    }
+    TextureParameterValues[2] =
+    {
+        ParameterInfo = { Name=NoiseTexture }
+        ParameterValue = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+        ParameterName = None
+    }
+    TextureParameterValues[3] =
+    {
+        ParameterInfo = { Name=ScrollingTexture }
+        ParameterValue = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_menuFX_emberMask2.UI_menuFX_emberMask2'
+        ParameterName = None
+    }
+}
+VectorParameterValues[3] =
+{
+    VectorParameterValues[0] =
+    {
+        ParameterInfo = { Name=DistortSpeed1 }
+        ParameterValue = { R=-0.590477, G=0.009524, B=0, A=0 }
+        ParameterName = None
+    }
+    VectorParameterValues[1] =
+    {
+        ParameterInfo = { Name=DistortSpeed2 }
+        ParameterValue = { R=0, G=1.03491, B=0, A=0 }
+        ParameterName = None
+    }
+    VectorParameterValues[2] =
+    {
+        ParameterInfo = { Name=speed }
+        ParameterValue = { R=-0.229048, G=0.12381, B=0, A=0 }
+        ParameterName = None
+    }
+}
+BasePropertyOverrides =
+{
+    bOverride_BlendMode = true
+    BlendMode = BLEND_Translucent (2)
+    bOverride_TwoSided = false
+    TwoSided = false
+    bOverride_OpacityMaskClipValue = false
+    OpacityMaskClipValue = 0.3333
+}
+StaticParameters =
+{
+    StaticSwitchParameters[1] =
+    {
+        StaticSwitchParameters[0] =
+        {
+            Value = true
+            ParameterInfo = { Name=OverrideAlpha }
+            bOverride = true
+        }
+    }
+    StaticComponentMaskParameters[0] = {}
+    TerrainLayerWeightParameters[0] = {}
+    MaterialLayersParameters[0] = {}
+}
+RuntimeVirtualTextureParameterValues[0] = {}
+FontParameterValues[0] = {}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[0] = {}

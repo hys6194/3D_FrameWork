@@ -1,0 +1,66 @@
+Parent = Material3'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.CoreLineScrollingDetail'
+ScalarParameterValues[1] =
+{
+    ScalarParameterValues[0] =
+    {
+        ParameterInfo = { Name=RefractionDepthBias }
+        ParameterValue = 0
+        ParameterName = None
+    }
+}
+TextureParameterValues[3] =
+{
+    TextureParameterValues[0] =
+    {
+        ParameterInfo = { Name=alphaOverride }
+        ParameterValue = Texture2D'/Game/UI/Textures/CoreTrees/UI_fx_coreLineArcAlpha.UI_fx_coreLineArcAlpha'
+        ParameterName = None
+    }
+    TextureParameterValues[1] =
+    {
+        ParameterInfo = { Name=DistTexture }
+        ParameterValue = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+        ParameterName = None
+    }
+    TextureParameterValues[2] =
+    {
+        ParameterInfo = { Name=ScrollingTexture }
+        ParameterValue = Texture2D'/Game/UI/Textures/CoreTrees/UI_fx_dirArrow1.UI_fx_dirArrow1'
+        ParameterName = None
+    }
+}
+VectorParameterValues[1] =
+{
+    VectorParameterValues[0] =
+    {
+        ParameterInfo = { Name=speed }
+        ParameterValue = { R=0, G=0.7, B=0, A=0 }
+        ParameterName = None
+    }
+}
+BasePropertyOverrides =
+{
+    bOverride_BlendMode = false
+    BlendMode = BLEND_Additive (3)
+    bOverride_TwoSided = false
+    TwoSided = false
+    bOverride_OpacityMaskClipValue = false
+    OpacityMaskClipValue = 0.3333
+}
+StaticParameters =
+{
+    StaticSwitchParameters[0] = {}
+    StaticComponentMaskParameters[0] = {}
+    TerrainLayerWeightParameters[0] = {}
+    MaterialLayersParameters[0] = {}
+}
+RuntimeVirtualTextureParameterValues[0] = {}
+FontParameterValues[0] = {}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[0] = {}

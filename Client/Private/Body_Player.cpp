@@ -1,6 +1,9 @@
 #include "Body_Player.h"
 #include "GameInstance.h"
 
+#include "BodyState_Idle.h"
+#include "BodyState_Run.h"
+
 #include "Player.h"
 
 Body_Player::Body_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -38,25 +41,27 @@ HRESULT Body_Player::Initialize(void* pArg)
     FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_SocketMatrices(), E_FAIL);
+    FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
 
-    m_pModelCom->Set_AnimationIndex(3, true);
+
+    //m_pModelCom->Set_AnimationIndex(19, true);
 
     return S_OK;
 }
 
 void Body_Player::Priority_Update(_float fTimeDelta)
 {
+    if (*m_pTargetState & Player::STATE_IDLE)
+        m_pFSMCom->Change_State(Player::STATE_IDLE);
+        //m_pModelCom->Set_AnimationIndex(19, true);
+    
+    if (*m_pTargetState & Player::STATE_RUN)
+        m_pFSMCom->Change_State(Player::STATE_RUN);
 }
 
 void Body_Player::Update(_float fTimeDelta)
 {
-
-    if (*m_pTargetState & Player::STATE_IDLE)
-        m_pModelCom->Set_AnimationIndex(0, true);
-    if (*m_pTargetState & Player::STATE_RUN)
-        m_pModelCom->Set_AnimationIndex(6, true);
-
-    m_pModelCom->Play_Animation(fTimeDelta);
+    m_pFSMCom->Update_State(fTimeDelta);
 
     //파츠들의 매트릭스를 부모 매트릭스에 곱하여 고정시킨다
     XMStoreFloat4x4(&m_CombinedWorldMatrix,
@@ -97,11 +102,14 @@ HRESULT Body_Player::Render()
 
 HRESULT Body_Player::Ready_Components()
 {
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Test"),
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
         reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
         reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
+        reinterpret_cast<Component**>(&m_pFSMCom), TEXT("Com_FSM")), E_FAIL);
 
     return S_OK;
 }
@@ -111,8 +119,29 @@ HRESULT Body_Player::Ready_SocketMatrices()
     NULL_CHECK_RETURN(m_pShaderCom, E_FAIL);
 
     // 특정 뼈의 매트릭스를 가져와야 함
-    m_mapSocketmat.emplace(TEXT("Socket_Weapon"), m_pModelCom->Get_BoneMatrix("SWORD"));
-    m_mapSocketmat.emplace(TEXT("Socket_Shadow"), m_pModelCom->Get_BoneMatrix("PlayerShadow"));
+    // 특정 뼈의 이름은 모델의 뼈와 완벽히 일치해야 한다
+    //m_mapSocketmat.emplace(TEXT("Socket_Weapon"), m_pModelCom->Get_BoneMatrix("SWORD"));
+    //m_mapSocketmat.emplace(TEXT("Socket_Shadow"), m_pModelCom->Get_BoneMatrix("PlayerShadow"));
+
+    m_mapSocketmat.emplace(TEXT("Socket_Weapon"), m_pModelCom->Get_BoneMatrix("Bone_Strife_Hand_L"));
+    //m_mapSocketmat.emplace(TEXT("Socket_Weapon_R"), m_pModelCom->Get_BoneMatrix("Bone_Strife_Hand_R"));
+    //m_mapSocketmat.emplace(TEXT("Socket_Weapon_L"), m_pModelCom->Get_BoneMatrix("PlayerShadow"));
+    //m_mapSocketmat.emplace(TEXT("Socket_Weapon_L"), m_pModelCom->Get_BoneMatrix("PlayerShadow"));
+
+
+
+    return S_OK;
+}
+
+HRESULT Body_Player::Ready_States()
+{
+    State* pState;
+
+    pState = BodyState_Idle::Create(m_pDevice, m_pContext, this);
+    m_pFSMCom->Add_State(Player::STATE_IDLE, pState);
+
+    pState = BodyState_Run::Create(m_pDevice, m_pContext, this);
+    m_pFSMCom->Add_State(Player::STATE_RUN, pState);
 
     return S_OK;
 }
@@ -167,6 +196,8 @@ GameObject* Body_Player::Clone(void* pArg)
 
 void Body_Player::Free()
 {
+    Safe_Release(m_pFSMCom);
+
     __super::Free();
 
     Safe_Release(m_pShaderCom);

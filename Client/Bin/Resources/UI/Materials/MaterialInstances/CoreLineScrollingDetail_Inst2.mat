@@ -1,0 +1,5 @@
+Diffuse=nullSprite
+Opacity=UI_fx_coreLineArcAlpha
+Other[0]=UI_Menu_NoiseUV1
+Other[1]=UI_fx_dirArrow1
+Other[2]=UI_mainMenu_CloudTile

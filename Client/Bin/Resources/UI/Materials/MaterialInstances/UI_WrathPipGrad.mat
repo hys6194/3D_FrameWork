@@ -1,0 +1,4 @@
+Diffuse=nullSprite
+Opacity=UI_FX_Grad_halfHorz1
+Other[0]=UI_genericWhiteSquare
+Other[1]=UI_particle_circleSoftEdge1

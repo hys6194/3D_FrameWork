@@ -1,0 +1,5 @@
+Diffuse=nullSprite
+Opacity=UI_StrifeCoreTreeCenterDetailGlow
+Other[0]=UI_particle_circleSoftEdge3
+Other[1]=UI_genericWhiteSquare
+Other[2]=UI_particle_circleSoftEdge1

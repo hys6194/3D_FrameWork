@@ -1,0 +1,75 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[3] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/UI/Textures/CreatureCorePortraits/UI_CreatureSwirlMask2.UI_CreatureSwirlMask2'
+    ReferencedTextures[1] = Texture2D'/Game/UI/Textures/CreatureCorePortraits/UI_FX_WaveTile21Solid.UI_FX_WaveTile21Solid'
+    ReferencedTextures[2] = Texture2D'/Game/UI/Textures/HUD/UIFX_sprites/UI_FX_WaveTile11Solid.UI_FX_WaveTile11Solid'
+}
+Expressions[13] =
+{
+    Expressions[1] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/UI_CreatureCoreFX.MaterialExpressionTextureSampleParameter2D_0'
+    Expressions[10] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/UI_CreatureCoreFX.MaterialExpressionTextureSampleParameter2D_1'
+    Expressions[11] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/UI_CreatureCoreFX.MaterialExpressionTextureSampleParameter2D_2'
+    Expressions[12] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/UI_CreatureCoreFX.MaterialExpressionVectorParameter_0'
+}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] = { ParameterInfos[0]={} }
+            Entries[1] = { ParameterInfos[0]={} }
+            Entries[2] = { ParameterInfos[0]={} }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[0] = {}
+        VectorValues[0] = {}
+        TextureValues[0] = {}
+    }
+    ReferencedTextures[0] = {}
+}
+BlendMode = BLEND_Additive (3)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[3] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/CreatureCorePortraits/UI_CreatureSwirlMask2.UI_CreatureSwirlMask2'
+        Name = AlphaMap
+        Group = None
+    }
+    CollectedTextureParameters[1] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/CreatureCorePortraits/UI_FX_WaveTile21Solid.UI_FX_WaveTile21Solid'
+        Name = FXTexture2
+        Group = None
+    }
+    CollectedTextureParameters[2] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/HUD/UIFX_sprites/UI_FX_WaveTile11Solid.UI_FX_WaveTile11Solid'
+        Name = FXTexture1
+        Group = None
+    }
+}
+CollectedScalarParameters[0] = {}
+CollectedVectorParameters[1] =
+{
+    CollectedVectorParameters[0] =
+    {
+        Value = { R=0.213542, G=0.213542, B=0.213542, A=1 }
+        Name = FX1Tint
+        Group = None
+    }
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[0] = {}

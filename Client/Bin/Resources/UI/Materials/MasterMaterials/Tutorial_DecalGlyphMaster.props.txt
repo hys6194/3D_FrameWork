@@ -1,0 +1,92 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[1] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/UI/Textures/TutorialGlyph_sprite.TutorialGlyph_sprite'
+}
+Expressions[14] =
+{
+    Expressions[1] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/Tutorial_DecalGlyphMaster.MaterialExpressionTextureSampleParameter2D_0'
+    Expressions[2] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/Tutorial_DecalGlyphMaster.MaterialExpressionVectorParameter_0'
+    Expressions[3] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/Tutorial_DecalGlyphMaster.MaterialExpressionVectorParameter_1'
+    Expressions[4] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/Tutorial_DecalGlyphMaster.MaterialExpressionVectorParameter_2'
+    Expressions[5] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/Tutorial_DecalGlyphMaster.MaterialExpressionScalarParameter_0'
+    Expressions[10] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/Tutorial_DecalGlyphMaster.MaterialExpressionTextureSampleParameter2D_1'
+    Expressions[12] = MaterialExpressionStaticBoolParameter'/Game/UI/Materials/MasterMaterials/Tutorial_DecalGlyphMaster.MaterialExpressionStaticBoolParameter_0'
+    Expressions[13] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/Tutorial_DecalGlyphMaster.MaterialExpressionVectorParameter_3'
+}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] = { ParameterInfos[0]={} }
+            Entries[1] = { ParameterInfos[0]={} }
+            Entries[2] = { ParameterInfos[0]={} }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[0] = {}
+        VectorValues[0] = {}
+        TextureValues[0] = {}
+    }
+    ReferencedTextures[0] = {}
+}
+BlendMode = BLEND_Translucent (2)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[2] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/TutorialGlyph_sprite.TutorialGlyph_sprite'
+        Name = decalArt
+        Group = None
+    }
+    CollectedTextureParameters[1] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/TutorialGlyph_sprite.TutorialGlyph_sprite'
+        Name = decalArt
+        Group = None
+    }
+}
+CollectedScalarParameters[1] =
+{
+    CollectedScalarParameters[0] = { Value=0.5, Name=pulseSpeed, Group=None }
+}
+CollectedVectorParameters[4] =
+{
+    CollectedVectorParameters[0] =
+    {
+        Value = { R=0.319173, G=0.565346, B=0.578125, A=1 }
+        Name = Color
+        Group = None
+    }
+    CollectedVectorParameters[1] =
+    {
+        Value = { R=0.034994, G=0.072747, B=0.09375, A=1 }
+        Name = PulseColorA
+        Group = None
+    }
+    CollectedVectorParameters[2] =
+    {
+        Value = { R=0.004449, G=0.007385, B=0.020833, A=1 }
+        Name = PulseColorB
+        Group = None
+    }
+    CollectedVectorParameters[3] =
+    {
+        Value = { R=0.265625, G=0.265625, B=0.265625, A=1 }
+        Name = PulseBaseColor
+        Group = None
+    }
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[0] = {}

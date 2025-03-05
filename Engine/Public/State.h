@@ -8,13 +8,14 @@ BEGIN(Engine)
 class ENGINE_DLL State abstract: public Base
 {
 protected:
-	State(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	State(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner);
 	virtual ~State() = default;
 
 public:
 	void Set_Owner(GameObject* _pOwner)
 	{
 		m_pOwner = _pOwner;
+		Safe_AddRef(m_pOwner);
 	};
 
 public:

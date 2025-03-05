@@ -3,8 +3,6 @@
 #include "ContainerObject.h"
 #include "Body_Player.h"
 #include "Weapon.h"
-#include "State.h"
-#include "PlayerState_Test.h"
 
 Player::Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: ContainerObject{ pDevice, pContext }
@@ -34,36 +32,59 @@ HRESULT Player::Initialize(void* pArg)
 	FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
 
-	FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
 
 	return S_OK;
 }
 
 void Player::Priority_Update(_float fTimeDelta)
 {
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-		m_pTransformCom->Go_Backward(fTimeDelta);
-	if (GetKeyState(VK_LEFT) & 0x8000)
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -1.f);
-	if (GetKeyState(VK_RIGHT) & 0x8000)
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+	_vector vLook = m_pTransformCom->Get_State(Transform::STATE_LOOK);
+	vLook = XMVector4Normalize(vLook);
 
-	if (GetKeyState(VK_UP) & 0x8000)
+	// Unaimed
+	if( (GetAsyncKeyState(VK_DOWN) & 0x8000) ||	(GetAsyncKeyState(VK_LEFT) & 0x8000) ||	(GetAsyncKeyState(VK_RIGHT) & 0x8000) || (GetAsyncKeyState(VK_UP) & 0x8000))
 	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
-
 		if (m_iState & STATE_IDLE)
 			m_iState ^= STATE_IDLE;
 		m_iState |= STATE_RUN;
+
+		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+		{
+			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(180.f));
+			m_pTransformCom->Go_Straight(fTimeDelta);
+		}
+
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+		{
+			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
+			m_pTransformCom->Go_Straight(fTimeDelta);
+		}
+
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+		{
+			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
+			m_pTransformCom->Go_Straight(fTimeDelta);
+		}
+
+		if (GetAsyncKeyState(VK_UP) & 0x8000)
+		{
+			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(0.f));
+			m_pTransformCom->Go_Straight(fTimeDelta);
+		}
 	}
 
-	//if (GetKeyState(VK_SPACE) & 0x8000)
-	//	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
 
+	//if (m_pGameInstance->Get_DIMouseState(MOUSEKEYSTATE::DIM_LB))
+	//	int a = 10;
+
+	//// Test
+	//if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	//{
+	//}
+	
 	else
 	{
 		m_iState = STATE_IDLE;
-		m_pFSMCom->Change_State(STATE_IDLE);
 	}
 
 	__super::Priority_Update(fTimeDelta);
@@ -86,9 +107,6 @@ HRESULT Player::Render()
 
 HRESULT Player::Ready_Components()
 {
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
-		reinterpret_cast<Component**>(&m_pFSMCom), TEXT("Com_FSM")), E_FAIL);
-
 	return S_OK;
 }
 
@@ -98,8 +116,8 @@ HRESULT Player::Ready_PartObjects()
 	Body_Player::BODY_PLAYER_DESC		BodyDesc{};
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pTargetState = &m_iState;
-
-	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY,TEXT("Prototype_GameObject_Player_Body"), PART_BODY, &BodyDesc), E_FAIL);
+	
+	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_BODY, PART_BODY, &BodyDesc), E_FAIL);
 
 	// Sword
 	Weapon::WEAPON_DESC  WDesc{};
@@ -108,21 +126,11 @@ HRESULT Player::Ready_PartObjects()
 	WDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	WDesc.pTargetState = &m_iState;
 
-
-	//FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), PART_WEAPON, &WDesc), E_FAIL);
-
-	return S_OK;
-}
-
-HRESULT Player::Ready_States()
-{
-	PlayerState_Test* pState = PlayerState_Test::Create(m_pDevice, m_pContext, STATE_IDLE, this);	
-	NULL_CHECK_RETURN(pState, E_FAIL);
-
-	m_pFSMCom->Add_State(STATE_IDLE, pState);
+	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_WEAPON, PART_WEAPON, &WDesc), E_FAIL);
 
 	return S_OK;
 }
+
 
 HRESULT Player::Bind_SR()
 {
@@ -159,6 +167,4 @@ GameObject* Player::Clone(void* pArg)
 void Player::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pFSMCom);
 }

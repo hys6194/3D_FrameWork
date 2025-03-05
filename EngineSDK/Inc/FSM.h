@@ -18,8 +18,9 @@ public:
 
 public:
 	HRESULT Add_State(const _uint& iState, class State* pState);
-	State* Find_State(const _uint& iState);
-	HRESULT Delete_State();
+	void	Update_State(_float fTimeDelta);
+	State*	Find_State(const _uint& iState);
+	HRESULT	Delete_State();
 
 public:
 	HRESULT Change_State(const _uint& iState);
@@ -30,6 +31,10 @@ private:
 	_uint							m_iCurrentState = {0};
 	State*							m_pCurrentState;
 	GameObject*						m_pOwner;
+
+	//class Bone*					m_pPreAnimBone;
+	//Bone*							m_pNextAnimBone;
+
 
 
 public:

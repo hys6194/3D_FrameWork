@@ -4,7 +4,7 @@
 #include "ContainerObject.h"
 
 BEGIN(Engine)
-class FSM;
+
 END
 
 BEGIN(Client)
@@ -13,7 +13,7 @@ class Player final : public ContainerObject
 {
 public:
 	enum PARTOBJ { PART_BODY, PART_WEAPON, PART_EFFECT, PART_END };
-	enum STATE {
+	enum ANIM_STATE {
 		STATE_IDLE = 0x00000001,
 		STATE_RUN = 0x00000002,
 		STATE_JUMP = 0x00000004,
@@ -42,12 +42,11 @@ public:
 //	CModel*						m_pModelCom = { nullptr };
 private:
 	_uint					m_iState = { STATE_NONE };
-	FSM*					m_pFSMCom = { nullptr };
+
 
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_PartObjects();
-	HRESULT Ready_States();
 	HRESULT Bind_SR();
 
 public:

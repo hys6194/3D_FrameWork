@@ -1,0 +1,130 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[3] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/UI/Textures/HUD/testing/GearSelector/nullSprite.nullSprite'
+    ReferencedTextures[1] = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_mainMenu_CloudTile.UI_mainMenu_CloudTile'
+    ReferencedTextures[2] = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+}
+Expressions[30] =
+{
+    Expressions[0] = MaterialExpressionStaticSwitchParameter'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionStaticSwitchParameter_2'
+    Expressions[1] = MaterialExpressionStaticSwitchParameter'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionStaticSwitchParameter_0'
+    Expressions[2] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionTextureSampleParameter2D_0'
+    Expressions[4] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionVectorParameter_1'
+    Expressions[5] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionTextureSampleParameter2D_1'
+    Expressions[7] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionTextureSampleParameter2D_4'
+    Expressions[14] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionTextureSampleParameter2D_5'
+    Expressions[15] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionVectorParameter_2'
+    Expressions[16] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionTextureSampleParameter2D_8'
+    Expressions[17] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionScalarParameter_8'
+    Expressions[21] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionTextureSampleParameter2D_9'
+    Expressions[23] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionTextureSampleParameter2D_10'
+    Expressions[26] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionVectorParameter_4'
+    Expressions[27] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/CoreLineScrollingDetail.MaterialExpressionVectorParameter_5'
+}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] = { ParameterInfos[0]={} }
+            Entries[1] = { ParameterInfos[0]={} }
+            Entries[2] = { ParameterInfos[0]={} }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[0] = {}
+        VectorValues[0] = {}
+        TextureValues[0] = {}
+    }
+    ReferencedTextures[0] = {}
+}
+BlendMode = BLEND_Additive (3)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[7] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_mainMenu_CloudTile.UI_mainMenu_CloudTile'
+        Name = ScrollingTexture
+        Group = None
+    }
+    CollectedTextureParameters[1] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/HUD/testing/GearSelector/nullSprite.nullSprite'
+        Name = alphaOverride
+        Group = None
+    }
+    CollectedTextureParameters[2] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+        Name = NoiseTexture
+        Group = None
+    }
+    CollectedTextureParameters[3] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_mainMenu_CloudTile.UI_mainMenu_CloudTile'
+        Name = ScrollingTexture
+        Group = None
+    }
+    CollectedTextureParameters[4] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_mainMenu_CloudTile.UI_mainMenu_CloudTile'
+        Name = ScrollingTexture
+        Group = None
+    }
+    CollectedTextureParameters[5] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+        Name = DistTexture
+        Group = None
+    }
+    CollectedTextureParameters[6] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+        Name = DistTexture
+        Group = None
+    }
+}
+CollectedScalarParameters[1] =
+{
+    CollectedScalarParameters[0] = { Value=1, Name=NoiseStrength, Group=None }
+}
+CollectedVectorParameters[4] =
+{
+    CollectedVectorParameters[0] =
+    {
+        Value = { R=0, G=0, B=0, A=0 }
+        Name = speed
+        Group = None
+    }
+    CollectedVectorParameters[1] =
+    {
+        Value = { R=-0.02, G=0, B=0, A=0 }
+        Name = Distspeed
+        Group = None
+    }
+    CollectedVectorParameters[2] =
+    {
+        Value = { R=0, G=0, B=0, A=0 }
+        Name = DistortSpeed1
+        Group = None
+    }
+    CollectedVectorParameters[3] =
+    {
+        Value = { R=0, G=0, B=0, A=0 }
+        Name = DistortSpeed2
+        Group = None
+    }
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[0] = {}

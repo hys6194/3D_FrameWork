@@ -1,0 +1,142 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[3] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/UI/Textures/HUD/testing/GearSelector/nullSprite.nullSprite'
+    ReferencedTextures[1] = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_Char_War_cape.UI_Menu_Char_War_cape'
+    ReferencedTextures[2] = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+}
+Expressions[45] =
+{
+    Expressions[0] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionTextureSampleParameter2D_8'
+    Expressions[1] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionTextureSampleParameter2D_0'
+    Expressions[3] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionVectorParameter_1'
+    Expressions[4] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionTextureSampleParameter2D_4'
+    Expressions[11] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionTextureSampleParameter2D_5'
+    Expressions[12] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionVectorParameter_2'
+    Expressions[13] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionScalarParameter_8'
+    Expressions[17] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionTextureSampleParameter2D_9'
+    Expressions[19] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionTextureSampleParameter2D_10'
+    Expressions[22] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionVectorParameter_4'
+    Expressions[23] = MaterialExpressionVectorParameter'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionVectorParameter_5'
+    Expressions[32] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionScalarParameter_0'
+    Expressions[37] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionScalarParameter_1'
+    Expressions[39] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionTextureSampleParameter2D_2'
+    Expressions[41] = MaterialExpressionScalarParameter'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionScalarParameter_3'
+    Expressions[42] = MaterialExpressionStaticSwitchParameter'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionStaticSwitchParameter_1'
+    Expressions[44] = MaterialExpressionTextureSampleParameter2D'/Game/UI/Materials/MasterMaterials/MainMenu_waveWarp.MaterialExpressionTextureSampleParameter2D_3'
+}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] = { ParameterInfos[0]={} }
+            Entries[1] = { ParameterInfos[0]={} }
+            Entries[2] = { ParameterInfos[0]={} }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[0] = {}
+        VectorValues[0] = {}
+        TextureValues[0] = {}
+    }
+    ReferencedTextures[0] = {}
+}
+BlendMode = BLEND_Additive (3)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[8] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_Char_War_cape.UI_Menu_Char_War_cape'
+        Name = ScrollingTexture
+        Group = None
+    }
+    CollectedTextureParameters[1] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_Char_War_cape.UI_Menu_Char_War_cape'
+        Name = ScrollingTexture
+        Group = None
+    }
+    CollectedTextureParameters[2] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+        Name = NoiseTexture
+        Group = None
+    }
+    CollectedTextureParameters[3] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_Char_War_cape.UI_Menu_Char_War_cape'
+        Name = ScrollingTexture
+        Group = None
+    }
+    CollectedTextureParameters[4] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+        Name = DistTexture
+        Group = None
+    }
+    CollectedTextureParameters[5] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+        Name = DistTexture
+        Group = None
+    }
+    CollectedTextureParameters[6] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/MainMenu/Menu_rev2/UI_Menu_NoiseUV1.UI_Menu_NoiseUV1'
+        Name = noiseTexture
+        Group = None
+    }
+    CollectedTextureParameters[7] =
+    {
+        Texture = Texture2D'/Game/UI/Textures/HUD/testing/GearSelector/nullSprite.nullSprite'
+        Name = alphaOverride
+        Group = None
+    }
+}
+CollectedScalarParameters[4] =
+{
+    CollectedScalarParameters[0] = { Value=1, Name=NoiseStrength, Group=None }
+    CollectedScalarParameters[1] = { Value=0.01, Name=amplify, Group=None }
+    CollectedScalarParameters[2] = { Value=0.25, Name=sineSpeed, Group=None }
+    CollectedScalarParameters[3] = { Value=0, Name=rotationAngle, Group=None }
+}
+CollectedVectorParameters[4] =
+{
+    CollectedVectorParameters[0] =
+    {
+        Value = { R=-0.02, G=0, B=0, A=0 }
+        Name = speed
+        Group = None
+    }
+    CollectedVectorParameters[1] =
+    {
+        Value = { R=-0.02, G=0, B=0, A=0 }
+        Name = Distspeed
+        Group = None
+    }
+    CollectedVectorParameters[2] =
+    {
+        Value = { R=1, G=0, B=0, A=0 }
+        Name = DistortSpeed1
+        Group = None
+    }
+    CollectedVectorParameters[3] =
+    {
+        Value = { R=0, G=1, B=0, A=0 }
+        Name = DistortSpeed2
+        Group = None
+    }
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[0] = {}

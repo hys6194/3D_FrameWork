@@ -12,16 +12,16 @@ HRESULT Level_GamePlay::Initialize()
 {
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
-
+	
 	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
 		return E_FAIL;
-
+	
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
-
+	
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
-
+	
 	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
@@ -44,7 +44,7 @@ HRESULT Level_GamePlay::Render()
 
 HRESULT Level_GamePlay::Ready_Layer_Terrain(const _tchar* pLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Terrain"),
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
 		LEVEL_GAMEPLAY, pLayerTag)))
 		return E_FAIL;
 
@@ -66,7 +66,7 @@ HRESULT Level_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 	FreeCam_Desc.fSpeedPerSec = 10.f;
 	FreeCam_Desc.fRotationPerSec = XMConvertToRadians(90.f);
 	
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_CAM_FREE,
 		LEVEL_GAMEPLAY, pLayerTag, &FreeCam_Desc)))
 		return E_FAIL;
 
@@ -83,7 +83,7 @@ HRESULT Level_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 	//TPCam_Desc.fSpeedPerSec = 10.f;
 	//TPCam_Desc.fRotationPerSec = XMConvertToRadians(90.f);
 	//
-	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TP_Camera"),
+	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_CAM_FREE,
 	//	LEVEL_GAMEPLAY, pLayerTag, &TPCam_Desc)))
 	//	return E_FAIL;
 
@@ -92,7 +92,7 @@ HRESULT Level_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 
 HRESULT Level_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 {
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Monster"),
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MONSTER,
 		LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
 
 	//for (size_t i = 0; i < 10; i++)
@@ -108,7 +108,7 @@ HRESULT Level_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 
 HRESULT Level_GamePlay::Ready_Layer_Player(const _tchar* pLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Player"),
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_PLAYER,
 		LEVEL_GAMEPLAY, pLayerTag)))
 		return E_FAIL;
 

@@ -1,0 +1,23 @@
+Materials[1] = { Material3'/Game/UI/Meshes/phong186.phong186' }
+SourceModels[0] = {}
+StaticMaterials[1] =
+{
+    StaticMaterials[0] =
+    {
+        MaterialInterface = Material3'/Game/UI/Meshes/phong186.phong186'
+        MaterialSlotName = phong186
+        UVChannelData =
+        {
+            bInitialized = true
+            bOverrideDensities = false
+            LocalUVDensities[4] = { 319.22, 91.6902, 0, 0 }
+        }
+    }
+}
+Sockets[0] = {}
+ExtendedBounds =
+{
+    Origin = { X=0, Y=0, Z=2.84562e-16 }
+    BoxExtent = { X=49.9818, Y=53.6346, Z=3.28417e-15 }
+    SphereRadius = 64.8212
+}

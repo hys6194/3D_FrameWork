@@ -2,19 +2,20 @@
 #include "State.h"
 
 
-PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:State{pDevice, pContext}
+PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner)
+	:State{pDevice, pContext, pOwner }
 {
 }
 
 HRESULT PlayerState_Test::Enter_State()
 {
+	
+
 	return S_OK;
 }
 
 void PlayerState_Test::Update_State(_float fTimeDelta)
 {
-	int a = 10;
 }
 
 HRESULT PlayerState_Test::Exit_State()
@@ -24,7 +25,7 @@ HRESULT PlayerState_Test::Exit_State()
 
 PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner)
 {
-	PlayerState_Test* pInstance = new PlayerState_Test( pDevice, pContext );
+	PlayerState_Test* pInstance = new PlayerState_Test( pDevice, pContext, pOwner);
 
 	if (nullptr == pOwner)
 		return nullptr;
@@ -32,8 +33,6 @@ PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceCo
 	pInstance->Set_Owner(pOwner);
 
 	return pInstance;
-
-	//return new PlayerState_Test(pDevice, pContext);
 }
 
 void PlayerState_Test::Free()

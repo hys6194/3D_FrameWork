@@ -39,10 +39,13 @@ HRESULT TP_Camera::Initialize(void* pArg)
 void TP_Camera::Priority_Update(_float fTimeDelta)
 {
 	_vector vPos = m_pPlayer->Get_Transform()->Get_State(Transform::STATE_POS);
-	_vector vEye = XMVectorSetW(XMLoadFloat3(&m_vCamEye), 1.f) + vPos;
+	_vector vEye = XMVectorSetW(XMLoadFloat3(&m_vCamEye), 0.f) + vPos;
+	_vector vLook = vPos - vEye;
+
+	vLook = XMVector4Normalize(vLook);
 
 	m_pTransformCom->Set_State(Transform::STATE_POS, vEye);
-	m_pTransformCom->Set_State(Transform::STATE_LOOK, vPos);
+	m_pTransformCom->Set_State(Transform::STATE_LOOK, vLook);
 
 	__super::Renew_Matrices();
 }

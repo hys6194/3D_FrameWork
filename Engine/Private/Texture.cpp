@@ -11,10 +11,8 @@ Texture::Texture(const Texture& Prototype)
     , m_iNumTextures{ Prototype.m_iNumTextures }
     , m_vecSRV{ Prototype.m_vecSRV }
 {
-    for (auto& iter : m_vecSRV)
-    {
-        Safe_AddRef(iter);
-    }
+    for (auto& pSRV : m_vecSRV)
+        Safe_AddRef(pSRV);
 }
 
 HRESULT Texture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures)
@@ -51,31 +49,8 @@ HRESULT Texture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNum
         // png 파일 읽기
         else
         {
-            // 쓰레드 상에서의 Context 문제를 DeferredContext 를 사용하여 해소
-            ID3D11DeviceContext* pDeferredContext;
-            m_pDevice->CreateDeferredContext(0, &pDeferredContext);
-
-            if (FAILED(CreateWICTextureFromFileEx(
-                m_pDevice,
-                pDeferredContext,
-                szFullPath,
-                0,
-                D3D11_USAGE_DEFAULT,                                        //Usage
-                D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET,      //BindFlags : 리소스와 타깃 모두 사용가능
-                0,                                                          //CPUAccessFlags : Cpu Access 하지 않음
-                D3D11_RESOURCE_MISC_GENERATE_MIPS,                          //MiscFlags
-                WIC_LOADER_DEFAULT,                                         //이부분은 수정이 필요할 수도 있음 -> WIC_LOADER_FORCE_SRGB 같은
-                nullptr,
-                &pSRV)))
+            if (FAILED(CreateWICTextureFromFile(m_pDevice, szFullPath, nullptr, &pSRV)))
                 return E_FAIL;
-
-            // 리소스 정리
-            ID3D11CommandList* pCommandList;
-            pDeferredContext->FinishCommandList(FALSE, &pCommandList);
-            m_pContext->ExecuteCommandList(pCommandList, TRUE);
-
-            Safe_Release(pCommandList);
-            Safe_Release(pDeferredContext);
         }
 
         m_vecSRV.push_back(pSRV);
@@ -128,10 +103,8 @@ void Texture::Free()
 {
     __super::Free();
 
-    for (auto& iter : m_vecSRV)
-    {
-        Safe_Release(iter);
-    }
+    for (auto& pSRV : m_vecSRV)
+        Safe_Release(pSRV);
 
     m_vecSRV.clear();
 }

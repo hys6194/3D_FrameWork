@@ -61,20 +61,29 @@
     <Filter Include="02.GameObjects\Player\Weapon">
       <UniqueIdentifier>{c68ee220-913f-4c35-bb59-0954470ccdc5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Player\States\Idle">
-      <UniqueIdentifier>{dbd283a1-9292-4d91-a81b-f9088f0e09b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Player\States\Walk">
-      <UniqueIdentifier>{d5ea1b84-2b22-4b18-aaae-47d89340f674}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Player\States\Run">
-      <UniqueIdentifier>{899b674e-1f1a-4778-ba1e-2bada67253a4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Camera\Free">
       <UniqueIdentifier>{bfe9057b-f981-4a38-bdbc-938ff585fcef}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\Camera\ThridPerson">
       <UniqueIdentifier>{e154e523-bcd0-42ee-8098-1191dfc62c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\NewFilter1">
+      <UniqueIdentifier>{c3053dea-0242-4721-b3dd-7973641aa1c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\Body\State">
+      <UniqueIdentifier>{d7165d5d-dc09-4e46-9d04-fa76ecda2fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\Body\State\Idle">
+      <UniqueIdentifier>{dbd283a1-9292-4d91-a81b-f9088f0e09b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\Body\State\Run">
+      <UniqueIdentifier>{899b674e-1f1a-4778-ba1e-2bada67253a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\Body\State\Walk">
+      <UniqueIdentifier>{d5ea1b84-2b22-4b18-aaae-47d89340f674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Sky">
+      <UniqueIdentifier>{2bfe7fa5-8490-4a05-aaad-0d8ee9c6d899}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +146,18 @@
     </ClInclude>
     <ClInclude Include="..\Public\TP_Camera.h">
       <Filter>02.GameObjects\Camera\ThridPerson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BodyState_Idle.h">
+      <Filter>02.GameObjects\Player\Body\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BodyState_Run.h">
+      <Filter>02.GameObjects\Player\Body\State\Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Const_Key.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sky.h">
+      <Filter>02.GameObjects\Sky</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +222,15 @@
     <ClCompile Include="..\Private\TP_Camera.cpp">
       <Filter>02.GameObjects\Camera\ThridPerson</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\BodyState_Idle.cpp">
+      <Filter>02.GameObjects\Player\Body\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BodyState_Run.cpp">
+      <Filter>02.GameObjects\Player\Body\State\Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sky.cpp">
+      <Filter>02.GameObjects\Sky</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">
@@ -220,8 +250,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
