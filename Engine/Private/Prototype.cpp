@@ -40,7 +40,6 @@ HRESULT Prototype_Manager::Add_Prototype(_uint iLevelIndex, const wstring& strPr
 
 Base* Prototype_Manager::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
 {
-
  	if (iLevelIndex >= m_iNumLevels)
 		return nullptr;
 

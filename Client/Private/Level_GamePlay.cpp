@@ -19,7 +19,7 @@ HRESULT Level_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 	
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 	
 	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
@@ -42,11 +42,16 @@ HRESULT Level_GamePlay::Render()
     return S_OK;
 }
 
-HRESULT Level_GamePlay::Ready_Layer_Terrain(const _tchar* pLayerTag)
+HRESULT Level_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
 		LEVEL_GAMEPLAY, pLayerTag)))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_SKY,
+		LEVEL_GAMEPLAY, pLayerTag)))
+		return E_FAIL;
+
+
 
 	return S_OK;
 }

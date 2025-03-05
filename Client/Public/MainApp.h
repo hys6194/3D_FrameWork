@@ -31,6 +31,7 @@ private:
 	_float					m_fTimeAcc = { 0.f };
 	_tchar					m_szFPS[MAX_PATH] = {};
 	_uint					m_iNumDraw = { };
+	_uint					m_iCurLevel = { LEVEL_LOGO };
 #endif
 
 private:

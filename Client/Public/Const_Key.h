@@ -13,6 +13,7 @@
 /* Texture */
 static const std::wstring PRO_TEX_BACKGROUND	= TEXT("Prototype_Component_Texture_BackGround");
 static const std::wstring PRO_TEX_LOGO1			= TEXT("Prototype_Component_Texture_Logo1");
+static const std::wstring PRO_TEX_LOGO2			= TEXT("Prototype_Component_Texture_Logo2");
 static const std::wstring PRO_TEX_TERRAIN		= TEXT("Prototype_Component_Texture_Terrain");
 static const std::wstring PRO_TEX_SKY			= TEXT("Prototype_Component_Texture_Sky");
 
@@ -43,6 +44,7 @@ static const std::wstring PRO_SHADER_ANIM		= TEXT("Prototype_Component_Shader_Vt
 /* GameObject */
 static const std::wstring PRO_OBJ_BACK			= TEXT("Prototype_GameObject_BackGround");
 static const std::wstring PRO_OBJ_TERRAIN		= TEXT("Prototype_GameObject_Terrain");
+static const std::wstring PRO_OBJ_SKY			= TEXT("Prototype_GameObject_Sky");
 static const std::wstring PRO_OBJ_MONSTER		= TEXT("Prototype_GameObject_Monster");
 static const std::wstring PRO_OBJ_PLAYER		= TEXT("Prototype_GameObject_Player");
 static const std::wstring PRO_OBJ_BODY			= TEXT("Prototype_GameObject_Player_Body");

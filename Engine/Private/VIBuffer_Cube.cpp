@@ -35,16 +35,16 @@ HRESULT VIBuffer_Cube::Initialize_Prototype()
 
 	// 큐브의 중심(원점)으로부터 Texcoord의 정점의 방향으로 벡터를 구해서 위치를 구한다
 	// 
-	pVertices[0].vPosition = _float3(-0.5f, 0.5f, 0.f);
+	pVertices[0].vPosition = _float3(-0.5f, 0.5f, -0.5f);
 	pVertices[0].vTexcoord = pVertices[0].vPosition; /*_float(0,0,0,0)*/;
 
-	pVertices[1].vPosition = _float3(0.5f, 0.5f, 0.f);
+	pVertices[1].vPosition = _float3(0.5f, 0.5f, -0.5f);
 	pVertices[1].vTexcoord = pVertices[1].vPosition;
 
-	pVertices[2].vPosition = _float3(0.5f, -0.5f, 0.f);
+	pVertices[2].vPosition = _float3(0.5f, -0.5f, -0.5f);
 	pVertices[2].vTexcoord = pVertices[2].vPosition;
 
-	pVertices[3].vPosition = _float3(-0.5f, -0.5f, 0.f);
+	pVertices[3].vPosition = _float3(-0.5f, -0.5f, -0.5f);
 	pVertices[3].vTexcoord = pVertices[3].vPosition;
 
 	pVertices[4].vPosition = _float3(-0.5f, 0.5f, 0.5f);

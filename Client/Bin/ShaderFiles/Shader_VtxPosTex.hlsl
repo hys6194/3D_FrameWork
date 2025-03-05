@@ -6,6 +6,9 @@
 // float2, float3, float4 == vector 
 
 /* 상수집합 == 컨스턴트테이블 */ 
+
+#include "Engine_Shader_Defines.hlsli"
+
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 float g_AlphaPerTime = 0.5f;
@@ -18,8 +21,8 @@ sampler DefaultSampler = sampler_state
 
     // 샘플링 방식
     // 픽셀이 끝나면 다시 되돌아가는 방식
-    AddressU = WRAP;
-    AddressV = WRAP;
+    AddressU = CLAMP;
+    AddressV = CLAMP;
 };
 
 struct VS_IN
@@ -95,9 +98,9 @@ PS_OUT PS_MAIN(PS_IN In)
     //if (0.5 < Out.vColor.a)
     //    discard;
     
-    saturate(g_AlphaPerTime);
-    
-    Out.vColor.a = Out.vColor.a * 0;
+    //saturate(g_AlphaPerTime);
+    //
+    //Out.vColor.a = Out.vColor.a * 0;
     
     return Out;
 }
@@ -111,6 +114,12 @@ technique11 DefaultTechnique
     // 일반 렌더링
     pass DefaultPass0
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        // 0xffffffff :  모든 채널에 대해 블렌딩이 활성화되도록 설정
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
     }
@@ -118,12 +127,16 @@ technique11 DefaultTechnique
     // 특수 렌더링
     pass DefaultPass1
     {
-        VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile ps_5_0 PS_MAIN();
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         /* 추후에 내가 플레이어 및 몬스터가 변신한다던가 숨는다던가 
            특수한 상황에 쉐이더 기법을 사용할 때 쓰는 pass*/
         /*vs_5_0 : 쉐이더 5.0 버전임을 의미*/
-    }
 
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN();
+    }
 
 }
