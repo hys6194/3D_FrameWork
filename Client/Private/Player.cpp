@@ -116,7 +116,7 @@ HRESULT Player::Ready_PartObjects()
 	Body_Player::BODY_PLAYER_DESC		BodyDesc{};
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pTargetState = &m_iState;
-
+	
 	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY,TEXT("Prototype_GameObject_Player_Body"), PART_BODY, &BodyDesc), E_FAIL);
 
 	// Sword
@@ -126,8 +126,7 @@ HRESULT Player::Ready_PartObjects()
 	WDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	WDesc.pTargetState = &m_iState;
 
-
-	//FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), PART_WEAPON, &WDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Weapon"), PART_WEAPON, &WDesc), E_FAIL);
 
 	return S_OK;
 }

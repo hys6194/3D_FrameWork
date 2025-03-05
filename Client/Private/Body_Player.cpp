@@ -14,7 +14,6 @@ Body_Player::Body_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 Body_Player::Body_Player(const Body_Player& Prototype)
     : PartObject{ Prototype }
 {
-    //Safe_AddRef(m_pFSMCom);
 }
 
 const _float4x4* Body_Player::Get_f4SocketMatrix(const _wstring& strSocketName)
@@ -55,7 +54,7 @@ void Body_Player::Priority_Update(_float fTimeDelta)
     if (*m_pTargetState & Player::STATE_IDLE)
         m_pFSMCom->Change_State(Player::STATE_IDLE);
         //m_pModelCom->Set_AnimationIndex(19, true);
-
+    
     if (*m_pTargetState & Player::STATE_RUN)
         m_pFSMCom->Change_State(Player::STATE_RUN);
 }
@@ -128,8 +127,8 @@ HRESULT Body_Player::Ready_SocketMatrices()
     //m_mapSocketmat.emplace(TEXT("Socket_Weapon"), m_pModelCom->Get_BoneMatrix("SWORD"));
     //m_mapSocketmat.emplace(TEXT("Socket_Shadow"), m_pModelCom->Get_BoneMatrix("PlayerShadow"));
 
-    m_mapSocketmat.emplace(TEXT("Socket_Weapon_L"), m_pModelCom->Get_BoneMatrix("Bone_Strife_Hand_L"));
-    m_mapSocketmat.emplace(TEXT("Socket_Weapon_R"), m_pModelCom->Get_BoneMatrix("Bone_Strife_Hand_R"));
+    m_mapSocketmat.emplace(TEXT("Socket_Weapon"), m_pModelCom->Get_BoneMatrix("Bone_Strife_Hand_L"));
+    //m_mapSocketmat.emplace(TEXT("Socket_Weapon_R"), m_pModelCom->Get_BoneMatrix("Bone_Strife_Hand_R"));
     //m_mapSocketmat.emplace(TEXT("Socket_Weapon_L"), m_pModelCom->Get_BoneMatrix("PlayerShadow"));
     //m_mapSocketmat.emplace(TEXT("Socket_Weapon_L"), m_pModelCom->Get_BoneMatrix("PlayerShadow"));
 
@@ -201,9 +200,10 @@ GameObject* Body_Player::Clone(void* pArg)
 
 void Body_Player::Free()
 {
+    Safe_Release(m_pFSMCom);
+
     __super::Free();
 
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pModelCom);
-    Safe_Release(m_pFSMCom);
 }

@@ -12,7 +12,7 @@ BEGIN(Client)
 class PlayerState_Test : public State
 {
 private	:
-	PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner);
 	virtual ~PlayerState_Test() = default;
 
 public:

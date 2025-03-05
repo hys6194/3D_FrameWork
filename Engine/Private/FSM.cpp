@@ -9,8 +9,8 @@ FSM::FSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 FSM::FSM(const FSM& Prototype)
     :Component{ Prototype }
 {
-    Safe_AddRef(m_pDevice);
-    Safe_AddRef(m_pContext);
+    //Safe_AddRef(m_pDevice);
+    //Safe_AddRef(m_pContext);
 }
 
 HRESULT FSM::Initialize_Prototype()
@@ -111,6 +111,5 @@ void FSM::Free()
     
     m_mapFSM.clear();
 
-    Safe_Release(m_pContext);
-    Safe_Release(m_pDevice);
+    m_pCurrentState = nullptr;
 }

@@ -11,8 +11,8 @@ Level_Logo::Level_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT Level_Logo::Initialize()
 {
-	if (FAILED(Ready_Layer_Logo1(TEXT("Layer_Logo1"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Logo1(TEXT("Layer_Logo1"))))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -23,7 +23,7 @@ void Level_Logo::Update(_float fTimeDelta)
 
 	m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
 
-	if (/*GetKeyState(VK_SPACE) & 0x8000 &&*/ 3.f < m_fTotalTime)
+	if (/*GetKeyState(VK_SPACE) & 0x8000 &&*/ 0.1f < m_fTotalTime)
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
 			return;
@@ -48,8 +48,8 @@ HRESULT Level_Logo::Ready_Layer_Logo1(const _tchar* pLayerTag)
 	UIDesc.fSpeedPerSec = 10.f;
 	UIDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
-	if(FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"), LEVEL_LOGO, pLayerTag, &UIDesc)))
-		return E_FAIL;
+	//if(FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"), LEVEL_LOGO, pLayerTag, &UIDesc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

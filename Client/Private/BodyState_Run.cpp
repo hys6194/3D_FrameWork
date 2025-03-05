@@ -2,15 +2,14 @@
 #include "Body_Player.h"
 #include "Model.h"
 
-BodyState_Run::BodyState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : State{ pDevice , pContext }
+BodyState_Run::BodyState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner)
+    : State{ pDevice , pContext, pOwner }
 {
 }
 
 HRESULT BodyState_Run::Enter_State()
 {
     m_pBodyModelCom = dynamic_cast<Body_Player*>(m_pOwner)->Get_Model();
-    Safe_AddRef(m_pBodyModelCom);
 
     m_pBodyModelCom->Set_AnimationIndex(22, true);
 
@@ -29,7 +28,7 @@ HRESULT BodyState_Run::Exit_State()
 
 BodyState_Run* BodyState_Run::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner)
 {
-    BodyState_Run* pInstance = new BodyState_Run(pDevice, pContext);
+    BodyState_Run* pInstance = new BodyState_Run(pDevice, pContext, pOwner);
 
     if (nullptr == pOwner)
     {
@@ -38,7 +37,7 @@ BodyState_Run* BodyState_Run::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
         return nullptr;
     }
 
-    pInstance->Set_Owner(pOwner);
+    //pInstance->Set_Owner(pOwner);
 
     return pInstance;
 }
@@ -46,6 +45,4 @@ BodyState_Run* BodyState_Run::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
 void BodyState_Run::Free()
 {
     __super::Free();
-
-    Safe_Release(m_pBodyModelCom);
 }

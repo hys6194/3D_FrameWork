@@ -13,7 +13,7 @@ BEGIN(Client)
 class BodyState_Run : public State
 {
 private:
-	BodyState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	BodyState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner);
 	virtual ~BodyState_Run() = default;
 public:
 	virtual HRESULT Enter_State();
@@ -26,7 +26,7 @@ public:
 
 public:
 	static BodyState_Run* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner);
-	virtual void Free();
+	virtual void Free() override;
 
 
 };
