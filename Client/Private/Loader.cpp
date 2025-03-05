@@ -170,12 +170,12 @@ HRESULT Loader::Loading_Textures()
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_TEX_LOGO1,
-			Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Logo/UI_StudioLogo_THQNordic1.png")))))
+			Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Logo/UI_StudioLogo_THQNordic1.dds")))))
 			return E_FAIL;
 
-		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo1"),
-		//	Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Logo/UI_StudioLogo_THQNordic2.png")))))
-		//	return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_TEX_LOGO2,
+			Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Logo/UI_StudioLogo_THQNordic2.png")))))
+			return E_FAIL;
 	}
 
 		break;

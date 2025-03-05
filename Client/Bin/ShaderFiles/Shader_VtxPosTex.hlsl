@@ -21,8 +21,8 @@ sampler DefaultSampler = sampler_state
 
     // 샘플링 방식
     // 픽셀이 끝나면 다시 되돌아가는 방식
-    AddressU = WRAP;
-    AddressV = WRAP;
+    AddressU = CLAMP;
+    AddressV = CLAMP;
 };
 
 struct VS_IN

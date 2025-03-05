@@ -28,9 +28,6 @@ HRESULT BackGround::Initialize(void* pArg)
 	// 어디에서? -> Loader클래스에서
 	// 부모 클래스인 UIObject에서 구조체 값을 채워갈 예정
 
-	//if (m_eLevel = LEVEL_END)
- 	//	return E_FAIL;
-
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -90,20 +87,20 @@ HRESULT BackGround::Ready_Component()
 	switch (m_eLevel)
 	{
 		case LEVEL_LOGO :
-			//if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
+			//if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_TEX_BACKGROUND,
 			//	reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
 			//	return E_FAIL;
 
-			if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo1"),
+			if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_TEX_LOGO1,
 				reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
 				return E_FAIL;
 
-			if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_VIBuffer_Rect"),
+			if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_COM_VI_RECT,
 				reinterpret_cast<Component**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
 				return E_FAIL;
 
 			/* Com_Shader */
-			if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Shader_VtxPosTex"),
+			if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_SHADER_POS,
 				reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader"))))
 				return E_FAIL;
 
@@ -111,16 +108,16 @@ HRESULT BackGround::Ready_Component()
 
 			break;
 		case LEVEL_MENU :
-			if (FAILED(__super::Add_Component(LEVEL_MENU, TEXT("Prototype_Component_Texture_BackGround"),
+			if (FAILED(__super::Add_Component(LEVEL_MENU, PRO_TEX_BACKGROUND,
 				reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
 				return E_FAIL;
 
-			if (FAILED(__super::Add_Component(LEVEL_MENU, TEXT("Prototype_Component_VIBuffer_Rect"),
+			if (FAILED(__super::Add_Component(LEVEL_MENU, PRO_COM_VI_RECT,
 				reinterpret_cast<Component**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
 				return E_FAIL;
 
 			/* Com_Shader */
-			if (FAILED(__super::Add_Component(LEVEL_MENU, TEXT("Prototype_Component_Shader_VtxPosTex"),
+			if (FAILED(__super::Add_Component(LEVEL_MENU, PRO_SHADER_POS,
 				reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader"))))
 				return E_FAIL;
 

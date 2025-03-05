@@ -9,7 +9,6 @@ RasterizerState RS_Default
     // false 일 때 ,시계 방향
     FrontCounterClockwise = false;
 };
-
 // 레스터 라이징의 윤곽선 렌더링 방식
 RasterizerState RS_Wireframe
 {
