@@ -106,7 +106,7 @@ HRESULT Body_Player::Render()
 
 HRESULT Body_Player::Ready_Components()
 {
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Test"),
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
         reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),

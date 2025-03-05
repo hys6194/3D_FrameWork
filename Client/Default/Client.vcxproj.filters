@@ -150,6 +150,9 @@
     <ClInclude Include="..\Public\BodyState_Run.h">
       <Filter>02.GameObjects\Player\Body\State\Run</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Const_Key.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
