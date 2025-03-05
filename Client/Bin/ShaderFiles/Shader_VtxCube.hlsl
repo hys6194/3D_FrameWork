@@ -15,7 +15,7 @@ sampler DefaultSampler = sampler_state
 struct VS_IN
 {
     float3 vPosition : POSITION;
-    float3 vTexcoord : TEXCOORD0;    
+    float3 vTexcoord : TEXCOORD0;
 };
 
 struct VS_OUT
@@ -27,12 +27,12 @@ struct VS_OUT
 VS_OUT VS_MAIN(VS_IN In)
 {
    
-    VS_OUT Out = (VS_OUT)0;
+    VS_OUT Out = (VS_OUT) 0;
     
     
-    matrix matWV, matWVP;    
+    matrix matWV, matWVP;
     
-    matWV = mul(g_WorldMatrix, g_ViewMatrix);    
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
     
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);

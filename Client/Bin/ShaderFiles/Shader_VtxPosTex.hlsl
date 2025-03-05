@@ -114,12 +114,11 @@ technique11 DefaultTechnique
     // 일반 렌더링
     pass DefaultPass0
     {
-
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-
-        // 0xffffffff : 마스크 값으로 특정 색상 
+        // 0xffffffff :  모든 채널에 대해 블렌딩이 활성화되도록 설정
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
 
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
@@ -128,12 +127,16 @@ technique11 DefaultTechnique
     // 특수 렌더링
     pass DefaultPass1
     {
-        VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile ps_5_0 PS_MAIN();
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         /* 추후에 내가 플레이어 및 몬스터가 변신한다던가 숨는다던가 
            특수한 상황에 쉐이더 기법을 사용할 때 쓰는 pass*/
         /*vs_5_0 : 쉐이더 5.0 버전임을 의미*/
-    }
 
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN();
+    }
 
 }

@@ -88,7 +88,7 @@ HRESULT Shader::Begin(_uint iPassIndex)
     if (nullptr == pPass)
         return E_FAIL;
 
-    pPass->Apply(0, m_pContext);
+    pPass->Apply(iPassIndex, m_pContext);
 
     return S_OK;
 }

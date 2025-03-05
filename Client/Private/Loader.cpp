@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Body_Player.h"
 #include "Weapon.h"
+#include "Sky.h"
 
 Loader::Loader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -154,13 +155,15 @@ HRESULT Loader::Loading_Textures()
 	switch (m_eNextLevelID)
 	{
 	case LEVEL_MENU:
-
+	{
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, PRO_TEX_BACKGROUND,
 			Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 			return E_FAIL;
+	}
 
 		break;
 	case LEVEL_LOGO:
+	{
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_TEX_BACKGROUND,
 			Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
@@ -173,17 +176,20 @@ HRESULT Loader::Loading_Textures()
 		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo1"),
 		//	Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Logo/UI_StudioLogo_THQNordic2.png")))))
 		//	return E_FAIL;
+	}
 
 		break;
 	case LEVEL_GAMEPLAY:
+	{
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_TERRAIN,
 			Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.dds")))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_SKY,
-			Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.dds")))))
+			Texture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
 			return E_FAIL;
+	}
 
 		break;
 	default:
@@ -196,28 +202,32 @@ HRESULT Loader::Loading_Models()
 {	switch (m_eNextLevelID)
 	{
 	case LEVEL_MENU:
-
+	{
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, PRO_COM_VI_RECT,
 			VIBuffer_Rect::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+	}
 
 		break;
 	case LEVEL_LOGO:	
+	{
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_COM_VI_RECT,
 			VIBuffer_Rect::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+	}
 
 		break;
 	case LEVEL_GAMEPLAY:
+	{
 		// 지형 출력
 		/* For.Prototype_Component_VIBuffer_Terrain*/
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_TERRAIN,
 			VIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
 			return E_FAIL;
 
-		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_TERRAIN,
-		//	VIBuffer_Cube::Create(m_pDevice, m_pContext))))
-		//	return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_CUBE,
+			VIBuffer_Cube::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		_matrix		PreTransformMatrix = XMMatrixIdentity();
 		/* For.Prototype_Component_Model_Fiona */
@@ -234,8 +244,9 @@ HRESULT Loader::Loading_Models()
 
 		PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
-			Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/Strife/animtest.fbx" ,PreTransformMatrix))))
+			Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/Strife/animtest.fbx", PreTransformMatrix))))
 			return E_FAIL;
+	}
 
 
 		break;
@@ -250,20 +261,25 @@ HRESULT Loader::Loading_Shaders()
 	switch (m_eNextLevelID)
 	{
 	case LEVEL_MENU:
+	{
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, PRO_SHADER_POS,
 			Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
 			return E_FAIL;
+	}
 
 		break;
 	case LEVEL_LOGO:
+	{
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_SHADER_POS,
 			Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
 			return E_FAIL;
+	}
 
 		break;
 	case LEVEL_GAMEPLAY:	
+	{
 
 		/* For.Prototype_Component_Shader_VtxNorTex */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_SHADER_NOR,
@@ -283,6 +299,7 @@ HRESULT Loader::Loading_Shaders()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_SHADER_CUBE,
 			Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::ElementDesc, VTXCUBE::iNumElements))))
 			return E_FAIL;
+	}
 
 		break;
 	default:
@@ -295,21 +312,26 @@ HRESULT Loader::Loading_Prototype()
 {
 	switch (m_eNextLevelID)
 	{
-	case LEVEL_MENU:
+	case LEVEL_MENU: 
+	{
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, PRO_OBJ_BACK,
 			BackGround::Create(m_pDevice, m_pContext, LEVEL_MENU))))
 			return E_FAIL;
+	}
 
 		break;
-	case LEVEL_LOGO:
+	case LEVEL_LOGO: 
+		{
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_OBJ_BACK,
 			BackGround::Create(m_pDevice, m_pContext, LEVEL_LOGO))))
 			return E_FAIL;
+	}
 
 		break;
 	case LEVEL_GAMEPLAY:
+	{
 
 		/* Prototype_GameObject_Terrain */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
@@ -342,9 +364,14 @@ HRESULT Loader::Loading_Prototype()
 			Weapon::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_SKY,
+			Sky::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_FSM,
 			FSM::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+	}
 
 
 		break;

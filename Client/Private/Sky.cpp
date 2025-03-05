@@ -52,7 +52,7 @@ void Sky::Late_Update(_float fTimeDelta)
 	m_pTransformCom->Set_State(Transform::STATE_POS,
 		XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
 
-	m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
+	m_pGameInstance->Add_RenderObject(Renderer::RENDER_PRIORITY, this);
 }
 
 HRESULT Sky::Render()
@@ -100,7 +100,7 @@ HRESULT Sky::Bind_SR()
 	FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
-	FAILED_CHECK_RETURN(m_pTextureCom->Bind_SR("g_Texture", m_pShaderCom, 2),E_FAIL);
+	FAILED_CHECK_RETURN(m_pTextureCom->Bind_SR("g_DiffuseTexture", m_pShaderCom, 2),E_FAIL);
 
 	return S_OK;
 }
