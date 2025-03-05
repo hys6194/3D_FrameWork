@@ -12,7 +12,7 @@ HRESULT BodyState_Idle::Enter_State()
 {
     m_pBodyModelCom = dynamic_cast<Body_Player*>(m_pOwner)->Get_Model();
 
-    m_pBodyModelCom->Set_AnimationIndex(19, true);
+    m_pBodyModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::IDLE, true);
 
     return S_OK;
 }
@@ -22,11 +22,9 @@ void BodyState_Idle::Update_State(_float fTimeDelta)
     m_pBodyModelCom->Play_Animation(fTimeDelta);
 }
 
-HRESULT BodyState_Idle::Exit_State()
+_float BodyState_Idle::Exit_State()
 {
-    m_pOwner->Get_Transform();
-
-    return S_OK;
+    return m_pBodyModelCom->Get_AnimationKeyFrame(PLAYER_ANIMLIST::IDLE);
 }
 
 BodyState_Idle* BodyState_Idle::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner)

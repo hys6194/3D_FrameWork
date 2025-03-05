@@ -57,3 +57,37 @@ static const std::wstring PRO_OBJ_WEAPON		= TEXT("Prototype_GameObject_Weapon");
 //static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_Component_Texture_BackGround");
 //static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_Component_Texture_BackGround");
 //static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_Component_Texture_BackGround");
+
+
+
+
+
+
+enum PLAYER_ANIMLIST
+{
+	AIM_IDLE = 1,
+	AIM_IDLE_COMBAT,
+	AIM_START,
+	AIM_WALK,
+	DASH_BACK,
+	DASH_BACKEND,
+	DASH_END,
+	DASH_TO_BACK,
+	DASH_TO_FRONT,
+	DEATH,
+	EMOTE,
+	GHOOK_GIDLE,
+	GHOOK_ALOOP,
+	GHOOK_GPULL,
+	GHOOK_ASTART,
+	GHOOK_GSTART,
+	GHOOK_AZIP,
+	CHEST_OPEN,
+	IDLE,
+	JUMP,
+	LAND,
+	RUN,
+	SWAP_IDLE,
+	SWAP_START,
+	ANIM_END
+};

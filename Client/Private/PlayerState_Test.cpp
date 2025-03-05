@@ -18,9 +18,9 @@ void PlayerState_Test::Update_State(_float fTimeDelta)
 {
 }
 
-HRESULT PlayerState_Test::Exit_State()
+_float PlayerState_Test::Exit_State()
 {
-	return S_OK;
+	return 0.5f;
 }
 
 PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner)

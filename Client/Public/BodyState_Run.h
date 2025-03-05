@@ -18,7 +18,7 @@ private:
 public:
 	virtual HRESULT Enter_State();
 	virtual void	Update_State(_float fTimeDelta);
-	virtual HRESULT Exit_State();
+	virtual _float Exit_State();
 
 public:
 	Model*			m_pBodyModelCom;

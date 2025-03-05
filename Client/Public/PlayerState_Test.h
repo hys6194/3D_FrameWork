@@ -18,7 +18,7 @@ private	:
 public:
 	virtual HRESULT Enter_State();
 	virtual void Update_State(_float fTimeDelta);
-	virtual HRESULT Exit_State();
+	virtual _float Exit_State();
 
 public:
 	static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner);
