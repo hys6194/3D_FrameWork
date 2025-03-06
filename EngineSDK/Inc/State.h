@@ -27,7 +27,7 @@ public:
 public:
 	virtual HRESULT Enter_State() = 0;
 	virtual void Update_State(_float fTimeDelta) = 0;
-	virtual _float Exit_State() = 0;
+	virtual HRESULT Exit_State() = 0;
 
 protected:
 	_uint						m_iState = {};

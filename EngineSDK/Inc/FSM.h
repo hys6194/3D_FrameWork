@@ -29,14 +29,9 @@ public:
 private:
 	map<const _uint, class State*>	m_mapFSM;
 	_uint							m_iCurrentState = {0};
+	_uint							m_iPreState = {0};
 	State*							m_pCurrentState;
-	GameObject*						m_pOwner;
-
-	//class Bone*					m_pPreAnimBone;
-	//Bone*							m_pNextAnimBone;
-
-	_float						m_fPreAnimKeyFrame;
-	_float						m_fCurAnimKeyFrame;
+	//GameObject*						m_pOwner;
 
 
 public:

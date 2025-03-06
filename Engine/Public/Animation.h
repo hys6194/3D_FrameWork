@@ -14,7 +14,7 @@ public:
 	HRESULT Initialize(const aiAnimation* pAIAnimation, const vector<class Bone*>& pBone, vector<_uint>& iCurrentKeyFrameIndices);
 
 	// 애니메이션의 행렬 업데이트
-	_bool Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex);
+	_bool Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex, _float* pPreTrackPosition = nullptr, vector<_uint>* vecPreAnimKeyFrameIndex = nullptr);
 	void KeyFrame_Reset();
 private:
 	// 애니메이션의 이름
