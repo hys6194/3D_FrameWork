@@ -22,9 +22,11 @@ void BodyState_Idle::Update_State(_float fTimeDelta)
     m_pBodyModelCom->Play_Animation(fTimeDelta);
 }
 
-_float BodyState_Idle::Exit_State()
+HRESULT BodyState_Idle::Exit_State()
 {
-    return m_pBodyModelCom->Get_AnimationKeyFrame(PLAYER_ANIMLIST::IDLE);
+    m_pBodyModelCom->Set_PreAnimationIndex(PLAYER_ANIMLIST:IDLE);
+
+    return S_OK;
 }
 
 BodyState_Idle* BodyState_Idle::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner)

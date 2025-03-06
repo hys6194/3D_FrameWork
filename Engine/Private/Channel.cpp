@@ -116,33 +116,33 @@ void Channel::Update_TransformationMatrix(const vector<class Bone*>& pBone, _flo
 		// 그래서 while문으로 루프를 돌려 이를 해결한다
 		//if (fCurrentTrackPosition >= m_vecFrame[(*pKeyFrameIndex) + 1].fTrackPosition)
 		//	++(*pKeyFrameIndex);
-
-		while (fCurrentTrackPosition >= m_vecFrame[(*pKeyFrameIndex) + 1].fTrackPosition)
-			++(*pKeyFrameIndex);
-
-
-		// 이전 키 프레임과 현재 프레임의 비율을 구할 것
-		// 인자로 받아온 프레임 위치 - 현재 프레임위치 / 다음 프레임의 위치 - 현재 프레임 위치로
-		// 인자로 받아온 프레임과 현재 프레임의 위치, 다음 프레임의 위치 비율을 구한다
-		_float fRatio = (fCurrentTrackPosition - m_vecFrame[(*pKeyFrameIndex)].fTrackPosition) /
-			(m_vecFrame[(*pKeyFrameIndex) + 1].fTrackPosition - m_vecFrame[(*pKeyFrameIndex)].fTrackPosition);
+			while (fCurrentTrackPosition >= m_vecFrame[(*pKeyFrameIndex) + 1].fTrackPosition)
+				++(*pKeyFrameIndex);
 
 
-		_vector vCurScale, vCurRotation, vCurTranslation;
-		_vector vNextScale, vNextRotation, vNextTranslation;
+			// 이전 키 프레임과 현재 프레임의 비율을 구할 것
+			// 인자로 받아온 프레임 위치 - 현재 프레임위치 / 다음 프레임의 위치 - 현재 프레임 위치로
+			// 인자로 받아온 프레임과 현재 프레임의 위치, 다음 프레임의 위치 비율을 구한다
+			_float fRatio = (fCurrentTrackPosition - m_vecFrame[(*pKeyFrameIndex)].fTrackPosition) /
+				(m_vecFrame[(*pKeyFrameIndex) + 1].fTrackPosition - m_vecFrame[(*pKeyFrameIndex)].fTrackPosition);
 
-		vCurScale = XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex)].vScale);
-		vNextScale = XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex) + 1].vScale);
 
-		vCurRotation = XMLoadFloat4(&m_vecFrame[(*pKeyFrameIndex)].vRotation);
-		vNextRotation = XMLoadFloat4(&m_vecFrame[(*pKeyFrameIndex) + 1].vRotation);
-		
-		vCurTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex)].vTranslation), 1.f);
-		vNextTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex) + 1].vTranslation), 1.f);
+			_vector vCurScale, vCurRotation, vCurTranslation;
+			_vector vNextScale, vNextRotation, vNextTranslation;
 
-		vScale = XMVectorLerp(vCurScale, vNextScale, fRatio);
-		vRotation = XMQuaternionSlerp(vCurRotation, vNextRotation, fRatio);
-		vTranslation = XMVectorLerp(vCurTranslation, vNextTranslation, fRatio);
+			vCurScale = XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex)].vScale);
+			vNextScale = XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex) + 1].vScale);
+
+			vCurRotation = XMLoadFloat4(&m_vecFrame[(*pKeyFrameIndex)].vRotation);
+			vNextRotation = XMLoadFloat4(&m_vecFrame[(*pKeyFrameIndex) + 1].vRotation);
+
+			vCurTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex)].vTranslation), 1.f);
+			vNextTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex) + 1].vTranslation), 1.f);
+
+			vScale = XMVectorLerp(vCurScale, vNextScale, fRatio);
+			vRotation = XMQuaternionSlerp(vCurRotation, vNextRotation, fRatio);
+			vTranslation = XMVectorLerp(vCurTranslation, vNextTranslation, fRatio);
+
 		
 	}
 
@@ -155,6 +155,7 @@ void Channel::Update_TransformationMatrix(const vector<class Bone*>& pBone, _flo
 	//
 	//pBone[m_iBoneIndex]->Set_CombinedTransformationMatrix(
 	//	TransformationMatrix);
+
 
 	pBone[m_iBoneIndex]->Set_TransformationMatrix(
 		XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation));

@@ -57,20 +57,33 @@ const _float4x4* Model::Get_BoneMatrix(const _char* pBoneName)
     return (*iter)->Get_CombinedTransformfloat4x4ptr();
 }
 
-void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop)
+void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInter)
 {
 
     // 현재 재생하고 있는 애니메이션과 인자값이 같다면 함수진행을 막음
     if (m_iCurrentAnimationIndex == iAnimationIndex)    
         return;
 
-    for (auto& pCurrentTrackPosition : m_vecCurrentTrackPosition)
-        pCurrentTrackPosition = 0;
-
-    // vector의 vector인 점을 까먹으면 안된다
-    for (auto& pCurrentKeyFrameIndices : m_vecKeyFrameIndex)
+    // 보간 안 할시 모든 애니메이션 프레임 초기화
+    if(true != IsInter)
     {
-        for (auto& pCurrentKeyFrameIndex : pCurrentKeyFrameIndices)
+        for (auto& pCurrentTrackPosition : m_vecCurrentTrackPosition)
+            pCurrentTrackPosition = 0;
+
+        // vector의 vector인 점을 까먹으면 안된다
+        for (auto& pCurrentKeyFrameIndices : m_vecKeyFrameIndex)
+        {
+            for (auto& pCurrentKeyFrameIndex : pCurrentKeyFrameIndices)
+                pCurrentKeyFrameIndex = 0;
+        }
+    }
+
+    // 보간 할 시 현재 애니메이션의 값만 초기화
+    else
+    {
+        m_vecCurrentTrackPosition[iAnimationIndex] = 0;
+
+        for (auto& pCurrentKeyFrameIndex : m_vecKeyFrameIndex[iAnimationIndex])
             pCurrentKeyFrameIndex = 0;
     }
 
@@ -85,20 +98,6 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop)
 
     m_iCurrentAnimationIndex = iAnimationIndex;
     m_bIsLoop = isLoop;
-}
-
-_uint Model::Get_AnimationKeyFrame(_uint iAnimationIndex)
-{
-    return m_vecCurrentTrackPosition[iAnimationIndex];
-}
-
-void Model::Interpolation_Model()
-
-{
-    // 여기에서 애니메이션을 보간하는 작업을 하자
-    //m_Animations[m_iCurrentAnimationIndex];
-
-
 }
 
 HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
@@ -164,7 +163,7 @@ _bool Model::Play_Animation(_float fTimeDelta)
 
     /* 뼈들의 최종 CombinedTransformationMatrix를 갱신한다. */
     
-
+    m_vecKeyFrameIndex
 
     _bool bIsEnd = m_Animations[m_iCurrentAnimationIndex]->
                    Update_TransformationMatrix(
@@ -172,7 +171,9 @@ _bool Model::Play_Animation(_float fTimeDelta)
                    fTimeDelta, 
                    m_bIsLoop, 
                    &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], 
-                   m_vecKeyFrameIndex[m_iCurrentAnimationIndex]);
+                   m_vecKeyFrameIndex[m_iCurrentAnimationIndex],
+                   &m_vecCurrentTrackPosition[m_iPreAnimationIndex],
+                   &m_vecKeyFrameIndex[m_iPreAnimationIndex]);
     
    
     for (auto& pBone : m_vecBone)
