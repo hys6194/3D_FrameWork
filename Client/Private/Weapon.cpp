@@ -83,7 +83,7 @@ HRESULT Weapon::Render()
             aiTextureType_DIFFUSE, i, 0)))
             return E_FAIL;
 
-        m_pModelCom->Bind_BoneMatrix(m_pShaderCom, "g_BoneMatrices", i);
+        //m_pModelCom->Bind_BoneMatrix(m_pShaderCom, "g_BoneMatrices", i);
 
         if (FAILED(m_pShaderCom->Begin(0)))
             return E_FAIL;

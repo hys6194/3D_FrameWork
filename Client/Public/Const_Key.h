@@ -65,10 +65,11 @@ static const std::wstring PRO_OBJ_WEAPON		= TEXT("Prototype_GameObject_Weapon");
 
 enum PLAYER_ANIMLIST
 {
-	AIM_IDLE = 1,
+	AIM_IDLE = 0,
 	AIM_IDLE_COMBAT,
 	AIM_START,
 	AIM_WALK,
+	DASH,
 	DASH_BACK,
 	DASH_BACKEND,
 	DASH_END,
