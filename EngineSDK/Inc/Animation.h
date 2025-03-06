@@ -14,8 +14,15 @@ public:
 	HRESULT Initialize(const aiAnimation* pAIAnimation, const vector<class Bone*>& pBone, vector<_uint>& iCurrentKeyFrameIndices);
 
 	// 애니메이션의 행렬 업데이트
-	_bool Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex, _float* pPreTrackPosition = nullptr, vector<_uint>* vecPreAnimKeyFrameIndex = nullptr);
+	_bool Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex);
 	void KeyFrame_Reset();
+
+public:
+	class Channel* Get_Channel(_uint iChannelIndex)
+	{
+		return m_vecChannel[iChannelIndex];
+	}
+
 private:
 	// 애니메이션의 이름
 	_char						m_szName[MAX_PATH] = {};
@@ -29,7 +36,7 @@ private:
 
 	// Channel = 애니메이션의 특정 키 프레임에서 가지는 뼈의 정보
 	_uint						m_iNumChannel = {};
-	vector<class Channel*>		m_vecChannel = {};
+	vector<Channel*>			m_vecChannel = {};
 
 	_bool						m_bIsAnimEnd = { false };
 

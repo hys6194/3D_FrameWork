@@ -13,12 +13,17 @@ HRESULT BodyState_Run::Enter_State()
 
     m_pBodyModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
 
+    m_pBodyModelCom->Set_Interpolate(true);
+
     return S_OK;
 }
 
 void BodyState_Run::Update_State(_float fTimeDelta)
-{
-    m_pBodyModelCom->Play_Animation(fTimeDelta);
+{   
+    if (0 != m_pBodyModelCom->Get_PreAnimIndex())
+        m_pBodyModelCom->InterPolate_Bones(fTimeDelta);
+    else
+        m_pBodyModelCom->Play_Animation(fTimeDelta);
 }
 
 HRESULT BodyState_Run::Exit_State()

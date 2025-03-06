@@ -53,8 +53,7 @@ void Body_Player::Priority_Update(_float fTimeDelta)
 {
     if (*m_pTargetState & Player::STATE_IDLE)
         m_pFSMCom->Change_State(Player::STATE_IDLE);
-        //m_pModelCom->Set_AnimationIndex(19, true);
-    
+
     if (*m_pTargetState & Player::STATE_RUN)
         m_pFSMCom->Change_State(Player::STATE_RUN);
 }
@@ -72,6 +71,10 @@ void Body_Player::Update(_float fTimeDelta)
 
 void Body_Player::Late_Update(_float fTimeDelta)
 {
+    if (false == m_pModelCom->Get_Interpol())
+        m_pModelCom->Reset_PreAnimation();
+    
+
     m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
 }
 
@@ -196,10 +199,11 @@ GameObject* Body_Player::Clone(void* pArg)
 
 void Body_Player::Free()
 {
-    Safe_Release(m_pFSMCom);
 
     __super::Free();
 
+
+    Safe_Release(m_pFSMCom);
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pModelCom);
 }

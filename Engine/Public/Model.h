@@ -16,17 +16,21 @@ public:
 		return m_iNumMeshes;
 	}
 
+	const _uint Get_PreAnimIndex() { return m_iPreAnimationIndex; };
+
 	const _float4x4* Get_BoneMatrix(const _char* pBoneName);
+
+	const _bool Get_Interpol() {
+		return m_bIsInter;
+	}
 
 public:
 	// 대부분의 애니메이션은 보간이 필요하므로 마지막 인자의 기본값 = true
 	void Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop = false, _bool IsInter = true);
+	void Set_Interpolate(_bool bIsInter) { m_bIsInter = bIsInter; };
 
 public:
-	void Set_PreAnimationIndex(_uint iPreAnimationIndex)
-	{
-		m_iPreAnimationIndex = iPreAnimationIndex;
-	};
+	void Set_PreAnimationIndex(_uint iPreAnimationIndex);
 
 
 public:
@@ -36,6 +40,12 @@ public:
 
 public:
 	_bool	Play_Animation(_float fTimeDelta);
+	void	InterPolate_Bones(_float fTimeDelta);
+
+public:
+	void	Reset_PreAnimation(_float fTimeDelta);
+
+
 public:
 	HRESULT Bind_Material(class Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
 	HRESULT Bind_BoneMatrix(class Shader* pShader, const _char* pConstantName, _uint iMeshIndex);
@@ -56,7 +66,7 @@ private:
 	vector<class Bone*>					m_vecBone;
 
 	_bool								m_bIsLoop = { false };
-	_uint								m_iPreAnimationIndex = { 0 };
+	_bool								m_bIsInter = { true };
 	_int								m_iCurrentAnimationIndex = { -1 };
 	_uint								m_iNumAnimations = {};
 	vector<class Animation*>			m_Animations;
@@ -67,6 +77,17 @@ private:
 	// 채널에서의 현재 키프레임의 정보 위치
 	vector<vector<_uint>>				m_vecKeyFrameIndex;
 
+	_uint								m_iPreAnimationIndex = { 0 };
+
+	_float								m_fPreTrackPos = { 0 };
+	_float								m_fInterTrackPos = { 0 };
+
+	_uint								m_iNumBone = { 0 };
+
+	class Channel*						m_pChannel;
+
+	KEYFRAME							m_pPreKeyFrame = { };
+	KEYFRAME							m_pInterKeyFrame = { };
 
 private:
 	HRESULT Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);
