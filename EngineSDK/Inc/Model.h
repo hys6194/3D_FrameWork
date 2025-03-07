@@ -40,8 +40,6 @@ public:
 
 public:
 	_bool	Play_Animation(_float fTimeDelta);
-	void	InterPolate_Bones(_float fTimeDelta);
-
 public:
 	void	Reset_PreAnimation(_float fTimeDelta);
 

@@ -24,6 +24,7 @@ public:
 	}
 
 private:
+
 	// 애니메이션의 이름
 	_char						m_szName[MAX_PATH] = {};
 
@@ -39,7 +40,6 @@ private:
 	vector<Channel*>			m_vecChannel = {};
 
 	_bool						m_bIsAnimEnd = { false };
-
 
 
 public:

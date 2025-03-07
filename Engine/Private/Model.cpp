@@ -136,8 +136,6 @@ HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath
     if (nullptr == m_pAIScene)
         return E_FAIL;
 
-    // 여기에서 fbx 파일의 정보를 읽어와야 함
-
     /* 모델의 기본정보는 다 로드를 했다. */
     /* aiScene안에 포함되어있기 떄문에. 우리가 사용하기좋은 형태로 변형, 분리, 보관해주는 작업을 수행해야하낟. */
     
@@ -198,47 +196,6 @@ _bool Model::Play_Animation(_float fTimeDelta)
 
 
     return bIsEnd;
-}
-
-void Model::InterPolate_Bones(_float fTimeDelta)
-{
-    _vector vScale, vRotation, vTranslation;
-
-    _vector vCurScale, vCurRotation, vCurTranslation;
-    _vector vNextScale, vNextRotation, vNextTranslation;
-
-   vCurScale = XMLoadFloat3(&m_pPreKeyFrame.vScale);
-   vNextScale = XMLoadFloat3(&m_pInterKeyFrame.vScale);
-   
-   vCurRotation = XMLoadFloat4(&m_pPreKeyFrame.vRotation);
-   vNextRotation = XMLoadFloat4(&m_pInterKeyFrame.vRotation);
-   
-   vCurTranslation = XMVectorSetW(XMLoadFloat3(&m_pPreKeyFrame.vTranslation), 1.f);
-   vNextTranslation = XMVectorSetW(XMLoadFloat3(&m_pInterKeyFrame.vTranslation), 1.f);
-   
-   vScale = XMVectorLerp(vCurScale, vNextScale, 0.2f);
-   vRotation = XMQuaternionSlerp(vCurRotation, vNextRotation, 0.2f);
-   vTranslation = XMVectorLerp(vCurTranslation, vNextTranslation, 0.2f);
-
-   XMStoreFloat3(&m_pPreKeyFrame.vScale , vScale);
-   XMStoreFloat4(&m_pPreKeyFrame.vRotation , vRotation);
-   XMStoreFloat3(&m_pPreKeyFrame.vTranslation , vTranslation);
-
-   m_vecBone[m_iNumBone]->Set_TransformationMatrix(XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation));
-   
-   m_iNumBone++;
-   // 만약 이전 프레임과 다음 프레임의 값이 같아진다면 보간 상태를 끈다
-   
-   if (m_iNumBone >= m_vecBone.size())
-   {
-       for (size_t i = 0; i < m_vecBone.size(); i++)
-       {
-           m_vecBone[i]->Update_CombinedTransformationMatrix(m_vecBone, &m_PreTransformMatrix);
-       }
-
-       m_iNumBone = 0;
-       m_bIsInter = false;
-   }
 }
 
 void Model::Reset_PreAnimation(_float fTimeDelta)

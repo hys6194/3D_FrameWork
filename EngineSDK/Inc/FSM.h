@@ -32,6 +32,8 @@ private:
 	_uint							m_iPreState = {0};
 	State*							m_pCurrentState;
 	//GameObject*						m_pOwner;
+	_float						m_fPreAnimKeyFrame;
+	_float						m_fCurAnimKeyFrame;
 
 
 public:
