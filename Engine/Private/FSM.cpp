@@ -65,11 +65,7 @@ HRESULT FSM::Change_State(const _uint& iState)
     if(0 != m_iCurrentState)
         m_pCurrentState->Exit_State();
 
-    // 여기에서 State에서 Play한 애니메이션의 마지막 키프레임에 해당하는 뼈와
-    // 바꾸려고 하는 애님의 첫번째 뼈를 가져와야 함 
-    // Exit에서 마지막 키프레임에 해당하는 뼈를 순회하여 찾아야함
-    // Enter 하면서 뼈를 가져오고 m_pOwner->ModelCom에게 뼈를 던져준다
-    //m_pCurrentState->Get_Owner()->
+    // 이전에 진행하던 애니메이션의 인덱스를 Set하면서 정보를 알게 함
 
     m_pCurrentState = iter;
     m_iCurrentState = iState;

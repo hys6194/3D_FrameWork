@@ -43,6 +43,7 @@ private:
 	Shader*									m_pShaderCom = { nullptr };
 	Model*									m_pModelCom = { nullptr };
 	FSM*									m_pFSMCom = { nullptr };
+	GameObject*								m_pOwner = { nullptr };
 
 private:
 	const _uint*							m_pTargetState = { nullptr };				// 플레이어의 상태를 가져와서 애니메이션의 상태를 변경하려고 함

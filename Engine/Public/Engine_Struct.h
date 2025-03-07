@@ -20,6 +20,8 @@ namespace Engine
 		XMFLOAT4		vRotation;
 		XMFLOAT3		vTranslation;
 		float			fTrackPosition;
+
+		bool			bIsAnim;
 	}KEYFRAME;
 
 	typedef struct ENGINE_DLL tagVertexPositionTexcoord

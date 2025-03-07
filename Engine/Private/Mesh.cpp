@@ -95,7 +95,7 @@ HRESULT Mesh::Bind_BoneMatrix(Shader* pShader, const _char* pContantName, const 
 
 	pShader->Bind_Matrices(pContantName, m_matBone, m_iNumBones);
 
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT Mesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)

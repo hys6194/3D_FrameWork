@@ -9,8 +9,12 @@ class ENGINE_DLL Camera abstract : public GameObject
 public:
 	typedef struct tagCameraDesc : public GameObject::GAMEOBJECT_DESC
 	{
-		_float3			vEye, vAt;
-		_float			fFov, fAspect, fNear, fFar;
+		_float3			vEye;			// 카메라 위치
+		_float3			vAt;			// 카메라 바라보는 방향
+		_float			fFov;			// 카메라 시야각
+		_float			fAspect;		// 카메라 가로세로 비율 
+		_float			fNear;			// 카메라 근평면
+		_float			fFar;			// 카메라 원평면
 	} CAMERA_DESC;
 
 protected:

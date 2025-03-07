@@ -3,7 +3,11 @@
 #include "Bone.h"
 #include "Shader.h"
 #include "Animation.h"
+#include "Channel.h"
 #include "MeshMaterial.h"
+
+#include <DirectXMath.h>
+#include <assimp/scene.h>
 
 
 Model::Model(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -59,13 +63,14 @@ const _float4x4* Model::Get_BoneMatrix(const _char* pBoneName)
 
 void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInter)
 {
+    m_bIsInter = IsInter;
 
     // 현재 재생하고 있는 애니메이션과 인자값이 같다면 함수진행을 막음
     if (m_iCurrentAnimationIndex == iAnimationIndex)    
         return;
 
     // 보간 안 할시 모든 애니메이션 프레임 초기화
-    if(true != IsInter)
+    if(true != m_bIsInter)
     {
         for (auto& pCurrentTrackPosition : m_vecCurrentTrackPosition)
             pCurrentTrackPosition = 0;
@@ -78,7 +83,7 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInte
         }
     }
 
-    // 보간 할 시 현재 애니메이션의 값만 초기화
+    // 보간 할 시 Enter_State 에서 진입할 애니메이션의 값만 초기화
     else
     {
         m_vecCurrentTrackPosition[iAnimationIndex] = 0;
@@ -97,7 +102,32 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInte
     m_Animations[iAnimationIndex]->KeyFrame_Reset();
 
     m_iCurrentAnimationIndex = iAnimationIndex;
+
+    m_fInterTrackPos = m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
+    m_iCurKeyFrameIndex = m_vecKeyFrameIndex[m_iCurrentAnimationIndex][m_fInterTrackPos] - 1;
+
+    m_pCurChannel = m_Animations[m_iCurrentAnimationIndex]->Get_Channel ();
+
     m_bIsLoop = isLoop;
+}
+
+void Model::Set_PreAnimation(_uint iPreAnimationIndex)
+{
+    m_iPreAnimationIndex = iPreAnimationIndex;
+
+    m_fPreTrackPos = m_vecCurrentTrackPosition[m_iPreAnimationIndex];
+    
+    m_iPreKeyFrameIndex = m_vecKeyFrameIndex[iPreAnimationIndex][m_fPreTrackPos] - 1;
+
+    m_pPreChannel = m_Animations[m_iPreAnimationIndex]->Get_Channel();
+}
+
+void Model::Interpolate_Animation()
+{
+    int i = m_vecBone.size();
+
+
+   
 }
 
 HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
@@ -116,8 +146,6 @@ HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath
     m_pAIScene = m_Importer.ReadFile(pModelFilePath, iFlag);
     if (nullptr == m_pAIScene)
         return E_FAIL;
-
-    // 여기에서 fbx 파일의 정보를 읽어와야 함
 
     /* 모델의 기본정보는 다 로드를 했다. */
     /* aiScene안에 포함되어있기 떄문에. 우리가 사용하기좋은 형태로 변형, 분리, 보관해주는 작업을 수행해야하낟. */
@@ -162,8 +190,6 @@ _bool Model::Play_Animation(_float fTimeDelta)
     /* 뼈들의 CombinedTransformationMatrix가 갱신되어있어야 애니메이션 재생되는 표현을 해줄 수 있다. */
 
     /* 뼈들의 최종 CombinedTransformationMatrix를 갱신한다. */
-    
-    m_vecKeyFrameIndex
 
     _bool bIsEnd = m_Animations[m_iCurrentAnimationIndex]->
                    Update_TransformationMatrix(
@@ -171,9 +197,7 @@ _bool Model::Play_Animation(_float fTimeDelta)
                    fTimeDelta, 
                    m_bIsLoop, 
                    &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], 
-                   m_vecKeyFrameIndex[m_iCurrentAnimationIndex],
-                   &m_vecCurrentTrackPosition[m_iPreAnimationIndex],
-                   &m_vecKeyFrameIndex[m_iPreAnimationIndex]);
+                   m_vecKeyFrameIndex[m_iCurrentAnimationIndex]);
     
    
     for (auto& pBone : m_vecBone)
@@ -183,6 +207,14 @@ _bool Model::Play_Animation(_float fTimeDelta)
 
 
     return bIsEnd;
+}
+
+void Model::Reset_PreAnimation(_float fTimeDelta)
+{
+    m_vecCurrentTrackPosition[m_iPreAnimationIndex] = 0;
+
+    for (auto& pCurrentKeyFrameIndex : m_vecKeyFrameIndex[m_iPreAnimationIndex])
+        pCurrentKeyFrameIndex = 0;
 }
 
 HRESULT Model::Bind_Material(Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex)
@@ -261,7 +293,7 @@ HRESULT Model::Ready_Animations()
     // 흐름은 노션에 정리해뒀음 
     m_vecCurrentTrackPosition.resize(m_iNumAnimations);
     m_vecKeyFrameIndex.resize(m_iNumAnimations);
-   
+
 
     for (size_t i = 0; i < m_iNumAnimations; i++)
     {

@@ -34,6 +34,8 @@ protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
+	_bool						m_bIsInter = { true };
+
 	GameObject*					m_pOwner = { nullptr };
 
 

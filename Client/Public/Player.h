@@ -28,6 +28,12 @@ private:
 	virtual ~Player() = default;
 
 public:
+	_uint Get_PlayerState()
+	{
+		return m_iState;
+	};
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Priority_Update(_float fTimeDelta) override;
