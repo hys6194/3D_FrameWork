@@ -21,15 +21,15 @@ HRESULT BodyState_Idle::Enter_State()
 
 void BodyState_Idle::Update_State(_float fTimeDelta)
 {
-    //if (0 != m_pBodyModelCom->Get_PreAnimIndex())
-    //    m_pBodyModelCom->InterPolate_Bones(fTimeDelta);
-    //else
+    if (0 != m_pBodyModelCom->Get_PreAnimIndex())
+        m_pBodyModelCom->Interpolate_Animation();
+    else
         m_pBodyModelCom->Play_Animation(fTimeDelta);
 }
 
 HRESULT BodyState_Idle::Exit_State()
 {
-    m_pBodyModelCom->Set_PreAnimationIndex(PLAYER_ANIMLIST::IDLE);
+    m_pBodyModelCom->Set_PreAnimation(PLAYER_ANIMLIST::IDLE);
 
     return S_OK;
 }

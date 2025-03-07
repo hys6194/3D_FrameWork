@@ -104,18 +104,30 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInte
     m_iCurrentAnimationIndex = iAnimationIndex;
 
     m_fInterTrackPos = m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
+    m_iCurKeyFrameIndex = m_vecKeyFrameIndex[m_iCurrentAnimationIndex][m_fInterTrackPos] - 1;
+
+    m_pCurChannel = m_Animations[m_iCurrentAnimationIndex]->Get_Channel ();
+
     m_bIsLoop = isLoop;
 }
 
-void Model::Set_PreAnimationIndex(_uint iPreAnimationIndex)
+void Model::Set_PreAnimation(_uint iPreAnimationIndex)
 {
     m_iPreAnimationIndex = iPreAnimationIndex;
 
     m_fPreTrackPos = m_vecCurrentTrackPosition[m_iPreAnimationIndex];
+    
+    m_iPreKeyFrameIndex = m_vecKeyFrameIndex[iPreAnimationIndex][m_fPreTrackPos] - 1;
 
     m_pPreChannel = m_Animations[m_iPreAnimationIndex]->Get_Channel();
-    m_pCurChannel = m_Animations[m_iCurrentAnimationIndex]->Get_Channel();
+}
 
+void Model::Interpolate_Animation()
+{
+    int i = m_vecBone.size();
+
+
+   
 }
 
 HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)

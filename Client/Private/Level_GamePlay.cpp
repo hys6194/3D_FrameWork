@@ -79,7 +79,7 @@ HRESULT Level_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 	
 	TPCam_Desc.vEye = _float3(0.f, 10.f, -10.f);
 	TPCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	TPCam_Desc.fFov = XMConvertToRadians(60.f);
+	TPCam_Desc.fFov = XMConvertToRadians(50.f);
 	TPCam_Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	TPCam_Desc.fNear = 0.1f;
 	TPCam_Desc.fFar = 300.f;

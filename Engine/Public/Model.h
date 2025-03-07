@@ -30,8 +30,10 @@ public:
 	void Set_Interpolate(_bool bIsInter) { m_bIsInter = bIsInter; };
 
 public:
-	void Set_PreAnimationIndex(_uint iPreAnimationIndex);
+	void Set_PreAnimation(_uint iPreAnimationIndex);
 
+public:
+	void Interpolate_Animation();
 
 public:
 	virtual HRESULT Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
@@ -77,6 +79,9 @@ private:
 	vector<vector<_uint>>				m_vecKeyFrameIndex;
 
 	_uint								m_iPreAnimationIndex = { 0 };
+
+	_uint								m_iPreKeyFrameIndex = { 0 };
+	_uint								m_iCurKeyFrameIndex = { 0 };
 
 	_float								m_fPreTrackPos = { 0 };
 	_float								m_fInterTrackPos = { 0 };
