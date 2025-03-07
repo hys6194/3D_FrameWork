@@ -16,15 +16,11 @@ public:
 
 
 public:
-	KEYFRAME Get_KeyFrame(_uint iKeyFrameIndex)
+	vector<KEYFRAME> Get_KeyFrame()
 	{
-		return m_vecFrame[iKeyFrameIndex];
+		return m_vecFrame;
 	}
 
-	_bool Get_IsAnim()
-	{
-		return m_vecFrame.back().bIsAnim;
-	}
 
 private:
 	_char				m_szName[MAX_PATH] = {};
@@ -34,7 +30,6 @@ private:
 	_uint				m_iNumFrameKeys = {};
 
 	vector<KEYFRAME>	m_vecFrame = {};
-	vector<KEYFRAME>	m_vecAnimFrame = {};
 
 	_bool				m_bIsmatched;
 	

@@ -18,9 +18,9 @@ public:
 	void KeyFrame_Reset();
 
 public:
-	class Channel* Get_Channel(_uint iChannelIndex)
+	vector<class Channel*> Get_Channel()
 	{
-		return m_vecChannel[iChannelIndex];
+		return m_vecChannel;
 	}
 
 private:
@@ -37,7 +37,7 @@ private:
 
 	// Channel = 애니메이션의 특정 키 프레임에서 가지는 뼈의 정보
 	_uint						m_iNumChannel = {};
-	vector<Channel*>			m_vecChannel = {};
+	vector<class Channel*>		m_vecChannel = {};
 
 	_bool						m_bIsAnimEnd = { false };
 

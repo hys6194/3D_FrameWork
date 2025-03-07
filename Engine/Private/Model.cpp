@@ -113,7 +113,9 @@ void Model::Set_PreAnimationIndex(_uint iPreAnimationIndex)
 
     m_fPreTrackPos = m_vecCurrentTrackPosition[m_iPreAnimationIndex];
 
-    m_pChannel = m_Animations[m_iPreAnimationIndex]->Get_Channel(m_fPreTrackPos);
+    m_pPreChannel = m_Animations[m_iPreAnimationIndex]->Get_Channel();
+    m_pCurChannel = m_Animations[m_iCurrentAnimationIndex]->Get_Channel();
+
 }
 
 HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)

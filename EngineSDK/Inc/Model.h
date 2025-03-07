@@ -40,7 +40,6 @@ public:
 
 public:
 	_bool	Play_Animation(_float fTimeDelta);
-	void	InterPolate_Bones(_float fTimeDelta);
 
 public:
 	void	Reset_PreAnimation(_float fTimeDelta);
@@ -84,7 +83,8 @@ private:
 
 	_uint								m_iNumBone = { 0 };
 
-	class Channel*						m_pChannel;
+	vector<class Channel*>				m_pPreChannel;
+	vector<class Channel*>				m_pCurChannel;
 
 	KEYFRAME							m_pPreKeyFrame = { };
 	KEYFRAME							m_pInterKeyFrame = { };
