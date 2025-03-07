@@ -10,50 +10,34 @@ HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class Bon
 	// 현재 재생중인 애니메이션의 이름 저장
 	strcpy_s(m_szName, pAIChannel->mNodeName.data);
 
+	// 현재 채널과 이름이 같은 뼈를 모델이 저장하고 있는 전체 뼈중에서 몇번째에 해당하는지 찾아낸다.
+	auto iter = find_if(pBone.begin(), pBone.end(), [&](Bone* pBone)->_bool
+		{
+			if (true == pBone->Compare_Name(m_szName))
+				return true;
+
+			++m_iBoneIndex;
+
+			// 특정 프레임에 정점에게 영향을 주는 특정 뼈의 인덱스를 후의 연산을 통해 가져온다
+			return false;
+	
+		});
+
+
 	m_iNumFrameKeys = max(pAIChannel->mNumScalingKeys, pAIChannel->mNumRotationKeys);
 	m_iNumFrameKeys = max(m_iNumFrameKeys, pAIChannel->mNumPositionKeys);
 
 
-	KEYFRAME	Desc = {};
 
 	_float3     vScale = { 0.01f, 0.01f, 0.01f };
 	_float4     vRotation{ 0.01f, 0.01f, 0.01f, 1.f };
 	_float3     vPosition = { 0.01f, 0.01f, 0.01f };
 
-	//1.f 0.01f
-
-	// 현재 채널과 이름이 같은 뼈를 모델이 저장하고 있는 전체 뼈중에서 몇번째에 해당하는지 찾아낸다.
-	auto iter = find_if(pBone.begin(), pBone.end(), [&](Bone* pBone)->_bool
-		{
-			if (true == pBone->Compare_Name(m_szName))
-			{
-				return m_bIsmatched = true;
-			}
-
-			else
-			{
-
-				Desc.vScale = vScale;
-				Desc.vRotation = vRotation;
-				Desc.vTranslation = vPosition;
-				Desc.fTrackPosition = m_iBoneIndex;
-				Desc.bIsAnim = false;
-
-				m_vecFrame.push_back(Desc);
-				++m_iBoneIndex;
-				++m_iAnimBoneIndex;
-				// 특정 프레임에 정점에게 영향을 주는 특정 뼈의 인덱스를 후의 연산을 통해 가져온다
-				return m_bIsmatched = false;
-			}
-			
-		});
-
-
-
 
 	for (size_t i = 0; i < m_iNumFrameKeys; ++i)
 	{
-		
+
+		KEYFRAME	Desc = {};
 		
 		//if(pAIChannel[i].mNumScalingKeys < m_iNum	FrameKeys)zx
 		if (i < pAIChannel->mNumScalingKeys)
@@ -83,12 +67,8 @@ HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class Bon
 		Desc.vScale = vScale;
 		Desc.vRotation = vRotation;
 		Desc.vTranslation = vPosition;
-		Desc.bIsAnim = true;
-		
-		++m_iBoneIndex;
 
 		m_vecFrame.push_back(Desc);
-		m_vecAnimFrame.push_back(Desc);
 
 	}
 
@@ -110,7 +90,7 @@ void Channel::Update_TransformationMatrix(const vector<class Bone*>& pBone, _flo
 	// 이를 뼈에 적용시켜 줄 것이다.
 
 	// 제일 마지막에 담긴 키프레임을 가져온다
-	KEYFRAME		tLastKeyFrame = m_vecAnimFrame.back();
+	KEYFRAME		tLastKeyFrame = m_vecFrame.back();
 
 	// 현재 재생위치에 맞는 키프레임 상태
 	_vector         vScale, vRotation, vTranslation;
@@ -141,28 +121,28 @@ void Channel::Update_TransformationMatrix(const vector<class Bone*>& pBone, _flo
 		// 그래서 while문으로 루프를 돌려 이를 해결한다
 		//if (fCurrentTrackPosition >= m_vecFrame[(*pKeyFrameIndex) + 1].fTrackPosition)
 		//	++(*pKeyFrameIndex);
-		while (fCurrentTrackPosition >= m_vecAnimFrame[(*pKeyFrameIndex) + 1].fTrackPosition)
+		while (fCurrentTrackPosition >= m_vecFrame[(*pKeyFrameIndex) + 1].fTrackPosition)
 			++(*pKeyFrameIndex);
 
 
 		// 이전 키 프레임과 현재 프레임의 비율을 구할 것
 		// 인자로 받아온 프레임 위치 - 현재 프레임위치 / 다음 프레임의 위치 - 현재 프레임 위치로
 		// 인자로 받아온 프레임과 현재 프레임의 위치, 다음 프레임의 위치 비율을 구한다
-		_float fRatio = (fCurrentTrackPosition - m_vecAnimFrame[(*pKeyFrameIndex)].fTrackPosition) /
-			(m_vecAnimFrame[(*pKeyFrameIndex) + 1].fTrackPosition - m_vecAnimFrame[(*pKeyFrameIndex)].fTrackPosition);
+		_float fRatio = (fCurrentTrackPosition - m_vecFrame[(*pKeyFrameIndex)].fTrackPosition) /
+			(m_vecFrame[(*pKeyFrameIndex) + 1].fTrackPosition - m_vecFrame[(*pKeyFrameIndex)].fTrackPosition);
 
 
 		_vector vCurScale, vCurRotation, vCurTranslation;
 		_vector vNextScale, vNextRotation, vNextTranslation;
 
-		vCurScale = XMLoadFloat3(&m_vecAnimFrame[(*pKeyFrameIndex)].vScale);
-		vNextScale = XMLoadFloat3(&m_vecAnimFrame[(*pKeyFrameIndex) + 1].vScale);
+		vCurScale = XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex)].vScale);
+		vNextScale = XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex) + 1].vScale);
 
-		vCurRotation = XMLoadFloat4(&m_vecAnimFrame[(*pKeyFrameIndex)].vRotation);
-		vNextRotation = XMLoadFloat4(&m_vecAnimFrame[(*pKeyFrameIndex) + 1].vRotation);
+		vCurRotation = XMLoadFloat4(&m_vecFrame[(*pKeyFrameIndex)].vRotation);
+		vNextRotation = XMLoadFloat4(&m_vecFrame[(*pKeyFrameIndex) + 1].vRotation);
 
-		vCurTranslation = XMVectorSetW(XMLoadFloat3(&m_vecAnimFrame[(*pKeyFrameIndex)].vTranslation), 1.f);
-		vNextTranslation = XMVectorSetW(XMLoadFloat3(&m_vecAnimFrame[(*pKeyFrameIndex) + 1].vTranslation), 1.f);
+		vCurTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex)].vTranslation), 1.f);
+		vNextTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex) + 1].vTranslation), 1.f);
 
 		vScale = XMVectorLerp(vCurScale, vNextScale, fRatio);
 		vRotation = XMQuaternionSlerp(vCurRotation, vNextRotation, fRatio);
@@ -182,7 +162,7 @@ void Channel::Update_TransformationMatrix(const vector<class Bone*>& pBone, _flo
 	//	TransformationMatrix);
 
 
-	pBone[m_iAnimBoneIndex]->Set_TransformationMatrix(
+	pBone[m_iBoneIndex]->Set_TransformationMatrix(
 		XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation));
 
 }

@@ -71,12 +71,12 @@ void Body_Player::Update(_float fTimeDelta)
 
 void Body_Player::Late_Update(_float fTimeDelta)
 {
-    if (false == m_pModelCom->Get_Interpol())
-        m_pModelCom->Reset_PreAnimation();
+    //if (false == m_pModelCom->Get_Interpol())
+    //    m_pModelCom->Reset_PreAnimation(fTimeDelta);
     
 
     m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
-}
+} 
 
 HRESULT Body_Player::Render()
 {
