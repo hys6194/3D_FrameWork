@@ -35,13 +35,18 @@ HRESULT Player::Initialize(void* pArg)
 	Desc.fSpeedPerSec = 10.f;
 	Desc.fRotationPerSec = XMConvertToRadians(90.f); 
 	Desc.iNumPartObjects = PART_END;
+	Desc.iState = STATE_IDLE;
+	m_iState = Desc.iState;
 
 	FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
 
-	m_pFSMCom->Change_State(STATE_IDLE);
+	Set_PlayerState(m_iState);
+
+	m_pFSMCom->Change_State(m_iState);
+
 
 	return S_OK;
 }
@@ -49,6 +54,7 @@ HRESULT Player::Initialize(void* pArg)
 void Player::Priority_Update(_float fTimeDelta)
 {
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
+	m_pFSMCom->Change_State(m_iState);
 
 	__super::Priority_Update(fTimeDelta);
 }

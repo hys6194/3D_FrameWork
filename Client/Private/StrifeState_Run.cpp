@@ -1,5 +1,6 @@
 #include "StrifeState_Run.h"
 #include "Body_Player.h"
+#include "Player.h"
 #include "Model.h"
 
 StrifeState_Run::StrifeState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)
@@ -9,23 +10,63 @@ StrifeState_Run::StrifeState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 
 HRESULT StrifeState_Run::Enter_State()
 {
-    Set_CurAnimation();
+    dynamic_cast<Player*>(m_pOwner);
+    dynamic_cast<Body_Player*>(m_pAnimOwner);
 
+    Set_CurAnimation();
 
     return S_OK;
 }
 
 void StrifeState_Run::PriorityUpdate_State(_float fTimeDelta)
 {
+    // 아무 키나 눌렸을 때
+    if (GetAsyncKeyState(VK_DOWN) & 0x8000 || GetAsyncKeyState(VK_UP) & 0x8000 ||
+        GetAsyncKeyState(VK_LEFT) & 0x8000 || GetAsyncKeyState(VK_RIGHT) & 0x8000)
+    {
+        if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+    {
+        // Player의 Transform이어야 함
+        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(180.f));
+        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
+    }
 
+        if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+    {
+        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
+        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
+    }
+
+        if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+    {
+        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(90.f));
+        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
+    }
+
+        if (GetAsyncKeyState(VK_UP) & 0x8000)
+    {
+        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(0.f));
+        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
+    }
+
+        // 방향이 서로 180인 버튼을 눌렀을 때 Idle
+        else if ((GetAsyncKeyState(VK_DOWN) & 0x8000 && GetAsyncKeyState(VK_UP) & 0x8000) &&
+            (GetAsyncKeyState(VK_LEFT) & 0x8000 && GetAsyncKeyState(VK_RIGHT) & 0x8000))
+        {
+            dynamic_cast<Player*>(m_pOwner)->Set_PlayerMove(false);
+            dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_IDLE);
+        }
+    }
+
+    // 암것도 안누르면 Idle
+    else if(!GetAsyncKeyState(VK_DOWN)  || !GetAsyncKeyState(VK_UP)  ||
+        !GetAsyncKeyState(VK_LEFT)  || !GetAsyncKeyState(VK_RIGHT) )
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_IDLE);
 }
 
 void StrifeState_Run::Update_State(_float fTimeDelta)
 {   
     Update_Animation(fTimeDelta);
-
-    m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-
 }
 
 void StrifeState_Run::LateUpdate_State(_float fTimeDelta)
@@ -47,8 +88,6 @@ void StrifeState_Run::Set_CurAnimation()
     m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
 
     m_pModelCom->Set_Interpolate(true);
-
-
 }
 
 void StrifeState_Run::Update_Animation(_float fTimeDelta)

@@ -34,6 +34,21 @@ public:
 		return m_iState;
 	};
 
+	_bool Get_PlayerMove()
+	{
+		return m_bCanMove;
+	};
+
+	void Set_PlayerState(_uint iState)
+	{
+		m_iState = iState;
+	}
+
+	void Set_PlayerMove(_bool bMove)
+	{
+		m_bCanMove = bMove;
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -49,7 +64,10 @@ public:
 	//	CModel*						m_pModelCom = { nullptr };
 private:
 	_uint					m_iState = { STATE_NONE };
-	bool					m_bIsDashed = { false };
+
+
+	_bool					m_bIsDashed = { false };
+	_bool					m_bCanMove = { true };
 
 private:
 	FSM*					m_pFSMCom = { nullptr };

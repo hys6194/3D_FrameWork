@@ -1,5 +1,6 @@
 #include "StrifeState_Dash.h"
 #include "Body_Player.h"
+#include "Player.h"
 #include "Model.h"	
 
 StrifeState_Dash::StrifeState_Dash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)
@@ -9,9 +10,7 @@ StrifeState_Dash::StrifeState_Dash(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT StrifeState_Dash::Enter_State()
 {
-	m_pModelCom = dynamic_cast<Body_Player*>(m_pOwner)->Get_Model();
-	 
-	m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH, false);
+	Set_CurAnimation();
 
 	return S_OK;
 }
@@ -22,10 +21,7 @@ void StrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 
 void StrifeState_Dash::Update_State(_float fTimeDelta)
 {
-	if (0 != m_pModelCom->Get_PreAnimIndex() && m_pModelCom->Get_Interpolate())
-		m_pModelCom->Interpolate_Animation(0.2f);
-	else
-		m_pModelCom->Play_Animation(fTimeDelta);
+	Update_Animation(fTimeDelta);
 }
 
 void StrifeState_Dash::LateUpdate_State(_float fTimeDelta)
@@ -36,7 +32,8 @@ void StrifeState_Dash::LateUpdate_State(_float fTimeDelta)
 
 HRESULT StrifeState_Dash::Exit_State()
 {
- 
+	Set_PreAnimation();
+
 	return S_OK;
 }
 

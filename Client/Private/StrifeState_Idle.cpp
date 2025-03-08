@@ -10,6 +10,9 @@ StrifeState_Idle::StrifeState_Idle(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT StrifeState_Idle::Enter_State()
 {
+    m_pOwner = dynamic_cast<Player*>(m_pOwner);
+    m_pAnimOwner = dynamic_cast<Body_Player*>(m_pAnimOwner);
+
     Set_CurAnimation();
     return S_OK;
 }
@@ -21,47 +24,35 @@ void StrifeState_Idle::PriorityUpdate_State(_float fTimeDelta)
 		if (m_iState & Player::STATE_IDLE)
 			m_iState ^= Player::STATE_IDLE;
 		m_iState |= Player::STATE_DASH;
+
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(m_iState);
 	}
 
-	// Unaimed
-	else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) || (GetAsyncKeyState(VK_LEFT) & 0x8000) ||(GetAsyncKeyState(VK_RIGHT) & 0x8000) ||(GetAsyncKeyState(VK_UP) & 0x8000))
+    if (false == dynamic_cast<Player*>(m_pOwner)->Get_PlayerMove())
+    {
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerMove(false);
+    }
+
+	// 아무 키나 눌렀을 때,
+    else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) || (GetAsyncKeyState(VK_LEFT) & 0x8000) ||(GetAsyncKeyState(VK_RIGHT) & 0x8000) ||(GetAsyncKeyState(VK_UP) & 0x8000))
 	{
-		if (m_iState & Player::STATE_IDLE)
+        if(false == dynamic_cast<Player*>(m_pOwner)->Get_PlayerMove())
+            dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(m_iState);
+
+
+		else if (m_iState & Player::STATE_IDLE)
 			m_iState ^= Player::STATE_IDLE;
 		m_iState |= Player::STATE_RUN;
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(m_iState);
 
-		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-		{
-			// Player의 Transform이어야 함
-			m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(180.f));
-			m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-		}
-
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-		{
-			m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
-			m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-		}
-
-		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-		{
-			m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-			m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-		}
-
-		if (GetAsyncKeyState(VK_UP) & 0x8000)
-		{
-			m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(0.f));
-			m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-		}
 	}
 
+    
 }
 
 void StrifeState_Idle::Update_State(_float fTimeDelta)
 {   
     Update_Animation(fTimeDelta);
-
 }
 
 void StrifeState_Idle::LateUpdate_State(_float fTimeDelta)
