@@ -1,9 +1,7 @@
 #include "Body_Player.h"
 #include "GameInstance.h"
 
-#include "StrifeState_idle.h"
-#include "StrifeState_Run.h"
-#include "StrifeState_Dash.h"
+
 
 #include "Player.h"
 
@@ -42,43 +40,25 @@ HRESULT Body_Player::Initialize(void* pArg)
     FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_SocketMatrices(), E_FAIL);
-    FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
-
-
-    //m_pModelCom->Set_AnimationIndex(19, true);
 
     return S_OK;
 }
 
 void Body_Player::Priority_Update(_float fTimeDelta)
 {
-    if (*m_pTargetState == Player::STATE_IDLE)
-        m_pFSMCom->Change_State(Player::STATE_IDLE);
-
-    if (*m_pTargetState == Player::STATE_RUN)
-        m_pFSMCom->Change_State(Player::STATE_RUN);
-
-    if (*m_pTargetState == Player::STATE_DASH)
-         m_pFSMCom->Change_State(Player::STATE_DASH);
 }
 
 void Body_Player::Update(_float fTimeDelta)
 {
-    m_pFSMCom->Update_State(fTimeDelta);
 
     //파츠들의 매트릭스를 부모 매트릭스에 곱하여 고정시킨다
     XMStoreFloat4x4(&m_CombinedWorldMatrix,
         XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentMatrix));
 
-
 }
 
 void Body_Player::Late_Update(_float fTimeDelta)
 {
-    if (false == m_pModelCom->Get_Interpolate())
-        m_pModelCom->Reset_PreAnimation(fTimeDelta);
-    
-
     m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
 } 
 
@@ -115,9 +95,6 @@ HRESULT Body_Player::Ready_Components()
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
         reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
-        reinterpret_cast<Component**>(&m_pFSMCom), TEXT("Com_FSM")), E_FAIL);
-
     return S_OK;
 }
  
@@ -136,22 +113,6 @@ HRESULT Body_Player::Ready_SocketMatrices()
     //m_mapSocketmat.emplace(TEXT("Socket_Weapon_L"), m_pModelCom->Get_BoneMatrix("PlayerShadow"));
 
 
-
-    return S_OK;
-}
-
-HRESULT Body_Player::Ready_States()
-{
-    State* pState;
-
-    pState = StrifeState_Idle::Create(m_pDevice, m_pContext, this);
-    m_pFSMCom->Add_State(Player::STATE_IDLE, pState);
-
-    pState = StrifeState_Run::Create(m_pDevice, m_pContext, this);
-    m_pFSMCom->Add_State(Player::STATE_RUN, pState);
-
-    pState = StrifeState_Dash::Create(m_pDevice, m_pContext, this);
-    m_pFSMCom->Add_State(Player::STATE_DASH, pState);
 
     return S_OK;
 }
@@ -206,11 +167,8 @@ GameObject* Body_Player::Clone(void* pArg)
 
 void Body_Player::Free()
 {
-
     __super::Free();
 
-
-    Safe_Release(m_pFSMCom);
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pModelCom);
 }

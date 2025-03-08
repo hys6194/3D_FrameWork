@@ -6,7 +6,6 @@
 BEGIN(Engine)
 class Shader;
 class Model;
-class FSM;
 END
 
 
@@ -42,7 +41,6 @@ public:
 private:
 	Shader*									m_pShaderCom = { nullptr };
 	Model*									m_pModelCom = { nullptr };
-	FSM*									m_pFSMCom = { nullptr };
 	GameObject*								m_pOwner = { nullptr };
 
 private:
@@ -52,7 +50,6 @@ private:
 private:
 	HRESULT				Ready_Components();
 	HRESULT				Ready_SocketMatrices();
-	HRESULT				Ready_States();
 	HRESULT				Bind_SR();
 
 public:

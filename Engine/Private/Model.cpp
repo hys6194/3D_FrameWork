@@ -27,7 +27,7 @@ Model::Model(const Model& Prototype)
     , m_PreTransformMatrix { Prototype.m_PreTransformMatrix }
     , m_iNumMaterials { Prototype.m_iNumMaterials }
     , m_vecMaterial { Prototype.m_vecMaterial }
-    //, m_vecBone { Prototype.m_vecBone } 굳이 복사를 할 필요가 없어짐 -> Clone으로 깊복했기 때문
+    //, m_vecBone { Prototype.m_vecBone } 굳이 복사를 할 필요가 없어짐 -> Clone하면서 vector에 담아 깊복했기 때문
     , m_iNumAnimations{ Prototype.m_iNumAnimations }
     , m_Animations{ Prototype.m_Animations }
     , m_iCurrentAnimationIndex{ Prototype.m_iCurrentAnimationIndex }
@@ -165,7 +165,6 @@ void Model::Interpolate_Animation(_float fRatio)
         vRotation = XMQuaternionSlerp(vCurRotation, vNextRotation, m_fRatio);
         vTranslation = XMVectorLerp(vCurTranslation, vNextTranslation, m_fRatio);
 
-
         m_vecBone[tPreDesc.iBoneIndex]->Set_TransformationMatrix(
             XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation));
 
@@ -265,7 +264,7 @@ _bool Model::Play_Animation(_float fTimeDelta)
     return bIsEnd;
 }
 
-void Model::Reset_PreAnimation(_float fTimeDelta)
+void Model::Reset_PreAnimation()
 {
     m_vecCurrentTrackPosition[m_iPreAnimationIndex] = 0;
 

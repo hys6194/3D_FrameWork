@@ -44,7 +44,7 @@ public:
 	_bool	Play_Animation(_float fTimeDelta);
 
 public:
-	void	Reset_PreAnimation(_float fTimeDelta);
+	void	Reset_PreAnimation();
 
 
 public:

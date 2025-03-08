@@ -35,9 +35,19 @@ HRESULT FSM::Add_State(const _uint& iState, class State* pState)
     return S_OK;
 }
 
+void FSM::PriUpdate_State(_float fTimeDelta)
+{
+    m_pCurrentState->PriorityUpdate_State(fTimeDelta);
+}
+
 void FSM::Update_State(_float fTimeDelta)
 {
     m_pCurrentState->Update_State(fTimeDelta);
+}
+
+void FSM::LateUpdate_State(_float fTimeDelta)
+{
+    m_pCurrentState->LateUpdate_State(fTimeDelta);
 }
 
 State* FSM::Find_State(const _uint& iState)
@@ -111,8 +121,6 @@ void FSM::Free()
 
     for (auto& Pair : m_mapFSM)
         Safe_Release(Pair.second);
-    
-    m_mapFSM.clear();
 
     m_pCurrentState = nullptr;
 }

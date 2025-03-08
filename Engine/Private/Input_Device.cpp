@@ -6,6 +6,11 @@ Engine::CInput_Device::CInput_Device(void)
 	ZeroMemory(m_byKeyState, sizeof(m_byKeyState));
 }
 
+void CInput_Device::Set_DIKeyInput(int iKey)
+{
+	m_byKeyState[iKey];
+}
+
 HRESULT Engine::CInput_Device::Initialize(HINSTANCE hInst, HWND hWnd)
 {
 

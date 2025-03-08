@@ -28,6 +28,8 @@ public:
 		return *((reinterpret_cast<_long*>(&m_tMouseState)) + static_cast<_uint>(eMouseState));
 	}
 
+	void Set_DIKeyInput(int iKey);
+
 public:
 	HRESULT Initialize(HINSTANCE hInst, HWND hWnd);
 	void	Update(void);

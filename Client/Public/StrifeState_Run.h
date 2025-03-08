@@ -13,19 +13,25 @@ BEGIN(Client)
 class StrifeState_Run : public State
 {
 private:
-	StrifeState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner);
+	StrifeState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
 	virtual ~StrifeState_Run() = default;
 public:
 	virtual HRESULT Enter_State();
-	virtual void	Update_State(_float fTimeDelta);
+	virtual void PriorityUpdate_State(_float fTimeDelta);
+	virtual void Update_State(_float fTimeDelta);
+	virtual void LateUpdate_State(_float fTimeDelta);
 	virtual HRESULT Exit_State();
+	
+public:
+	virtual void Set_CurAnimation();
+	virtual void Update_Animation(_float fTimeDelta);
+	virtual void Set_PreAnimation();
 
 private:
 	Model*			m_pModelCom;
-	Shader*			m_pBodyShaderCom;
 
 public:
-	static StrifeState_Run* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner);
+	static StrifeState_Run* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner,GameObject* pAnimOwner);
 	virtual void Free() override;
 
 

@@ -1,34 +1,66 @@
 #include "PlayerState_Test.h"
 #include "Model.h"	
 
-PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner)
-	:State{pDevice, pContext, pOwner }
+PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)
+	:State{pDevice, pContext, pOwner, pAnimOwner }
 {
 }
 
 HRESULT PlayerState_Test::Enter_State()
 {
-	//m_pModelCom->Set_AnimationIndex();
-
-	//m_pModelCom = dynamic_cast<*>(m_pOwner)->Get_Model();
-	// 
-	//m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
+	Set_CurAnimation();
 
 	return S_OK;
+}
+
+void PlayerState_Test::PriorityUpdate_State(_float fTimeDelta)
+{
 }
 
 void PlayerState_Test::Update_State(_float fTimeDelta)
 {
+	Update_Animation(fTimeDelta);
+}
+
+void PlayerState_Test::LateUpdate_State(_float fTimeDelta)
+{
+	if (false == m_pModelCom->Get_Interpolate())
+		m_pModelCom->Reset_PreAnimation();
 }
 
 HRESULT PlayerState_Test::Exit_State()
 {
+	Set_PreAnimation();
+
 	return S_OK;
 }
 
-PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner)
+void PlayerState_Test::Set_PreAnimation()
 {
-	PlayerState_Test* pInstance = new PlayerState_Test(pDevice, pContext, pOwner);
+	m_pModelCom->Set_PreAnimation(PLAYER_ANIMLIST::RUN);
+}
+
+void PlayerState_Test::Update_Animation(_float fTimeDelta)
+{
+	if (0 != m_pModelCom->Get_PreAnimIndex()
+		&& m_pModelCom->Get_Interpolate())
+		m_pModelCom->Interpolate_Animation(0.2f);
+	else
+		m_pModelCom->Play_Animation(fTimeDelta);
+}
+
+void PlayerState_Test::Set_CurAnimation()
+{
+	//m_pModelCom = dynamic_cast<Body_Player*>(m_pOwner)->Get_Model();
+	//
+	//m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
+	//
+	//m_pModelCom->Set_Interpolate(true);
+}
+
+PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)
+{
+	PlayerState_Test* pInstance = new PlayerState_Test(pDevice, pContext, pOwner, pAnimOwner);
 
 	if (nullptr == pOwner)
 	{

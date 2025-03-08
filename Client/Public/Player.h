@@ -4,7 +4,7 @@
 #include "ContainerObject.h"
 
 BEGIN(Engine)
-
+class FSM;
 END
 
 BEGIN(Client)
@@ -43,18 +43,22 @@ public:
 	virtual HRESULT Render() override;
 
 
-// 파츠들을 모아서 렌더를 할 것인데, PartObject를 상속받는 클래스에서 생성하고 그 클래스에서 렌더를 할 예정이기 때문에 쓸모가 없어짐
-//private:
-//	CShader*					m_pShaderCom = { nullptr };	
-//	CModel*						m_pModelCom = { nullptr };
+	// 파츠들을 모아서 렌더를 할 것인데, PartObject를 상속받는 클래스에서 생성하고 그 클래스에서 렌더를 할 예정이기 때문에 쓸모가 없어짐
+	//private:
+	//	CShader*					m_pShaderCom = { nullptr };	
+	//	CModel*						m_pModelCom = { nullptr };
 private:
 	_uint					m_iState = { STATE_NONE };
-
+	bool					m_bIsDashed = { false };
 
 private:
-	HRESULT Ready_Components();
-	HRESULT Ready_PartObjects();
-	HRESULT Bind_SR();
+	FSM*					m_pFSMCom = { nullptr };
+
+private:
+	HRESULT			 Ready_Components();
+	HRESULT			 Ready_PartObjects();
+	HRESULT			 Ready_States();
+	HRESULT			 Bind_SR();
 
 public:
 	static Player* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -9,6 +9,12 @@
 #define AXIS_Z									XMVectorSet(0.f, 0.f, 1.f, 0.f)
 #define AXIS_W									XMVectorSet(0.f, 0.f, 0.f, 1.f)
 
+
+
+#define		VK_MAX		0xff
+
+
+
 /* Texture */
 static const std::wstring PRO_TEX_BACKGROUND	= TEXT("Prototype_Component_Texture_BackGround");
 static const std::wstring PRO_TEX_LOGO1			= TEXT("Prototype_Component_Texture_Logo1");

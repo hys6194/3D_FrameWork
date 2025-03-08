@@ -18,7 +18,11 @@ public:
 
 public:
 	HRESULT Add_State(const _uint& iState, class State* pState);
+	// 
+	void	PriUpdate_State(_float fTimeDelta);
 	void	Update_State(_float fTimeDelta);
+	void	LateUpdate_State(_float fTimeDelta);
+
 	State*	Find_State(const _uint& iState);
 	HRESULT	Delete_State();
 
