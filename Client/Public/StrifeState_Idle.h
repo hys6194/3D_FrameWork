@@ -10,22 +10,22 @@ END
 
 BEGIN(Client)
 
-class BodyState_Run : public State
+class StrifeState_Idle : public State
 {
 private:
-	BodyState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner);
-	virtual ~BodyState_Run() = default;
+	StrifeState_Idle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner);
+	virtual ~StrifeState_Idle() = default;
 public:
 	virtual HRESULT Enter_State();
 	virtual void	Update_State(_float fTimeDelta);
 	virtual HRESULT Exit_State();
 
-public:
-	Model*			m_pBodyModelCom;
+private:
+	Model*			m_pModelCom;
 	Shader*			m_pBodyShaderCom;
 
 public:
-	static BodyState_Run* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner);
+	static StrifeState_Idle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner);
 	virtual void Free() override;
 
 

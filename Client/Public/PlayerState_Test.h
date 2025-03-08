@@ -3,9 +3,9 @@
 #include "Client_Defines.h"
 #include "State.h"
 
-//BEGIN(Engine)
-//class State;
-//END
+BEGIN(Engine)
+class Model;
+END
 
 BEGIN(Client)
 
@@ -20,9 +20,14 @@ public:
 	virtual void Update_State(_float fTimeDelta);
 	virtual HRESULT Exit_State();
 
+private:
+	Model*		m_pModelCom;
+
 public:
-	static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner);
+	static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner);
 	virtual void Free();
+
+	//static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner);
 };
 
 END

@@ -24,6 +24,7 @@ public:
 
 private:
 	_char				m_szName[MAX_PATH] = {};
+
 	// 특정 뼈의 현재 정보위치를 저장
 	_uint				m_iBoneIndex = {};
 	_uint				m_iAnimBoneIndex = {};

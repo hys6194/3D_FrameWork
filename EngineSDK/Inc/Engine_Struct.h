@@ -21,7 +21,7 @@ namespace Engine
 		XMFLOAT3		vTranslation;
 		float			fTrackPosition;
 
-		bool			bIsAnim;
+		unsigned int	iBoneIndex;
 	}KEYFRAME;
 
 	typedef struct ENGINE_DLL tagVertexPositionTexcoord

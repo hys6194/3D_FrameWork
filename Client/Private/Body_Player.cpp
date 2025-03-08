@@ -1,8 +1,9 @@
 #include "Body_Player.h"
 #include "GameInstance.h"
 
-#include "BodyState_Idle.h"
-#include "BodyState_Run.h"
+#include "StrifeState_idle.h"
+#include "StrifeState_Run.h"
+#include "StrifeState_Dash.h"
 
 #include "Player.h"
 
@@ -51,11 +52,14 @@ HRESULT Body_Player::Initialize(void* pArg)
 
 void Body_Player::Priority_Update(_float fTimeDelta)
 {
-    if (*m_pTargetState & Player::STATE_IDLE)
+    if (*m_pTargetState == Player::STATE_IDLE)
         m_pFSMCom->Change_State(Player::STATE_IDLE);
 
-    if (*m_pTargetState & Player::STATE_RUN)
+    if (*m_pTargetState == Player::STATE_RUN)
         m_pFSMCom->Change_State(Player::STATE_RUN);
+
+    if (*m_pTargetState == Player::STATE_DASH)
+         m_pFSMCom->Change_State(Player::STATE_DASH);
 }
 
 void Body_Player::Update(_float fTimeDelta)
@@ -71,8 +75,8 @@ void Body_Player::Update(_float fTimeDelta)
 
 void Body_Player::Late_Update(_float fTimeDelta)
 {
-    //if (false == m_pModelCom->Get_Interpol())
-    //    m_pModelCom->Reset_PreAnimation(fTimeDelta);
+    if (false == m_pModelCom->Get_Interpolate())
+        m_pModelCom->Reset_PreAnimation(fTimeDelta);
     
 
     m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
@@ -140,11 +144,14 @@ HRESULT Body_Player::Ready_States()
 {
     State* pState;
 
-    pState = BodyState_Idle::Create(m_pDevice, m_pContext, this);
+    pState = StrifeState_Idle::Create(m_pDevice, m_pContext, this);
     m_pFSMCom->Add_State(Player::STATE_IDLE, pState);
 
-    pState = BodyState_Run::Create(m_pDevice, m_pContext, this);
+    pState = StrifeState_Run::Create(m_pDevice, m_pContext, this);
     m_pFSMCom->Add_State(Player::STATE_RUN, pState);
+
+    pState = StrifeState_Dash::Create(m_pDevice, m_pContext, this);
+    m_pFSMCom->Add_State(Player::STATE_DASH, pState);
 
     return S_OK;
 }

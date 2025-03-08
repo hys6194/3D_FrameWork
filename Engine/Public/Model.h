@@ -20,7 +20,7 @@ public:
 
 	const _float4x4* Get_BoneMatrix(const _char* pBoneName);
 
-	const _bool Get_Interpol() {
+	const _bool Get_Interpolate() {
 		return m_bIsInter;
 	}
 
@@ -33,7 +33,7 @@ public:
 	void Set_PreAnimation(_uint iPreAnimationIndex);
 
 public:
-	void Interpolate_Animation();
+	void Interpolate_Animation(_float fRatio = 0.f);
 
 public:
 	virtual HRESULT Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
@@ -85,6 +85,7 @@ private:
 
 	_float								m_fPreTrackPos = { 0 };
 	_float								m_fInterTrackPos = { 0 };
+	_float								m_fRatio = { 0.f };
 
 	_uint								m_iNumBone = { 0 };
 

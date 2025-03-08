@@ -41,46 +41,51 @@ void Player::Priority_Update(_float fTimeDelta)
 	_vector vLook = m_pTransformCom->Get_State(Transform::STATE_LOOK);
 	vLook = XMVector4Normalize(vLook);
 
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	{
+ 		if (m_iState & STATE_IDLE)
+			m_iState ^= STATE_IDLE;
+ 		m_iState |= STATE_DASH;
+	}
+
 	// Unaimed
-	if( (GetAsyncKeyState(VK_DOWN) & 0x8000) ||	(GetAsyncKeyState(VK_LEFT) & 0x8000) ||	(GetAsyncKeyState(VK_RIGHT) & 0x8000) || (GetAsyncKeyState(VK_UP) & 0x8000))
+	else if( (GetAsyncKeyState(VK_DOWN) & 0x8000) ||
+		(GetAsyncKeyState(VK_LEFT) & 0x8000) ||
+		(GetAsyncKeyState(VK_RIGHT) & 0x8000) ||
+		(GetAsyncKeyState(VK_UP) & 0x8000))
 	{
 		if (m_iState & STATE_IDLE)
 			m_iState ^= STATE_IDLE;
 		m_iState |= STATE_RUN;
-
+	
 		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 		{
 			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(180.f));
-			m_pTransformCom->Go_Straight(fTimeDelta);
+			//m_pTransformCom->Go_Straight(fTimeDelta);
 		}
-
+	
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 		{
 			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
-			m_pTransformCom->Go_Straight(fTimeDelta);
+			//m_pTransformCom->Go_Straight(fTimeDelta);
 		}
-
+	
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		{
 			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-			m_pTransformCom->Go_Straight(fTimeDelta);
+			//m_pTransformCom->Go_Straight(fTimeDelta);
 		}
-
+	
 		if (GetAsyncKeyState(VK_UP) & 0x8000)
 		{
 			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(0.f));
-			m_pTransformCom->Go_Straight(fTimeDelta);
+			//m_pTransformCom->Go_Straight(fTimeDelta);
 		}
 	}
 
 
 	//if (m_pGameInstance->Get_DIMouseState(MOUSEKEYSTATE::DIM_LB))
 	//	int a = 10;
-
-	//// Test
-	//if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-	//{
-	//}
 	
 	else
 	{
