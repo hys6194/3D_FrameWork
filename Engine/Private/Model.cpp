@@ -5,9 +5,11 @@
 #include "Animation.h"
 #include "Channel.h"
 #include "MeshMaterial.h"
+#include "GameInstance.h"
 
 #include <DirectXMath.h>
 #include <assimp/scene.h>
+
 
 
 Model::Model(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -25,7 +27,7 @@ Model::Model(const Model& Prototype)
     , m_PreTransformMatrix { Prototype.m_PreTransformMatrix }
     , m_iNumMaterials { Prototype.m_iNumMaterials }
     , m_vecMaterial { Prototype.m_vecMaterial }
-    //, m_vecBone { Prototype.m_vecBone } 굳이 복사를 할 필요가 없어짐 -> Clone으로 깊복했기 때문
+    //, m_vecBone { Prototype.m_vecBone } 굳이 복사를 할 필요가 없어짐 -> Clone하면서 vector에 담아 깊복했기 때문
     , m_iNumAnimations{ Prototype.m_iNumAnimations }
     , m_Animations{ Prototype.m_Animations }
     , m_iCurrentAnimationIndex{ Prototype.m_iCurrentAnimationIndex }
@@ -104,7 +106,7 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInte
     m_iCurrentAnimationIndex = iAnimationIndex;
 
     m_fInterTrackPos = m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
-    m_iCurKeyFrameIndex = m_vecKeyFrameIndex[m_iCurrentAnimationIndex][m_fInterTrackPos] - 1;
+    m_iCurKeyFrameIndex = m_vecKeyFrameIndex[m_iCurrentAnimationIndex][m_fInterTrackPos];
 
     m_pCurChannel = m_Animations[m_iCurrentAnimationIndex]->Get_Channel ();
 
@@ -117,17 +119,71 @@ void Model::Set_PreAnimation(_uint iPreAnimationIndex)
 
     m_fPreTrackPos = m_vecCurrentTrackPosition[m_iPreAnimationIndex];
     
-    m_iPreKeyFrameIndex = m_vecKeyFrameIndex[iPreAnimationIndex][m_fPreTrackPos] - 1;
+    m_iPreKeyFrameIndex = m_vecKeyFrameIndex[m_iPreAnimationIndex][m_fPreTrackPos];
 
     m_pPreChannel = m_Animations[m_iPreAnimationIndex]->Get_Channel();
 }
 
-void Model::Interpolate_Animation()
+void Model::Interpolate_Animation(_float fRatio)
 {
-    int i = m_vecBone.size();
+    // 0과 1사이 값만 허용
+    if (1 < fRatio)
+    {
+        MSG_BOX("Too Much Ratio Value");
+        return;
+    }
+    
+    m_fRatio += fRatio;
+    if (1.f <= m_fRatio)
+        m_fRatio = 1.f;
+    
+    // m_fRatio 값이 1을 넘어가지 않게 해야함
+    for (size_t i = 0; i < m_pPreChannel.size(); i++)
 
+    {
+        KEYFRAME tPreDesc;
+        KEYFRAME tCurDesc;
 
-   
+        tPreDesc = m_pPreChannel[i]->Get_KeyFrame().back();
+        tCurDesc = m_pCurChannel[i]->Get_KeyFrame()[0];
+
+        _vector         vScale, vRotation, vTranslation;
+
+        _vector vCurScale, vCurRotation, vCurTranslation;
+        _vector vNextScale, vNextRotation, vNextTranslation;
+
+        vCurScale = XMLoadFloat3(&tPreDesc.vScale);
+        vNextScale = XMLoadFloat3(&tCurDesc.vScale);
+
+        vCurRotation = XMLoadFloat4(&tPreDesc.vRotation);
+        vNextRotation = XMLoadFloat4(&tCurDesc.vRotation);
+
+        vCurTranslation = XMVectorSetW(XMLoadFloat3(&tPreDesc.vTranslation), 1.f);
+        vNextTranslation = XMVectorSetW(XMLoadFloat3(&tCurDesc.vTranslation), 1.f);
+
+        vScale = XMVectorLerp(vCurScale, vNextScale, m_fRatio);
+        vRotation = XMQuaternionSlerp(vCurRotation, vNextRotation, m_fRatio);
+        vTranslation = XMVectorLerp(vCurTranslation, vNextTranslation, m_fRatio);
+
+        m_vecBone[tPreDesc.iBoneIndex]->Set_TransformationMatrix(
+            XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation));
+
+    }
+
+    for (auto& pBone : m_vecBone)
+    {
+        pBone->Update_CombinedTransformationMatrix(m_vecBone, &m_PreTransformMatrix);
+    }
+
+    if (1 <= m_fRatio)
+    {
+        m_fRatio = 0.f;
+        m_bIsInter = false;
+        m_iPreAnimationIndex = 0;
+    }
+ 
+    //m_bIsInter = false;
+
 }
 
 HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
@@ -209,7 +265,7 @@ _bool Model::Play_Animation(_float fTimeDelta)
     return bIsEnd;
 }
 
-void Model::Reset_PreAnimation(_float fTimeDelta)
+void Model::Reset_PreAnimation()
 {
     m_vecCurrentTrackPosition[m_iPreAnimationIndex] = 0;
 

@@ -147,8 +147,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\BackGround.h" />
-    <ClInclude Include="..\Public\BodyState_Idle.h" />
-    <ClInclude Include="..\Public\BodyState_Run.h" />
     <ClInclude Include="..\Public\Body_Player.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -163,6 +161,9 @@
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\PlayerState_Test.h" />
     <ClInclude Include="..\Public\Sky.h" />
+    <ClInclude Include="..\Public\StrifeState_Dash.h" />
+    <ClInclude Include="..\Public\StrifeState_Idle.h" />
+    <ClInclude Include="..\Public\StrifeState_Run.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\TP_Camera.h" />
     <ClInclude Include="..\Public\Weapon.h" />
@@ -173,8 +174,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\BackGround.cpp" />
-    <ClCompile Include="..\Private\BodyState_Idle.cpp" />
-    <ClCompile Include="..\Private\BodyState_Run.cpp" />
     <ClCompile Include="..\Private\Body_Player.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
@@ -187,6 +186,9 @@
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\PlayerState_Test.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
+    <ClCompile Include="..\Private\StrifeState_Dash.cpp" />
+    <ClCompile Include="..\Private\StrifeState_Idle.cpp" />
+    <ClCompile Include="..\Private\StrifeState_Run.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\TP_Camera.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />

@@ -44,6 +44,11 @@ namespace Engine
 	const wstring g_strTransformTag = TEXT("Com_Transform");
 }
 
+#define TIME60									TEXT("Timer_60")
+#define AXIS_X									XMVectorSet(1.f, 0.f, 0.f, 0.f)
+#define AXIS_Y									XMVectorSet(0.f, 1.f, 0.f, 0.f)
+#define AXIS_Z									XMVectorSet(0.f, 0.f, 1.f, 0.f)
+#define AXIS_W									XMVectorSet(0.f, 0.f, 0.f, 1.f)
 
 #ifdef _DEBUG
 

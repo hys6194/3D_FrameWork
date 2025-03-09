@@ -3,6 +3,14 @@
 #include "ContainerObject.h"
 #include "Body_Player.h"
 #include "Weapon.h"
+#include "FSM.h"
+
+#include "State.h"
+#include "StrifeState_idle.h"
+#include "StrifeState_Run.h"
+#include "StrifeState_Dash.h"
+
+
 
 Player::Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: ContainerObject{ pDevice, pContext }
@@ -27,76 +35,43 @@ HRESULT Player::Initialize(void* pArg)
 	Desc.fSpeedPerSec = 10.f;
 	Desc.fRotationPerSec = XMConvertToRadians(90.f); 
 	Desc.iNumPartObjects = PART_END;
+	Desc.iState = STATE_IDLE;
+	m_iState = Desc.iState;
 
 	FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
+	FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
 
+
+	m_iKey = KEY_NONE;
+
+	m_pFSMCom->Change_State(m_iState);
 
 	return S_OK;
 }
 
 void Player::Priority_Update(_float fTimeDelta)
 {
-	_vector vLook = m_pTransformCom->Get_State(Transform::STATE_LOOK);
-	vLook = XMVector4Normalize(vLook);
+	Input_Keys();
 
-	// Unaimed
-	if( (GetAsyncKeyState(VK_DOWN) & 0x8000) ||	(GetAsyncKeyState(VK_LEFT) & 0x8000) ||	(GetAsyncKeyState(VK_RIGHT) & 0x8000) || (GetAsyncKeyState(VK_UP) & 0x8000))
-	{
-		if (m_iState & STATE_IDLE)
-			m_iState ^= STATE_IDLE;
-		m_iState |= STATE_RUN;
-
-		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-		{
-			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(180.f));
-			m_pTransformCom->Go_Straight(fTimeDelta);
-		}
-
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-		{
-			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
-			m_pTransformCom->Go_Straight(fTimeDelta);
-		}
-
-		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-		{
-			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-			m_pTransformCom->Go_Straight(fTimeDelta);
-		}
-
-		if (GetAsyncKeyState(VK_UP) & 0x8000)
-		{
-			m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(0.f));
-			m_pTransformCom->Go_Straight(fTimeDelta);
-		}
-	}
-
-
-	//if (m_pGameInstance->Get_DIMouseState(MOUSEKEYSTATE::DIM_LB))
-	//	int a = 10;
-
-	//// Test
-	//if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-	//{
-	//}
-	
-	else
-	{
-		m_iState = STATE_IDLE;
-	}
+	m_pFSMCom->PriUpdate_State(fTimeDelta);
+	m_pFSMCom->Change_State(m_iState);
 
 	__super::Priority_Update(fTimeDelta);
 }
 
 void Player::Update(_float fTimeDelta)
 {
+	m_pFSMCom->Update_State(fTimeDelta);
+
 	__super::Update(fTimeDelta);
 }
 
 void Player::Late_Update(_float fTimeDelta)
 {
+	m_pFSMCom->LateUpdate_State(fTimeDelta);
+
 	__super::Late_Update(fTimeDelta);
 }
 
@@ -107,6 +82,10 @@ HRESULT Player::Render()
 
 HRESULT Player::Ready_Components()
 {
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
+		reinterpret_cast<Component**>(&m_pFSMCom), TEXT("Com_FSM")), E_FAIL);
+
+
 	return S_OK;
 }
 
@@ -131,11 +110,76 @@ HRESULT Player::Ready_PartObjects()
 	return S_OK;
 }
 
+HRESULT Player::Ready_States()
+{
+	State* pState;
+
+	pState = StrifeState_Idle::Create(m_pDevice, m_pContext,this ,m_vecParts[PART_BODY]);
+	m_pFSMCom->Add_State(Player::STATE_IDLE, pState);
+
+	pState = StrifeState_Run::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	m_pFSMCom->Add_State(Player::STATE_RUN, pState);
+
+	pState = StrifeState_Dash::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	m_pFSMCom->Add_State(Player::STATE_DASH, pState);
+
+
+	return S_OK;
+}
 
 HRESULT Player::Bind_SR()
 {
 	
 	return S_OK;
+}
+
+void Player::Input_Keys()
+{
+	if (m_pGameInstance->Key_Pressing(DIK_DOWN))
+	{
+		Insert_KeyState(KEY_DOWN);
+	}
+	else if (!m_pGameInstance->Key_Pressing(DIK_DOWN))
+	{
+		Delete_KeyState(KEY_DOWN);
+	}
+
+	if (m_pGameInstance->Key_Pressing(DIK_UP))
+	{
+		Insert_KeyState(KEY_UP);
+	}
+	else if (!m_pGameInstance->Key_Pressing(DIK_UP))
+	{
+		Delete_KeyState(KEY_UP);
+	}
+
+	if (m_pGameInstance->Key_Pressing(DIK_LEFT))
+	{
+		Insert_KeyState(KEY_LEFT);
+	}
+	else if (!m_pGameInstance->Key_Pressing(DIK_LEFT))
+	{
+		Delete_KeyState(KEY_LEFT);
+	}
+
+	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
+	{
+		Insert_KeyState(KEY_RIGHT);
+	}
+	else if (!m_pGameInstance->Key_Pressing(DIK_RIGHT))
+	{
+		Delete_KeyState(KEY_RIGHT);
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_LSHIFT))
+	{
+		Insert_KeyState(KEY_SHIFT);
+	}
+	else if (!m_pGameInstance->Key_Down(DIK_LSHIFT))
+	{
+		Delete_KeyState(KEY_SHIFT);
+	}
+
 }
 
 Player* Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -167,4 +211,7 @@ GameObject* Player::Clone(void* pArg)
 void Player::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pFSMCom);
+
 }

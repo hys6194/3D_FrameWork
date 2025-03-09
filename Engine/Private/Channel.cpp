@@ -67,6 +67,7 @@ HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class Bon
 		Desc.vScale = vScale;
 		Desc.vRotation = vRotation;
 		Desc.vTranslation = vPosition;
+		Desc.iBoneIndex = m_iBoneIndex;
 
 		m_vecFrame.push_back(Desc);
 
@@ -160,7 +161,6 @@ void Channel::Update_TransformationMatrix(const vector<class Bone*>& pBone, _flo
 	//
 	//pBone[m_iBoneIndex]->Set_CombinedTransformationMatrix(
 	//	TransformationMatrix);
-
 
 	pBone[m_iBoneIndex]->Set_TransformationMatrix(
 		XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation));

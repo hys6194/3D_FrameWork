@@ -13,6 +13,7 @@ public:
 	{
 		// 생성할 파츠들의 개수
 		_uint iNumPartObjects;
+		_uint iState;
 	}CONTAINEROBJ_DESC;
 
 protected:

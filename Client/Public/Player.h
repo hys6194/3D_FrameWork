@@ -4,7 +4,7 @@
 #include "ContainerObject.h"
 
 BEGIN(Engine)
-
+class FSM;
 END
 
 BEGIN(Client)
@@ -19,7 +19,19 @@ public:
 		STATE_JUMP = 0x00000004,
 		STATE_DOUBLEJUMP = 0x00000008,
 		STATE_ATTACK = 0x00000016,
+		STATE_DASH = 0x00000032,
+		STATE_DOUBLEDASH = 0x00000064,
 		STATE_NONE = 0x00000000,
+	};
+	enum PLAYER_KEYSTATE
+	{
+		KEY_UP = 0x00000001,
+		KEY_DOWN = 0x00000002,
+		KEY_LEFT = 0x00000004,
+		KEY_RIGHT = 0x00000008,
+		KEY_SPACE = 0x00000016,
+		KEY_SHIFT = 0x00000032,
+		KEY_NONE = 0x00000000,
 	};
 
 private:
@@ -33,27 +45,69 @@ public:
 		return m_iState;
 	};
 
+	_uint Get_PlayerKeyState()
+	{
+		return m_iKey;
+	};
+
+
+	_bool Get_PlayerMove()
+	{
+		return m_bCanMove;
+	};
+
+	void Set_PlayerState(_uint iState)
+	{
+		m_iState = iState;
+	}
+
+	void Insert_KeyState(_uint iState)
+	{
+		m_iKey |= iState;
+	}
+
+	void Delete_KeyState(_uint iState)
+	{
+		m_iKey &= ~iState;
+	}
+
+	void Set_PlayerMove(_bool bMove)
+	{
+		m_bCanMove = bMove;
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
-	virtual void Priority_Update(_float fTimeDelta) override;
-	virtual void Update(_float fTimeDelta) override;
-	virtual void Late_Update(_float fTimeDelta) override;
+	virtual void	Priority_Update(_float fTimeDelta) override;
+	virtual void	Update(_float fTimeDelta) override;
+	virtual void	Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
 
-// 파츠들을 모아서 렌더를 할 것인데, PartObject를 상속받는 클래스에서 생성하고 그 클래스에서 렌더를 할 예정이기 때문에 쓸모가 없어짐
-//private:
-//	CShader*					m_pShaderCom = { nullptr };	
-//	CModel*						m_pModelCom = { nullptr };
+	// 파츠들을 모아서 렌더를 할 것인데, PartObject를 상속받는 클래스에서 생성하고 그 클래스에서 렌더를 할 예정이기 때문에 쓸모가 없어짐
+	//private:
+	//	CShader*					m_pShaderCom = { nullptr };	
+	//	CModel*						m_pModelCom = { nullptr };
 private:
-	_uint					m_iState = { STATE_NONE };
+	_uint					m_iState		= { STATE_NONE };
+	_uint					m_iKey			= { KEY_DOWN };
 
 
+	_bool					m_bIsDashed		= { false };
+	_bool					m_bCanMove		= { true };
+
 private:
-	HRESULT Ready_Components();
-	HRESULT Ready_PartObjects();
-	HRESULT Bind_SR();
+	FSM*					m_pFSMCom		= { nullptr };
+
+private:
+	HRESULT			 Ready_Components();
+	HRESULT			 Ready_PartObjects();
+	HRESULT			 Ready_States();
+	HRESULT			 Bind_SR();
+
+private:
+	void			 Input_Keys();
 
 public:
 	static Player* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

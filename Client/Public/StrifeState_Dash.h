@@ -9,11 +9,11 @@ END
 
 BEGIN(Client)
 
-class PlayerState_Test : public State
+class StrifeState_Dash : public State
 {
 private	:
-	PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
-	virtual ~PlayerState_Test() = default;
+	StrifeState_Dash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
+	virtual ~StrifeState_Dash() = default;
 
 public:
 	virtual HRESULT Enter_State();
@@ -27,15 +27,15 @@ public:
 	virtual void Update_Animation(_float fTimeDelta);
 	virtual void Set_PreAnimation();
 
-
 private:
-	Model*		m_pModelCom;
+	Model*				m_pModelCom = { nullptr };
+	_bool				m_bDashed = { false };
+	_uint				m_iKeyState = { 0 };
+
 
 public:
-	static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
+	static StrifeState_Dash* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
 	virtual void Free();
-
-	//static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner);
 };
 
 END

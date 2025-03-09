@@ -116,8 +116,8 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        // 0xffffffff :  모든 채널에 대해 블렌딩이 활성화되도록 설정
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        // 0xffffffff :  모든 채널에 대해 블렌딩이 활성화되도록 설정
 
 
         VertexShader = compile vs_5_0 VS_MAIN();

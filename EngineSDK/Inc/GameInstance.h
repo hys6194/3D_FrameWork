@@ -42,6 +42,14 @@ public:
 	_byte				Get_DIMouseState(MOUSEKEYSTATE eMouse);
 	_long				Get_DIMouseMove(MOUSEMOVESTATE eMouseState);
 
+	_bool				Key_Pressing(_uint iKeyID);
+	_bool				Key_Down(_uint iKeyID);
+	_bool				Key_Up(_uint iKeyID);
+
+	_bool				Mouse_Down(MOUSEKEYSTATE eMouse);
+	_bool				Mouse_Drag(MOUSEKEYSTATE eMouse);
+	_bool				Mouse_Up(MOUSEKEYSTATE eMouse);
+
 #pragma endregion
 
 #pragma region TIMER_MANAGER
