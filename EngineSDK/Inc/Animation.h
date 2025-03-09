@@ -23,6 +23,12 @@ public:
 		return m_vecChannel;
 	}
 
+public:
+	const _float Get_Duration()
+	{
+		return m_fDuration;
+	}
+
 private:
 
 	// 애니메이션의 이름

@@ -29,7 +29,7 @@ void StrifeState_Run::PriorityUpdate_State(_float fTimeDelta)
         dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_IDLE);
     }
 
-    else if (m_iKeyState == Player::KEY_SPACE)
+    else if(m_iKeyState == Player::KEY_SPACE)
         dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_DASH);
 
     //

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Component.h"
+#include "Animation.h"
+
 
 BEGIN(Engine)
 
@@ -23,6 +25,17 @@ public:
 	const _bool Get_Interpolate() {
 		return m_bIsInter;
 	}
+
+	const _float Get_CurAnimationDuration()
+	{
+		return m_Animations[m_iCurrentAnimationIndex]->Get_Duration();
+	}
+
+	const _float Get_CurAnimationTrackPosition(_float fTimeDelta)
+	{
+		return m_vecCurrentTrackPosition[m_iCurrentAnimationIndex] * fTimeDelta;
+	}
+	
 
 public:
 	// 대부분의 애니메이션은 보간이 필요하므로 마지막 인자의 기본값 = true

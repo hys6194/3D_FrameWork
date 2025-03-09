@@ -2,6 +2,7 @@
 #include "Body_Player.h"
 #include "Player.h"
 #include "Model.h"	
+#include "Animation.h"
 
 StrifeState_Dash::StrifeState_Dash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)
 	:State{pDevice, pContext, pOwner, pAnimOwner, m_pGameInstance }
@@ -19,7 +20,10 @@ HRESULT StrifeState_Dash::Enter_State()
 
 void StrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_SPACE))
+	m_iKeyState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerKeyState();
+
+	if (m_iKeyState & Player::KEY_SHIFT &&
+		(m_pModelCom->Get_CurAnimationTrackPosition(fTimeDelta) >= m_pModelCom->Get_CurAnimationDuration() - 1.5f))
 	{
 		m_iState |= Player::STATE_DOUBLEDASH;
 		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_END);
@@ -63,6 +67,7 @@ void StrifeState_Dash::Update_Animation(_float fTimeDelta)
 	//	&& m_pModelCom->Get_Interpolate())
 	//	m_pModelCom->Interpolate_Animation(0.2f);
 	//else
+
 	m_bDashed = m_pModelCom->Play_Animation(fTimeDelta);
 }
 

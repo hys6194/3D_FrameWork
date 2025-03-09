@@ -25,17 +25,17 @@ void StrifeState_Idle::PriorityUpdate_State(_float fTimeDelta)
 	if (m_iKeyState & Player::KEY_SHIFT)
 	{
         dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_DASH);
+        return;
 	}
 
-	// 아무 키나 눌렀을 때,
-    //else if (m_iKeyState & Player::KEY_UP || m_iKeyState & Player::KEY_LEFT || m_iKeyState & Player::KEY_DOWN || m_iKeyState & Player::KEY_RIGHT)
-    else if (m_iKeyState & Player::KEY_UP ||
+	// 아무 키나 눌렀을 때
+    if (m_iKeyState & Player::KEY_UP ||
              m_iKeyState & Player::KEY_DOWN ||
              m_iKeyState & Player::KEY_LEFT ||
              m_iKeyState & Player::KEY_RIGHT)
 	{
         dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_RUN);
-        //Check_KeyInput();
+        return;
 	}
 
     
