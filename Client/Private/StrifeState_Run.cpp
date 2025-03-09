@@ -24,47 +24,62 @@ void StrifeState_Run::PriorityUpdate_State(_float fTimeDelta)
 {
     m_iKeyState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerKeyState();
 
-    if (m_iKeyState == Player::KEY_NONE)
+    if(m_iKeyState & Player::KEY_SHIFT)
     {
-        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_IDLE);
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_DASH);
+        return;
     }
 
-    else if(m_iKeyState == Player::KEY_SPACE)
-        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_DASH);
 
-    //
-    //if (m_pGameInstance->Key_Pressing(DIK_DOWN))
-    //{
-    //    // Player의 Transform이어야 함
-    //    m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(180.f));
-    //    m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-    //}
-    //
-    //if (m_pGameInstance->Key_Pressing(DIK_LEFT))   
-    //{
-    //    m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
-    //    m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-    //}
-    //
-    //if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
-    //{
-    //    m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-    //    m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-    //}
-    //
-    //if (m_pGameInstance->Key_Pressing(DIK_UP))
-    //{
-    //    m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(0.f));
-    //    m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-    //  }
-    //// 암것도 안누르면 Idle
-    //else if(!m_pGameInstance->Key_Pressing(DIK_DOWN)  || !m_pGameInstance->Key_Pressing(DIK_UP)  ||
-    //    !m_pGameInstance->Key_Pressing(DIK_LEFT)  || !m_pGameInstance->Key_Pressing(DIK_RIGHT) )
-    //{
-    //    m_iState ^= Player::STATE_RUN;
-    //    m_iState |= Player::STATE_IDLE;
-    //    dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(m_iState);
-    //}
+    switch (m_iKeyState)
+    {
+    
+    case (Player::KEY_DOWN | Player::KEY_LEFT):
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-135.f));
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case (Player::KEY_UP | Player::KEY_LEFT):
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-45.f));
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case(Player::KEY_UP | Player::KEY_RIGHT):
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(45.f));
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case(Player::KEY_RIGHT | Player::KEY_DOWN):
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(135.f));
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case Player::KEY_DOWN:
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(180.f));
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case Player::KEY_LEFT:
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case Player::KEY_RIGHT:
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(90.f));
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case Player::KEY_UP:
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(0.f));
+        dynamic_cast<Player*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    default:
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_IDLE);
+        break;
+    }
+
+    
 }
 
 void StrifeState_Run::Update_State(_float fTimeDelta)
