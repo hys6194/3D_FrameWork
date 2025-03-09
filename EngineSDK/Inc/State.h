@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameInstance.h"
 #include "GameObject.h"
 #include "Base.h"
 
@@ -8,7 +9,7 @@ BEGIN(Engine)
 class ENGINE_DLL State abstract: public Base
 {
 protected:
-	State(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
+	State(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner, GameInstance* pGameInstance);
 	virtual ~State() = default;
 
 public:
@@ -45,6 +46,7 @@ protected:
 	GameObject*					m_pOwner = { nullptr };
 	GameObject*					m_pAnimOwner = { nullptr };
 
+	GameInstance*				m_pGameInstance = { nullptr };
 
 public:
 	virtual void Free() override;

@@ -3,15 +3,17 @@
 #include "Player.h"
 #include "Model.h"
 
+#include "GameInstance.h"
+
 StrifeState_Run::StrifeState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)
-    : State{ pDevice , pContext, pOwner, pAnimOwner }
+    : State{ pDevice , pContext, pOwner, pAnimOwner, m_pGameInstance }
 {
 }
 
 HRESULT StrifeState_Run::Enter_State()
 {
-    dynamic_cast<Player*>(m_pOwner);
-    dynamic_cast<Body_Player*>(m_pAnimOwner);
+    m_iState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerState();
+    m_iKeyState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerKeyState();
 
     Set_CurAnimation();
 
@@ -20,48 +22,49 @@ HRESULT StrifeState_Run::Enter_State()
 
 void StrifeState_Run::PriorityUpdate_State(_float fTimeDelta)
 {
-    // 아무 키나 눌렸을 때
-    if (GetAsyncKeyState(VK_DOWN) & 0x8000 || GetAsyncKeyState(VK_UP) & 0x8000 ||
-        GetAsyncKeyState(VK_LEFT) & 0x8000 || GetAsyncKeyState(VK_RIGHT) & 0x8000)
-    {
-        if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-    {
-        // Player의 Transform이어야 함
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(180.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-    }
+    m_iKeyState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerKeyState();
 
-        if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+    if (m_iKeyState == Player::KEY_NONE)
     {
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-    }
-
-        if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-    {
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-    }
-
-        if (GetAsyncKeyState(VK_UP) & 0x8000)
-    {
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(0.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
-    }
-
-        // 방향이 서로 180인 버튼을 눌렀을 때 Idle
-        else if ((GetAsyncKeyState(VK_DOWN) & 0x8000 && GetAsyncKeyState(VK_UP) & 0x8000) &&
-            (GetAsyncKeyState(VK_LEFT) & 0x8000 && GetAsyncKeyState(VK_RIGHT) & 0x8000))
-        {
-            dynamic_cast<Player*>(m_pOwner)->Set_PlayerMove(false);
-            dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_IDLE);
-        }
-    }
-
-    // 암것도 안누르면 Idle
-    else if(!GetAsyncKeyState(VK_DOWN)  || !GetAsyncKeyState(VK_UP)  ||
-        !GetAsyncKeyState(VK_LEFT)  || !GetAsyncKeyState(VK_RIGHT) )
         dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_IDLE);
+    }
+
+    else if (m_iKeyState == Player::KEY_SPACE)
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_DASH);
+
+    //
+    //if (m_pGameInstance->Key_Pressing(DIK_DOWN))
+    //{
+    //    // Player의 Transform이어야 함
+    //    m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(180.f));
+    //    m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
+    //}
+    //
+    //if (m_pGameInstance->Key_Pressing(DIK_LEFT))   
+    //{
+    //    m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
+    //    m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
+    //}
+    //
+    //if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
+    //{
+    //    m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(90.f));
+    //    m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
+    //}
+    //
+    //if (m_pGameInstance->Key_Pressing(DIK_UP))
+    //{
+    //    m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(0.f));
+    //    m_pOwner->Get_Transform()->Go_Straight(fTimeDelta);
+    //  }
+    //// 암것도 안누르면 Idle
+    //else if(!m_pGameInstance->Key_Pressing(DIK_DOWN)  || !m_pGameInstance->Key_Pressing(DIK_UP)  ||
+    //    !m_pGameInstance->Key_Pressing(DIK_LEFT)  || !m_pGameInstance->Key_Pressing(DIK_RIGHT) )
+    //{
+    //    m_iState ^= Player::STATE_RUN;
+    //    m_iState |= Player::STATE_IDLE;
+    //    dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(m_iState);
+    //}
 }
 
 void StrifeState_Run::Update_State(_float fTimeDelta)
@@ -86,8 +89,6 @@ void StrifeState_Run::Set_CurAnimation()
     m_pModelCom = dynamic_cast<Body_Player*>(m_pAnimOwner)->Get_Model();
 
     m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
-
-    m_pModelCom->Set_Interpolate(true);
 }
 
 void StrifeState_Run::Update_Animation(_float fTimeDelta)

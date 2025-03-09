@@ -2,7 +2,7 @@
 #include "Model.h"	
 
 PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)
-	:State{pDevice, pContext, pOwner, pAnimOwner }
+	:State{pDevice, pContext, pOwner, pAnimOwner, m_pGameInstance }
 {
 }
 

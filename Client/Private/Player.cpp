@@ -43,16 +43,18 @@ HRESULT Player::Initialize(void* pArg)
 	FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
 
-	Set_PlayerState(m_iState);
+
+	m_iKey = KEY_NONE;
 
 	m_pFSMCom->Change_State(m_iState);
-
 
 	return S_OK;
 }
 
 void Player::Priority_Update(_float fTimeDelta)
 {
+	Input_Keys();
+
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
 	m_pFSMCom->Change_State(m_iState);
 
@@ -125,11 +127,59 @@ HRESULT Player::Ready_States()
 	return S_OK;
 }
 
-
 HRESULT Player::Bind_SR()
 {
 	
 	return S_OK;
+}
+
+void Player::Input_Keys()
+{
+	if (m_pGameInstance->Key_Pressing(DIK_DOWN))
+	{
+		Insert_KeyState(KEY_DOWN);
+	}
+	else if (!m_pGameInstance->Key_Pressing(DIK_DOWN))
+	{
+		Delete_KeyState(KEY_DOWN);
+	}
+
+	if (m_pGameInstance->Key_Pressing(DIK_UP))
+	{
+		Insert_KeyState(KEY_UP);
+	}
+	else if (!m_pGameInstance->Key_Pressing(DIK_UP))
+	{
+		Delete_KeyState(KEY_UP);
+	}
+
+	if (m_pGameInstance->Key_Pressing(DIK_LEFT))
+	{
+		Insert_KeyState(KEY_LEFT);
+	}
+	else if (!m_pGameInstance->Key_Pressing(DIK_LEFT))
+	{
+		Delete_KeyState(KEY_LEFT);
+	}
+
+	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
+	{
+		Insert_KeyState(KEY_RIGHT);
+	}
+	else if (!m_pGameInstance->Key_Pressing(DIK_RIGHT))
+	{
+		Delete_KeyState(KEY_RIGHT);
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_LSHIFT))
+	{
+		Insert_KeyState(KEY_SHIFT);
+	}
+	else if (!m_pGameInstance->Key_Down(DIK_LSHIFT))
+	{
+		Delete_KeyState(KEY_SHIFT);
+	}
+
 }
 
 Player* Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

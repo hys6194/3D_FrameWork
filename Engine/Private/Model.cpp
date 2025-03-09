@@ -179,6 +179,7 @@ void Model::Interpolate_Animation(_float fRatio)
     {
         m_fRatio = 0.f;
         m_bIsInter = false;
+        m_iPreAnimationIndex = 0;
     }
  
     //m_bIsInter = false;

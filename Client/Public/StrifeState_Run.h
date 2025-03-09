@@ -28,7 +28,12 @@ public:
 	virtual void Set_PreAnimation();
 
 private:
-	Model*			m_pModelCom;
+	Model*			m_pModelCom = { nullptr };
+	_uint			m_iKeyState = { 0 };
+
+
+
+	//class GameInstance* m_pGameInstance;
 
 public:
 	static StrifeState_Run* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner,GameObject* pAnimOwner);

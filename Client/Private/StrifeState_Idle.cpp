@@ -4,47 +4,38 @@
 #include "Player.h"
 
 StrifeState_Idle::StrifeState_Idle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)
-    : State{ pDevice , pContext, pOwner, pAnimOwner }
+    : State{ pDevice , pContext, pOwner, pAnimOwner, m_pGameInstance }
 {
 }
 
 HRESULT StrifeState_Idle::Enter_State()
 {
-    m_pOwner = dynamic_cast<Player*>(m_pOwner);
-    m_pAnimOwner = dynamic_cast<Body_Player*>(m_pAnimOwner);
+    m_iState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerState();
 
+    
     Set_CurAnimation();
+
     return S_OK;
 }
 
 void StrifeState_Idle::PriorityUpdate_State(_float fTimeDelta)
 {
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-	{
-		if (m_iState & Player::STATE_IDLE)
-			m_iState ^= Player::STATE_IDLE;
-		m_iState |= Player::STATE_DASH;
+    m_iKeyState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerKeyState();
 
-        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(m_iState);
+	if (m_iKeyState & Player::KEY_SHIFT)
+	{
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_DASH);
 	}
 
-    if (false == dynamic_cast<Player*>(m_pOwner)->Get_PlayerMove())
-    {
-        dynamic_cast<Player*>(m_pOwner)->Set_PlayerMove(false);
-    }
-
 	// 아무 키나 눌렀을 때,
-    else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) || (GetAsyncKeyState(VK_LEFT) & 0x8000) ||(GetAsyncKeyState(VK_RIGHT) & 0x8000) ||(GetAsyncKeyState(VK_UP) & 0x8000))
+    //else if (m_iKeyState & Player::KEY_UP || m_iKeyState & Player::KEY_LEFT || m_iKeyState & Player::KEY_DOWN || m_iKeyState & Player::KEY_RIGHT)
+    else if (m_iKeyState & Player::KEY_UP ||
+             m_iKeyState & Player::KEY_DOWN ||
+             m_iKeyState & Player::KEY_LEFT ||
+             m_iKeyState & Player::KEY_RIGHT)
 	{
-        if(false == dynamic_cast<Player*>(m_pOwner)->Get_PlayerMove())
-            dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(m_iState);
-
-
-		else if (m_iState & Player::STATE_IDLE)
-			m_iState ^= Player::STATE_IDLE;
-		m_iState |= Player::STATE_RUN;
-        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(m_iState);
-
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_RUN);
+        //Check_KeyInput();
 	}
 
     
@@ -73,8 +64,6 @@ void StrifeState_Idle::Set_CurAnimation()
     m_pModelCom = dynamic_cast<Body_Player*>(m_pAnimOwner)->Get_Model();
 
     m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::IDLE, true);
-
-    m_pModelCom->Set_Interpolate(true);
 }
 
 void StrifeState_Idle::Update_Animation(_float fTimeDelta)
@@ -89,6 +78,45 @@ void StrifeState_Idle::Update_Animation(_float fTimeDelta)
 void StrifeState_Idle::Set_PreAnimation()
 {
     m_pModelCom->Set_PreAnimation(PLAYER_ANIMLIST::IDLE);
+}
+
+void StrifeState_Idle::Check_KeyInput()
+{
+    if (m_pGameInstance->Key_Pressing(DIK_DOWN))
+    {
+        dynamic_cast<Player*>(m_pOwner)->Insert_KeyState(Player::KEY_DOWN);
+    }
+    else if (!m_pGameInstance->Key_Pressing(DIK_DOWN))
+    {
+        dynamic_cast<Player*>(m_pOwner)->Delete_KeyState(!Player::KEY_DOWN);
+    }
+
+    if (m_pGameInstance->Key_Pressing(DIK_UP))
+    {
+        dynamic_cast<Player*>(m_pOwner)->Insert_KeyState(Player::KEY_UP);
+    }
+    else if (!m_pGameInstance->Key_Pressing(DIK_UP))
+    {
+        dynamic_cast<Player*>(m_pOwner)->Delete_KeyState(!Player::KEY_UP);
+    }
+
+    if (m_pGameInstance->Key_Pressing(DIK_LEFT))
+    {
+        dynamic_cast<Player*>(m_pOwner)->Insert_KeyState(Player::KEY_LEFT);
+    }
+    else if (!m_pGameInstance->Key_Pressing(DIK_LEFT))
+    {
+        dynamic_cast<Player*>(m_pOwner)->Delete_KeyState(!Player::KEY_LEFT);
+    }
+
+    if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
+    {
+        dynamic_cast<Player*>(m_pOwner)->Insert_KeyState(Player::KEY_RIGHT);
+    }
+    else if (!m_pGameInstance->Key_Pressing(DIK_RIGHT))
+    {
+        dynamic_cast<Player*>(m_pOwner)->Delete_KeyState(!Player::KEY_RIGHT);
+    }
 }
 
 StrifeState_Idle* StrifeState_Idle::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)

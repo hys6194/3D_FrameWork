@@ -136,7 +136,35 @@ _long GameInstance::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
 	return m_pInput_Device->Get_DIMouseMove(eMouseState);
 
 }
+_bool GameInstance::Key_Pressing(_uint iKeyID)
+{
+	return m_pInput_Device->Key_Pressing(iKeyID);
+}
 
+_bool GameInstance::Key_Down(_uint iKeyID)
+{
+	return m_pInput_Device->Key_Down(iKeyID);
+}
+
+_bool GameInstance::Key_Up(_uint iKeyID)
+{
+	return m_pInput_Device->Key_Up(iKeyID);
+}
+
+_bool GameInstance::Mouse_Down(MOUSEKEYSTATE eMouse)
+{
+	return m_pInput_Device->Mouse_Down(eMouse);
+}
+
+_bool GameInstance::Mouse_Drag(MOUSEKEYSTATE eMouse)
+{
+	return m_pInput_Device->Mouse_Drag(eMouse);
+}
+
+_bool GameInstance::Mouse_Up(MOUSEKEYSTATE eMouse)
+{
+	return m_pInput_Device->Mouse_Up(eMouse);
+}
 #pragma endregion
 
 #pragma region TIMER_MANAGER

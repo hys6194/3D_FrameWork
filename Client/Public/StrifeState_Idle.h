@@ -28,7 +28,11 @@ public:
 	virtual void Set_PreAnimation();
 
 private:
-	Model*			m_pModelCom;
+	Model*			m_pModelCom = { nullptr };
+	_uint			m_iKeyState = { 0 };
+
+private:
+	void		 Check_KeyInput();
 
 public:
 	static StrifeState_Idle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
