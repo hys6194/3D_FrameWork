@@ -151,6 +151,8 @@
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Const_Key.h" />
+    <ClInclude Include="..\Public\Gun_Left.h" />
+    <ClInclude Include="..\Public\Gun_Right.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
@@ -164,6 +166,7 @@
     <ClInclude Include="..\Public\StrifeState_Dash.h" />
     <ClInclude Include="..\Public\StrifeState_Idle.h" />
     <ClInclude Include="..\Public\StrifeState_Run.h" />
+    <ClInclude Include="..\Public\StrifeState_Shoot.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\TP_Camera.h" />
     <ClInclude Include="..\Public\Weapon.h" />
@@ -176,6 +179,8 @@
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\Private\Body_Player.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Gun_Left.cpp" />
+    <ClCompile Include="..\Private\Gun_Right.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
@@ -189,6 +194,7 @@
     <ClCompile Include="..\Private\StrifeState_Dash.cpp" />
     <ClCompile Include="..\Private\StrifeState_Idle.cpp" />
     <ClCompile Include="..\Private\StrifeState_Run.cpp" />
+    <ClCompile Include="..\Private\StrifeState_Shoot.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\TP_Camera.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />

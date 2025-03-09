@@ -105,8 +105,8 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInte
 
     m_iCurrentAnimationIndex = iAnimationIndex;
 
-    m_fInterTrackPos = m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
-    m_iCurKeyFrameIndex = m_vecKeyFrameIndex[m_iCurrentAnimationIndex][m_fInterTrackPos];
+    m_fCurTrackPos = m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
+    m_iCurKeyFrameIndex = m_vecKeyFrameIndex[m_iCurrentAnimationIndex][m_fCurTrackPos];
 
     m_pCurChannel = m_Animations[m_iCurrentAnimationIndex]->Get_Channel ();
 
@@ -122,6 +122,8 @@ void Model::Set_PreAnimation(_uint iPreAnimationIndex)
     m_iPreKeyFrameIndex = m_vecKeyFrameIndex[m_iPreAnimationIndex][m_fPreTrackPos];
 
     m_pPreChannel = m_Animations[m_iPreAnimationIndex]->Get_Channel();
+
+    
 }
 
 void Model::Interpolate_Animation(_float fRatio)
@@ -185,6 +187,52 @@ void Model::Interpolate_Animation(_float fRatio)
     //m_bIsInter = false;
 
 }
+
+void Model::Play_RootAnimation(_float fTimeDelta)
+{
+    m_vecBone[0]->Compare_Name("RootNode");         // 이동시켜야 하는 뼈
+    m_vecBone[2]->Compare_Name("Bone_Strife_Root"); // 이동량있는 뼈
+
+
+    _float f41, f42;
+    _matrix mat1 = XMMatrixIdentity();
+    _matrix mat2 = XMMatrixIdentity();
+    _vector vec1;
+
+
+
+    mat1 = m_vecBone[0]->Get_CombinedTransformationMatrix();
+    mat2 = m_vecBone[2]->Get_CombinedTransformationMatrix();
+    vec1 = m_vecBone[2]->Get_CombinedTransformationMatrix().r[3];
+    f41 = m_vecBone[0]->Get_CombinedTransformfloat4x4ptr()->m[3][0];
+    f42 = m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][2];
+
+
+    _float4x4 mat4;
+    XMStoreFloat4x4(&mat4, XMMatrixIdentity());
+    
+    //for(size_t i = 0; i < Transform::STATE_END; ++i)
+    //{
+    //}
+    //m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][0];
+    memcpy(&mat4.m[3][0],
+        &m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][0],
+        sizeof(_float4));
+
+    // 변화량을 가져오긴 했음
+    // 해야할 것은 현재 애니메이션의 모든 채널을 순회하여 RootNdde에게 값을 전달해줘야 함
+        
+    for (size_t i = 0; i < m_pRootChannel.size(); i++)
+    {
+        m_pRootChannel[0]->Update_TransformationMatrix(m_vecBone, Get_CurAnimationTrackPosition(), &m_iCurKeyFrameIndex);
+    }
+
+
+
+
+     int a = 10;
+
+ }
 
 HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {

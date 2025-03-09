@@ -28,6 +28,13 @@ void StrifeState_Idle::PriorityUpdate_State(_float fTimeDelta)
         return;
 	}
 
+    else if (m_iKeyState & Player::KEY_LB)
+    {
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_SHOOT);
+        return;
+    }
+
+
 	// 아무 키나 눌렀을 때
     if (m_iKeyState & Player::KEY_UP ||
              m_iKeyState & Player::KEY_DOWN ||

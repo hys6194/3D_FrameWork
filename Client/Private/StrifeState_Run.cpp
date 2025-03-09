@@ -30,6 +30,11 @@ void StrifeState_Run::PriorityUpdate_State(_float fTimeDelta)
         return;
     }
 
+    else if (m_iKeyState & Player::KEY_LB)
+    {
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_SHOOT);
+        return;
+    }
 
     switch (m_iKeyState)
     {

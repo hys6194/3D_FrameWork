@@ -9,6 +9,7 @@
 #include "StrifeState_idle.h"
 #include "StrifeState_Run.h"
 #include "StrifeState_Dash.h"
+#include "StrifeState_Shoot.h"
 
 
 
@@ -42,7 +43,6 @@ HRESULT Player::Initialize(void* pArg)
 	FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
-
 
 	m_iKey = KEY_NONE;
 
@@ -123,6 +123,8 @@ HRESULT Player::Ready_States()
 	pState = StrifeState_Dash::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
 	m_pFSMCom->Add_State(Player::STATE_DASH, pState);
 
+	pState = StrifeState_Shoot::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	m_pFSMCom->Add_State(Player::STATE_SHOOT, pState);
 
 	return S_OK;
 }
@@ -178,6 +180,15 @@ void Player::Input_Keys()
 	else if (!m_pGameInstance->Key_Down(DIK_LSHIFT))
 	{
 		Delete_KeyState(KEY_SHIFT);
+	}
+
+	if (m_pGameInstance->Get_DIKeyState(DIM_LB))
+	{
+		Insert_KeyState(KEY_LB);
+	}
+	else if (m_pGameInstance->Get_DIKeyState(DIM_LB))
+	{
+		Delete_KeyState(KEY_LB);
 	}
 
 }

@@ -85,6 +85,15 @@
     <Filter Include="02.GameObjects\Player\Strife\Dash">
       <UniqueIdentifier>{ce33b41e-98db-413e-94f4-4ed041b83310}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Player\Strife\Shoot">
+      <UniqueIdentifier>{f3b88ed7-d382-48d9-857d-8e75a194c244}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\Weapon\Gun_Left">
+      <UniqueIdentifier>{a099c047-8671-448a-9db8-b39c6ccbff81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\Weapon\Gun_Right">
+      <UniqueIdentifier>{a9d74021-a861-4a8b-bc24-081fa66c07d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -162,6 +171,15 @@
     <ClInclude Include="..\Public\StrifeState_Dash.h">
       <Filter>02.GameObjects\Player\Strife\Dash</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\StrifeState_Shoot.h">
+      <Filter>02.GameObjects\Player\Strife\Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Gun_Left.h">
+      <Filter>02.GameObjects\Player\Weapon\Gun_Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Gun_Right.h">
+      <Filter>02.GameObjects\Player\Weapon\Gun_Right</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -236,6 +254,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\StrifeState_Dash.cpp">
       <Filter>02.GameObjects\Player\Strife\Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StrifeState_Shoot.cpp">
+      <Filter>02.GameObjects\Player\Strife\Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Gun_Left.cpp">
+      <Filter>02.GameObjects\Player\Weapon\Gun_Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Gun_Right.cpp">
+      <Filter>02.GameObjects\Player\Weapon\Gun_Right</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -30,7 +30,7 @@ public:
 
 private:
 	_float					m_fMouseSensor = {};
-	_float3					m_vCamEye = { 0.f, 10.5f ,-7.5f };
+	_float3					m_vCamEye = { 0.f, 15.f ,-15.f };
 
 	GameObject*				m_pPlayer = { nullptr };
 

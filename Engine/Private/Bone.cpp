@@ -31,6 +31,11 @@ void Bone::Update_CombinedTransformationMatrix(const vector<class Bone*>& Bones,
     else
        XMStoreFloat4x4(&m_matCombinedTransform,
            XMLoadFloat4x4(&m_matTransform) * XMLoadFloat4x4(&Bones[m_iParentBoneIndex]->m_matCombinedTransform));
+    
+    //for (size_t i = 0; i < 3; i++)
+    //{
+    //    memcpy(&m_matCombinedTransform.m[3][i], &m_matTransform.m[3][i], sizeof(_float));
+    //}
 }
 
 Bone* Bone::Create(const aiNode* pAINode, _int iParentBoneIndex)
