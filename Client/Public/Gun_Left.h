@@ -4,17 +4,17 @@
 #include "PartObject.h"
 
 BEGIN(Engine)
-class Shader;
-class Model;
+class CShader;
+class CModel;
 END
 
 
 BEGIN(Client)
 
-class Gun_Left final : public PartObject
+class CGun_Left final : public CPartObject
 {
 public:
-	typedef struct tagGun_LeftDesc : public PartObject::PARTOBJ_DESC
+	typedef struct tagGun_LeftDesc : public CPartObject::PARTOBJ_DESC
 	{
 		const _float4x4* pSocketMatrix;
 		const _float4x4* pHandMatrix;
@@ -22,9 +22,9 @@ public:
 	}WEAPON_DESC;
 
 private:
-	Gun_Left(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Gun_Left(const Gun_Left& Prototype);
-	virtual ~Gun_Left() = default;
+	CGun_Left(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CGun_Left(const CGun_Left& Prototype);
+	virtual ~CGun_Left() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -35,8 +35,8 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	Shader* m_pShaderCom = { nullptr };
-	Model*  m_pModelCom = { nullptr };
+	CShader* m_pShaderCom = { nullptr };
+	CModel*  m_pModelCom = { nullptr };
 
 private:
 	const _float4x4* m_pSocketMatrix = { nullptr };	// 특정 뼈에 붙이려고 하는 소켓의 매트릭스
@@ -49,8 +49,8 @@ private:
 
 
 public:
-	static Gun_Left* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual GameObject* Clone(void* pArg);
+	static CGun_Left* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 };
 

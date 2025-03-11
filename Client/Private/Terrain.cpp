@@ -1,24 +1,24 @@
 #include "Terrain.h"
 #include "GameInstance.h"
 
-Terrain::Terrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: GameObject{ pDevice, pContext }
+CTerrain::CTerrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CGameObject{ pDevice, pContext }
 {
 }
 
-Terrain::Terrain(const Terrain& Prototype)
-	: GameObject{ Prototype }
+CTerrain::CTerrain(const CTerrain& Prototype)
+	: CGameObject{ Prototype }
 {
 }
 
-HRESULT Terrain::Initialize_Prototype()
+HRESULT CTerrain::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT Terrain::Initialize(void* pArg)
+HRESULT CTerrain::Initialize(void* pArg)
 {
- 	GameObject::GAMEOBJECT_DESC	Desc{};
+ 	CGameObject::GAMEOBJECT_DESC	Desc{};
 
 	lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Terrain"));
 	Desc.fSpeedPerSec = 0.f;
@@ -36,22 +36,22 @@ HRESULT Terrain::Initialize(void* pArg)
 	return S_OK;
 }
 
-void Terrain::Priority_Update(_float fTimeDelta)
+void CTerrain::Priority_Update(_float fTimeDelta)
 {
 	int a = 10;
 }
 
-void Terrain::Update(_float fTimeDelta)
+void CTerrain::Update(_float fTimeDelta)
 {
 	int a = 10;
 }
 
-void Terrain::Late_Update(_float fTimeDelta)
+void CTerrain::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
-HRESULT Terrain::Render()
+HRESULT CTerrain::Render()
 {
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
@@ -71,38 +71,38 @@ HRESULT Terrain::Render()
 	return S_OK;
 }
 
-HRESULT Terrain::Ready_Components()
+HRESULT CTerrain::Ready_Components()
 {
 	/* 내가 사용하기좋도록 내 멤버에도 저장을 하고 */
 	/* 다른 객체가 검색 할 수 있도록 맵에도 보관한다 . */
 
 	/* Com_Texture */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
-		reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
+		reinterpret_cast<CComponent**>(&m_pTextureCom), TEXT("Com_Texture"))))
 		return E_FAIL;
 
 	/* Com_VIBuffer */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		reinterpret_cast<Component**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
+		reinterpret_cast<CComponent**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
 		return E_FAIL;
 
 	/* Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
-		reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader"))))
+		reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader"))))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT Terrain::Bind_SR()
+HRESULT CTerrain::Bind_SR()
 {
 	if (FAILED(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom,  PipeLine::D3DTS_VIEW)))
+	if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom,  CPipeLine::D3DTS_VIEW)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom,  PipeLine::D3DTS_PROJ)))
+	if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom,  CPipeLine::D3DTS_PROJ)))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Bind_SR("g_DiffuseTexture", m_pShaderCom, 0)))
@@ -127,9 +127,9 @@ HRESULT Terrain::Bind_SR()
 	return S_OK;
 }
 
-Terrain* Terrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CTerrain* CTerrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	Terrain* pInstance = new Terrain(pDevice, pContext);
+	CTerrain* pInstance = new CTerrain(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -140,9 +140,9 @@ Terrain* Terrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	return pInstance;
 }
 
-GameObject* Terrain::Clone(void* pArg)
+CGameObject* CTerrain::Clone(void* pArg)
 {
-	Terrain* pInstance = new Terrain(*this);
+	CTerrain* pInstance = new CTerrain(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -153,7 +153,7 @@ GameObject* Terrain::Clone(void* pArg)
 	return pInstance;
 }
 
-void Terrain::Free()
+void CTerrain::Free()
 {
 	__super::Free();
 

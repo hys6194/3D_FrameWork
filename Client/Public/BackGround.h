@@ -4,16 +4,16 @@
 #include "UIObject.h"
 
 BEGIN(Engine)
-class Shader;
-class Texture;
-class VIBuffer_Rect;
+class CShader;
+class CTexture;
+class CVIBuffer_Rect;
 END
 
 BEGIN(Client)
 
 // 직교 투영으로 만들 거라서 UIObject라는 클래스를 만들어서 상속받을 예정
 
-class CBackGround final : public UIObject
+class CBackGround final : public CUIObject
 {
 private:
 	CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -29,9 +29,9 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	Texture*				m_pTextureCom = { nullptr };	
-	Shader*					m_pShaderCom = { nullptr };
-	VIBuffer_Rect*			m_pVIBufferCom = { nullptr };
+	CTexture*				m_pTextureCom = { nullptr };	
+	CShader*					m_pShaderCom = { nullptr };
+	CVIBuffer_Rect*			m_pVIBufferCom = { nullptr };
 
 private:
 	LEVEL					m_eLevel = { LEVEL_END };
@@ -42,7 +42,7 @@ private:
 
 public:
 	static CBackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevel);
-	virtual GameObject* Clone(void* pArg);
+	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 
 };

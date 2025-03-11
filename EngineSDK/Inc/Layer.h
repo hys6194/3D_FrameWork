@@ -8,11 +8,11 @@
 
 BEGIN(Engine)
 
-class Layer final : public CBase
+class CLayer final : public CBase
 {
 private:
-	Layer();
-	virtual ~Layer() = default;
+	CLayer();
+	virtual ~CLayer() = default;
 
 public:
 	HRESULT Add_GameObject(class CGameObject* pGameObject);
@@ -30,7 +30,7 @@ private:
 	list<class CGameObject*>			m_GameObjects;
 
 public:
-	static Layer* Create();
+	static CLayer* Create();
 	virtual void Free() override;
 };
 

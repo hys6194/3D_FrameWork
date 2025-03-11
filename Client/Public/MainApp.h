@@ -9,7 +9,7 @@ END
 
 BEGIN(Client)
 
-class CMainApp final : public Base
+class CMainApp final : public CBase
 {
 private:
 	CMainApp();

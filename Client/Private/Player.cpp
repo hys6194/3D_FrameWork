@@ -16,24 +16,24 @@
 
 
 
-Player::Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: ContainerObject{ pDevice, pContext }
+CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CContainerObject{ pDevice, pContext }
 {
 }
 
-Player::Player(const Player& Prototype)
-	: ContainerObject{ Prototype }
+CPlayer::CPlayer(const CPlayer& Prototype)
+	: CContainerObject{ Prototype }
 {
 }
 
-HRESULT Player::Initialize_Prototype()
+HRESULT CPlayer::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT Player::Initialize(void* pArg)
+HRESULT CPlayer::Initialize(void* pArg)
 {
-	ContainerObject::CONTAINEROBJ_DESC	Desc{};
+	CContainerObject::CONTAINEROBJ_DESC	Desc{};
 
 	lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Player"));
 	Desc.fSpeedPerSec = 10.f;
@@ -54,7 +54,7 @@ HRESULT Player::Initialize(void* pArg)
 	return S_OK;
 }
 
-void Player::Priority_Update(_float fTimeDelta)
+void CPlayer::Priority_Update(_float fTimeDelta)
 {
 	Input_Keys();
 
@@ -64,35 +64,35 @@ void Player::Priority_Update(_float fTimeDelta)
 	__super::Priority_Update(fTimeDelta);
 }
 
-void Player::Update(_float fTimeDelta)
+void CPlayer::Update(_float fTimeDelta)
 {
 	m_pFSMCom->Update_State(fTimeDelta);
 
 	__super::Update(fTimeDelta);
 }
 
-void Player::Late_Update(_float fTimeDelta)
+void CPlayer::Late_Update(_float fTimeDelta)
 {
 	m_pFSMCom->LateUpdate_State(fTimeDelta);
 
 	__super::Late_Update(fTimeDelta);
 }
 
-HRESULT Player::Render()
+HRESULT CPlayer::Render()
 {
 	return S_OK;
 }
 
-HRESULT Player::Ready_Components()
+HRESULT CPlayer::Ready_Components()
 {
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
-		reinterpret_cast<Component**>(&m_pFSMCom), TEXT("Com_FSM")), E_FAIL);
+		reinterpret_cast<CComponent**>(&m_pFSMCom), TEXT("Com_FSM")), E_FAIL);
 
 
 	return S_OK;
 }
 
-HRESULT Player::Ready_PartObjects()
+HRESULT CPlayer::Ready_PartObjects()
 {
 	// Body
 	Body_Player::BODY_PLAYER_DESC		BodyDesc{};
@@ -110,7 +110,7 @@ HRESULT Player::Ready_PartObjects()
 	//
 	//FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_WEAPON, PART_WEAPON, &WDesc), E_FAIL);
 
-	Gun_Left::WEAPON_DESC  GDesc1{};
+	CGun_Left::WEAPON_DESC  GDesc1{};
 	// WDesc.pSocketMatrix = 바디플레이어에 있는 특정 뼈(손)의 매트릭스를 가져와야 함 -> 바디 플레이어에서 특정 뼈를 가져오는 작업을 해야함
 	GDesc1.pSocketMatrix	= dynamic_cast<Body_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_LEFT);
 	GDesc1.pHandMatrix		= dynamic_cast<Body_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_LEFT_HAND);
@@ -119,7 +119,7 @@ HRESULT Player::Ready_PartObjects()
 
 	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_L_GUN, PART_LGUN, &GDesc1), E_FAIL);
 
-	Gun_Right::WEAPON_DESC  GDesc2{};
+	CGun_Right::WEAPON_DESC  GDesc2{};
 	// WDesc.pSocketMatrix = 바디플레이어에 있는 특정 뼈(손)의 매트릭스를 가져와야 함 -> 바디 플레이어에서 특정 뼈를 가져오는 작업을 해야함
 	GDesc2.pSocketMatrix	= dynamic_cast<Body_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_RIGHT);
 	GDesc2.pHandMatrix		= dynamic_cast<Body_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_RIGHT_HAND);
@@ -134,32 +134,32 @@ HRESULT Player::Ready_PartObjects()
 	return S_OK;
 }
 
-HRESULT Player::Ready_States()
+HRESULT CPlayer::Ready_States()
 {
-	State* pState;
+	CState* pState;
 
-	pState = StrifeState_Idle::Create(m_pDevice, m_pContext,this ,m_vecParts[PART_BODY]);
-	m_pFSMCom->Add_State(Player::STATE_IDLE, pState);
+	pState = CStrifeState_Idle::Create(m_pDevice, m_pContext,this ,m_vecParts[PART_BODY]);
+	m_pFSMCom->Add_State(CPlayer::STATE_IDLE, pState);
 
-	pState = StrifeState_Run::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
-	m_pFSMCom->Add_State(Player::STATE_RUN, pState);
+	pState = CStrifeState_Run::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	m_pFSMCom->Add_State(CPlayer::STATE_RUN, pState);
 
-	pState = StrifeState_Dash::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
-	m_pFSMCom->Add_State(Player::STATE_DASH, pState);
+	pState = CStrifeState_Dash::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	m_pFSMCom->Add_State(CPlayer::STATE_DASH, pState);
 
-	pState = StrifeState_Shoot::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
-	m_pFSMCom->Add_State(Player::STATE_SHOOT, pState);
+	pState = CStrifeState_Shoot::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	m_pFSMCom->Add_State(CPlayer::STATE_SHOOT, pState);
 
 	return S_OK;
 }
 
-HRESULT Player::Bind_SR()
+HRESULT CPlayer::Bind_SR()
 {
 	
 	return S_OK;
 }
 
-void Player::Input_Keys()
+void CPlayer::Input_Keys()
 {
 	if (m_pGameInstance->Key_Pressing(DIK_DOWN))
 	{
@@ -217,14 +217,14 @@ void Player::Input_Keys()
 
 	if (m_pGameInstance->Key_Down(0))
 	{
-		Get_Transform()->Set_State(Transform::STATE_POS, XMVectorSet(0.f,0.f,0.f,1.f));
+		Get_Transform()->Set_State(CTransform::STATE_POS, XMVectorSet(0.f,0.f,0.f,1.f));
 	}
 
 }
 
-Player* Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	Player* pInstance = new Player(pDevice, pContext);
+	CPlayer* pInstance = new CPlayer(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -235,9 +235,9 @@ Player* Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	return pInstance;
 }
 
-GameObject* Player::Clone(void* pArg)
+CGameObject* CPlayer::Clone(void* pArg)
 {
-	Player* pInstance = new Player(*this);
+	CPlayer* pInstance = new CPlayer(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -248,7 +248,7 @@ GameObject* Player::Clone(void* pArg)
 	return pInstance;
 }
 
-void Player::Free()
+void CPlayer::Free()
 {
 	__super::Free();
 

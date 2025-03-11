@@ -7,7 +7,7 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL UIObject abstract : public CGameObject
+class ENGINE_DLL CUIObject abstract : public CGameObject
 {
 public:
 	typedef struct tagUIObjectDesc : public CGameObject::GAMEOBJECT_DESC
@@ -17,9 +17,9 @@ public:
 	}UIOBJECT_DESC;
 
 protected:
-	UIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	UIObject(const UIObject& Prototype);
-	virtual ~UIObject() = default;
+	CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CUIObject(const CUIObject& Prototype);
+	virtual ~CUIObject() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

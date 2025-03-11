@@ -12,12 +12,12 @@
 
 BEGIN(Engine)
 
-class Bone final : public CBase
+class CBone final : public CBase
 {
 	
 private:
-	Bone();
-	virtual ~Bone() = default;
+	CBone();
+	virtual ~CBone() = default;
 
 public:
 	_matrix Get_CombinedTransformationMatrix() const {
@@ -49,8 +49,8 @@ public:
 
 public:
 	HRESULT Initialize(const aiNode* pAINode, _int iParentBoneIndex);
-	void Update_CombinedTransformationMatrix(const vector<class Bone*>& Bones, const _float4x4* pPreTransformMatrix);
-	void Update_Combine_RootMatrix(const vector<class Bone*>& Bones, const _float4x4* pPreTransformMatrix, class CGameObject* pObject = nullptr);
+	void Update_CombinedTransformationMatrix(const vector<class CBone*>& Bones, const _float4x4* pPreTransformMatrix);
+	void Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _float4x4* pPreTransformMatrix, class CGameObject* pObject = nullptr);
 	_bool Compare_Name(const _char* pName) {
 		return !strcmp(m_szName, pName);
 	}
@@ -74,8 +74,8 @@ private:
 
 
 public:
-	static Bone* Create(const aiNode* pAINode, _int iParentBoneIndex);
-	virtual Bone* Clone();
+	static CBone* Create(const aiNode* pAINode, _int iParentBoneIndex);
+	virtual CBone* Clone();
 	virtual void Free() override;
 };
 

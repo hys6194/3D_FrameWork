@@ -1,11 +1,11 @@
 #include "Bone.h"
 #include "GameObject.h"
 
-Bone::Bone()
+CBone::CBone()
 {
 }
 
-HRESULT Bone::Initialize(const aiNode* pAINode, _int iParentBoneIndex)
+HRESULT CBone::Initialize(const aiNode* pAINode, _int iParentBoneIndex)
 {
     strcpy_s(m_szName, pAINode->mName.data);
     
@@ -22,7 +22,7 @@ HRESULT Bone::Initialize(const aiNode* pAINode, _int iParentBoneIndex)
     return S_OK;
 }
 
-void Bone::Update_CombinedTransformationMatrix(const vector<class Bone*>& Bones, const _float4x4* pPreTransformMatrix)
+void CBone::Update_CombinedTransformationMatrix(const vector<class CBone*>& Bones, const _float4x4* pPreTransformMatrix)
 {
     if (-1 == m_iParentBoneIndex)
         XMStoreFloat4x4(&m_matCombinedTransform,
@@ -35,7 +35,7 @@ void Bone::Update_CombinedTransformationMatrix(const vector<class Bone*>& Bones,
 
 }
 
-void Bone::Update_Combine_RootMatrix(const vector<class Bone*>& Bones, const _float4x4* pPreTransformMatrix, CGameObject* pObject)
+void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _float4x4* pPreTransformMatrix, CGameObject* pObject)
 {
     if (-1 == m_iParentBoneIndex)
         XMStoreFloat4x4(&m_matCombinedTransform,
@@ -99,8 +99,8 @@ void Bone::Update_Combine_RootMatrix(const vector<class Bone*>& Bones, const _fl
        //m_vDelta = vDelta;
        //
        //// 플레이어의 위치 갱신
-       //pObject->Get_Transform()->Set_State(Transform::STATE_POS,
-       //    pObject->Get_Transform()->Get_State(Transform::STATE_POS) +
+       //pObject->Get_Transform()->Set_State(CTransform::STATE_POS,
+       //    pObject->Get_Transform()->Get_State(CTransform::STATE_POS) +
        //    XMVectorSetW(XMLoadFloat4(&m_vDelta), 0.f));
        //
        //// 이동량을 제거한 매트릭스를 컴바인드 행렬에 대입함으로서 애니메이션의 로컬 이동량 제거
@@ -114,9 +114,9 @@ void Bone::Update_Combine_RootMatrix(const vector<class Bone*>& Bones, const _fl
 
 }
 
-Bone* Bone::Create(const aiNode* pAINode, _int iParentBoneIndex)
+CBone* CBone::Create(const aiNode* pAINode, _int iParentBoneIndex)
 {
-    Bone* pInstance = new Bone();
+    CBone* pInstance = new CBone();
 
     if (FAILED(pInstance->Initialize(pAINode, iParentBoneIndex)))
     {
@@ -127,12 +127,12 @@ Bone* Bone::Create(const aiNode* pAINode, _int iParentBoneIndex)
     return pInstance;
 }
 
-Bone* Bone::Clone()
+CBone* CBone::Clone()
 {
-    return new Bone(*this);
+    return new CBone(*this);
 }
 
 
-void Bone::Free()
+void CBone::Free()
 {
 }

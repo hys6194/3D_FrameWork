@@ -4,16 +4,16 @@
 #include "State.h"
 
 BEGIN(Engine)
-class Model;
+class CModel;
 END
 
 BEGIN(Client)
 
-class StrifeState_Dash : public State
+class CStrifeState_Dash : public CState
 {
 private	:
-	StrifeState_Dash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
-	virtual ~StrifeState_Dash() = default;
+	CStrifeState_Dash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	virtual ~CStrifeState_Dash() = default;
 
 public:
 	virtual HRESULT Enter_State();
@@ -28,13 +28,13 @@ public:
 	virtual void Set_PreAnimation();
 
 private:
-	Model*				m_pModelCom = { nullptr };
+	CModel*				m_pModelCom = { nullptr };
 	_bool				m_bDashed = { false };
 	_uint				m_iKeyState = { 0 };
 
 
 public:
-	static StrifeState_Dash* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
+	static CStrifeState_Dash* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual void Free();
 };
 

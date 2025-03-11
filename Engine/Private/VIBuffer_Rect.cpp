@@ -1,16 +1,16 @@
 #include "VIBuffer_Rect.h"
 
-VIBuffer_Rect::VIBuffer_Rect(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: VIBuffer{ pDevice, pContext }
+CVIBuffer_Rect::CVIBuffer_Rect(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CVIBuffer{ pDevice, pContext }
 {
 }
 
-VIBuffer_Rect::VIBuffer_Rect(const VIBuffer_Rect& Prototype)
-	: VIBuffer{ Prototype }
+CVIBuffer_Rect::CVIBuffer_Rect(const CVIBuffer_Rect& Prototype)
+	: CVIBuffer{ Prototype }
 {
 }
 
-HRESULT VIBuffer_Rect::Initialize_Prototype()
+HRESULT CVIBuffer_Rect::Initialize_Prototype()
 {
 	m_iVertexStride = sizeof(VTXPOSTEX);
 	m_iNumVertices = 4;											// 정점 개수
@@ -92,14 +92,14 @@ HRESULT VIBuffer_Rect::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT VIBuffer_Rect::Initialize(void* pArg)
+HRESULT CVIBuffer_Rect::Initialize(void* pArg)
 {
 	return S_OK;
 }
 
-VIBuffer_Rect* VIBuffer_Rect::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CVIBuffer_Rect* CVIBuffer_Rect::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	VIBuffer_Rect* pInstance = new VIBuffer_Rect(pDevice, pContext);
+	CVIBuffer_Rect* pInstance = new CVIBuffer_Rect(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -110,9 +110,9 @@ VIBuffer_Rect* VIBuffer_Rect::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
 	return pInstance;
 }
 
-Component* VIBuffer_Rect::Clone(void* pArg)
+CComponent* CVIBuffer_Rect::Clone(void* pArg)
 {
-	Component* pInstance = new VIBuffer_Rect(*this);
+	CComponent* pInstance = new CVIBuffer_Rect(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -123,7 +123,7 @@ Component* VIBuffer_Rect::Clone(void* pArg)
 	return pInstance;
 }
 
-void VIBuffer_Rect::Free()
+void CVIBuffer_Rect::Free()
 {
 	__super::Free();
 }

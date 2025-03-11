@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Camera abstract : public CGameObject
+class ENGINE_DLL CCamera abstract : public CGameObject
 {
 public:
 	typedef struct tagCameraDesc : public CGameObject::GAMEOBJECT_DESC
@@ -18,9 +18,9 @@ public:
 	} CAMERA_DESC;
 
 protected:
-	Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Camera(const Camera& Prototype);
-	virtual ~Camera() = default;
+	CCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CCamera(const CCamera& Prototype);
+	virtual ~CCamera() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

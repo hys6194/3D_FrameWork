@@ -37,7 +37,7 @@ HRESULT CLevel_Logo::Render()
 
 HRESULT CLevel_Logo::Ready_Layer_Logo1(const _tchar* pLayerTag)
 {
-	UIObject::UIOBJECT_DESC			 UIDesc = {};
+	CUIObject::UIOBJECT_DESC			 UIDesc = {};
 
 	// 선생님은 가로, 세로 1인 길이로 그리려고 0.5로 준 것이다
 	UIDesc.fX = g_iWinSizeX  >> 1;

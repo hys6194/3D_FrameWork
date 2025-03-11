@@ -6,7 +6,7 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL ContainerObject : public CGameObject
+class ENGINE_DLL CContainerObject : public CGameObject
 {
 public:
 	typedef struct tagContainerObjectDesc : public CGameObject::GAMEOBJECT_DESC
@@ -17,9 +17,9 @@ public:
 	}CONTAINEROBJ_DESC;
 
 protected:
-	ContainerObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	ContainerObject(const ContainerObject& Prototype);
-	virtual ~ContainerObject() = default;
+	CContainerObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CContainerObject(const CContainerObject& Prototype);
+	virtual ~CContainerObject() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -34,7 +34,7 @@ public:
 
 protected:
 	_uint						m_iNumPartObjects = {};
-	vector<class PartObject*>	m_vecParts;
+	vector<class CPartObject*>	m_vecParts;
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

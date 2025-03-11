@@ -2,22 +2,22 @@
 
 #include "GameInstance.h"
 
-Camera_Free::Camera_Free(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: Camera { pDevice, pContext }
+CCamera_Free::CCamera_Free(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CCamera { pDevice, pContext }
 {
 }
 
-Camera_Free::Camera_Free(const Camera_Free& Prototype)
-	: Camera { Prototype }
+CCamera_Free::CCamera_Free(const CCamera_Free& Prototype)
+	: CCamera { Prototype }
 {
 }
 
-HRESULT Camera_Free::Initialize_Prototype()
+HRESULT CCamera_Free::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT Camera_Free::Initialize(void* pArg)
+HRESULT CCamera_Free::Initialize(void* pArg)
 {
 	CAMERA_FREE_DESC* pDesc = static_cast<CAMERA_FREE_DESC*>(pArg);
 
@@ -32,7 +32,7 @@ HRESULT Camera_Free::Initialize(void* pArg)
 	return S_OK;
 }
 
-void Camera_Free::Priority_Update(_float fTimeDelta)
+void CCamera_Free::Priority_Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Get_DIKeyState(DIK_W) & 0x80)
 	{
@@ -60,39 +60,39 @@ void Camera_Free::Priority_Update(_float fTimeDelta)
 
 	if (MouseMove = m_pGameInstance->Get_DIMouseMove(MOUSEMOVESTATE::DIMS_Y))
 	{
-		m_pTransformCom->Turn(m_pTransformCom->Get_State(Transform::STATE_RIGHT), fTimeDelta * MouseMove * m_fMouseSensor);
+		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * m_fMouseSensor);
 	}
 
 	__super::Renew_Matrices();
 }
 
-void Camera_Free::Update(_float fTimeDelta)
+void CCamera_Free::Update(_float fTimeDelta)
 {
 
 }
 
-void Camera_Free::Late_Update(_float fTimeDelta)
+void CCamera_Free::Late_Update(_float fTimeDelta)
 {
 	
 }
 
-HRESULT Camera_Free::Render()
+HRESULT CCamera_Free::Render()
 {
 	
 
 	return S_OK;
 }
 
-HRESULT Camera_Free::Ready_Components()
+HRESULT CCamera_Free::Ready_Components()
 {
 
 	
 	return S_OK;
 }
 
-Camera_Free* Camera_Free::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CCamera_Free* CCamera_Free::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	Camera_Free* pInstance = new Camera_Free(pDevice, pContext);
+	CCamera_Free* pInstance = new CCamera_Free(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -103,9 +103,9 @@ Camera_Free* Camera_Free::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 	return pInstance;
 }
 
-GameObject* Camera_Free::Clone(void* pArg)
+CGameObject* CCamera_Free::Clone(void* pArg)
 {
-	Camera_Free* pInstance = new Camera_Free(*this);
+	CCamera_Free* pInstance = new CCamera_Free(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -116,7 +116,7 @@ GameObject* Camera_Free::Clone(void* pArg)
 	return pInstance;
 }
 
-void Camera_Free::Free()
+void CCamera_Free::Free()
 {
 	__super::Free();
 

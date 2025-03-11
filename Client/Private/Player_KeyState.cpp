@@ -1,7 +1,7 @@
 #include "CPlayer_KeyState.h"
 
 CPlayer_KeyState::CPlayer_KeyState(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner, CGameInstance* pGameInstance)
-	:State{ pDevice , pContext, pOwner, pAnimOwner, pGameInstance }
+	:CState{ pDevice , pContext, pOwner, pAnimOwner, pGameInstance }
 {
 }
 

@@ -4,12 +4,12 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Component abstract : public CBase
+class ENGINE_DLL CComponent abstract : public CBase
 {
 protected:
-	Component(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Component(const Component& Prototype);
-	virtual ~Component() = default;
+	CComponent(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CComponent(const CComponent& Prototype);
+	virtual ~CComponent() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -20,7 +20,7 @@ protected:
 	ID3D11DeviceContext* m_pContext = { nullptr };
 
 public:
-	virtual Component* Clone(void* pArg) = 0;
+	virtual CComponent* Clone(void* pArg) = 0;
 	virtual void Free() override;
 
 };

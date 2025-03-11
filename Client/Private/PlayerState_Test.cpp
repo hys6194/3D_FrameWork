@@ -6,7 +6,7 @@
 #include "GameInstance.h"
 
 PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
-	:State{pDevice, pContext, pOwner, pAnimOwner, m_pGameInstance }
+	:CState{pDevice, pContext, pOwner, pAnimOwner, m_pGameInstance }
 {
 }
 
@@ -19,7 +19,7 @@ HRESULT PlayerState_Test::Enter_State()
 
 void PlayerState_Test::PriorityUpdate_State(_float fTimeDelta)
 {
-	m_iKeyState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerState();
+	m_iKeyState = dynamic_cast<CPlayer*>(m_pOwner)->Get_PlayerState();
 }
 
 void PlayerState_Test::Update_State(_float fTimeDelta)

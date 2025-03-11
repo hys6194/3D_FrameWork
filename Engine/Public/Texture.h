@@ -4,19 +4,19 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Texture final : public Component
+class ENGINE_DLL CTexture final : public CComponent
 {
 private:
-	Texture(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Texture(const Texture& Prototype);
-	virtual ~Texture() = default;
+	CTexture(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CTexture(const CTexture& Prototype);
+	virtual ~CTexture() = default;
 
 public:
 	HRESULT Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures);
 	HRESULT Initialize(void* pArg);
 
 public:
-	HRESULT Bind_SR(const _char* pConstantName, class Shader* pShader, _uint iTextureIndex) const;
+	HRESULT Bind_SR(const _char* pConstantName, class CShader* pShader, _uint iTextureIndex) const;
 
 private:
 
@@ -31,8 +31,8 @@ private:
 
 public:
 	// default 연산자로 대입 안할 경우, 1장만 읽어들이는 것으로 함
-	static Texture* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pTextureFilePath, _uint iNumTextures = 1);
-	virtual Component* Clone(void* pArg) override;
+	static CTexture* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pTextureFilePath, _uint iNumTextures = 1);
+	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free()override;
 
 };

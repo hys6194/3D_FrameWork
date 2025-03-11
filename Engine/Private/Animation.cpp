@@ -2,11 +2,11 @@
 #include "Channel.h"
 #include "GameObject.h"
 
-Animation::Animation()
+CAnimation::CAnimation()
 {
 }
 
-HRESULT Animation::Initialize(const aiAnimation* pAIAnimation, const vector<class Bone*>& pBone, vector<_uint>& iCurrentKeyFrameIndices)
+HRESULT CAnimation::Initialize(const aiAnimation* pAIAnimation, const vector<class CBone*>& pBone, vector<_uint>& iCurrentKeyFrameIndices)
 {
 
     // 모든 뼈들을 저장하지 않고 메시에 영향을 주는 뼈들만 
@@ -22,7 +22,7 @@ HRESULT Animation::Initialize(const aiAnimation* pAIAnimation, const vector<clas
 
     for (size_t i = 0; i < m_iNumChannel; ++i)
     {
-        Channel* pChannel = Channel::Create(pAIAnimation->mChannels[i], pBone);
+        CChannel* pChannel = CChannel::Create(pAIAnimation->mChannels[i], pBone);
         if(nullptr == pChannel)
             return E_FAIL;
 
@@ -32,7 +32,7 @@ HRESULT Animation::Initialize(const aiAnimation* pAIAnimation, const vector<clas
     return S_OK;
 }
 
-_bool Animation::Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex)
+_bool CAnimation::Update_TransformationMatrix(const vector<class CBone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex)
 {
     *pCurrentTrackPosition += m_fTrickPerSecond * fTimeDelta;
     
@@ -55,10 +55,10 @@ _bool Animation::Update_TransformationMatrix(const vector<class Bone*>& pBone, _
     return m_bIsAnimEnd;
 }
 
-_bool Animation::Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex, CGameObject* pObject)
+_bool CAnimation::Update_TransformationMatrix(const vector<class CBone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex, CGameObject* pObject)
 {
 
-    //_vector v3 = pObject->Get_Transform()->Get_State(Transform::STATE_POS);
+    //_vector v3 = pObject->Get_Transform()->Get_State(CTransform::STATE_POS);
 
     *pCurrentTrackPosition += m_fTrickPerSecond * fTimeDelta;
 
@@ -81,14 +81,14 @@ _bool Animation::Update_TransformationMatrix(const vector<class Bone*>& pBone, _
     return m_bIsAnimEnd;
 }
 
-void Animation::KeyFrame_Reset()
+void CAnimation::KeyFrame_Reset()
 {
     m_bIsAnimEnd = false;
 }
 
-Animation* Animation::Create(const aiAnimation* pAIAnimation, const vector<class Bone*>& pBone, vector<_uint>& iCurrentKeyFrameIndices)
+CAnimation* CAnimation::Create(const aiAnimation* pAIAnimation, const vector<class CBone*>& pBone, vector<_uint>& iCurrentKeyFrameIndices)
 {
-    Animation* pInstance = new Animation();
+    CAnimation* pInstance = new CAnimation();
 
     if (FAILED(pInstance->Initialize(pAIAnimation, pBone, iCurrentKeyFrameIndices)))
     {
@@ -100,7 +100,7 @@ Animation* Animation::Create(const aiAnimation* pAIAnimation, const vector<class
 }
 
 
-void Animation::Free()
+void CAnimation::Free()
 {
     __super::Free();
 

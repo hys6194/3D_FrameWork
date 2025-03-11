@@ -1,21 +1,21 @@
 #include "UIObject.h"
 
-UIObject::UIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CUIObject::CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject { pDevice, pContext }
 {
 }
 
-UIObject::UIObject(const UIObject& Prototype)
+CUIObject::CUIObject(const CUIObject& Prototype)
 	: CGameObject { Prototype }
 {
 }
 
-HRESULT UIObject::Initialize_Prototype()
+HRESULT CUIObject::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT UIObject::Initialize(void* pArg)
+HRESULT CUIObject::Initialize(void* pArg)
 {
 	// UI 오브젝트에서 필요한 값을 인자값으로 받아온 pArg를 UIOBJECT_DESC* 타입으로 정적 캐스팅을 해서 사용
 	// ____super::Initialize(pArg)에서 Add_Prototype하면서 키값으로 받아온 원본객체의 이름을 저장
@@ -41,7 +41,7 @@ HRESULT UIObject::Initialize(void* pArg)
 	m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
 
 	m_pTransformCom->SetUp_Scaled(m_fSizeX, m_fSizeY, 1.f);
-	m_pTransformCom->Set_State(Transform::STATE_POS,
+	m_pTransformCom->Set_State(CTransform::STATE_POS,
 		XMVectorSet(m_fX - ViewportDesc.Width * 0.5f, -m_fY + ViewportDesc.Height * 0.5f, 0.f, 1.f));
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
@@ -50,24 +50,24 @@ HRESULT UIObject::Initialize(void* pArg)
 	return S_OK;
 }
 
-void UIObject::Priority_Update(_float fTimeDelta)
+void CUIObject::Priority_Update(_float fTimeDelta)
 {
 }
 
-void UIObject::Update(_float fTimeDelta)
+void CUIObject::Update(_float fTimeDelta)
 {
 }
 
-void UIObject::Late_Update(_float fTimeDelta)
+void CUIObject::Late_Update(_float fTimeDelta)
 {
 }
 
-HRESULT UIObject::Render()
+HRESULT CUIObject::Render()
 {
 	return S_OK;
 }
 
-void UIObject::Free()
+void CUIObject::Free()
 {
 	__super::Free();
 }

@@ -32,22 +32,22 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pTimer_Manager = CTimer_Manager::Create();
 	NULL_CHECK_RETURN(m_pTimer_Manager, E_FAIL);
 
-	m_pPrototype_Manager = Prototype_Manager::Create(*ppDevice, *ppContext, EngineDesc.iNumLevels);
+	m_pPrototype_Manager = CPrototype_Manager::Create(*ppDevice, *ppContext, EngineDesc.iNumLevels);
 	NULL_CHECK_RETURN(m_pPrototype_Manager, E_FAIL);
 
-	m_pLevel_Manager = Level_Manager::Create();
+	m_pLevel_Manager = CLevel_Manager::Create();
 	NULL_CHECK_RETURN(m_pLevel_Manager, E_FAIL);
 
-	m_pObject_Manager = Object_Manager::Create(EngineDesc.iNumLevels);
+	m_pObject_Manager = CObject_Manager::Create(EngineDesc.iNumLevels);
 	NULL_CHECK_RETURN(m_pObject_Manager, E_FAIL);
 
-	m_pRenderer = Renderer::Create(*ppDevice, *ppContext);
+	m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pRenderer, E_FAIL);
 
-	m_pPipeLine = PipeLine::Create();
+	m_pPipeLine = CPipeLine::Create();
 	NULL_CHECK_RETURN(m_pPipeLine, E_FAIL);
 
-	m_pLight_Manager = Light_Manager::Create(*ppDevice, *ppContext);
+	m_pLight_Manager = CLight_Manager::Create(*ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pLight_Manager, E_FAIL);
 
 	//m_pImGui_Manager = CImGui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext);
@@ -57,8 +57,8 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	//FAILED_CHECK_RETURN 사용 못함 : 주소가 짤리는 듯함
 
 	//FAILED_CHECK_RETURN(m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext), E_FAIL);
-	//FAILED_CHECK_RETURN(m_pLevel_Manager = Level_Manager::Create(), E_FAIL);
-	//FAILED_CHECK_RETURN(m_pObject_Manager = Object_Manager::Create(EngineDesc.iNumLevels), E_FAIL);
+	//FAILED_CHECK_RETURN(m_pLevel_Manager = CLevel_Manager::Create(), E_FAIL);
+	//FAILED_CHECK_RETURN(m_pObject_Manager = CObject_Manager::Create(EngineDesc.iNumLevels), E_FAIL);
 
 	return S_OK;
 }
@@ -215,7 +215,7 @@ HRESULT CGameInstance::Add_Timer(const _wstring& strTimerTag)
 
 #pragma region LEVEL_MANAGER
 
-HRESULT CGameInstance::Open_Level(_uint iLevelIndex, Cevel* pNewLevel)
+HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel* pNewLevel)
 {
 	return m_pLevel_Manager->Change_Level(iLevelIndex, pNewLevel);
 }
@@ -243,7 +243,7 @@ HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
 }
 
-Layer* CGameInstance::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
+CLayer* CGameInstance::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 {
 	return m_pObject_Manager->Find_Layer(iLevelIndex, strLayerTag);
 }
@@ -257,7 +257,7 @@ CGameObject* CGameInstance::Find_GameObject(_uint iLevelIndex, const _wstring& s
 
 #pragma region RENDERER
 
-HRESULT CGameInstance::Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, CGameObject* pRenderObject)
+HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERERGROUP eRenderGroupID, CGameObject* pRenderObject)
 {
 	return m_pRenderer->Add_RenderObject(eRenderGroupID, pRenderObject);
 }
@@ -266,21 +266,21 @@ HRESULT CGameInstance::Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, 
 
 #pragma region PIPELINE
 
-const _float4x4* CGameInstance::Get_Transform_Float4x4(PipeLine::TRANSFORMSTATE eState)
+const _float4x4* CGameInstance::Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE eState)
 {
 	return m_pPipeLine->Get_Transform_Float4x4(eState);
 }
-_matrix CGameInstance::Get_Transform_Matrix(PipeLine::TRANSFORMSTATE eState)
+_matrix CGameInstance::Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE eState)
 {
 	return m_pPipeLine->Get_Transform_Matrix(eState);
 }
 
-const _float4x4* CGameInstance::Get_Transform_Inverse_Float4x4(PipeLine::TRANSFORMSTATE eState) const
+const _float4x4* CGameInstance::Get_Transform_Inverse_Float4x4(CPipeLine::TRANSFORMSTATE eState) const
 {
 	return m_pPipeLine->Get_Transform_Inverse_Float4x4(eState);
 }
 
-_matrix CGameInstance::Get_Transform_Inverse_Matrix(PipeLine::TRANSFORMSTATE eState) const
+_matrix CGameInstance::Get_Transform_Inverse_Matrix(CPipeLine::TRANSFORMSTATE eState) const
 {
 	return m_pPipeLine->Get_Transform_Inverse_Matrix(eState);
 }
@@ -290,15 +290,15 @@ const _float4* CGameInstance::Get_CamPosition() const
 	return m_pPipeLine->Get_CamPosition();
 }
 
-void CGameInstance::Set_Transform(PipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)
+void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)
 {
 	return m_pPipeLine->Set_Transform(eState, Matrix);
 }
-void CGameInstance::Set_Transform(PipeLine::TRANSFORMSTATE eState, const _float4x4* pMatrix)
+void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, const _float4x4* pMatrix)
 {
 	return m_pPipeLine->Set_Transform(eState, pMatrix);
 }
-HRESULT CGameInstance::Bind_VP_Transform_SR(const _char* pConstantName, Shader* pShader, PipeLine::TRANSFORMSTATE eState)
+HRESULT CGameInstance::Bind_VP_Transform_SR(const _char* pConstantName, CShader* pShader, CPipeLine::TRANSFORMSTATE eState)
 {
 	return m_pPipeLine->Bind_SR(pShader, pConstantName, eState);
 }

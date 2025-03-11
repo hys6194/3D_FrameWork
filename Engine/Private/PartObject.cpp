@@ -1,22 +1,22 @@
 #include "PartObject.h"
 
-PartObject::PartObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CPartObject::CPartObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject{ pDevice, pContext }
 {
 }
 
-PartObject::PartObject(const PartObject& Prototype)
+CPartObject::CPartObject(const CPartObject& Prototype)
     : CGameObject{ Prototype }
 {
 
 }
 
-HRESULT PartObject::Initialize_Prototype()
+HRESULT CPartObject::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT PartObject::Initialize(void* pArg)
+HRESULT CPartObject::Initialize(void* pArg)
 {
     PARTOBJ_DESC* pDesc = static_cast<PARTOBJ_DESC*>(pArg);
     m_pParentMatrix = pDesc->pParentMatrix;
@@ -27,24 +27,24 @@ HRESULT PartObject::Initialize(void* pArg)
 }
 
 
-void PartObject::Priority_Update(_float fTimeDelta)
+void CPartObject::Priority_Update(_float fTimeDelta)
 {
 }
 
-void PartObject::Update(_float fTimeDelta)
+void CPartObject::Update(_float fTimeDelta)
 {
 }
 
-void PartObject::Late_Update(_float fTimeDelta)
+void CPartObject::Late_Update(_float fTimeDelta)
 {
 }
 
-HRESULT PartObject::Render()
+HRESULT CPartObject::Render()
 {
     return S_OK;
 }
 
-void PartObject::Free()
+void CPartObject::Free()
 {
     __super::Free();
 }

@@ -4,14 +4,14 @@
 
 BEGIN(Engine)
 
-class Renderer final : public CBase
+class CRenderer final : public CBase
 {
 public:
 	enum RENDERERGROUP { RENDER_PRIORITY, RENDER_NONBLEND, RENDER_BLEND, RENDER_UI, RENDER_END };
 
 private:
-	Renderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~Renderer() = default;
+	CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CRenderer() = default;
 
 public:
 	HRESULT Initialize();
@@ -38,7 +38,7 @@ private:
 
 
 public:
-	static Renderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;
 
 

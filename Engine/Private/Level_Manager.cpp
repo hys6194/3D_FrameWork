@@ -2,28 +2,28 @@
 #include "GameInstance.h"
 #include "Level.h"
 
-Level_Manager::Level_Manager()
+CLevel_Manager::CLevel_Manager()
 	: m_pGameInstance {CGameInstance::GetInstance()}
 {
 }
 
-HRESULT Level_Manager::Initialize()
+HRESULT CLevel_Manager::Initialize()
 {
 	return S_OK;
 }
 
-void Level_Manager::Update(_float fTimeDelta)
+void CLevel_Manager::Update(_float fTimeDelta)
 {
 	if (nullptr != m_pCurrentLevel)
 		m_pCurrentLevel->Update(fTimeDelta);
 }
 
-HRESULT Level_Manager::Render()
+HRESULT CLevel_Manager::Render()
 {
 	return S_OK;
 }
 
-HRESULT Level_Manager::Change_Level(_uint iLevelIndex, Cevel* pNewLevel)
+HRESULT CLevel_Manager::Change_Level(_uint iLevelIndex, CLevel* pNewLevel)
 {
 	// 인자값으로 받아온 레벨이 nullptr이면 레벨을 변경하지 않는다
 	if (nullptr == pNewLevel)
@@ -46,9 +46,9 @@ HRESULT Level_Manager::Change_Level(_uint iLevelIndex, Cevel* pNewLevel)
 	return S_OK;
 }
 
-Level_Manager* Level_Manager::Create()
+CLevel_Manager* CLevel_Manager::Create()
 {
-	Level_Manager* pInstance = new Level_Manager();
+	CLevel_Manager* pInstance = new CLevel_Manager();
 
 	if (FAILED(pInstance->Initialize()))
 	{
@@ -59,7 +59,7 @@ Level_Manager* Level_Manager::Create()
 	return pInstance;
 }
 
-void Level_Manager::Free()
+void CLevel_Manager::Free()
 {
 	__super::Free();
 

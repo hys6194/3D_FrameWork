@@ -37,7 +37,7 @@ HRESULT CLevel_Menu::Render()
 
 HRESULT CLevel_Menu::Ready_Layer_LogoPlayer(const _tchar* pLayerTag)
 {
-	UIObject::UIOBJECT_DESC			 UIDesc = {};
+	CUIObject::UIOBJECT_DESC			 UIDesc = {};
 
 	// 선생님은 가로, 세로 1인 길이로 그리려고 0.5로 준 것이다
 	// /2 빠른 연산

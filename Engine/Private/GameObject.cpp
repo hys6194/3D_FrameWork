@@ -34,7 +34,7 @@ HRESULT CGameObject::Initialize(void* pArg)
         GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
         lstrcpy(m_szGameObjectTag, pDesc->szGameObjectTag);
     }
-   // m_pTransformCom = Transform::Create(m_pDevice, m_pContext);
+   // m_pTransformCom = CTransform::Create(m_pDevice, m_pContext);
    // if (nullptr == m_pTransformCom)
    //     return E_FAIL;
    // if (FAILED(m_pTransformCom->Initialize(pArg)))
@@ -64,10 +64,10 @@ HRESULT CGameObject::Render()
     return S_OK;
 }
 
-HRESULT CGameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag, Component** ppOut, const _wstring& strComponentTag, void* pArg)
+HRESULT CGameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag, CComponent** ppOut, const _wstring& strComponentTag, void* pArg)
 {
     // Component 사본객체 생성
-    Component* pComponent = dynamic_cast<Component*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_COMPONENT, iLevelIndex, strPrototypeTag, pArg));
+    CComponent* pComponent = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_COMPONENT, iLevelIndex, strPrototypeTag, pArg));
     if (nullptr == pComponent)
         return E_FAIL;
 
@@ -84,7 +84,7 @@ HRESULT CGameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototy
 
 HRESULT CGameObject::Set_TransformCom(void* pArg)
 {
-    m_pTransformCom = Transform::Create(m_pDevice, m_pContext);
+    m_pTransformCom = CTransform::Create(m_pDevice, m_pContext);
     if (nullptr == m_pTransformCom)
         return E_FAIL;
 

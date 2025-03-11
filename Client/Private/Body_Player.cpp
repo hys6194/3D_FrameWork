@@ -6,12 +6,12 @@
 #include "Player.h"
 
 Body_Player::Body_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : PartObject{ pDevice, pContext }
+    : CPartObject{ pDevice, pContext }
 {
 }
 
 Body_Player::Body_Player(const Body_Player& Prototype)
-    : PartObject{ Prototype }
+    : CPartObject{ Prototype }
 {
 }
 
@@ -59,7 +59,7 @@ void Body_Player::Update(_float fTimeDelta)
 
 void Body_Player::Late_Update(_float fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
+    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 } 
 
 HRESULT Body_Player::Render()
@@ -90,10 +90,10 @@ HRESULT Body_Player::Render()
 HRESULT Body_Player::Ready_Components()
 {
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
-        reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
-        reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
     return S_OK;
 }
@@ -125,8 +125,8 @@ HRESULT Body_Player::Bind_SR()
     // 
     // FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pParentMatrix), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 
     const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
@@ -154,7 +154,7 @@ Body_Player* Body_Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
     return pInstance;
 }
 
-GameObject* Body_Player::Clone(void* pArg)
+CGameObject* Body_Player::Clone(void* pArg)
 {
     Body_Player* pInstance = new Body_Player(*this);
 

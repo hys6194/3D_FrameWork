@@ -2,17 +2,17 @@
 #include "Bone.h"
 #include "Shader.h"
 
-Mesh::Mesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : VIBuffer{ pDevice, pContext }
+CMesh::CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CVIBuffer{ pDevice, pContext }
 {
 }
 
-Mesh::Mesh(const Mesh& Prototype)
-    : VIBuffer{ Prototype }
+CMesh::CMesh(const CMesh& Prototype)
+    : CVIBuffer{ Prototype }
 {
 }
 
-HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix, MODELTYPE eType, const vector<class Bone*>& Bones)
+HRESULT CMesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix, MODELTYPE eType, const vector<class CBone*>& Bones)
 {
 	strcpy_s(m_szName, pAIMesh->mName.data);
 
@@ -77,12 +77,12 @@ HRESULT Mesh::Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformM
     return S_OK;
 }
 
-HRESULT Mesh::Initialize(void* pArg)
+HRESULT CMesh::Initialize(void* pArg)
 {
     return S_OK;
 }
 
-HRESULT Mesh::Bind_BoneMatrix(Shader* pShader, const _char* pContantName, const vector<class Bone*>& Bones)
+HRESULT CMesh::Bind_BoneMatrix(CShader* pShader, const _char* pContantName, const vector<class CBone*>& Bones)
 {
 	ZeroMemory(m_matBone, sizeof(_float4x4) * 512);
 
@@ -98,7 +98,7 @@ HRESULT Mesh::Bind_BoneMatrix(Shader* pShader, const _char* pContantName, const 
 	return S_OK;
 }
 
-HRESULT Mesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
+HRESULT CMesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {
 
 
@@ -150,7 +150,7 @@ HRESULT Mesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTran
 
 // 뼈를 회전하고 정점을 붙이는 구조임
 
-HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const vector<Bone*>& Bones)
+HRESULT CMesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const vector<CBone*>& Bones)
 {
 	m_iVertexStride = sizeof(VTXANIMESH);
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
@@ -187,7 +187,7 @@ HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const vector<Bone*>
 
 		_uint		iBoneIndex = {};
 
-		auto	iter = find_if(Bones.begin(), Bones.end(), [&](Bone* pBone)->_bool
+		auto	iter = find_if(Bones.begin(), Bones.end(), [&](CBone* pBone)->_bool
 			{
 				if (true == pBone->Compare_Name(pAIBone->mName.data))
 					return true;
@@ -258,7 +258,7 @@ HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const vector<Bone*>
 
 		_uint		iBoneIndex = {};
 
-		auto	iter = find_if(Bones.begin(), Bones.end(), [&](Bone* pBone)->_bool
+		auto	iter = find_if(Bones.begin(), Bones.end(), [&](CBone* pBone)->_bool
 			{
 				if (true == pBone->Compare_Name(m_szName))
 					return true;
@@ -287,9 +287,9 @@ HRESULT Mesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const vector<Bone*>
 	return S_OK;
 }
 
-Mesh* Mesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh, MODELTYPE eType, const vector<class Bone*>& Bones, _fmatrix PreTransformMatrix)
+CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh, MODELTYPE eType, const vector<class CBone*>& Bones, _fmatrix PreTransformMatrix)
 {
-	Mesh* pInstance = new Mesh(pDevice, pContext);
+	CMesh* pInstance = new CMesh(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype(pAIMesh, PreTransformMatrix, eType, Bones)))
 	{
@@ -300,9 +300,9 @@ Mesh* Mesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const a
 	return pInstance;
 }
 
-Component* Mesh::Clone(void* pArg)
+CComponent* CMesh::Clone(void* pArg)
 {
-	Component* pInstance = new Mesh(*this);
+	CComponent* pInstance = new CMesh(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -313,7 +313,7 @@ Component* Mesh::Clone(void* pArg)
 	return pInstance;
 }
 
-void Mesh::Free()
+void CMesh::Free()
 {
     __super::Free();
 }

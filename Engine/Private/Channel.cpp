@@ -1,17 +1,17 @@
 #include "Channel.h"
 #include "Bone.h"
 
-Channel::Channel()
+CChannel::CChannel()
 {
 }
 
-HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class Bone*>& pBone)
+HRESULT CChannel::Initialize(const aiNodeAnim* pAIChannel, const vector<class CBone*>& pBone)
 {
 	// 현재 재생중인 애니메이션의 이름 저장
 	strcpy_s(m_szName, pAIChannel->mNodeName.data);
 
 	// 현재 채널과 이름이 같은 뼈를 모델이 저장하고 있는 전체 뼈중에서 몇번째에 해당하는지 찾아낸다.
-	auto iter = find_if(pBone.begin(), pBone.end(), [&](Bone* pBone)->_bool
+	auto iter = find_if(pBone.begin(), pBone.end(), [&](CBone* pBone)->_bool
 		{
 			if (true == pBone->Compare_Name(m_szName))
 				return true;
@@ -79,7 +79,7 @@ HRESULT Channel::Initialize(const aiNodeAnim* pAIChannel, const vector<class Bon
 	return S_OK;
 }
 
-void Channel::Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fCurrentTrackPosition, _uint* pKeyFrameIndex)
+void CChannel::Update_TransformationMatrix(const vector<class CBone*>& pBone, _float fCurrentTrackPosition, _uint* pKeyFrameIndex)
 {
 	// 마지막 키프레임을 기준으로 애니메이션이 작동되는 것을 막기위해 KeyFrame의 위치를 초기화
 	if (0.f == fCurrentTrackPosition)
@@ -167,9 +167,9 @@ void Channel::Update_TransformationMatrix(const vector<class Bone*>& pBone, _flo
 
 }
 
-Channel* Channel::Create(const aiNodeAnim* pAIChannel, const vector<class Bone*>& pBone)
+CChannel* CChannel::Create(const aiNodeAnim* pAIChannel, const vector<class CBone*>& pBone)
 {
-	Channel* pInstance = new Channel();
+	CChannel* pInstance = new CChannel();
 
 	if (FAILED(pInstance->Initialize(pAIChannel, pBone)))
 	{
@@ -180,7 +180,7 @@ Channel* Channel::Create(const aiNodeAnim* pAIChannel, const vector<class Bone*>
 	return pInstance;
 }
 
-void Channel::Free()
+void CChannel::Free()
 {
 	__super::Free();
 

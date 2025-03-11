@@ -11,11 +11,11 @@
 
 BEGIN(Engine)
 
-class Prototype_Manager final : public CBase
+class CPrototype_Manager final : public CBase
 {
 private:
-	Prototype_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~Prototype_Manager() = default;
+	CPrototype_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CPrototype_Manager() = default;
 
 public:
 	HRESULT Initialize(_uint iNumLevels);
@@ -48,7 +48,7 @@ private:
 	CBase* Find_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag);
 
 public:
-	static Prototype_Manager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevels);
+	static CPrototype_Manager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevels);
 	virtual void Free() override;
 };
 

@@ -12,14 +12,14 @@
 
 
 
-Model::Model(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : Component { pDevice, pContext }
+CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CComponent { pDevice, pContext }
 {
 
 }
 
-Model::Model(const Model& Prototype)
-    : Component{ Prototype }
+CModel::CModel(const CModel& Prototype)
+    : CComponent{ Prototype }
     , m_pAIScene { Prototype.m_pAIScene }
     , m_iNumMeshes{ Prototype.m_iNumMeshes }
     , m_vecMesh{ Prototype.m_vecMesh }
@@ -47,9 +47,9 @@ Model::Model(const Model& Prototype)
         Safe_AddRef(pMesh);
 }
 
-const _float4x4* Model::Get_BoneMatrix(const _char* pBoneName)
+const _float4x4* CModel::Get_BoneMatrix(const _char* pBoneName)
 {
-    auto iter = find_if(m_vecBone.begin(), m_vecBone.end(), [&](Bone* pBone)->_bool
+    auto iter = find_if(m_vecBone.begin(), m_vecBone.end(), [&](CBone* pBone)->_bool
         {
             if (true == pBone->Compare_Name(pBoneName))
                 return true;
@@ -63,7 +63,7 @@ const _float4x4* Model::Get_BoneMatrix(const _char* pBoneName)
     return (*iter)->Get_CombinedTransformfloat4x4ptr();
 }
 
-void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInter)
+void CModel::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInter)
 {
 
     m_bIsInter = IsInter;
@@ -125,7 +125,7 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInte
 
 }
 
-void Model::Set_Interpolate(_bool bIsInter)
+void CModel::Set_Interpolate(_bool bIsInter)
 {
     m_bIsInter = bIsInter;
 
@@ -135,7 +135,7 @@ void Model::Set_Interpolate(_bool bIsInter)
     m_pCurChannel = m_Animations[m_iCurrentAnimationIndex]->Get_Channel();
 }
 
-void Model::Set_PreAnimation(_uint iPreAnimationIndex)
+void CModel::Set_PreAnimation(_uint iPreAnimationIndex)
 {
     m_iPreAnimationIndex = iPreAnimationIndex;
 
@@ -147,7 +147,7 @@ void Model::Set_PreAnimation(_uint iPreAnimationIndex)
 
 }
 
-void Model::Interpolate_Animation(_float fRatio)
+void CModel::Interpolate_Animation(_float fRatio)
 {
     // 0과 1사이 값만 허용
     if (1 < fRatio)
@@ -211,7 +211,7 @@ void Model::Interpolate_Animation(_float fRatio)
 
 }
 
-void Model::Play_RootAnimation(_float fTimeDelta)
+void CModel::Play_RootAnimation(_float fTimeDelta)
 {
     m_vecBone[0]->Compare_Name("RootNode");         // 이동시켜야 하는 뼈
     m_vecBone[2]->Compare_Name("Bone_Strife_Root"); // 이동량있는 뼈
@@ -234,7 +234,7 @@ void Model::Play_RootAnimation(_float fTimeDelta)
     _float4x4 mat4;
     XMStoreFloat4x4(&mat4, XMMatrixIdentity());
     
-    //for(size_t i = 0; i < Transform::STATE_END; ++i)
+    //for(size_t i = 0; i < CTransform::STATE_END; ++i)
     //{
     //}
     //m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][0];
@@ -257,7 +257,7 @@ void Model::Play_RootAnimation(_float fTimeDelta)
 
  }
 
-HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
+HRESULT CModel::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
     m_eModelType = eType;
     
@@ -295,12 +295,12 @@ HRESULT Model::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath
     return S_OK;
 }
 
-HRESULT Model::Initialize(void* pArg)
+HRESULT CModel::Initialize(void* pArg)
 {
     return S_OK;
 }
 
-HRESULT Model::Render(_uint iMeshIndex)
+HRESULT CModel::Render(_uint iMeshIndex)
 {
     m_vecMesh[iMeshIndex]->Bind_Input_Assembler();
     m_vecMesh[iMeshIndex]->Render();   
@@ -308,7 +308,7 @@ HRESULT Model::Render(_uint iMeshIndex)
     return S_OK;
 }
 
-_bool Model::Play_Animation(_float fTimeDelta, CGameObject* pObject)
+_bool CModel::Play_Animation(_float fTimeDelta, CGameObject* pObject)
 {
     /* 특정 애니메이션을 구동한다. */
     /* 애니메이션을 구동한다 == +		[4]	{vScale={x=1.00000060 y=1.00000012 z=1.00000036 } vRotation={x=-0.0756162405 y=-0.0891902819 z=-0.0955794305 ...} ...}	Engine::tagKeyFrame
@@ -350,7 +350,7 @@ _bool Model::Play_Animation(_float fTimeDelta, CGameObject* pObject)
     return bIsEnd;
 }
 
-void Model::Reset_PreAnimation()
+void CModel::Reset_PreAnimation()
 {
     m_vecCurrentTrackPosition[m_iPreAnimationIndex] = 0;
 
@@ -358,23 +358,23 @@ void Model::Reset_PreAnimation()
         pCurrentKeyFrameIndex = 0;
 }
 
-HRESULT Model::Bind_Material(Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex)
+HRESULT CModel::Bind_Material(CShader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex)
 {
     _uint       iMaterialIndex = m_vecMesh[iMeshIndex]->Get_MaterialIndex();
 
     return m_vecMaterial[iMaterialIndex]->Bind_SR(pShader, pConstantName, eMaterialType, iTextureIndex);
 }
 
-HRESULT Model::Bind_BoneMatrix(Shader* pShader, const _char* pConstantName, _uint iMeshIndex)
+HRESULT CModel::Bind_BoneMatrix(CShader* pShader, const _char* pConstantName, _uint iMeshIndex)
 {
     m_vecMesh[iMeshIndex]->Bind_BoneMatrix(pShader, pConstantName, m_vecBone);
 
     return S_OK;
 }
 
-HRESULT Model::Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex)
+HRESULT CModel::Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex)
 {
-    Bone* pBone = Bone::Create(pAINode, iParentBoneIndex);
+    CBone* pBone = CBone::Create(pAINode, iParentBoneIndex);
     if (nullptr == pBone)
         return E_FAIL;
 
@@ -391,7 +391,7 @@ HRESULT Model::Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex)
     return S_OK;
 }
 
-HRESULT Model::Ready_Meshes()
+HRESULT CModel::Ready_Meshes()
 {
     m_iNumMeshes = m_pAIScene->mNumMeshes;
 
@@ -399,7 +399,7 @@ HRESULT Model::Ready_Meshes()
     {
         const aiMesh*      pAIMesh = m_pAIScene->mMeshes[i];
 
-        Mesh* pMesh = Mesh::Create(m_pDevice, m_pContext, pAIMesh, m_eModelType, m_vecBone, XMLoadFloat4x4(&m_PreTransformMatrix));
+        CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, pAIMesh, m_eModelType, m_vecBone, XMLoadFloat4x4(&m_PreTransformMatrix));
         if (nullptr == pMesh)
             return E_FAIL;
 
@@ -410,13 +410,13 @@ HRESULT Model::Ready_Meshes()
     return S_OK;
 }
 
-HRESULT Model::Ready_Materials(const _char* pModelFilePath)
+HRESULT CModel::Ready_Materials(const _char* pModelFilePath)
 {
     m_iNumMaterials = m_pAIScene->mNumMaterials;
 
     for (size_t i = 0; i < m_iNumMaterials; i++)
     {
-        MeshMaterial* pMeshMaterial = MeshMaterial::Create(m_pDevice, m_pContext,
+        CMeshMaterial* pMeshMaterial = CMeshMaterial::Create(m_pDevice, m_pContext,
             m_pAIScene->mMaterials[i], pModelFilePath);
 
         m_vecMaterial.push_back(pMeshMaterial);        
@@ -425,7 +425,7 @@ HRESULT Model::Ready_Materials(const _char* pModelFilePath)
     return S_OK;
 }
 
-HRESULT Model::Ready_Animations()
+HRESULT CModel::Ready_Animations()
 {
     m_iNumAnimations = m_pAIScene->mNumAnimations;
 
@@ -439,7 +439,7 @@ HRESULT Model::Ready_Animations()
     for (size_t i = 0; i < m_iNumAnimations; i++)
     {
         //m_vecKeyFrameIndex[i] = i 번째 애니메이션에 해당되는 채널의 인덱스 배열들
-        Animation* pAnimation = Animation::Create(m_pAIScene->mAnimations[i], m_vecBone, m_vecKeyFrameIndex[i]);
+        CAnimation* pAnimation = CAnimation::Create(m_pAIScene->mAnimations[i], m_vecBone, m_vecKeyFrameIndex[i]);
         if (nullptr == pAnimation)
             return E_FAIL;
 
@@ -449,9 +449,9 @@ HRESULT Model::Ready_Animations()
     return S_OK;
 }
 
-Model* Model::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
+CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
-    Model* pInstance = new Model(pDevice, pContext);
+    CModel* pInstance = new CModel(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype(eType, pModelFilePath, PreTransformMatrix)))
     {
@@ -462,9 +462,9 @@ Model* Model::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODEL
     return pInstance;
 }
 
-Component* Model::Clone(void* pArg)
+CComponent* CModel::Clone(void* pArg)
 {
-    Model* pInstance = new Model(*this);
+    CModel* pInstance = new CModel(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
@@ -476,7 +476,7 @@ Component* Model::Clone(void* pArg)
 }
 
 
-void Model::Free()
+void CModel::Free()
 {
     __super::Free();
 

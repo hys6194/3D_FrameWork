@@ -6,12 +6,12 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Model final : public Component
+class ENGINE_DLL CModel final : public CComponent
 {
 private:
-	Model(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Model(const Model& Prototype);
-	virtual ~Model() = default;
+	CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CModel(const CModel& Prototype);
+	virtual ~CModel() = default;
 
 public:
 	_uint Get_NumMeshes() const {
@@ -62,8 +62,8 @@ public:
 
 
 public:
-	HRESULT Bind_Material(class Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
-	HRESULT Bind_BoneMatrix(class Shader* pShader, const _char* pConstantName, _uint iMeshIndex);
+	HRESULT Bind_Material(class CShader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
+	HRESULT Bind_BoneMatrix(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
 
 
 private:
@@ -73,19 +73,19 @@ private:
 	_float4x4							m_PreTransformMatrix = {};
 
 	_uint								m_iNumMeshes = { };
-	vector<class Mesh*>					m_vecMesh;
+	vector<class CMesh*>					m_vecMesh;
 
 	_uint								m_iNumMaterials = {};
-	vector<class MeshMaterial*>			m_vecMaterial;
+	vector<class CMeshMaterial*>			m_vecMaterial;
 
-	vector<class Bone*>					m_vecBone;
+	vector<class CBone*>					m_vecBone;
 
 	_bool								m_bIsLoop = { false };
 	_bool								m_bIsInter = { false };
 	_bool								m_bIsLoot = { false };
 	_int								m_iCurrentAnimationIndex = { -1 };
 	_uint								m_iNumAnimations = {};
-	vector<class Animation*>			m_Animations;
+	vector<class CAnimation*>			m_Animations;
 
 	// 애니메이션의 현재 재생위치
 	vector<_float>						m_vecCurrentTrackPosition = {};
@@ -104,9 +104,9 @@ private:
 
 	_uint								m_iNumBone = { 0 };
 
-	vector<class Channel*>				m_pPreChannel;
-	vector<class Channel*>				m_pCurChannel;
-	vector<class Channel*>				m_pRootChannel;
+	vector<class CChannel*>				m_pPreChannel;
+	vector<class CChannel*>				m_pCurChannel;
+	vector<class CChannel*>				m_pRootChannel;
 
 	KEYFRAME							m_pPreKeyFrame = { };
 	KEYFRAME							m_pCurKeyFrame = { };
@@ -118,8 +118,8 @@ private:
 	HRESULT Ready_Animations();
 
 public:
-	static Model* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity());
-	virtual Component* Clone(void* pArg) override;
+	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity());
+	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free();
 };
 

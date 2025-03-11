@@ -17,13 +17,13 @@
 
 BEGIN(Engine)
 
-class PipeLine final : public CBase
+class CPipeLine final : public CBase
 {
 public:
 	enum TRANSFORMSTATE { D3DTS_VIEW, D3DTS_PROJ, D3DTS_END };
 private:
-	PipeLine();
-	virtual ~PipeLine() = default;
+	CPipeLine();
+	virtual ~CPipeLine() = default;
 
 public:
 	void Update();
@@ -60,7 +60,7 @@ public:
 	void Set_Transform(TRANSFORMSTATE eState, const _float4x4* pMatrix);	// flaot4x4 Çü 
 
 public:
-	HRESULT Bind_SR(class Shader* pShader, const _char* pConstantName, TRANSFORMSTATE eState);
+	HRESULT Bind_SR(class CShader* pShader, const _char* pConstantName, TRANSFORMSTATE eState);
 
 private:
 	_float4x4			m_TransformMatrices[D3DTS_END] = {};	
@@ -70,7 +70,7 @@ private:
 
 
 public:
-	static PipeLine* Create();
+	static CPipeLine* Create();
 	virtual void Free() override;
 };
 

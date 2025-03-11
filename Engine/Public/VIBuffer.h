@@ -4,12 +4,12 @@
 
 BEGIN (Engine)
 
-class ENGINE_DLL VIBuffer abstract : public Component
+class ENGINE_DLL CVIBuffer abstract : public CComponent
 {
 protected:
-	VIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	VIBuffer(const VIBuffer& Prototype);
-	virtual ~VIBuffer() = default;
+	CVIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CVIBuffer(const CVIBuffer& Prototype);
+	virtual ~CVIBuffer() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -47,7 +47,7 @@ protected:
 	HRESULT Create_Buffer(ID3D11Buffer** ppOut);
 
 public:
-	virtual Component* Clone(void* pArg) = 0;
+	virtual CComponent* Clone(void* pArg) = 0;
 	virtual void Free() override;
 
 };

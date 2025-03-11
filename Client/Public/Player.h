@@ -4,12 +4,12 @@
 #include "ContainerObject.h"
 
 BEGIN(Engine)
-class FSM;
+class CFSM;
 END
 
 BEGIN(Client)
 
-class Player final : public ContainerObject
+class CPlayer final : public CContainerObject
 {
 public:
 	enum PARTOBJ { PART_BODY, PART_WEAPON, PART_LGUN, PART_RGUN, PART_EFFECT, PART_END };
@@ -38,9 +38,9 @@ public:
 	};
 
 private:
-	Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Player(const Player& Prototype);
-	virtual ~Player() = default;
+	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CPlayer(const CPlayer& Prototype);
+	virtual ~CPlayer() = default;
 
 public:
 	_uint Get_PlayerState()
@@ -100,7 +100,7 @@ private:
 	_bool					m_bCanMove		= { true };
 
 private:
-	FSM*					m_pFSMCom		= { nullptr };
+	CFSM*					m_pFSMCom		= { nullptr };
 
 private:
 	HRESULT			 Ready_Components();
@@ -112,8 +112,8 @@ private:
 	void			 Input_Keys();
 
 public:
-	static Player* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual GameObject* Clone(void* pArg);
+	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 };
 

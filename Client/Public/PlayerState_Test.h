@@ -4,12 +4,12 @@
 #include "State.h"
 
 BEGIN(Engine)
-class Model;
+class CModel;
 END
 
 BEGIN(Client)
 
-class PlayerState_Test : public State
+class PlayerState_Test : public CState
 {
 private	:
 	PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
@@ -29,7 +29,7 @@ public:
 
 
 private:
-	Model*				m_pModelCom;
+	CModel*				m_pModelCom;
 	_uint				m_iKeyState = { 0 };
 
 public:

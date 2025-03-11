@@ -1,7 +1,7 @@
 #include "MeshMaterial.h"
 #include "Shader.h"
 
-MeshMaterial::MeshMaterial(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CMeshMaterial::CMeshMaterial(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice{ pDevice }
 	, m_pContext{ pContext }
 {
@@ -9,7 +9,7 @@ MeshMaterial::MeshMaterial(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	Safe_AddRef(m_pDevice);
 }
 
-HRESULT MeshMaterial::Initialize(const aiMaterial* pAIMaterial, const _char* pModelFilePath)
+HRESULT CMeshMaterial::Initialize(const aiMaterial* pAIMaterial, const _char* pModelFilePath)
 {
 	for (size_t i = 1; i < AI_TEXTURE_TYPE_MAX; i++)
 	{
@@ -67,7 +67,7 @@ HRESULT MeshMaterial::Initialize(const aiMaterial* pAIMaterial, const _char* pMo
 	return S_OK;
 }
 
-HRESULT MeshMaterial::Bind_SR(Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iTextureIndex)
+HRESULT CMeshMaterial::Bind_SR(CShader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iTextureIndex)
 {
 	if (m_vecMaterial[eMaterialType].empty() ||
 		iTextureIndex >= m_vecMaterial[eMaterialType].size())
@@ -77,9 +77,9 @@ HRESULT MeshMaterial::Bind_SR(Shader* pShader, const _char* pConstantName, aiTex
     return pShader->Bind_SRV(pConstantName, m_vecMaterial[eMaterialType][iTextureIndex]);
 }
 
-MeshMaterial* MeshMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMaterial* pAIMaterial, const _char* pModelFilePath)
+CMeshMaterial* CMeshMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMaterial* pAIMaterial, const _char* pModelFilePath)
 {
-	MeshMaterial* pInstance = new MeshMaterial(pDevice, pContext);
+	CMeshMaterial* pInstance = new CMeshMaterial(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(pAIMaterial, pModelFilePath)))
 	{
@@ -90,7 +90,7 @@ MeshMaterial* MeshMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	return pInstance;
 }
 
-void MeshMaterial::Free()
+void CMeshMaterial::Free()
 {
 	__super::Free();
 

@@ -1,13 +1,13 @@
 #include "Texture.h"
 #include "Shader.h"
 
-Texture::Texture(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : Component { pDevice , pContext }
+CTexture::CTexture(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CComponent { pDevice , pContext }
 {
 }
 
-Texture::Texture(const Texture& Prototype)
-    : Component{ Prototype }
+CTexture::CTexture(const CTexture& Prototype)
+    : CComponent{ Prototype }
     , m_iNumTextures{ Prototype.m_iNumTextures }
     , m_vecSRV{ Prototype.m_vecSRV }
 {
@@ -15,7 +15,7 @@ Texture::Texture(const Texture& Prototype)
         Safe_AddRef(pSRV);
 }
 
-HRESULT Texture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures)
+HRESULT CTexture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures)
 {
     m_iNumTextures = iNumTextures;
 
@@ -81,12 +81,12 @@ HRESULT Texture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNum
     return S_OK;
 }
 
-HRESULT Texture::Initialize(void* pArg)
+HRESULT CTexture::Initialize(void* pArg)
 {
     return S_OK;
 }
 
-HRESULT Texture::Bind_SR(const _char* pConstantName, class Shader* pShader, _uint iTextureIndex) const
+HRESULT CTexture::Bind_SR(const _char* pConstantName, class CShader* pShader, _uint iTextureIndex) const
 {
     if (iTextureIndex >= m_iNumTextures)
         return E_FAIL;
@@ -95,9 +95,9 @@ HRESULT Texture::Bind_SR(const _char* pConstantName, class Shader* pShader, _uin
     return pShader->Bind_SRV(pConstantName, m_vecSRV[iTextureIndex]);
 }
 
-Texture* Texture::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pTextureFilePath, _uint iNumTextures)
+CTexture* CTexture::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pTextureFilePath, _uint iNumTextures)
 {
-    Texture* pInstance = new Texture(pDevice, pContext);
+    CTexture* pInstance = new CTexture(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype(pTextureFilePath, iNumTextures)))
     {
@@ -108,9 +108,9 @@ Texture* Texture::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, c
     return pInstance;
 }
 
-Component* Texture::Clone(void* pArg)
+CComponent* CTexture::Clone(void* pArg)
 {
-    Component* pInstance = new Texture(*this);
+    CComponent* pInstance = new CTexture(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
@@ -121,7 +121,7 @@ Component* Texture::Clone(void* pArg)
     return pInstance;
 }
 
-void Texture::Free()
+void CTexture::Free()
 {
     __super::Free();
 

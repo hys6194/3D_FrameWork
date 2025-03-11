@@ -3,12 +3,12 @@
 #include "GameInstance.h"
 
 CBackGround::CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: UIObject{ pDevice, pContext }
+	: CUIObject{ pDevice, pContext }
 {
 }
 
 CBackGround::CBackGround(const CBackGround& Prototype)
-	:UIObject{ Prototype }
+	:CUIObject{ Prototype }
 	, m_eLevel{ Prototype.m_eLevel}
 {
 }
@@ -48,7 +48,7 @@ void CBackGround::Update(_float fTimeDelta)
 
 void CBackGround::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(Renderer::RENDER_PRIORITY, this);
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_PRIORITY, this);
 }
 
 HRESULT CBackGround::Render()
@@ -88,20 +88,20 @@ HRESULT CBackGround::Ready_Component()
 	{
 		case LEVEL_LOGO :
 			//if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_TEX_BACKGROUND,
-			//	reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
+			//	reinterpret_cast<CComponent**>(&m_pTextureCom), TEXT("Com_Texture"))))
 			//	return E_FAIL;
 
 			if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_TEX_LOGO1,
-				reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
+				reinterpret_cast<CComponent**>(&m_pTextureCom), TEXT("Com_Texture"))))
 				return E_FAIL;
 
 			if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_COM_VI_RECT,
-				reinterpret_cast<Component**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
+				reinterpret_cast<CComponent**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
 				return E_FAIL;
 
 			/* Com_Shader */
 			if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_SHADER_POS,
-				reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader"))))
+				reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader"))))
 				return E_FAIL;
 
 
@@ -109,16 +109,16 @@ HRESULT CBackGround::Ready_Component()
 			break;
 		case LEVEL_MENU :
 			if (FAILED(__super::Add_Component(LEVEL_MENU, PRO_TEX_BACKGROUND,
-				reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
+				reinterpret_cast<CComponent**>(&m_pTextureCom), TEXT("Com_Texture"))))
 				return E_FAIL;
 
 			if (FAILED(__super::Add_Component(LEVEL_MENU, PRO_COM_VI_RECT,
-				reinterpret_cast<Component**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
+				reinterpret_cast<CComponent**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
 				return E_FAIL;
 
 			/* Com_Shader */
 			if (FAILED(__super::Add_Component(LEVEL_MENU, PRO_SHADER_POS,
-				reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader"))))
+				reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader"))))
 				return E_FAIL;
 
 			break;
@@ -159,7 +159,7 @@ CBackGround* CBackGround::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 	return pInstance;
 }
 
-GameObject* CBackGround::Clone(void* pArg)
+CGameObject* CBackGround::Clone(void* pArg)
 {
 	CBackGround* pInstance = new CBackGround(*this);
 

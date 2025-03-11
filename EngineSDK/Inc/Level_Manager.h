@@ -7,11 +7,11 @@
 
 BEGIN(Engine)
 
-class Level_Manager : public CBase
+class CLevel_Manager : public CBase
 {
 private:
-	Level_Manager();
-	virtual ~Level_Manager() = default;
+	CLevel_Manager();
+	virtual ~CLevel_Manager() = default;
 
 public:
 	HRESULT						Initialize();
@@ -19,15 +19,15 @@ public:
 	HRESULT						Render();
 
 public:
-	HRESULT						Change_Level(_uint iLevelIndex, class Cevel* pNewLevel);
+	HRESULT						Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 
 private:
 	class CGameInstance*			m_pGameInstance = { nullptr }; // 
-	class Cevel*				m_pCurrentLevel = { nullptr }; // 현재 실행중인 레벨(Level 상속받아서 만든 Client의 Level*)
+	class CLevel*				m_pCurrentLevel = { nullptr }; // 현재 실행중인 레벨(Level 상속받아서 만든 Client의 Level*)
 	_uint						m_iCurrentLevelIndex = { };	   // enum LEVEL로 인지할 현재 레벨의 상태값
 
 public:
-	static Level_Manager*		Create();
+	static CLevel_Manager*		Create();
 	virtual void				Free() override;
 };
 

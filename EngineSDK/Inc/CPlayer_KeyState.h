@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class CPlayer_KeyState : public State
+class CPlayer_KeyState : public CState
 {
 private:
 	CPlayer_KeyState(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner, CGameInstance* pGameInstance);

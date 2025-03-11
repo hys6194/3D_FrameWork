@@ -7,7 +7,7 @@
 #include "GameInstance.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:cLevel{ pDevice , pContext }
+	:CLevel{ pDevice , pContext }
 {
 }
 
@@ -29,7 +29,7 @@ void CLevel_Loading::Update(_float fTimeDelta)
 
 	if (true == m_pLoader->isFinished())
 	{
-		Level* pLevel = { nullptr };
+		CLevel* pLevel = { nullptr };
 
 		switch (m_eLevelID)
 		{

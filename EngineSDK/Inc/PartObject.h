@@ -7,7 +7,7 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL PartObject : public CGameObject
+class ENGINE_DLL CPartObject : public CGameObject
 {
 public:
 	typedef struct tagPartObjectDesc : public CGameObject::GAMEOBJECT_DESC
@@ -16,9 +16,9 @@ public:
 	}PARTOBJ_DESC;
 
 protected:
-	PartObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	PartObject(const PartObject& Prototype);
-	virtual ~PartObject() = default;
+	CPartObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CPartObject(const CPartObject& Prototype);
+	virtual ~CPartObject() = default;
 
 public:	
 	virtual HRESULT Initialize_Prototype();

@@ -6,11 +6,11 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL State abstract: public CBase
+class ENGINE_DLL CState abstract: public CBase
 {
 protected:
-	State(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner, CGameInstance* pGameInstance);
-	virtual ~State() = default;
+	CState(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner, CGameInstance* pGameInstance);
+	virtual ~CState() = default;
 
 public:
 	void Set_Owner(CGameObject* _pOwner)

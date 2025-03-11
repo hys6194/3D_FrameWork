@@ -3,22 +3,22 @@
 
 #include "Player.h"
 
-Gun_Right::Gun_Right(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : PartObject{ pDevice, pContext }
+CGun_Right::CGun_Right(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CPartObject{ pDevice, pContext }
 {
 }
 
-Gun_Right::Gun_Right(const Gun_Right& Prototype)
-    : PartObject{ Prototype }
+CGun_Right::CGun_Right(const CGun_Right& Prototype)
+    : CPartObject{ Prototype }
 {
 }
 
-HRESULT Gun_Right::Initialize_Prototype()
+HRESULT CGun_Right::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT Gun_Right::Initialize(void* pArg)
+HRESULT CGun_Right::Initialize(void* pArg)
 {
     NULL_CHECK_RETURN(pArg, E_FAIL);
 
@@ -32,7 +32,7 @@ HRESULT Gun_Right::Initialize(void* pArg)
 
     //m_pTransformCom->SetUp_Scaled(0.1f, 0.1f, 0.1f);
     //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-    m_pTransformCom->Set_State(Transform::STATE_POS, XMVectorSet(20.f, -5.f, 12.5f, 1.f));
+    m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(20.f, -5.f, 12.5f, 1.f));
 
     // 포켓에 있을 때
     //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
@@ -42,16 +42,16 @@ HRESULT Gun_Right::Initialize(void* pArg)
     return S_OK;
 }
 
-void Gun_Right::Priority_Update(_float fTimeDelta)
+void CGun_Right::Priority_Update(_float fTimeDelta)
 {
     //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
     //m_pTransformCom->Rotation(AXIS_X, XMConvertToRadians(-90.f));
     //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
     //m_pTransformCom->Rotation(XMQuaternionRotationAxis())
-    m_pTransformCom->Set_State(Transform::STATE_POS, XMVectorSet(20.f, -5.f, 12.5f, 1.f));
+    m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(20.f, -5.f, 12.5f, 1.f));
 }
 
-void Gun_Right::Update(_float fTimeDelta)
+void CGun_Right::Update(_float fTimeDelta)
 {
     _matrix matSocket = XMLoadFloat4x4(m_pHandMatrix);
 
@@ -72,13 +72,13 @@ void Gun_Right::Update(_float fTimeDelta)
 
 }
 
-void Gun_Right::Late_Update(_float fTimeDelta)
+void CGun_Right::Late_Update(_float fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
+    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
 }
 
-HRESULT Gun_Right::Render()
+HRESULT CGun_Right::Render()
 {
     if (FAILED(Bind_SR()))
         return E_FAIL;
@@ -103,25 +103,25 @@ HRESULT Gun_Right::Render()
     return S_OK;
 }
 
-HRESULT Gun_Right::Ready_Components()
+HRESULT CGun_Right::Ready_Components()
 {
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
-        reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
-        reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
     return S_OK;
 }
 
-HRESULT Gun_Right::Bind_SR()
+HRESULT CGun_Right::Bind_SR()
 {
     // Combined된 월드행렬을 반환해야 한다
     // 
     //FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pParentMatrix), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 
     const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
@@ -136,9 +136,9 @@ HRESULT Gun_Right::Bind_SR()
     return S_OK;
 }
 
-Gun_Right* Gun_Right::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CGun_Right* CGun_Right::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    Gun_Right* pInstance = new Gun_Right(pDevice, pContext);
+    CGun_Right* pInstance = new CGun_Right(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
@@ -149,9 +149,9 @@ Gun_Right* Gun_Right::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
     return pInstance;
 }
 
-GameObject* Gun_Right::Clone(void* pArg)
+CGameObject* CGun_Right::Clone(void* pArg)
 {
-    Gun_Right* pInstance = new Gun_Right(*this);
+    CGun_Right* pInstance = new CGun_Right(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
@@ -162,7 +162,7 @@ GameObject* Gun_Right::Clone(void* pArg)
     return pInstance;
 }
 
-void Gun_Right::Free()
+void CGun_Right::Free()
 {
     __super::Free();
 

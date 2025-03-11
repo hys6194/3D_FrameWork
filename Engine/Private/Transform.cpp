@@ -2,25 +2,25 @@
 #include "Shader.h"
 #include "Bone.h"
 
-Transform::Transform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : Component{ pDevice, pContext }
+CTransform::CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CComponent{ pDevice, pContext }
 {
 }
 
-Transform::Transform(const Transform& Prototype)
-    :Component{ Prototype }
+CTransform::CTransform(const CTransform& Prototype)
+    :CComponent{ Prototype }
     , m_f4WorldMatrix{ Prototype.m_f4WorldMatrix }
 {
 }
 
-HRESULT Transform::Initialize_Prototype()
+HRESULT CTransform::Initialize_Prototype()
 {
     XMStoreFloat4x4(&m_f4WorldMatrix, XMMatrixIdentity());
 
     return S_OK;
 }
 
-HRESULT Transform::Initialize(void* pArg)
+HRESULT CTransform::Initialize(void* pArg)
 {
     if(nullptr != pArg)
     {
@@ -33,7 +33,7 @@ HRESULT Transform::Initialize(void* pArg)
     return S_OK;
 }
 
-_float3 Transform::Update_Scale()
+_float3 CTransform::Update_Scale()
 {
     return _float3(
         XMVectorGetX(XMVector3Length(Get_State(STATE_RIGHT))),
@@ -42,7 +42,7 @@ _float3 Transform::Update_Scale()
     
 }
 
-HRESULT Transform::Go_Straight(_float fTimeDelta)
+HRESULT CTransform::Go_Straight(_float fTimeDelta)
 {
     // 위치 가져오기
     _vector vPos = Get_State(STATE_POS);
@@ -59,7 +59,7 @@ HRESULT Transform::Go_Straight(_float fTimeDelta)
     return S_OK;
 }
 
-HRESULT Transform::Go_Backward(_float fTimeDelta)
+HRESULT CTransform::Go_Backward(_float fTimeDelta)
 {
     // 위치 가져오기
     _vector vPos = Get_State(STATE_POS);
@@ -76,7 +76,7 @@ HRESULT Transform::Go_Backward(_float fTimeDelta)
     return S_OK;
 }
 
-HRESULT Transform::Go_Right(_float fTimeDelta)
+HRESULT CTransform::Go_Right(_float fTimeDelta)
 {
     // 위치 가져오기
     _vector vPos = Get_State(STATE_POS);
@@ -93,7 +93,7 @@ HRESULT Transform::Go_Right(_float fTimeDelta)
     return S_OK;
 }
 
-HRESULT Transform::Go_Left(_float fTimeDelta)
+HRESULT CTransform::Go_Left(_float fTimeDelta)
 {
     // 위치 가져오기
     _vector vPos = Get_State(STATE_POS);
@@ -110,7 +110,7 @@ HRESULT Transform::Go_Left(_float fTimeDelta)
     return S_OK;
 }
 
-HRESULT Transform::Jump(_float fTimeDelta)
+HRESULT CTransform::Jump(_float fTimeDelta)
 {
     _vector vPos = Get_State(STATE_POS);
     
@@ -118,7 +118,7 @@ HRESULT Transform::Jump(_float fTimeDelta)
     return S_OK;
 }
 
-HRESULT Transform::LookAt(_vector vAt)
+HRESULT CTransform::LookAt(_vector vAt)
 {
     // 카메라에서 쓰이는 함수
 
@@ -135,7 +135,7 @@ HRESULT Transform::LookAt(_vector vAt)
     return S_OK;
 }
 
-HRESULT Transform::Dash(_fvector vAxis, _float fRadian, _float fDelta)
+HRESULT CTransform::Dash(_fvector vAxis, _float fRadian, _float fDelta)
 {
     _vector vPos = Get_State(STATE_POS);
 
@@ -143,7 +143,7 @@ HRESULT Transform::Dash(_fvector vAxis, _float fRadian, _float fDelta)
     return S_OK;
 }
 
-void Transform::Turn(_fvector vAxis, _float fTimeDelta)
+void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
     _matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_fRotationPerSec * fTimeDelta);
 
@@ -156,7 +156,7 @@ void Transform::Turn(_fvector vAxis, _float fTimeDelta)
     Set_State(STATE_LOOK, XMVector4Transform(vLook, RotationMatrix));
 }
 
-void Transform::Rotation(_fvector vAxis, _float fRadian)
+void CTransform::Rotation(_fvector vAxis, _float fRadian)
 {
     _matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
 
@@ -171,7 +171,7 @@ void Transform::Rotation(_fvector vAxis, _float fRadian)
     Set_State(STATE_LOOK, XMVector4Transform(vLook, RotationMatrix));
 }
 
-void Transform::SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ)
+void CTransform::SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ)
 {
     _vector			vRight = Get_State(STATE_RIGHT);
     _vector			vUp = Get_State(STATE_UP);
@@ -182,7 +182,7 @@ void Transform::SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ)
     Set_State(STATE_LOOK, XMVector3Normalize(vLook) * fScaleZ);
 }
 
-HRESULT Transform::Bind_SR(const _char* pConstantName, class Shader* pShader)
+HRESULT CTransform::Bind_SR(const _char* pConstantName, class CShader* pShader)
 {
     if (nullptr == pShader)
         return E_FAIL;
@@ -190,9 +190,9 @@ HRESULT Transform::Bind_SR(const _char* pConstantName, class Shader* pShader)
     return pShader->Bind_Matrix(pConstantName, &m_f4WorldMatrix);
 }
 
-Transform* Transform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CTransform* CTransform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    Transform* pInstance = new Transform(pDevice, pContext);
+    CTransform* pInstance = new CTransform(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
@@ -203,9 +203,9 @@ Transform* Transform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
     return pInstance;
 }
 
-Component* Transform::Clone(void* pArg)
+CComponent* CTransform::Clone(void* pArg)
 {
-    Component* pInstance = new Transform(*this);
+    CComponent* pInstance = new CTransform(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
@@ -216,7 +216,7 @@ Component* Transform::Clone(void* pArg)
     return pInstance;
 }
 
-void Transform::Free()
+void CTransform::Free()
 {
     __super::Free();
 }

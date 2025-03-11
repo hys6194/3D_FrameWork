@@ -7,11 +7,11 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Cevel abstract : public CBase
+class ENGINE_DLL CLevel abstract : public CBase
 {
 protected:
-	Cevel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~Cevel() = default;
+	CLevel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CLevel() = default;
 
 public:
 	virtual HRESULT Initialize();

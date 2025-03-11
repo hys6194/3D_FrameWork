@@ -1,22 +1,22 @@
 #include "FSM.h"
 #include "State.h"
 
-FSM::FSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : Component{ pDevice ,pContext }
+CFSM::CFSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CComponent{ pDevice ,pContext }
 {
 }
 
-FSM::FSM(const FSM& Prototype)
-    :Component{ Prototype }
+CFSM::CFSM(const CFSM& Prototype)
+    :CComponent{ Prototype }
 {
 }
 
-HRESULT FSM::Initialize_Prototype()
+HRESULT CFSM::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT FSM::Initialize(void* pArg)
+HRESULT CFSM::Initialize(void* pArg)
 {
     // 여기서 뭘 해야할까
     // 일단 만들어 놓고 나중에 쓸모가없어지만 바로 new 리턴하는 걸로
@@ -24,7 +24,7 @@ HRESULT FSM::Initialize(void* pArg)
     return S_OK;
 }
 
-HRESULT FSM::Add_State(const _uint& iState, class State* pState)
+HRESULT CFSM::Add_State(const _uint& iState, class CState* pState)
 {
     if (nullptr == pState)
         return E_FAIL;
@@ -35,22 +35,22 @@ HRESULT FSM::Add_State(const _uint& iState, class State* pState)
     return S_OK;
 }
 
-void FSM::PriUpdate_State(_float fTimeDelta)
+void CFSM::PriUpdate_State(_float fTimeDelta)
 {
     m_pCurrentState->PriorityUpdate_State(fTimeDelta);
 }
 
-void FSM::Update_State(_float fTimeDelta)
+void CFSM::Update_State(_float fTimeDelta)
 {
     m_pCurrentState->Update_State(fTimeDelta);
 }
 
-void FSM::LateUpdate_State(_float fTimeDelta)
+void CFSM::LateUpdate_State(_float fTimeDelta)
 {
     m_pCurrentState->LateUpdate_State(fTimeDelta);
 }
 
-State* FSM::Find_State(const _uint& iState)
+CState* CFSM::Find_State(const _uint& iState)
 {
     auto iter = m_mapFSM.find(iState);
 
@@ -60,12 +60,12 @@ State* FSM::Find_State(const _uint& iState)
     return iter->second;
 }
 
-HRESULT FSM::Delete_State()
+HRESULT CFSM::Delete_State()
 {
     return S_OK;
 }
 
-HRESULT FSM::Change_State(const _uint& iState)
+HRESULT CFSM::Change_State(const _uint& iState)
 {
     auto iter = Find_State(iState);
     if (nullptr == iter || 
@@ -89,9 +89,9 @@ HRESULT FSM::Change_State(const _uint& iState)
     return S_OK;
 }
 
-FSM* FSM::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CFSM* CFSM::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    FSM* pInstance = new FSM(pDevice, pContext);
+    CFSM* pInstance = new CFSM(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
@@ -102,9 +102,9 @@ FSM* FSM::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     return pInstance;
 }
 
-Component* FSM::Clone(void* pArg)
+CComponent* CFSM::Clone(void* pArg)
 {
-    Component* pInstance = new FSM(*this);
+    CComponent* pInstance = new CFSM(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
@@ -115,7 +115,7 @@ Component* FSM::Clone(void* pArg)
     return pInstance;
 }
 
-void FSM::Free()
+void CFSM::Free()
 {
     __super::Free();
 

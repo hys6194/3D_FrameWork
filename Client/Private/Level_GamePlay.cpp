@@ -58,7 +58,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 {
-	//Camera_Free::CAMERA_FREE_DESC   FreeCam_Desc{};
+	//CCamera_Free::CAMERA_FREE_DESC   FreeCam_Desc{};
 	//
 	//FreeCam_Desc.vEye = _float3(0.f, 20.f, -20.f);
 	//FreeCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
@@ -75,7 +75,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 	//	LEVEL_GAMEPLAY, pLayerTag, &FreeCam_Desc)))
 	//	return E_FAIL;
 
-	TP_Camera::TP_CAMERA_DESC   TPCam_Desc{};
+	CTP_Camera::TP_CAMERA_DESC   TPCam_Desc{};
 	
 	TPCam_Desc.vEye = _float3(0.f, 10.f, -10.f);
 	TPCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
