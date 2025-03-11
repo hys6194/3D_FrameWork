@@ -1,5 +1,6 @@
 #include "Animation.h"
 #include "Channel.h"
+#include "GameObject.h"
 
 Animation::Animation()
 {
@@ -45,6 +46,32 @@ _bool Animation::Update_TransformationMatrix(const vector<class Bone*>& pBone, _
             m_bIsAnimEnd = true;
     }
     
+    for (size_t i = 0; i < m_iNumChannel; i++)
+    {
+        // 애니메이션을 순회할때는 다른 vector로 순회
+        m_vecChannel[i]->Update_TransformationMatrix(pBone, *pCurrentTrackPosition, &vecKeyFrameIndex[i]);
+    }
+
+    return m_bIsAnimEnd;
+}
+
+_bool Animation::Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex, GameObject* pObject)
+{
+
+    //_vector v3 = pObject->Get_Transform()->Get_State(Transform::STATE_POS);
+
+    *pCurrentTrackPosition += m_fTrickPerSecond * fTimeDelta;
+
+    // KeyFrame이 끝에 도달한다면
+    if (*pCurrentTrackPosition >= m_fDuration)
+    {
+        // 애니메이션의 연속재생의 여부 확인
+        if (true == bIsLoop)
+            *pCurrentTrackPosition = 0.f;
+        else
+            m_bIsAnimEnd = true;
+    }
+
     for (size_t i = 0; i < m_iNumChannel; i++)
     {
         // 애니메이션을 순회할때는 다른 vector로 순회

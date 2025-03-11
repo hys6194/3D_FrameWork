@@ -40,7 +40,7 @@ public:
 public:
 	//재생하려고 하는 애니메이션, 루프, 보간
 	void Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop = false, _bool IsInter = true);
-	void Set_Interpolate(_bool bIsInter) { m_bIsInter = bIsInter; };
+	void Set_Interpolate(_bool bIsInter);
 
 public:
 	void Set_PreAnimation(_uint iPreAnimationIndex);
@@ -55,7 +55,7 @@ public:
 	virtual HRESULT Render(_uint iMeshIndex);
 
 public:
-	_bool	Play_Animation(_float fTimeDelta);
+	_bool	Play_Animation(_float fTimeDelta, GameObject* pObject = nullptr);
 
 public:
 	void	Reset_PreAnimation();

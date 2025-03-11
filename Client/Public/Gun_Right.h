@@ -39,9 +39,6 @@ private:
 	Model*  m_pModelCom = { nullptr };
 
 private:
-	class Player* m_pPlayer = { nullptr };
-
-private:
 	const _float4x4* m_pSocketMatrix = { nullptr };	
 	const _float4x4* m_pHandMatrix = { nullptr };	
 

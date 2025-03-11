@@ -12,7 +12,7 @@ BEGIN(Client)
 class Player final : public ContainerObject
 {
 public:
-	enum PARTOBJ { PART_BODY, PART_WEAPON, PART_EFFECT, PART_END };
+	enum PARTOBJ { PART_BODY, PART_WEAPON, PART_LGUN, PART_RGUN, PART_EFFECT, PART_END };
 	enum ANIM_STATE {
 		STATE_IDLE			= 0x00000001,
 		STATE_RUN			= 0x00000002,
@@ -48,11 +48,10 @@ public:
 		return m_iState;
 	};
 
-	_uint Get_PlayerKeyState()
+	const _uint Get_PlayerKeyState() const
 	{
 		return m_iKey;
 	};
-
 
 	_bool Get_PlayerMove()
 	{

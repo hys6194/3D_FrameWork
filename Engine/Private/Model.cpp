@@ -72,25 +72,35 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInte
         return;
 
     // 보간 안 할시 모든 애니메이션 프레임 초기화
-    if(true != m_bIsInter)
+    //if(true != m_bIsInter)
+    //{
+    //    for (auto& pCurrentTrackPosition : m_vecCurrentTrackPosition)
+    //        pCurrentTrackPosition = 0;
+    //
+    //    // vector의 vector인 점을 까먹으면 안된다
+    //    for (auto& pCurrentKeyFrameIndices : m_vecKeyFrameIndex)
+    //    {
+    //        for (auto& pCurrentKeyFrameIndex : pCurrentKeyFrameIndices)
+    //            pCurrentKeyFrameIndex = 0;
+    //    }
+    //}
+    //
+    //// 보간 할 시 Enter_State 에서 진입할 애니메이션의 값만 초기화
+    //else
+    //{
+    //    m_vecCurrentTrackPosition[iAnimationIndex] = 0;
+    //
+    //    for (auto& pCurrentKeyFrameIndex : m_vecKeyFrameIndex[iAnimationIndex])
+    //        pCurrentKeyFrameIndex = 0;
+    //}
+
+    for (auto& pCurrentTrackPosition : m_vecCurrentTrackPosition)
+        pCurrentTrackPosition = 0;
+
+    // vector의 vector인 점을 까먹으면 안된다
+    for (auto& pCurrentKeyFrameIndices : m_vecKeyFrameIndex)
     {
-        for (auto& pCurrentTrackPosition : m_vecCurrentTrackPosition)
-            pCurrentTrackPosition = 0;
-
-        // vector의 vector인 점을 까먹으면 안된다
-        for (auto& pCurrentKeyFrameIndices : m_vecKeyFrameIndex)
-        {
-            for (auto& pCurrentKeyFrameIndex : pCurrentKeyFrameIndices)
-                pCurrentKeyFrameIndex = 0;
-        }
-    }
-
-    // 보간 할 시 Enter_State 에서 진입할 애니메이션의 값만 초기화
-    else
-    {
-        m_vecCurrentTrackPosition[iAnimationIndex] = 0;
-
-        for (auto& pCurrentKeyFrameIndex : m_vecKeyFrameIndex[iAnimationIndex])
+        for (auto& pCurrentKeyFrameIndex : pCurrentKeyFrameIndices)
             pCurrentKeyFrameIndex = 0;
     }
 
@@ -108,9 +118,21 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInte
     m_fCurTrackPos = m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
     m_iCurKeyFrameIndex = m_vecKeyFrameIndex[m_iCurrentAnimationIndex][m_fCurTrackPos];
 
-    m_pCurChannel = m_Animations[m_iCurrentAnimationIndex]->Get_Channel ();
+    m_pCurChannel = m_Animations[m_iCurrentAnimationIndex]->Get_Channel();
 
     m_bIsLoop = isLoop;
+
+    m_vecBone[2]->Reset_Delta();
+}
+
+void Model::Set_Interpolate(_bool bIsInter)
+{
+    m_bIsInter = bIsInter;
+
+    m_fCurTrackPos = m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
+    m_iCurKeyFrameIndex = m_vecKeyFrameIndex[m_iCurrentAnimationIndex][m_fCurTrackPos];
+
+    m_pCurChannel = m_Animations[m_iCurrentAnimationIndex]->Get_Channel();
 }
 
 void Model::Set_PreAnimation(_uint iPreAnimationIndex)
@@ -123,7 +145,6 @@ void Model::Set_PreAnimation(_uint iPreAnimationIndex)
 
     m_pPreChannel = m_Animations[m_iPreAnimationIndex]->Get_Channel();
 
-    
 }
 
 void Model::Interpolate_Animation(_float fRatio)
@@ -192,22 +213,22 @@ void Model::Play_RootAnimation(_float fTimeDelta)
 {
     m_vecBone[0]->Compare_Name("RootNode");         // 이동시켜야 하는 뼈
     m_vecBone[2]->Compare_Name("Bone_Strife_Root"); // 이동량있는 뼈
-
-
+    
+    
     _float f41, f42;
     _matrix mat1 = XMMatrixIdentity();
     _matrix mat2 = XMMatrixIdentity();
     _vector vec1;
-
-
-
+    
+    
+    
     mat1 = m_vecBone[0]->Get_CombinedTransformationMatrix();
     mat2 = m_vecBone[2]->Get_CombinedTransformationMatrix();
-    vec1 = m_vecBone[2]->Get_CombinedTransformationMatrix().r[3];
     f41 = m_vecBone[0]->Get_CombinedTransformfloat4x4ptr()->m[3][0];
+    
+    vec1 = m_vecBone[2]->Get_CombinedTransformationMatrix().r[3];
     f42 = m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][2];
-
-
+    
     _float4x4 mat4;
     XMStoreFloat4x4(&mat4, XMMatrixIdentity());
     
@@ -218,7 +239,7 @@ void Model::Play_RootAnimation(_float fTimeDelta)
     memcpy(&mat4.m[3][0],
         &m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][0],
         sizeof(_float4));
-
+    
     // 변화량을 가져오긴 했음
     // 해야할 것은 현재 애니메이션의 모든 채널을 순회하여 RootNdde에게 값을 전달해줘야 함
         
@@ -226,10 +247,10 @@ void Model::Play_RootAnimation(_float fTimeDelta)
     {
         m_pRootChannel[0]->Update_TransformationMatrix(m_vecBone, Get_CurAnimationTrackPosition(), &m_iCurKeyFrameIndex);
     }
-
-
-
-
+    
+    
+    
+    
      int a = 10;
 
  }
@@ -285,30 +306,44 @@ HRESULT Model::Render(_uint iMeshIndex)
     return S_OK;
 }
 
-_bool Model::Play_Animation(_float fTimeDelta)
+_bool Model::Play_Animation(_float fTimeDelta, GameObject* pObject)
 {
     /* 특정 애니메이션을 구동한다. */
-    /* 애니메이션을 구동한다 == 
+    /* 애니메이션을 구동한다 == +		[4]	{vScale={x=1.00000060 y=1.00000012 z=1.00000036 } vRotation={x=-0.0756162405 y=-0.0891902819 z=-0.0955794305 ...} ...}	Engine::tagKeyFrame
+
     이 애니메이션 구동을 위해 움직여야할 뼈(Channel) 들의 현재 재생위치에 맞는 키프레임상태에 따른 TransformationMatrix를 갱신한다.*/
     /* 뼈들의 Transformationmatrix를 갱신했다고 해서 바뀐상태로 그릴 수 있는건 아니다. */
     /* 뼈들의 CombinedTransformationMatrix가 갱신되어있어야 애니메이션 재생되는 표현을 해줄 수 있다. */
 
     /* 뼈들의 최종 CombinedTransformationMatrix를 갱신한다. */
-
-    _bool bIsEnd = m_Animations[m_iCurrentAnimationIndex]->
-                   Update_TransformationMatrix(
-                   m_vecBone, 
-                   fTimeDelta, 
-                   m_bIsLoop, 
-                   &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], 
-                   m_vecKeyFrameIndex[m_iCurrentAnimationIndex]);
+    _bool bIsEnd;
     
-   
-    for (auto& pBone : m_vecBone)
-    {
-        pBone->Update_CombinedTransformationMatrix(m_vecBone, &m_PreTransformMatrix);
-    }
 
+    // 모든 애니메이션에 루트애님을 적용 시켜야하는지 필요성을 못느껴서 분리해서 적용함
+    // 루트 애님이 많은 모델이라면 그것이 맞지만 그게 아니라서
+    // 기존 애니메이션
+    if(nullptr == pObject)
+    {
+        bIsEnd = m_Animations[m_iCurrentAnimationIndex]->Update_TransformationMatrix(m_vecBone, fTimeDelta, m_bIsLoop, &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], m_vecKeyFrameIndex[m_iCurrentAnimationIndex]);
+        for (auto& pBone : m_vecBone)
+        {
+            pBone->Update_CombinedTransformationMatrix(m_vecBone, &m_PreTransformMatrix);
+        }
+
+        _float4 f42;
+        memcpy(&f42, &m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][0], sizeof(_float4));
+
+        int a = 10;
+    }
+    // 
+    else
+    {
+        bIsEnd = m_Animations[m_iCurrentAnimationIndex]->Update_TransformationMatrix(m_vecBone, fTimeDelta, m_bIsLoop, &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], m_vecKeyFrameIndex[m_iCurrentAnimationIndex], pObject);
+        for (auto& pBone : m_vecBone)
+        {
+            pBone->Update_Combine_RootMatrix(m_vecBone, &m_PreTransformMatrix, pObject);
+        }
+    }
 
     return bIsEnd;
 }

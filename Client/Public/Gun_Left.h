@@ -39,9 +39,6 @@ private:
 	Model*  m_pModelCom = { nullptr };
 
 private:
-	class Player* m_pPlayer = { nullptr };
-
-private:
 	const _float4x4* m_pSocketMatrix = { nullptr };	// 특정 뼈에 붙이려고 하는 소켓의 매트릭스
 	const _float4x4* m_pHandMatrix = { nullptr };	// 특정 뼈에 붙이려고 하는 소켓의 매트릭스
 	const _uint* m_pTargetState = { nullptr };		//플레이어의 상태를 가져와서 애니메이션의 상태를 변경하려고 함

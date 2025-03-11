@@ -30,9 +30,13 @@ HRESULT Gun_Left::Initialize(void* pArg)
     FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
 
-    m_pTransformCom->SetUp_Scaled(0.1f, 0.1f, 0.1f);
-    m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
+    //m_pTransformCom->SetUp_Scaled(0.1f, 0.1f, 0.1f);
+    //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
     //m_pTransformCom->Set_State(Transform::STATE_POS, XMVectorSet(0.7f, 0.f, 0.f, 1.f));
+
+    // 포켓안에 있을 때
+    //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
+
 
 
     return S_OK;
@@ -40,18 +44,23 @@ HRESULT Gun_Left::Initialize(void* pArg)
 
 void Gun_Left::Priority_Update(_float fTimeDelta)
 {
+    //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
+    //m_pTransformCom->Rotation(AXIS_X, XMConvertToRadians(90.f));
+    //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
+    m_pTransformCom->Set_State(Transform::STATE_POS, XMVectorSet(19.f, -5.f, -12.5f, 1.f));
+
 }
 
 void Gun_Left::Update(_float fTimeDelta)
 {
-    _matrix matSocket = XMLoadFloat4x4(m_pSocketMatrix);
+    _matrix matSocket = XMLoadFloat4x4(m_pHandMatrix);
 
     // 스케일 값에 영향을 주는 본이라면 그것을 없애주는 코드이다
     // 만약 이 코드가 없어도 잘 돌아간다면 원래 맞는 모델이라고 볼 수 있다
-    for (size_t i = 0; i < 3; i++)
-    {
-        matSocket.r[i] = XMVector3Normalize(matSocket.r[i]);
-    }
+    //for (size_t i = 0; i < 3; i++)
+    //{
+    //    matSocket.r[i] = XMVector3Normalize(matSocket.r[i]);
+    //}
     
     // 파츠들의 매트릭스를 부모 매트릭스에 곱하여 고정시킨다
     // 그와 동시에, Socket 매트릭스를 같이 곱하여 월드 매트릭스 상에 binding 한다
@@ -96,10 +105,10 @@ HRESULT Gun_Left::Render()
 
 HRESULT Gun_Left::Ready_Components()
 {
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_ForkLift"),
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_LGUN,
         reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
         reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
     return S_OK;

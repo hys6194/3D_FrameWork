@@ -110,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Public/;../../EngineSDK/Inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Public/;../../EngineSDK/Inc/;../../Tool/Public/Imgui/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

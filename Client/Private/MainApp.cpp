@@ -37,7 +37,9 @@ void CMainApp::Update(_float fTimeDelta)
 	if (nullptr == m_pGameInstance)
 		return;
 
+
 	m_pGameInstance->Update_Engine(fTimeDelta);
+
 
 #ifdef _DEBUG
 	m_fTimeAcc += fTimeDelta;

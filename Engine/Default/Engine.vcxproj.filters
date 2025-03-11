@@ -136,6 +136,12 @@
     <Filter Include="98.ShaderFiles">
       <UniqueIdentifier>{2ade9645-33fc-40b0-90db-21a845762ced}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.ImGui">
+      <UniqueIdentifier>{50beb0e0-3306-4f88-9c41-741f32b12fee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\97.ImGui">
+      <UniqueIdentifier>{bebef5d8-29ca-48f0-9077-d7751386f1cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -270,6 +276,57 @@
     <ClInclude Include="..\Public\VIBuffer_Cube.h">
       <Filter>01.Utility\04. Component\VIBuffer\Cube</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ImGui\ImCurveEdit.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\ImGradient.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\imgui.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\imgui_impl_dx11.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\imgui_impl_win32.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\imgui_internal.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\ImGuizmo.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\implot.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\implot_internal.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\ImSequencer.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\imstb_rectpack.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\imstb_textedit.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\imstb_truetype.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\ImZoomSlider.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\GraphEditor.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui\imconfig.h">
+      <Filter>97.ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Manager.h">
+      <Filter>01.Utility\97.ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -379,6 +436,54 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
       <Filter>01.Utility\04. Component\VIBuffer\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\ImCurveEdit.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\ImGradient.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\imgui.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\imgui_demo.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\imgui_draw.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\imgui_impl_dx11.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\imgui_impl_win32.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\imgui_tables.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\imgui_widgets.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\ImGuizmo.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\implot.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\implot_demo.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\implot_items.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\ImSequencer.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\ImGui\GraphEditor.cpp">
+      <Filter>97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Manager.cpp">
+      <Filter>01.Utility\97.ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

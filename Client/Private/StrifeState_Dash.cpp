@@ -52,8 +52,6 @@ void StrifeState_Dash::Update_State(_float fTimeDelta)
 
 void StrifeState_Dash::LateUpdate_State(_float fTimeDelta)
 {
-	if (false == m_pModelCom->Get_Interpolate())
-		m_pModelCom->Reset_PreAnimation();
 }
 
 HRESULT StrifeState_Dash::Exit_State()
@@ -86,6 +84,7 @@ void StrifeState_Dash::Update_Animation(_float fTimeDelta)
 
 void StrifeState_Dash::Set_PreAnimation()
 {
+	m_pModelCom->Reset_PreAnimation();
 
 	m_pModelCom->Set_PreAnimation(PLAYER_ANIMLIST::DASH_BACK);
 }

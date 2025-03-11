@@ -30,6 +30,10 @@ public:
 	/* 후면 버퍼를 전면버퍼로 교체한다.(백버퍼를 화면에 직접 보여준다.) */
 	HRESULT Present();
 
+
+public:
+	void Set_RenderTargets(_int iNumTarget);
+
 private:	
 	// IDirect3DDevice9* == LPDIRECT3DDEVICE9 == ID3D11Device + ID3D11DeviceContext 	
 
@@ -79,6 +83,7 @@ private:
 	HRESULT Ready_SwapChain(HWND hWnd, _bool isWindowed, _uint iWinCX, _uint iWinCY);
 	HRESULT Ready_BackBufferRenderTargetView();	
 	HRESULT Ready_DepthStencilView(_uint iWinCX, _uint iWinCY);
+
 
 public:
 	static CGraphic_Device* Create(HWND hWnd, _bool isWindowed, _uint iWinSizeX, _uint iWinSizeY, _Out_ ID3D11Device** ppDevice, _Out_ ID3D11DeviceContext** ppDeviceContextOut);

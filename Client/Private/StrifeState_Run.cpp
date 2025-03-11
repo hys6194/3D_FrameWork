@@ -94,8 +94,8 @@ void StrifeState_Run::Update_State(_float fTimeDelta)
 
 void StrifeState_Run::LateUpdate_State(_float fTimeDelta)
 {
-    if (false == m_pModelCom->Get_Interpolate())
-        m_pModelCom->Reset_PreAnimation();
+    /*if (false == m_pModelCom->Get_Interpolate())
+        m_pModelCom->Reset_PreAnimation();*/
 }
 
 HRESULT StrifeState_Run::Exit_State()
@@ -115,13 +115,15 @@ void StrifeState_Run::Update_Animation(_float fTimeDelta)
 {
     if (0 != m_pModelCom->Get_PreAnimIndex()
         && m_pModelCom->Get_Interpolate())
-        m_pModelCom->Interpolate_Animation(0.2f);
+        m_pModelCom->Interpolate_Animation(0.1f);
     else
         m_pModelCom->Play_Animation(fTimeDelta);
 }
 
 void StrifeState_Run::Set_PreAnimation()
 {
+    //m_pModelCom->Reset_PreAnimation();
+
     m_pModelCom->Set_PreAnimation(PLAYER_ANIMLIST::RUN);
 }
 

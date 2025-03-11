@@ -35,6 +35,7 @@ public:
 	HRESULT				Clear_BackBuffer_View(_float4 vClearColor);	
 	HRESULT				Clear_DepthStencil_View();
 	HRESULT				Present();
+	void				Set_RenderTergets(_int iNumTarget);
 #pragma endregion
 
 #pragma region INPUT_DEVICE
@@ -51,6 +52,15 @@ public:
 	_bool				Mouse_Up(MOUSEKEYSTATE eMouse);
 
 #pragma endregion
+
+#pragma region IMGUI_MANAGER
+	void				SetUp_Render_ImGui();
+	void				EndRender_ImGui();
+	void				SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd);
+	//vector<float*>		Draw_Gizmo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _matrix& matWorld);
+
+#pragma endregion
+
 
 #pragma region TIMER_MANAGER
 public:
@@ -109,6 +119,7 @@ private:
 	class Renderer*					m_pRenderer = { nullptr };	
 	class PipeLine*					m_pPipeLine = { nullptr };
 	class Light_Manager*			m_pLight_Manager = { nullptr };
+	class CImGui_Manager*			m_pImGui_Manager = { nullptr };
 
 public:	
 	virtual void Free() override;

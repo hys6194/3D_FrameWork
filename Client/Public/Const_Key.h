@@ -56,21 +56,31 @@ static const std::wstring PRO_OBJ_BODY			= TEXT("Prototype_GameObject_Player_Bod
 static const std::wstring PRO_OBJ_CAM_FREE		= TEXT("Prototype_GameObject_Camera_Free");
 static const std::wstring PRO_OBJ_CAM_3RD		= TEXT("Prototype_GameObject_TP_Camera");
 static const std::wstring PRO_OBJ_WEAPON		= TEXT("Prototype_GameObject_Weapon");
+static const std::wstring PRO_OBJ_L_GUN			= TEXT("Prototype_GameObject_Gun_Left");
+static const std::wstring PRO_OBJ_R_GUN			= TEXT("Prototype_GameObject_Gun_Right");
 
+/* Sockets */
+static const std::wstring SOCKET_LEFT_HAND		= TEXT("Socket_Strife_Hand_L");
+static const std::wstring SOCKET_RIGHT_HAND		= TEXT("Socket_Strife_Hand_R");
+static const std::wstring SOCKET_HOLSTER_LEFT	= TEXT("Socket_Strife_Holster_L");
+static const std::wstring SOCKET_HOLSTER_RIGHT	= TEXT("Socket_Strife_Holster_R");
 
+//static const std::wstring PRO_OBJ_BACK = TEXT("Bone_Strife_Holster_L");
 //static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_Component_Texture_BackGround");
 //static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_Component_Texture_BackGround");
-//static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_Component_Texture_BackGround");
-//static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_Component_Texture_BackGround");
 
-
+//Bone_Strife_Holster_L
+//Bone_Strife_Holster_R
 
 
 
 
 enum PLAYER_ANIMLIST
 {
-	AIM_IDLE = 0,
+	SHOOT_RIGHT = 0,
+	AIM_FIRE,
+	AIM_FIRE_EMPTY,
+	AIM_IDLE,
 	AIM_IDLE_COMBAT,
 	AIM_START,
 	AIM_WALK,
