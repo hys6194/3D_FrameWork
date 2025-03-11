@@ -4,10 +4,10 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Camera abstract : public GameObject
+class ENGINE_DLL Camera abstract : public CGameObject
 {
 public:
-	typedef struct tagCameraDesc : public GameObject::GAMEOBJECT_DESC
+	typedef struct tagCameraDesc : public CGameObject::GAMEOBJECT_DESC
 	{
 		_float3			vEye;			// 카메라 위치
 		_float3			vAt;			// 카메라 바라보는 방향
@@ -40,7 +40,7 @@ protected:
 	_float					m_fFar = { };
 
 public:
-	virtual GameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
 };
 

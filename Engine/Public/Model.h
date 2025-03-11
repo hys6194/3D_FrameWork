@@ -55,7 +55,7 @@ public:
 	virtual HRESULT Render(_uint iMeshIndex);
 
 public:
-	_bool	Play_Animation(_float fTimeDelta, GameObject* pObject = nullptr);
+	_bool	Play_Animation(_float fTimeDelta, CGameObject* pObject = nullptr);
 
 public:
 	void	Reset_PreAnimation();

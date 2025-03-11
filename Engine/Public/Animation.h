@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class Animation final : public Base
+class Animation final : public CBase
 {
 private:
 	Animation();
@@ -15,7 +15,7 @@ public:
 
 	// 애니메이션의 행렬 업데이트
 	_bool Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex);
-	_bool Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex, class GameObject* pObject);
+	_bool Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex, class CGameObject* pObject);
 	void KeyFrame_Reset();
 
 public:

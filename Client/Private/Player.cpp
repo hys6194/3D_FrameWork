@@ -215,14 +215,10 @@ void Player::Input_Keys()
 		m_iKey &= ~KEY_LB;
 	}
 
-	//if (m_pGameInstance->Key_Pressing(DIK_1))
-	//{
-	//	Insert_KeyState(KEY_LB);
-	//}
-	//else if (!m_pGameInstance->Key_Pressing(DIK_1))
-	//{
-	//	Delete_KeyState(KEY_LB);
-	//}
+	if (m_pGameInstance->Key_Down(0))
+	{
+		Get_Transform()->Set_State(Transform::STATE_POS, XMVectorSet(0.f,0.f,0.f,1.f));
+	}
 
 }
 

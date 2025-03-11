@@ -3,7 +3,7 @@
 #include "Level.h"
 
 Level_Manager::Level_Manager()
-	: m_pGameInstance {GameInstance::GetInstance()}
+	: m_pGameInstance {CGameInstance::GetInstance()}
 {
 }
 
@@ -23,7 +23,7 @@ HRESULT Level_Manager::Render()
 	return S_OK;
 }
 
-HRESULT Level_Manager::Change_Level(_uint iLevelIndex, Level* pNewLevel)
+HRESULT Level_Manager::Change_Level(_uint iLevelIndex, Cevel* pNewLevel)
 {
 	// 인자값으로 받아온 레벨이 nullptr이면 레벨을 변경하지 않는다
 	if (nullptr == pNewLevel)

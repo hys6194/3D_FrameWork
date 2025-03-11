@@ -1,12 +1,12 @@
 #include "PartObject.h"
 
 PartObject::PartObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    :GameObject{ pDevice, pContext }
+    :CGameObject{ pDevice, pContext }
 {
 }
 
 PartObject::PartObject(const PartObject& Prototype)
-    : GameObject{ Prototype }
+    : CGameObject{ Prototype }
 {
 
 }

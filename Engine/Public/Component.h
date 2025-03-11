@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Component abstract : public Base
+class ENGINE_DLL Component abstract : public CBase
 {
 protected:
 	Component(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

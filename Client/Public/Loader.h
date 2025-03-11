@@ -7,16 +7,16 @@
 // LEVEL enum을 통해서 어떤 레벨을 읽어들일 지 결정
 
 BEGIN(Engine)
-class GameInstance;
+class CGameInstance;
 END
 
 BEGIN(Client)
 
-class Loader final : public Base
+class CLoader final : public CBase
 {
 private:
-	Loader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~Loader() = default;
+	CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CLoader() = default;
 
 public:
 	HRESULT Initialize(LEVEL eNextLevelID);
@@ -30,7 +30,7 @@ public:
 private:
 	ID3D11Device*					m_pDevice = { nullptr };
 	ID3D11DeviceContext*			m_pContext = { nullptr };
-	GameInstance*					m_pGameInstance = { nullptr };
+	CGameInstance*					m_pGameInstance = { nullptr };
 	
 	// 멀티 쓰레드의 작동을 위해서 필요한 두 멤버 변수임
 	HANDLE							m_hThread = {};
@@ -59,7 +59,7 @@ private:
 
 
 public:
-	static Loader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
+	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
 	virtual void Free() override;
 };
 

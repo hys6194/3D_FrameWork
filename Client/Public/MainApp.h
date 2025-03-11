@@ -4,7 +4,7 @@
 #include "Base.h"
 
 BEGIN(Engine)
-class GameInstance;
+class CGameInstance;
 END
 
 BEGIN(Client)
@@ -23,7 +23,7 @@ public:
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
-	GameInstance*			m_pGameInstance = { nullptr };
+	CGameInstance*			m_pGameInstance = { nullptr };
 
 
 #ifdef _DEBUG

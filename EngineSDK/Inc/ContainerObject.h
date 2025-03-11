@@ -6,10 +6,10 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL ContainerObject : public GameObject
+class ENGINE_DLL ContainerObject : public CGameObject
 {
 public:
-	typedef struct tagContainerObjectDesc : public GameObject::GAMEOBJECT_DESC
+	typedef struct tagContainerObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
 		// 생성할 파츠들의 개수
 		_uint iNumPartObjects;
@@ -37,7 +37,7 @@ protected:
 	vector<class PartObject*>	m_vecParts;
 
 public:
-	virtual GameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
 };
 

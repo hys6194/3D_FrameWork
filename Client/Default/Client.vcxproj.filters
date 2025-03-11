@@ -180,6 +180,9 @@
     <ClInclude Include="..\Public\Gun_Right.h">
       <Filter>02.GameObjects\Player\Weapon\Gun_Right</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Player_KeyState.h">
+      <Filter>02.GameObjects\Player\Strife</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -263,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Gun_Right.cpp">
       <Filter>02.GameObjects\Player\Weapon\Gun_Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_KeyState.cpp">
+      <Filter>02.GameObjects\Player\Strife</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

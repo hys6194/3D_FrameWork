@@ -3,12 +3,12 @@
 #include "Camera_Free.h"
 #include "TP_Camera.h"
 
-Level_GamePlay::Level_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: Level { pDevice , pContext }
+CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CLevel { pDevice , pContext }
 {
 }
 
-HRESULT Level_GamePlay::Initialize()
+HRESULT CLevel_GamePlay::Initialize()
 {
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
@@ -28,7 +28,7 @@ HRESULT Level_GamePlay::Initialize()
     return S_OK;
 }
 
-void Level_GamePlay::Update(_float fTimeDelta)
+void CLevel_GamePlay::Update(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, TEXT("현재 레벨 : 게임플레이 레벨"));
 
@@ -37,12 +37,12 @@ void Level_GamePlay::Update(_float fTimeDelta)
 		return;
 }
 
-HRESULT Level_GamePlay::Render()
+HRESULT CLevel_GamePlay::Render()
 {
     return S_OK;
 }
 
-HRESULT Level_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
+HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
 		LEVEL_GAMEPLAY, pLayerTag)))
@@ -56,7 +56,7 @@ HRESULT Level_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	return S_OK;
 }
 
-HRESULT Level_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
+HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 {
 	//Camera_Free::CAMERA_FREE_DESC   FreeCam_Desc{};
 	//
@@ -95,7 +95,7 @@ HRESULT Level_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 	return S_OK;
 }
 
-HRESULT Level_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
+HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 {
 	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MONSTER,
 	//	LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
@@ -111,7 +111,7 @@ HRESULT Level_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 	return S_OK;
 }
 
-HRESULT Level_GamePlay::Ready_Layer_Player(const _tchar* pLayerTag)
+HRESULT CLevel_GamePlay::Ready_Layer_Player(const _tchar* pLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_PLAYER,
 		LEVEL_GAMEPLAY, pLayerTag)))
@@ -120,7 +120,7 @@ HRESULT Level_GamePlay::Ready_Layer_Player(const _tchar* pLayerTag)
 	return S_OK;
 }
 
-HRESULT Level_GamePlay::Ready_Lights()
+HRESULT CLevel_GamePlay::Ready_Lights()
 {
 	LIGHT_DESC		LightDesc{};
 
@@ -136,9 +136,9 @@ HRESULT Level_GamePlay::Ready_Lights()
 	return S_OK;
 }
 
-Level_GamePlay* Level_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	Level_GamePlay* pInstance = new Level_GamePlay(pDevice, pContext);
+	CLevel_GamePlay* pInstance = new CLevel_GamePlay(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize()))
 	{
@@ -149,7 +149,7 @@ Level_GamePlay* Level_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 	return pInstance;
 }
 
-void Level_GamePlay::Free()
+void CLevel_GamePlay::Free()
 {
 	__super::Free();
 }

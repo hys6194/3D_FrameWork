@@ -18,7 +18,7 @@ HRESULT Renderer::Initialize()
     return S_OK;
 }
 
-HRESULT Renderer::Add_RenderObject(RENDERERGROUP eRenderGroup, GameObject* pRenderObject)
+HRESULT Renderer::Add_RenderObject(RENDERERGROUP eRenderGroup, CGameObject* pRenderObject)
 {
     if (eRenderGroup >= RENDER_END ||
         nullptr == pRenderObject)

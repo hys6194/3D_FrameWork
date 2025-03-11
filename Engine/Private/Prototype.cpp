@@ -20,7 +20,7 @@ HRESULT Prototype_Manager::Initialize(_uint iNumLevels)
 	return S_OK;
 }
 
-HRESULT Prototype_Manager::Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, Base* pPrototype)
+HRESULT Prototype_Manager::Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CBase* pPrototype)
 {
 	//m_iNumLevels = iNumLevels;
 
@@ -38,19 +38,19 @@ HRESULT Prototype_Manager::Add_Prototype(_uint iLevelIndex, const wstring& strPr
 	return S_OK;
 }
 
-Base* Prototype_Manager::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
+CBase* Prototype_Manager::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
 {
  	if (iLevelIndex >= m_iNumLevels)
 		return nullptr;
 
-	Base* pPrototype = Find_Prototype(iLevelIndex, strPrototypeTag);
+	CBase* pPrototype = Find_Prototype(iLevelIndex, strPrototypeTag);
 	if(nullptr == pPrototype)
 		return nullptr;
 
-	Base* pObject = { nullptr };
+	CBase* pObject = { nullptr };
 
 	if (PROTOTYPE::TYPE_GAMEOBJECT == ePrototype)
-		pObject = dynamic_cast<GameObject*>(pPrototype)->Clone(pArg);
+		pObject = dynamic_cast<CGameObject*>(pPrototype)->Clone(pArg);
 	else
 		pObject = dynamic_cast<Component*>(pPrototype)->Clone(pArg);
 
@@ -69,7 +69,7 @@ void Prototype_Manager::Clear(_uint iLevelIndex)
 	m_pPrototype[iLevelIndex].clear();
 }
 
-Base* Prototype_Manager::Find_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag)
+CBase* Prototype_Manager::Find_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag)
 {
 	auto iter = m_pPrototype[iLevelIndex].find(strPrototypeTag);
 	

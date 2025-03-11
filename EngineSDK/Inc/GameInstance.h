@@ -12,13 +12,13 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL GameInstance final : public Base
+class ENGINE_DLL CGameInstance final : public CBase
 {
-	DECLARE_SINGLETON(GameInstance)
+	DECLARE_SINGLETON(CGameInstance)
 
 private:
-	GameInstance();
-	virtual ~GameInstance() = default;
+	CGameInstance();
+	virtual ~CGameInstance() = default;
 
 public:
 	HRESULT				Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext);
@@ -70,24 +70,24 @@ public:
 #pragma endregion
 
 #pragma region LEVEL_MANAGER
-	HRESULT				Open_Level(_uint iLevelIndex, class Level* pNewLevel);
+	HRESULT				Open_Level(_uint iLevelIndex, class Cevel* pNewLevel);
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
-	HRESULT				Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, Base* pPrototype);
+	HRESULT				Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CBase* pPrototype);
 
 	// 왜 pArg = nullptr로 디폴트 인자값으로? -> pArg가 필요할 수도 없을수도 있기 때문에
-	Base*				Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
+	CBase*				Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
 #pragma endregion
 
 #pragma region Object_MANAGER
 	HRESULT				Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	class Layer*		Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
-	GameObject*			Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
+	CGameObject*			Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
 #pragma endregion
 
 #pragma region RENDERER
-	HRESULT				Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, class GameObject* pRenderObject);
+	HRESULT				Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, class CGameObject* pRenderObject);
 #pragma endregion
 
 #pragma region PIPELINE

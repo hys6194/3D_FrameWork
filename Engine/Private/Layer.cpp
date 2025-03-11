@@ -6,7 +6,7 @@ Layer::Layer()
 {
 }
 
-HRESULT Layer::Add_GameObject(GameObject* pGameObject)
+HRESULT Layer::Add_GameObject(CGameObject* pGameObject)
 {
 	m_GameObjects.push_back(pGameObject);
 
@@ -31,7 +31,7 @@ void Layer::Late_Update(_float fTimeDelta)
 		pGameObject->Late_Update(fTimeDelta);
 }
 
-GameObject* Layer::Find_Object(const _tchar* strObjectTag)
+CGameObject* Layer::Find_Object(const _tchar* strObjectTag)
 {
 	for (auto& iter : m_GameObjects)
 	{

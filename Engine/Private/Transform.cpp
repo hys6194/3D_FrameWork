@@ -1,5 +1,6 @@
 #include "Transform.h"
 #include "Shader.h"
+#include "Bone.h"
 
 Transform::Transform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : Component{ pDevice, pContext }
@@ -130,6 +131,14 @@ HRESULT Transform::LookAt(_vector vAt)
     Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
     Set_State(STATE_UP, XMVector3Normalize(vUp) * vScale.y);
     Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScale.z);
+
+    return S_OK;
+}
+
+HRESULT Transform::Dash(_fvector vAxis, _float fRadian, _float fDelta)
+{
+    _vector vPos = Get_State(STATE_POS);
+
 
     return S_OK;
 }

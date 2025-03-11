@@ -7,7 +7,7 @@
 
 BEGIN(Engine)
 
-class Level_Manager : public Base
+class Level_Manager : public CBase
 {
 private:
 	Level_Manager();
@@ -19,11 +19,11 @@ public:
 	HRESULT						Render();
 
 public:
-	HRESULT						Change_Level(_uint iLevelIndex, class Level* pNewLevel);
+	HRESULT						Change_Level(_uint iLevelIndex, class Cevel* pNewLevel);
 
 private:
-	class GameInstance*			m_pGameInstance = { nullptr }; // 
-	class Level*				m_pCurrentLevel = { nullptr }; // 현재 실행중인 레벨(Level 상속받아서 만든 Client의 Level*)
+	class CGameInstance*			m_pGameInstance = { nullptr }; // 
+	class Cevel*				m_pCurrentLevel = { nullptr }; // 현재 실행중인 레벨(Level 상속받아서 만든 Client의 Level*)
 	_uint						m_iCurrentLevelIndex = { };	   // enum LEVEL로 인지할 현재 레벨의 상태값
 
 public:

@@ -13,10 +13,10 @@
 #include "Gun_Left.h"
 #include "Gun_Right.h"
 
-Loader::Loader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
 	, m_pContext { pContext }
-	, m_pGameInstance{ GameInstance::GetInstance() }
+	, m_pGameInstance{ CGameInstance::GetInstance() }
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
@@ -27,7 +27,7 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 {
 	CoInitializeEx(nullptr, 0);
 
-	Loader* pLoader = static_cast<Loader*>(pArg);
+	CLoader* pLoader = static_cast<CLoader*>(pArg);
 
 	if (FAILED(pLoader->Loading()))
 		return 1;
@@ -35,7 +35,7 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	return 0;
 }
 
-HRESULT Loader::Initialize(LEVEL eNextLevelID)
+HRESULT CLoader::Initialize(LEVEL eNextLevelID)
 {
 	// 멀티 쓰레드를 사용할 시 값이 제대로 초기화가 안되는 현상이 있음
 	m_eNextLevelID = eNextLevelID;
@@ -50,7 +50,7 @@ HRESULT Loader::Initialize(LEVEL eNextLevelID)
 	return S_OK;
 }
 
-HRESULT Loader::Loading()
+HRESULT CLoader::Loading()
 {
 	// 쓰레드 열기
 	EnterCriticalSection(&m_CriticalSection);
@@ -78,12 +78,12 @@ HRESULT Loader::Loading()
 	return hr;
 }
 
-void Loader::Show_LoadingState()
+void CLoader::Show_LoadingState()
 {
 	SetWindowText(g_hWnd, m_szLoading);
 }
 
-HRESULT Loader::Loading_Logo()
+HRESULT CLoader::Loading_Logo()
 {
 	m_IsFin = false;
 
@@ -106,7 +106,7 @@ HRESULT Loader::Loading_Logo()
 	return S_OK;
 }
 
-HRESULT Loader::Loading_Menu()
+HRESULT CLoader::Loading_Menu()
 {
 	m_IsFin = false;
 
@@ -129,7 +129,7 @@ HRESULT Loader::Loading_Menu()
 	return S_OK;
 }
 
-HRESULT Loader::Loading_GamePlay()
+HRESULT CLoader::Loading_GamePlay()
 {
 	m_IsFin = false;
 
@@ -152,7 +152,7 @@ HRESULT Loader::Loading_GamePlay()
 	return S_OK;
 }
 
-HRESULT Loader::Loading_Textures()
+HRESULT CLoader::Loading_Textures()
 {
 	switch (m_eNextLevelID)
 	{
@@ -200,7 +200,7 @@ HRESULT Loader::Loading_Textures()
 	return S_OK;
 }
 
-HRESULT Loader::Loading_Models()
+HRESULT CLoader::Loading_Models()
 {	switch (m_eNextLevelID)
 	{
 	case LEVEL_MENU:
@@ -275,7 +275,7 @@ HRESULT Loader::Loading_Models()
 	return S_OK;
 }
 
-HRESULT Loader::Loading_Shaders()
+HRESULT CLoader::Loading_Shaders()
 {
 	switch (m_eNextLevelID)
 	{
@@ -327,7 +327,7 @@ HRESULT Loader::Loading_Shaders()
 	return S_OK;
 }
 
-HRESULT Loader::Loading_Prototype()
+HRESULT CLoader::Loading_Prototype()
 {
 	switch (m_eNextLevelID)
 	{
@@ -335,7 +335,7 @@ HRESULT Loader::Loading_Prototype()
 	{
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, PRO_OBJ_BACK,
-			BackGround::Create(m_pDevice, m_pContext, LEVEL_MENU))))
+			CBackGround::Create(m_pDevice, m_pContext, LEVEL_MENU))))
 			return E_FAIL;
 	}
 
@@ -344,7 +344,7 @@ HRESULT Loader::Loading_Prototype()
 		{
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_OBJ_BACK,
-			BackGround::Create(m_pDevice, m_pContext, LEVEL_LOGO))))
+			CBackGround::Create(m_pDevice, m_pContext, LEVEL_LOGO))))
 			return E_FAIL;
 	}
 
@@ -409,9 +409,9 @@ HRESULT Loader::Loading_Prototype()
 	return S_OK;
 }
 
-Loader* Loader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID)
+CLoader* CLoader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID)
 {
-	Loader* pInstance = new Loader(pDevice, pContext);
+	CLoader* pInstance = new CLoader(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(eNextLevelID)))
 	{
@@ -422,7 +422,7 @@ Loader* Loader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEV
 	return pInstance;
 }
 
-void Loader::Free()
+void CLoader::Free()
 {
 	__super::Free();
 

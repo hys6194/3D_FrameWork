@@ -54,6 +54,7 @@ public:
 	HRESULT		Go_Left(_float fTimeDelta);
 	HRESULT		Jump(_float fTimeDelta);
 	HRESULT		LookAt(_vector vAt);
+	HRESULT		Dash(_fvector vAxis, _float fRadian, _float fDelta);
 	void		Turn(_fvector vAxis, _float fTimeDelta);
 	void		Rotation(_fvector vAxis, _float fRadian);
 

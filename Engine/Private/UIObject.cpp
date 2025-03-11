@@ -1,12 +1,12 @@
 #include "UIObject.h"
 
 UIObject::UIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:GameObject { pDevice, pContext }
+	:CGameObject { pDevice, pContext }
 {
 }
 
 UIObject::UIObject(const UIObject& Prototype)
-	: GameObject { Prototype }
+	: CGameObject { Prototype }
 {
 }
 

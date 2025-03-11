@@ -5,11 +5,11 @@
 
 BEGIN(Client)
 
-class Level_Menu final : public Level
+class CLevel_Menu final : public CLevel
 {
 private:
-	Level_Menu(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~Level_Menu() = default;
+	CLevel_Menu(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CLevel_Menu() = default;
 
 public:
 	virtual HRESULT Initialize() override;
@@ -23,7 +23,7 @@ private:
 	vector<HWND>	m_vecVidio;
 
 public:
-	static Level_Menu* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CLevel_Menu* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;
 };
 

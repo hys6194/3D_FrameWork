@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class Channel : public Base
+class Channel : public CBase
 {
 private:
 	Channel(); 

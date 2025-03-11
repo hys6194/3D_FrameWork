@@ -6,11 +6,11 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Base abstract
+class ENGINE_DLL CBase abstract
 {
 protected:
-	Base();
-	virtual ~Base() = default;
+	CBase();
+	virtual ~CBase() = default;
 
 public:
 	/* 레퍼런스 카운트를 증가시키낟. */

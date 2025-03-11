@@ -4,12 +4,12 @@
 #include "GameInstance.h"
 
 Camera::Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:GameObject {pDevice, pContext}
+	:CGameObject {pDevice, pContext}
 {
 }
 
 Camera::Camera(const Camera& Prototype)
-	:GameObject{ Prototype }
+	:CGameObject{ Prototype }
 {
 }
 

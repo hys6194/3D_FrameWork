@@ -65,8 +65,9 @@ const _float4x4* Model::Get_BoneMatrix(const _char* pBoneName)
 
 void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInter)
 {
-    m_bIsInter = IsInter;
 
+    m_bIsInter = IsInter;
+    m_vecBone[2]->Reset_Delta();
     // 현재 재생하고 있는 애니메이션과 인자값이 같다면 함수진행을 막음
     if (m_iCurrentAnimationIndex == iAnimationIndex)    
         return;
@@ -122,7 +123,6 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInte
 
     m_bIsLoop = isLoop;
 
-    m_vecBone[2]->Reset_Delta();
 }
 
 void Model::Set_Interpolate(_bool bIsInter)
@@ -170,7 +170,7 @@ void Model::Interpolate_Animation(_float fRatio)
     {
 
         tPreDesc = m_pPreChannel[i]->Get_KeyFrame().back();
-        tCurDesc = m_pCurChannel[i]->Get_KeyFrame().front();
+        tCurDesc = m_pCurChannel[i]->Get_KeyFrame()[0];
 
         _vector         vScale, vRotation, vTranslation;
 
@@ -308,7 +308,7 @@ HRESULT Model::Render(_uint iMeshIndex)
     return S_OK;
 }
 
-_bool Model::Play_Animation(_float fTimeDelta, GameObject* pObject)
+_bool Model::Play_Animation(_float fTimeDelta, CGameObject* pObject)
 {
     /* 특정 애니메이션을 구동한다. */
     /* 애니메이션을 구동한다 == +		[4]	{vScale={x=1.00000060 y=1.00000012 z=1.00000036 } vRotation={x=-0.0756162405 y=-0.0891902819 z=-0.0955794305 ...} ...}	Engine::tagKeyFrame

@@ -55,7 +55,7 @@ _bool Animation::Update_TransformationMatrix(const vector<class Bone*>& pBone, _
     return m_bIsAnimEnd;
 }
 
-_bool Animation::Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex, GameObject* pObject)
+_bool Animation::Update_TransformationMatrix(const vector<class Bone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex, CGameObject* pObject)
 {
 
     //_vector v3 = pObject->Get_Transform()->Get_State(Transform::STATE_POS);

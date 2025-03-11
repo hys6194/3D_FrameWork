@@ -8,7 +8,7 @@
 
 BEGIN(Engine)
 
-class Object_Manager final : public Base
+class Object_Manager final : public CBase
 {
 private:
 	Object_Manager();
@@ -24,15 +24,15 @@ public:
 
 public:
 	class Layer* Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
-	class GameObject* Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
+	class CGameObject* Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
 
 private:
 	_uint								m_iNumLevels = { };
-	class GameInstance*					m_pGameInstance = { nullptr };
+	class CGameInstance*					m_pGameInstance = { nullptr };
 
 	map<const _wstring, class Layer*>*	m_pLayers = { nullptr };
 	//   map<const _wstring, class Layer*>*
-	// = map<const _wstring, list<GameObject*>>
+	// = map<const _wstring, list<CGameObject*>>
 
 public:
 	static Object_Manager* Create(_uint iNumLevels);

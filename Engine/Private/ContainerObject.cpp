@@ -3,12 +3,12 @@
 #include "GameInstance.h"
 
 ContainerObject::ContainerObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    :GameObject{ pDevice, pContext }
+    :CGameObject{ pDevice, pContext }
 {
 }
 
 ContainerObject::ContainerObject(const ContainerObject& Prototype)
-    : GameObject{ Prototype }
+    : CGameObject{ Prototype }
 {
 
 }

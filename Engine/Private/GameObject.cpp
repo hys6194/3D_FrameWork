@@ -1,17 +1,17 @@
 #include "GameObject.h"
 #include "GameInstance.h"
 
-GameObject::GameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CGameObject::CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : m_pDevice { pDevice }
     , m_pContext { pContext }
-    , m_pGameInstance { GameInstance::GetInstance() }
+    , m_pGameInstance { CGameInstance::GetInstance() }
 {
     Safe_AddRef(m_pDevice);
     Safe_AddRef(m_pContext);
     Safe_AddRef(m_pGameInstance);
 }
 
-GameObject::GameObject(const GameObject& Prototype)
+CGameObject::CGameObject(const CGameObject& Prototype)
     : m_pDevice{ Prototype.m_pDevice }
     , m_pContext{ Prototype.m_pContext }
     , m_pGameInstance{ Prototype.m_pGameInstance }
@@ -22,12 +22,12 @@ GameObject::GameObject(const GameObject& Prototype)
     Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT GameObject::Initialize_Prototype()
+HRESULT CGameObject::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT GameObject::Initialize(void* pArg)
+HRESULT CGameObject::Initialize(void* pArg)
 {
     if (nullptr != pArg)
     {
@@ -46,25 +46,25 @@ HRESULT GameObject::Initialize(void* pArg)
     return hr;
 }
 
-void GameObject::Priority_Update(_float fTimeDelta)
+void CGameObject::Priority_Update(_float fTimeDelta)
 {
 }
 
-void GameObject::Update(_float fTimeDelta)
+void CGameObject::Update(_float fTimeDelta)
 {
 
 }
 
-void GameObject::Late_Update(_float fTimeDelta)
+void CGameObject::Late_Update(_float fTimeDelta)
 {
 }
 
-HRESULT GameObject::Render()
+HRESULT CGameObject::Render()
 {
     return S_OK;
 }
 
-HRESULT GameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag, Component** ppOut, const _wstring& strComponentTag, void* pArg)
+HRESULT CGameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag, Component** ppOut, const _wstring& strComponentTag, void* pArg)
 {
     // Component 사본객체 생성
     Component* pComponent = dynamic_cast<Component*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_COMPONENT, iLevelIndex, strPrototypeTag, pArg));
@@ -82,7 +82,7 @@ HRESULT GameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototyp
     return S_OK;
 }
 
-HRESULT GameObject::Set_TransformCom(void* pArg)
+HRESULT CGameObject::Set_TransformCom(void* pArg)
 {
     m_pTransformCom = Transform::Create(m_pDevice, m_pContext);
     if (nullptr == m_pTransformCom)
@@ -99,7 +99,7 @@ HRESULT GameObject::Set_TransformCom(void* pArg)
     return S_OK;
 }
 
-void GameObject::Free()
+void CGameObject::Free()
 {
     __super::Free();
 

@@ -8,7 +8,7 @@
 
 BEGIN(Engine)
 
-class Light_Manager final : public Base
+class Light_Manager final : public CBase
 {
 private:
 	Light_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

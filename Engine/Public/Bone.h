@@ -12,7 +12,7 @@
 
 BEGIN(Engine)
 
-class Bone final : public Base
+class Bone final : public CBase
 {
 	
 private:
@@ -35,12 +35,22 @@ public:
 	}
 
 public:
-	void Reset_Delta() { m_vDelta = { 0.f,0.f,0.f,1.f }; }
+	_float Get_DeltaPower() 
+	{
+		return m_fCurDelta;
+	}
+
+public:
+	void Reset_Delta() 
+	{
+		m_vPreDelta = { 0.f,0.f,0.f,1.f }; 
+		m_fCurDelta = { 0.f };
+	}
 
 public:
 	HRESULT Initialize(const aiNode* pAINode, _int iParentBoneIndex);
 	void Update_CombinedTransformationMatrix(const vector<class Bone*>& Bones, const _float4x4* pPreTransformMatrix);
-	void Update_Combine_RootMatrix(const vector<class Bone*>& Bones, const _float4x4* pPreTransformMatrix, class GameObject* pObject = nullptr);
+	void Update_Combine_RootMatrix(const vector<class Bone*>& Bones, const _float4x4* pPreTransformMatrix, class CGameObject* pObject = nullptr);
 	_bool Compare_Name(const _char* pName) {
 		return !strcmp(m_szName, pName);
 	}
@@ -59,7 +69,8 @@ private:
 	// ºÎ¸ð»ÀÀÇ ÀÎµ¦½º
 	_int					m_iParentBoneIndex = {};
 
-	_float4					m_vDelta = { 0.f,0.f,0.f,1.f };
+	_float4					m_vPreDelta = { 0.f,0.f,0.f,1.f };
+	_float					m_fCurDelta = {};
 
 
 public:

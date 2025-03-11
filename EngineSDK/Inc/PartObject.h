@@ -7,10 +7,10 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL PartObject : public GameObject
+class ENGINE_DLL PartObject : public CGameObject
 {
 public:
-	typedef struct tagPartObjectDesc : public GameObject::GAMEOBJECT_DESC
+	typedef struct tagPartObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
 		const _float4x4* pParentMatrix = { nullptr };
 	}PARTOBJ_DESC;
@@ -33,7 +33,7 @@ protected:
 	_float4x4				m_CombinedWorldMatrix = {};
 
 public:
-	virtual GameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
 };
 

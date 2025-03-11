@@ -35,7 +35,7 @@ private:
 	_uint							m_iCurrentState = {0};
 	_uint							m_iPreState = {0};
 	State*							m_pCurrentState;
-	//GameObject*						m_pOwner;
+	//CGameObject*						m_pOwner;
 
 
 public:

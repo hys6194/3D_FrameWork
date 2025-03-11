@@ -6,22 +6,22 @@
 #include "Level_GamePlay.h" 
 #include "GameInstance.h"
 
-Level_Loading::Level_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:Level{ pDevice , pContext }
+CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:cLevel{ pDevice , pContext }
 {
 }
 
-HRESULT Level_Loading::Initialize(LEVEL eLevelID)
+HRESULT CLevel_Loading::Initialize(LEVEL eLevelID)
 {
 	m_eLevelID = eLevelID;
 
-	m_pLoader = Loader::Create(m_pDevice, m_pContext, eLevelID);
+	m_pLoader = CLoader::Create(m_pDevice, m_pContext, eLevelID);
 	NULL_CHECK_RETURN(m_pLoader, E_FAIL);
 
 	return S_OK;
 }
 
-void Level_Loading::Update(_float fTimeDelta)
+void CLevel_Loading::Update(_float fTimeDelta)
 {
 	// 여기서 레벨을 Create하여 리소스들을 다 읽어오게 되면 다음 레벨을 연다
 
@@ -34,13 +34,13 @@ void Level_Loading::Update(_float fTimeDelta)
 		switch (m_eLevelID)
 		{
 		case LEVEL_LOGO:
-			pLevel = Level_Logo::Create(m_pDevice, m_pContext);
+			pLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
 			break;
 		case LEVEL_MENU:
-			pLevel = Level_Menu::Create(m_pDevice, m_pContext);
+			pLevel = CLevel_Menu::Create(m_pDevice, m_pContext);
 			break;
 		case LEVEL_GAMEPLAY:
-			pLevel = Level_GamePlay::Create(m_pDevice, m_pContext);
+			pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
 			break;
 		default:
 			break;
@@ -57,14 +57,14 @@ void Level_Loading::Update(_float fTimeDelta)
 	}
 }
 
-HRESULT Level_Loading::Render()
+HRESULT CLevel_Loading::Render()
 {
 	return S_OK;
 }
 
-Level_Loading* Level_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevelID)
+CLevel_Loading* CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevelID)
 {
-	Level_Loading* pInstance = new Level_Loading(pDevice, pContext);
+	CLevel_Loading* pInstance = new CLevel_Loading(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(eLevelID)))
 	{
@@ -75,7 +75,7 @@ Level_Loading* Level_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
 	return pInstance;
 }
 
-void Level_Loading::Free()
+void CLevel_Loading::Free()
 {
 	__super::Free();
 

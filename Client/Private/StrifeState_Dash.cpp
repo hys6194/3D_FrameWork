@@ -22,9 +22,7 @@ void StrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 {
 	m_iKeyState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerKeyState();
 
-	_float f1 = m_pModelCom->Get_CurAnimationTrackPosition();
-	_float f2 = m_pModelCom->Get_CurAnimationDuration() - 10.5f;
-
+		
 
 	if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() /3.f)
 	{
@@ -32,8 +30,8 @@ void StrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 		{
 		case Player::KEY_SHIFT:
 			m_iState |= Player::STATE_DOUBLEDASH;
-			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_END);
 			dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(m_iState);
+			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_END);
 
 		default:
 			break;

@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class MeshMaterial final : public Base
+class MeshMaterial final : public CBase
 {
 private:
 	MeshMaterial(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

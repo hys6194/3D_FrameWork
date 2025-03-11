@@ -17,7 +17,7 @@
 
 BEGIN(Engine)
 
-class PipeLine final : public Base
+class PipeLine final : public CBase
 {
 public:
 	enum TRANSFORMSTATE { D3DTS_VIEW, D3DTS_PROJ, D3DTS_END };

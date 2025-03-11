@@ -13,12 +13,12 @@ BEGIN(Client)
 
 // 직교 투영으로 만들 거라서 UIObject라는 클래스를 만들어서 상속받을 예정
 
-class BackGround final : public UIObject
+class CBackGround final : public UIObject
 {
 private:
-	BackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	BackGround(const BackGround& Prototype);
-	virtual ~BackGround() = default;
+	CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CBackGround(const CBackGround& Prototype);
+	virtual ~CBackGround() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype(LEVEL eLevel);
@@ -41,7 +41,7 @@ private:
 	HRESULT Bind_SR();
 
 public:
-	static BackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevel);
+	static CBackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevel);
 	virtual GameObject* Clone(void* pArg);
 	virtual void Free() override;
 

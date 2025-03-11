@@ -7,11 +7,11 @@
 
 BEGIN(Client)
 
-class Level_Loading final : public Level
+class CLevel_Loading final : public CLevel
 {
 private:
-	Level_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~Level_Loading() = default;
+	CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CLevel_Loading() = default;
 
 public:
 	virtual HRESULT Initialize(LEVEL eLevelID);
@@ -23,12 +23,12 @@ private:
 	//_uint			m_iLevelID; -> _uint로 읽어서 가져올 게 아니라 enum으로 받아와야함
 
 	//Loader클래스가 있어야 리소스들을 읽어올 수 있음
-	class Loader*		m_pLoader = { nullptr };
+	class CLoader*		m_pLoader = { nullptr };
 	LEVEL				m_eLevelID = {};
 
 
 public:
-	static Level_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevelID);
+	static CLevel_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevelID);
 	virtual void Free() override;
 };
 

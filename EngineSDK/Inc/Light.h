@@ -2,7 +2,7 @@
 
 #include "Base.h"
 
-class Light : public Base
+class Light : public CBase
 {
 private:
 	Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
