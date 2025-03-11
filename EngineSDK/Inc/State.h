@@ -41,6 +41,7 @@ protected:
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
 	_bool						m_bIsInter = { true };
+	_uint 						m_iState = {};
 
 	CGameObject*					m_pOwner = { nullptr };
 	CGameObject*					m_pAnimOwner = { nullptr };
