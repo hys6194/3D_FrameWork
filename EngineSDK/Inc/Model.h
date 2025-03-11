@@ -81,7 +81,7 @@ private:
 	vector<class Bone*>					m_vecBone;
 
 	_bool								m_bIsLoop = { false };
-	_bool								m_bIsInter = { true };
+	_bool								m_bIsInter = { false };
 	_bool								m_bIsLoot = { false };
 	_int								m_iCurrentAnimationIndex = { -1 };
 	_uint								m_iNumAnimations = {};
@@ -98,7 +98,7 @@ private:
 	_uint								m_iPreKeyFrameIndex = { 0 };
 	_uint								m_iCurKeyFrameIndex = { 0 };
 
-	_float								m_fPreTrackPos = { 0 };
+	_uint								m_iPreTrackPos = { 0 };
 	_float								m_fCurTrackPos = { 0 };
 	_float								m_fRatio = { 0.f };
 

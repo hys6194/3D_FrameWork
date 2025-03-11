@@ -42,7 +42,7 @@ void Bone::Update_Combine_RootMatrix(const vector<class Bone*>& Bones, const _fl
             XMLoadFloat4x4(&m_matTransform) *
             XMLoadFloat4x4(pPreTransformMatrix));
 
-    else if (2 == m_iParentBoneIndex)
+    else if (1 == m_iParentBoneIndex)
     {
         //_float f42;
         //f42 = Bones[2]->Get_CombinedTransformfloat4x4ptr()->m[3][2];
@@ -55,39 +55,83 @@ void Bone::Update_Combine_RootMatrix(const vector<class Bone*>& Bones, const _fl
         //// 계속 더하게 되면 문제가 됨
         //
         //pObject->Get_Transform()->Set_State(Transform::STATE_POS, vec2);
-
+    
         //XMStoreFloat4x4(&m_matCombinedTransform,
         //    XMLoadFloat4x4(&m_matTransform) * XMLoadFloat4x4(&Bones[m_iParentBoneIndex]->m_matCombinedTransform));
-
-
+    
+    
         _float4x4 matPreTransform;
         _float4 vPreTrans, vDelta, vNonTrans {0.f,0.f,0.f,1.f};
-
+    
+        // 컴바인드 매트릭스 가져오기
         XMStoreFloat4x4(&matPreTransform,
             XMLoadFloat4x4(&m_matTransform) * XMLoadFloat4x4(&Bones[m_iParentBoneIndex]->m_matCombinedTransform));
-
+    
+        // 이전 매트릭스에서 위치값을 가져옴
         memcpy(&vPreTrans, &matPreTransform.m[3][0], sizeof(_float4));
+    
+        // 현재 매트릭스 값에 이동량을 초기화
         memcpy(&matPreTransform.m[3][0], &vNonTrans, sizeof(_float4));
-
+    
+        // 이동량 계산
         XMStoreFloat4(&vDelta, XMLoadFloat4(&vPreTrans) - XMLoadFloat4(&m_vDelta));
-
+    
+		// 멤버에 대입함으로서, 다음 프레임에서 이동량을 계산할 수 있게 함
         m_vDelta = vDelta;
 
-        pObject->Get_Transform()->Set_State(Transform::STATE_POS,
-            pObject->Get_Transform()->Get_State(Transform::STATE_POS) +
-            XMVectorSetW(XMLoadFloat4(&m_vDelta), 0.f));
-
+        TCHAR debugMessage[256];
+        _stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), m_vDelta.x, m_vDelta.y, m_vDelta.z, m_vDelta.w);
+        OutputDebugString(debugMessage);
+    
         XMStoreFloat4x4(&m_matCombinedTransform,
             XMLoadFloat4x4(&matPreTransform));
 
+        //// 플레이어의 위치 갱신
+        //pObject->Get_Transform()->Set_State(Transform::STATE_POS,
+        //    pObject->Get_Transform()->Get_State(Transform::STATE_POS) +
+        //    XMVectorSet(0.f, 0.f,m_vDelta.z ,0.f));
+    
+        // 이동량을 제거한 매트릭스를 컴바인드 행렬에 대입함으로서 애니메이션의 로컬 이동량 제거
+    
         int a = 10;
-
+    
     }
 
 
     else
+    {
+       //_float4x4 matPreTransform;
+       //_float4 vPreTrans, vDelta, vNonTrans{ 0.f,0.f,0.f,1.f };
+       //
+       //// 컴바인드 매트릭스 가져오기
+       //XMStoreFloat4x4(&matPreTransform,
+       //    XMLoadFloat4x4(&m_matTransform) * XMLoadFloat4x4(&Bones[2]->m_matCombinedTransform));
+       //
+       //// 이전 매트릭스에서 위치값을 가져옴
+       //memcpy(&vPreTrans, &matPreTransform.m[3][0], sizeof(_float4));
+       //
+       //// 현재 매트릭스 값에 이동량을 초기화
+       //memcpy(&matPreTransform.m[3][0], &vNonTrans, sizeof(_float4));
+       //
+       //// 이동량 계산
+       //XMStoreFloat4(&vDelta, XMLoadFloat4(&vPreTrans) - XMLoadFloat4(&m_vDelta));
+       //
+       //// 멤버에 대입함으로서, 다음 프레임에서 이동량을 계산할 수 있게 함
+       //m_vDelta = vDelta;
+       //
+       //// 플레이어의 위치 갱신
+       //pObject->Get_Transform()->Set_State(Transform::STATE_POS,
+       //    pObject->Get_Transform()->Get_State(Transform::STATE_POS) +
+       //    XMVectorSetW(XMLoadFloat4(&m_vDelta), 0.f));
+       //
+       //// 이동량을 제거한 매트릭스를 컴바인드 행렬에 대입함으로서 애니메이션의 로컬 이동량 제거
+       //XMStoreFloat4x4(&m_matCombinedTransform,
+       //    XMLoadFloat4x4(&matPreTransform));
+
+
         XMStoreFloat4x4(&m_matCombinedTransform,
             XMLoadFloat4x4(&m_matTransform) * XMLoadFloat4x4(&Bones[m_iParentBoneIndex]->m_matCombinedTransform));
+    }
 
 }
 

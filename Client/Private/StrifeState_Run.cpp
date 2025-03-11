@@ -115,14 +115,14 @@ void StrifeState_Run::Update_Animation(_float fTimeDelta)
 {
     if (0 != m_pModelCom->Get_PreAnimIndex()
         && m_pModelCom->Get_Interpolate())
-        m_pModelCom->Interpolate_Animation(0.1f);
+        m_pModelCom->Interpolate_Animation(0.05f);
     else
         m_pModelCom->Play_Animation(fTimeDelta);
 }
 
 void StrifeState_Run::Set_PreAnimation()
 {
-    //m_pModelCom->Reset_PreAnimation();
+    m_pModelCom->Reset_PreAnimation();
 
     m_pModelCom->Set_PreAnimation(PLAYER_ANIMLIST::RUN);
 }

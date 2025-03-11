@@ -72,37 +72,37 @@ void Model::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInte
         return;
 
     // 보간 안 할시 모든 애니메이션 프레임 초기화
-    //if(true != m_bIsInter)
-    //{
-    //    for (auto& pCurrentTrackPosition : m_vecCurrentTrackPosition)
-    //        pCurrentTrackPosition = 0;
-    //
-    //    // vector의 vector인 점을 까먹으면 안된다
-    //    for (auto& pCurrentKeyFrameIndices : m_vecKeyFrameIndex)
-    //    {
-    //        for (auto& pCurrentKeyFrameIndex : pCurrentKeyFrameIndices)
-    //            pCurrentKeyFrameIndex = 0;
-    //    }
-    //}
-    //
-    //// 보간 할 시 Enter_State 에서 진입할 애니메이션의 값만 초기화
-    //else
-    //{
-    //    m_vecCurrentTrackPosition[iAnimationIndex] = 0;
-    //
-    //    for (auto& pCurrentKeyFrameIndex : m_vecKeyFrameIndex[iAnimationIndex])
-    //        pCurrentKeyFrameIndex = 0;
-    //}
-
-    for (auto& pCurrentTrackPosition : m_vecCurrentTrackPosition)
-        pCurrentTrackPosition = 0;
-
-    // vector의 vector인 점을 까먹으면 안된다
-    for (auto& pCurrentKeyFrameIndices : m_vecKeyFrameIndex)
+    if(true != m_bIsInter)
     {
-        for (auto& pCurrentKeyFrameIndex : pCurrentKeyFrameIndices)
+        for (auto& pCurrentTrackPosition : m_vecCurrentTrackPosition)
+            pCurrentTrackPosition = 0;
+    
+        // vector의 vector인 점을 까먹으면 안된다
+        for (auto& pCurrentKeyFrameIndices : m_vecKeyFrameIndex)
+        {
+            for (auto& pCurrentKeyFrameIndex : pCurrentKeyFrameIndices)
+                pCurrentKeyFrameIndex = 0;
+        }
+    }
+    
+    // 보간 할 시 Enter_State 에서 진입할 애니메이션의 값만 초기화
+    else
+    {
+        m_vecCurrentTrackPosition[iAnimationIndex] = 0;
+    
+        for (auto& pCurrentKeyFrameIndex : m_vecKeyFrameIndex[iAnimationIndex])
             pCurrentKeyFrameIndex = 0;
     }
+
+    //for (auto& pCurrentTrackPosition : m_vecCurrentTrackPosition)
+    //    pCurrentTrackPosition = 0;
+    //
+    //// vector의 vector인 점을 까먹으면 안된다
+    //for (auto& pCurrentKeyFrameIndices : m_vecKeyFrameIndex)
+    //{
+    //    for (auto& pCurrentKeyFrameIndex : pCurrentKeyFrameIndices)
+    //        pCurrentKeyFrameIndex = 0;
+    //}
 
  
     // 애니메이션의 교체를 위해서 KeyFrame_Reset
@@ -139,9 +139,9 @@ void Model::Set_PreAnimation(_uint iPreAnimationIndex)
 {
     m_iPreAnimationIndex = iPreAnimationIndex;
 
-    m_fPreTrackPos = m_vecCurrentTrackPosition[m_iPreAnimationIndex];
+    m_iPreTrackPos = m_vecCurrentTrackPosition[m_iPreAnimationIndex];
     
-    m_iPreKeyFrameIndex = m_vecKeyFrameIndex[m_iPreAnimationIndex][m_fPreTrackPos];
+    m_iPreKeyFrameIndex = m_vecKeyFrameIndex[m_iPreAnimationIndex][m_iPreTrackPos];
 
     m_pPreChannel = m_Animations[m_iPreAnimationIndex]->Get_Channel();
 
@@ -160,15 +160,17 @@ void Model::Interpolate_Animation(_float fRatio)
     if (1.f <= m_fRatio)
         m_fRatio = 1.f;
     
-    // m_fRatio 값이 1을 넘어가지 않게 해야함
-    for (size_t i = 0; i < m_pPreChannel.size(); i++)
+    KEYFRAME tPreDesc;
+    KEYFRAME tCurDesc;
 
+    // m_fRatio 값이 1을 넘어가지 않게 해야함
+
+
+    for (size_t i = 0; i < m_pPreChannel.size(); i++)
     {
-        KEYFRAME tPreDesc;
-        KEYFRAME tCurDesc;
 
         tPreDesc = m_pPreChannel[i]->Get_KeyFrame().back();
-        tCurDesc = m_pCurChannel[i]->Get_KeyFrame()[0];
+        tCurDesc = m_pCurChannel[i]->Get_KeyFrame().front();
 
         _vector         vScale, vRotation, vTranslation;
 
@@ -330,10 +332,10 @@ _bool Model::Play_Animation(_float fTimeDelta, GameObject* pObject)
             pBone->Update_CombinedTransformationMatrix(m_vecBone, &m_PreTransformMatrix);
         }
 
-        _float4 f42;
-        memcpy(&f42, &m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][0], sizeof(_float4));
-
-        int a = 10;
+        //_float4 f42;
+        //memcpy(&f42, &m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][0], sizeof(_float4));
+        //
+        //int a = 10;
     }
     // 
     else

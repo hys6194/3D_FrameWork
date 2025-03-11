@@ -76,9 +76,9 @@ void StrifeState_Dash::Update_Animation(_float fTimeDelta)
 	//	&& m_pModelCom->Get_Interpolate())
 	//	m_pModelCom->Interpolate_Animation(0.2f);
 	//else
-	m_pModelCom->Play_RootAnimation(fTimeDelta);
+	//m_pModelCom->Play_RootAnimation(fTimeDelta);
 
-	m_bDashed = m_pModelCom->Play_Animation(fTimeDelta);
+	m_bDashed = m_pModelCom->Play_Animation(fTimeDelta, m_pOwner);
 
 }
 
