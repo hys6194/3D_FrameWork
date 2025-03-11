@@ -10,6 +10,7 @@
 #include "Input_Device.h"
 #include "PipeLine.h"
 #include "Light_Manager.h"
+#include "ImGui_Manager.h"
 
 
 IMPLEMENT_SINGLETON(GameInstance)
@@ -48,6 +49,9 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 
 	m_pLight_Manager = Light_Manager::Create(*ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pLight_Manager, E_FAIL);
+
+	//m_pImGui_Manager = CImGui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext);
+	//NULL_CHECK_RETURN(m_pImGui_Manager, E_FAIL);
 	
 
 	//FAILED_CHECK_RETURN 사용 못함 : 주소가 짤리는 듯함
@@ -61,6 +65,8 @@ HRESULT GameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Dev
 
 void GameInstance::Update_Engine(_float fTimeDelta)
 {
+	//m_pImGui_Manager->SetUp_Render_ImGui();
+
 	m_pInput_Device->Update();
 
 	m_pObject_Manager->Priority_Update(fTimeDelta);
@@ -69,6 +75,8 @@ void GameInstance::Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Update(fTimeDelta);
 
 	m_pLevel_Manager->Update(fTimeDelta);
+
+
 }
 
 void GameInstance::Draw_Engine()
@@ -77,6 +85,10 @@ void GameInstance::Draw_Engine()
 		return;
 
 	m_pRenderer->Draw();
+
+	//m_pImGui_Manager->EndRender_ImGui();
+	//m_pGraphic_Device->Set_RenderTargets(1);
+
 }
 
 void GameInstance::Clear(_uint iLevelIndex)
@@ -117,6 +129,11 @@ HRESULT GameInstance::Clear_DepthStencil_View()
 HRESULT GameInstance::Present()
 {
 	return m_pGraphic_Device->Present();
+}
+
+void GameInstance::Set_RenderTergets(_int iNumTarget)
+{
+	return m_pGraphic_Device->Set_RenderTargets(iNumTarget);
 }
 
 #pragma endregion
@@ -164,6 +181,18 @@ _bool GameInstance::Mouse_Drag(MOUSEKEYSTATE eMouse)
 _bool GameInstance::Mouse_Up(MOUSEKEYSTATE eMouse)
 {
 	return m_pInput_Device->Mouse_Up(eMouse);
+}
+void GameInstance::SetUp_Render_ImGui()
+{
+	m_pImGui_Manager->SetUp_Render_ImGui();
+}
+void GameInstance::EndRender_ImGui()
+{
+	m_pImGui_Manager->EndRender_ImGui();
+}
+void GameInstance::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd)
+{
+	m_pImGui_Manager->SetUp_ImGui(pDevice, pContext, hWnd);
 }
 #pragma endregion
 
@@ -299,6 +328,7 @@ void GameInstance::Release_Engine()
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
+	//Safe_Release(m_pImGui_Manager);
 
 	GameInstance::DestroyInstance();
 }
@@ -307,4 +337,6 @@ void GameInstance::Release_Engine()
 void GameInstance::Free()
 {
 	__super::Free();
+
+
 }

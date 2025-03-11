@@ -33,8 +33,6 @@ HRESULT Weapon::Initialize(void* pArg)
     m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
     //m_pTransformCom->Set_State(Transform::STATE_POS, XMVectorSet(0.7f, 0.f, 0.f, 1.f));
 
-    
-    //m_pModelCom->Set_AnimationIndex(3);
 
     return S_OK;
 }

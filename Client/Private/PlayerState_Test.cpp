@@ -1,5 +1,9 @@
 #include "PlayerState_Test.h"
+#include "Body_Player.h"
+#include "Player.h"
 #include "Model.h"	
+
+#include "GameInstance.h"
 
 PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)
 	:State{pDevice, pContext, pOwner, pAnimOwner, m_pGameInstance }
@@ -15,6 +19,7 @@ HRESULT PlayerState_Test::Enter_State()
 
 void PlayerState_Test::PriorityUpdate_State(_float fTimeDelta)
 {
+	m_iKeyState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerState();
 }
 
 void PlayerState_Test::Update_State(_float fTimeDelta)
@@ -51,11 +56,9 @@ void PlayerState_Test::Update_Animation(_float fTimeDelta)
 
 void PlayerState_Test::Set_CurAnimation()
 {
-	//m_pModelCom = dynamic_cast<Body_Player*>(m_pOwner)->Get_Model();
-	//
-	//m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
-	//
-	//m_pModelCom->Set_Interpolate(true);
+	m_pModelCom = dynamic_cast<Body_Player*>(m_pAnimOwner)->Get_Model();
+	
+	m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
 }
 
 PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)

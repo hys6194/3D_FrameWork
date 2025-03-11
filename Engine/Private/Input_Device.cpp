@@ -80,7 +80,7 @@ HRESULT Engine::CInput_Device::Initialize(HINSTANCE hInst, HWND hWnd)
 void Engine::CInput_Device::Update(void)
 {
 	//m_pKeyBoard->GetDeviceState(256, m_byKeyState);
-	//m_pMouse->GetDeviceState(sizeof(m_tMouseState), &m_tMouseState);
+	m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE), &m_tMouseState);
 
 	memcpy(m_byPrevKeyState, m_byCurKeyState, sizeof(m_byCurKeyState));
 	m_pKeyBoard->GetDeviceState(0xff + 1, m_byCurKeyState);

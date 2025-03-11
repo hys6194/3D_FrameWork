@@ -11,7 +11,6 @@ StrifeState_Idle::StrifeState_Idle(ID3D11Device* pDevice, ID3D11DeviceContext* p
 HRESULT StrifeState_Idle::Enter_State()
 {
     m_iState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerState();
-
     
     Set_CurAnimation();
 
@@ -25,17 +24,24 @@ void StrifeState_Idle::PriorityUpdate_State(_float fTimeDelta)
 	if (m_iKeyState & Player::KEY_SHIFT)
 	{
         dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_DASH);
+        return;
 	}
 
-	// 아무 키나 눌렀을 때,
-    //else if (m_iKeyState & Player::KEY_UP || m_iKeyState & Player::KEY_LEFT || m_iKeyState & Player::KEY_DOWN || m_iKeyState & Player::KEY_RIGHT)
-    else if (m_iKeyState & Player::KEY_UP ||
+    else if (m_iKeyState & Player::KEY_LB)
+    {
+        dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_SHOOT);
+        return;
+    }
+
+
+	// 아무 키나 눌렀을 때
+    if (m_iKeyState & Player::KEY_UP ||
              m_iKeyState & Player::KEY_DOWN ||
              m_iKeyState & Player::KEY_LEFT ||
              m_iKeyState & Player::KEY_RIGHT)
 	{
         dynamic_cast<Player*>(m_pOwner)->Set_PlayerState(Player::STATE_RUN);
-        //Check_KeyInput();
+        return;
 	}
 
     
@@ -48,8 +54,7 @@ void StrifeState_Idle::Update_State(_float fTimeDelta)
 
 void StrifeState_Idle::LateUpdate_State(_float fTimeDelta)
 {
-    if (false == m_pModelCom->Get_Interpolate())
-        m_pModelCom->Reset_PreAnimation();
+
 }
 
 HRESULT StrifeState_Idle::Exit_State()
@@ -70,13 +75,14 @@ void StrifeState_Idle::Update_Animation(_float fTimeDelta)
 {
     if (0 != m_pModelCom->Get_PreAnimIndex()
         && m_pModelCom->Get_Interpolate())
-        m_pModelCom->Interpolate_Animation(0.2f);
+        m_pModelCom->Interpolate_Animation(0.05f);
     else
         m_pModelCom->Play_Animation(fTimeDelta);
 }
 
 void StrifeState_Idle::Set_PreAnimation()
 {
+    m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(PLAYER_ANIMLIST::IDLE);
 }
 

@@ -37,7 +37,6 @@ using namespace std;
 #define DIRECTINPUT_VERSION	0x0800
 #include <dinput.h>
 
-
 namespace Engine
 {
 	// Transform을 어디에서든 끌고오기 위해서 전역으로 선언

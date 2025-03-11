@@ -19,16 +19,16 @@ public:
 
 	_byte	Get_DIMouseState(MOUSEKEYSTATE eMouse)
 	{
-		return m_tCurMouseState.rgbButtons[static_cast<_uint>(eMouse)];
+		return m_tMouseState.rgbButtons[static_cast<_uint>(eMouse)];
 	}
 
 	// 현재 마우스의 특정 축 좌표를 반환
 	_long	Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
 	{
-		return *((reinterpret_cast<_long*>(&m_tCurMouseState)) + static_cast<_uint>(eMouseState));
+		return *(((_long*)&m_tMouseState) + static_cast<_uint>(eMouseState));
 	}
 
-	_long	Get_DIMouseWheel() { return m_tCurMouseState.lZ; }
+	_long	Get_DIMouseWheel() { return m_tMouseState.lZ; }
 
 public:
 	_bool Key_Pressing(_uint iKeyID);
@@ -58,6 +58,8 @@ private:
 
 	DIMOUSESTATE2			m_tCurMouseState	= { 0 };
 	DIMOUSESTATE2			m_tPrevMouseState	= { 0 };
+
+	DIMOUSESTATE			m_tMouseState = {};
 
 public:
 	static CInput_Device* Create(HINSTANCE hInstance, HWND hWnd);

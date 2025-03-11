@@ -229,6 +229,11 @@ HRESULT CGraphic_Device::Ready_DepthStencilView(_uint iWinCX, _uint iWinCY)
 	return S_OK;
 }
 
+void CGraphic_Device::Set_RenderTargets(_int iNumTarget)
+{
+	m_pDeviceContext->OMSetRenderTargets(iNumTarget, &m_pBackBufferRTV, m_pDepthStencilView);
+}
+
 CGraphic_Device* CGraphic_Device::Create(HWND hWnd, _bool isWindowed, _uint iWinSizeX, _uint iWinSizeY, ID3D11Device** ppDevice, ID3D11DeviceContext** ppDeviceContextOut)
 {
 	CGraphic_Device* pInstance = new CGraphic_Device();

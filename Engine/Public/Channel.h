@@ -27,12 +27,9 @@ private:
 
 	// 특정 뼈의 현재 정보위치를 저장
 	_uint				m_iBoneIndex = {};
-	_uint				m_iAnimBoneIndex = {};
 	_uint				m_iNumFrameKeys = {};
 
 	vector<KEYFRAME>	m_vecFrame = {};
-
-	_bool				m_bIsmatched;
 	
 public:
 	static Channel* Create(const aiNodeAnim* pAIChannel, const vector<class Bone*>& pBone);

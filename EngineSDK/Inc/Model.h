@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Component.h"
+#include "Animation.h"
+
 
 BEGIN(Engine)
 
@@ -24,16 +26,28 @@ public:
 		return m_bIsInter;
 	}
 
+	const _float Get_CurAnimationDuration()
+	{
+		return m_Animations[m_iCurrentAnimationIndex]->Get_Duration();
+	}
+
+	const _float Get_CurAnimationTrackPosition()
+	{
+		return m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
+	}
+	
+
 public:
-	// 대부분의 애니메이션은 보간이 필요하므로 마지막 인자의 기본값 = true
+	//재생하려고 하는 애니메이션, 루프, 보간
 	void Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop = false, _bool IsInter = true);
-	void Set_Interpolate(_bool bIsInter) { m_bIsInter = bIsInter; };
+	void Set_Interpolate(_bool bIsInter);
 
 public:
 	void Set_PreAnimation(_uint iPreAnimationIndex);
 
 public:
 	void Interpolate_Animation(_float fRatio = 0.f);
+	void Play_RootAnimation(_float fTimeDelta);
 
 public:
 	virtual HRESULT Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
@@ -41,7 +55,7 @@ public:
 	virtual HRESULT Render(_uint iMeshIndex);
 
 public:
-	_bool	Play_Animation(_float fTimeDelta);
+	_bool	Play_Animation(_float fTimeDelta, GameObject* pObject = nullptr);
 
 public:
 	void	Reset_PreAnimation();
@@ -68,6 +82,7 @@ private:
 
 	_bool								m_bIsLoop = { false };
 	_bool								m_bIsInter = { true };
+	_bool								m_bIsLoot = { false };
 	_int								m_iCurrentAnimationIndex = { -1 };
 	_uint								m_iNumAnimations = {};
 	vector<class Animation*>			m_Animations;
@@ -84,16 +99,17 @@ private:
 	_uint								m_iCurKeyFrameIndex = { 0 };
 
 	_float								m_fPreTrackPos = { 0 };
-	_float								m_fInterTrackPos = { 0 };
+	_float								m_fCurTrackPos = { 0 };
 	_float								m_fRatio = { 0.f };
 
 	_uint								m_iNumBone = { 0 };
 
 	vector<class Channel*>				m_pPreChannel;
 	vector<class Channel*>				m_pCurChannel;
+	vector<class Channel*>				m_pRootChannel;
 
 	KEYFRAME							m_pPreKeyFrame = { };
-	KEYFRAME							m_pInterKeyFrame = { };
+	KEYFRAME							m_pCurKeyFrame = { };
 
 private:
 	HRESULT Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);

@@ -10,6 +10,8 @@
 #include "Body_Player.h"
 #include "Weapon.h"
 #include "Sky.h"
+#include "Gun_Left.h"
+#include "Gun_Right.h"
 
 Loader::Loader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -233,18 +235,35 @@ HRESULT Loader::Loading_Models()
 		/* For.Prototype_Component_Model_Fiona */
 		PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FIONA,
-			Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/Fiona/Fiona.fbx", PreTransformMatrix))))
+			Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/AnimModel/Fiona/Fiona.fbx", PreTransformMatrix))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Model_ForkLift */
-		PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
-			Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/ForkLift/ForkLift.fbx", PreTransformMatrix))))
+			Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/NonAnimModel/ForkLift/ForkLift.fbx", PreTransformMatrix))))
 			return E_FAIL;
 
-		PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
-			Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/Strife/animtest.fbx", PreTransformMatrix))))
+			Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/AnimModel/Strife/animtest.fbx", PreTransformMatrix))))
+			return E_FAIL;
+
+
+		PreTransformMatrix = /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationZ(XMConvertToRadians(180.f));
+		PreTransformMatrix *= /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationY(XMConvertToRadians(180.f));
+		PreTransformMatrix *= /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationX(XMConvertToRadians(90.f));
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_LGUN,
+			Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/AnimModel/Strife/Gun1.fbx", PreTransformMatrix))))
+			return E_FAIL;
+
+
+		PreTransformMatrix = /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationZ(XMConvertToRadians(180.f));
+		PreTransformMatrix *= /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationY(XMConvertToRadians(180.f));
+		PreTransformMatrix *= /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationX(XMConvertToRadians(-90.f));
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
+			Model::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/AnimModel/Strife/Gun2.fbx", PreTransformMatrix))))
 			return E_FAIL;
 	}
 
@@ -370,6 +389,14 @@ HRESULT Loader::Loading_Prototype()
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_FSM,
 			FSM::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_L_GUN,
+			Gun_Left::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_R_GUN,
+			Gun_Right::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 

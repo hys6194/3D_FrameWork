@@ -25,10 +25,10 @@ namespace Engine
 
 	typedef		wstring						_wstring;
 
-	typedef		XMFLOAT2					_float2;	// 연산용
-	typedef		XMFLOAT3					_float3;	// 연산용
-	typedef		XMFLOAT4					_float4;	// 연산용
-	typedef		XMVECTOR					_vector;	// 저장용
+	typedef		XMFLOAT2					_float2;	// 저장용
+	typedef		XMFLOAT3					_float3;	// 저장용
+	typedef		XMFLOAT4					_float4;	// 저장용
+	typedef		XMVECTOR					_vector;	// 연산용
 	typedef		FXMVECTOR					_fvector;
 	typedef		GXMVECTOR					_gvector;
 	typedef		HXMVECTOR					_hvector;
