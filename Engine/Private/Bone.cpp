@@ -61,7 +61,7 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
         XMStoreFloat4(&vDelta, XMVectorSetW(XMLoadFloat4(&vPreTrans) - XMLoadFloat4(&m_vPreDelta), 1.f));
     
 		// 멤버에 대입함으로서, 다음 프레임에서 이동량을 계산할 수 있게 함
-        m_fCurDelta = vDelta.z;
+        m_vecfCurDelta.push_back(vDelta.z);
 
         // 이전 값을 저장
         m_vPreDelta = vPreTrans;

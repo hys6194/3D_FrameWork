@@ -35,16 +35,16 @@ public:
 	}
 
 public:
-	_float Get_DeltaPower() 
+	const vector<_float>* Get_DeltaPower()
 	{
-		return m_fCurDelta;
+		return &m_vecfCurDelta;
 	}
 
 public:
 	void Reset_Delta() 
 	{
 		m_vPreDelta = { 0.f,0.f,0.f,1.f }; 
-		m_fCurDelta = { 0.f };
+		m_vecfCurDelta.clear();
 	}
 
 public:
@@ -70,7 +70,7 @@ private:
 	_int					m_iParentBoneIndex = {};
 
 	_float4					m_vPreDelta = { 0.f,0.f,0.f,1.f };
-	_float					m_fCurDelta = {};
+	vector<_float>			m_vecfCurDelta = {};
 
 
 public:

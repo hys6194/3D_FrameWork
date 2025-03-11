@@ -138,6 +138,11 @@ HRESULT CTransform::LookAt(_vector vAt)
 HRESULT CTransform::Dash(_fvector vAxis, _float fRadian, _float fDelta)
 {
     _vector vPos = Get_State(STATE_POS);
+    _vector vRight = Get_State(STATE_RIGHT);
+    _vector vUp = Get_State(STATE_UP);
+    _vector vLook = Get_State(STATE_LOOK);
+
+
 
 
     return S_OK;

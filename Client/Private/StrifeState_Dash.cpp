@@ -22,9 +22,7 @@ void CStrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 {
 	m_iKeyState = dynamic_cast<CPlayer*>(m_pOwner)->Get_PlayerKeyState();
 
-		
-
-	if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() /3.f)
+	if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() /2.5f)
 	{
 		switch (m_iKeyState)
 		{
@@ -32,6 +30,13 @@ void CStrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 			m_iState |= CPlayer::STATE_DOUBLEDASH;
 			dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(m_iState);
 			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_END);
+			//<CPlayer*>(m_pOwner)->Get_Transform()->Dash(AXIS_Y, 90.f, m_pModelCom->Get_)
+			break;
+		case (CPlayer::KEY_UP || CPlayer::KEY_DOWN || CPlayer::KEY_LEFT || CPlayer::KEY_RIGHT):
+			m_iState |= CPlayer::STATE_RUN;
+			dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(m_iState);
+			//m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN);
+
 
 		default:
 			break;

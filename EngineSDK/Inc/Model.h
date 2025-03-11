@@ -2,6 +2,7 @@
 
 #include "Component.h"
 #include "Animation.h"
+#include "Bone.h"
 
 
 BEGIN(Engine)
@@ -24,6 +25,11 @@ public:
 
 	const _bool Get_Interpolate() {
 		return m_bIsInter;
+	}
+
+	const vector<_float>* Get_Delta()
+	{
+		return m_vecBone[2]->Get_DeltaPower();
 	}
 
 	const _float Get_CurAnimationDuration()

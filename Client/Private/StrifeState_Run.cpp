@@ -115,7 +115,7 @@ void CStrifeState_Run::Update_Animation(_float fTimeDelta)
 {
     if (0 != m_pModelCom->Get_PreAnimIndex()
         && m_pModelCom->Get_Interpolate())
-        m_pModelCom->Interpolate_Animation(0.05f);
+        m_pModelCom->Interpolate_Animation(0.2f);
     else
         m_pModelCom->Play_Animation(fTimeDelta);
 }
