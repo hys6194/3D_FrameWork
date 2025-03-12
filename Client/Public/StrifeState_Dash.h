@@ -31,7 +31,8 @@ private:
 	CModel*					  m_pModelCom = { nullptr };
 	_bool					  m_AnimEnd = {};
 	_bool					  m_bDashed = { false };
-	_uint					  m_iKeyState = { 0 };
+	_uint					  m_iKeyState = {};
+	_uint					  m_iCheckDash = {};
 							  
 private:					  
 	void					  Check_KeyInput();
