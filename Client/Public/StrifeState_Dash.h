@@ -23,9 +23,9 @@ public:
 	virtual HRESULT		Exit_State();
 
 public:
-	virtual void		 Set_CurAnimation();
-	virtual void		 Update_Animation(_float fTimeDelta);
-	virtual void		 Set_PreAnimation();
+	virtual void		Set_CurAnimation();
+	virtual void		Update_Animation(_float fTimeDelta);
+	virtual void		Set_PreAnimation();
 
 private:
 	CModel*				m_pModelCom = { nullptr };
@@ -35,6 +35,7 @@ private:
 
 private:
 	void				Check_KeyInput();
+	void				Set_LastDashAnimation();
 
 
 

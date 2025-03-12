@@ -12,9 +12,6 @@ CStrifeState_Run::CStrifeState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT CStrifeState_Run::Enter_State()
 {
-    m_iState = dynamic_cast<CPlayer*>(m_pOwner)->Get_PlayerState();
-    m_iKeyState = dynamic_cast<CPlayer*>(m_pOwner)->Get_PlayerKeyState();
-
     Set_CurAnimation();
 
     return S_OK;
@@ -36,9 +33,55 @@ void CStrifeState_Run::PriorityUpdate_State(_float fTimeDelta)
         return;
     }
 
+    PlayerMove(fTimeDelta);
+  
+}
+
+void CStrifeState_Run::Update_State(_float fTimeDelta)
+{   
+    Update_Animation(fTimeDelta);
+}
+
+void CStrifeState_Run::LateUpdate_State(_float fTimeDelta)
+{
+    /*if (false == m_pModelCom->Get_Interpolate())
+        m_pModelCom->Reset_PreAnimation();*/
+}
+
+HRESULT CStrifeState_Run::Exit_State()
+{
+    Set_PreAnimation();
+    return S_OK;
+}
+
+void CStrifeState_Run::Set_CurAnimation()
+{
+    m_pModelCom = dynamic_cast<CBody_Player*>(m_pAnimOwner)->Get_Model();
+
+    m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
+}
+
+void CStrifeState_Run::Update_Animation(_float fTimeDelta)
+{
+    if (0 != m_pModelCom->Get_PreAnimIndex()
+        && m_pModelCom->Get_Interpolate())
+        m_pModelCom->Interpolate_Animation(0.2f);
+    else
+        m_pModelCom->Play_Animation(fTimeDelta);
+}
+
+void CStrifeState_Run::Set_PreAnimation()
+{
+    m_pModelCom->Reset_PreAnimation();
+
+    m_pModelCom->Set_PreAnimation(PLAYER_ANIMLIST::RUN);
+}
+
+void CStrifeState_Run::PlayerMove(_float fTimeDelta)
+{
     switch (m_iKeyState)
     {
-    
+
     case (CPlayer::KEY_DOWN | CPlayer::KEY_LEFT):
         dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-135.f));
         dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
@@ -83,47 +126,6 @@ void CStrifeState_Run::PriorityUpdate_State(_float fTimeDelta)
         dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(CPlayer::STATE_IDLE);
         break;
     }
-  
-}
-
-void CStrifeState_Run::Update_State(_float fTimeDelta)
-{   
-    Update_Animation(fTimeDelta);
-}
-
-void CStrifeState_Run::LateUpdate_State(_float fTimeDelta)
-{
-    /*if (false == m_pModelCom->Get_Interpolate())
-        m_pModelCom->Reset_PreAnimation();*/
-}
-
-HRESULT CStrifeState_Run::Exit_State()
-{
-    Set_PreAnimation();
-    return S_OK;
-}
-
-void CStrifeState_Run::Set_CurAnimation()
-{
-    m_pModelCom = dynamic_cast<CBody_Player*>(m_pAnimOwner)->Get_Model();
-
-    m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
-}
-
-void CStrifeState_Run::Update_Animation(_float fTimeDelta)
-{
-    if (0 != m_pModelCom->Get_PreAnimIndex()
-        && m_pModelCom->Get_Interpolate())
-        m_pModelCom->Interpolate_Animation(0.2f);
-    else
-        m_pModelCom->Play_Animation(fTimeDelta);
-}
-
-void CStrifeState_Run::Set_PreAnimation()
-{
-    m_pModelCom->Reset_PreAnimation();
-
-    m_pModelCom->Set_PreAnimation(PLAYER_ANIMLIST::RUN);
 }
 
 CStrifeState_Run* CStrifeState_Run::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)

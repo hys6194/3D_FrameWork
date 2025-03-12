@@ -10,8 +10,6 @@ CStrifeState_Idle::CStrifeState_Idle(ID3D11Device* pDevice, ID3D11DeviceContext*
 
 HRESULT CStrifeState_Idle::Enter_State()
 {
-    m_iState = dynamic_cast<CPlayer*>(m_pOwner)->Get_PlayerState();
-    
     Set_CurAnimation();
 
     return S_OK;

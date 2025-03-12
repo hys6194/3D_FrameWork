@@ -141,9 +141,9 @@ void CModel::Set_PreAnimation(_uint iPreAnimationIndex)
 {
     m_iPreAnimationIndex = iPreAnimationIndex;
 
-    m_iPreTrackPos = m_vecCurrentTrackPosition[m_iPreAnimationIndex];
+    m_fPreTrackPos = m_vecCurrentTrackPosition[m_iPreAnimationIndex];
     
-    m_iPreKeyFrameIndex = m_vecKeyFrameIndex[m_iPreAnimationIndex][m_iPreTrackPos];
+    m_iPreKeyFrameIndex = m_vecKeyFrameIndex[m_iPreAnimationIndex][m_fPreTrackPos];
 
     m_pPreChannel = m_Animations[m_iPreAnimationIndex]->Get_Channel();
 
@@ -154,7 +154,6 @@ void CModel::Interpolate_Animation(_float fRatio)
     // 0과 1사이 값만 허용
     if (1 < fRatio)
     {
-        MSG_BOX("Too Much Ratio Value");
         return;
     }
     
@@ -166,6 +165,10 @@ void CModel::Interpolate_Animation(_float fRatio)
     KEYFRAME tCurDesc;
 
     // m_fRatio 값이 1을 넘어가지 않게 해야함
+    tPreDesc = m_pPreChannel[m_iPreKeyFrameIndex]->Get_KeyFrame().back();
+    tCurDesc = m_pPreChannel[m_iPreKeyFrameIndex + 1]->Get_KeyFrame()[0];
+
+
 
 
     for (size_t i = 0; i < m_pPreChannel.size(); i++)
@@ -212,52 +215,6 @@ void CModel::Interpolate_Animation(_float fRatio)
     //m_bIsInter = false;
 
 }
-
-void CModel::Play_RootAnimation(_float fTimeDelta)
-{
-    m_vecBone[0]->Compare_Name("RootNode");         // 이동시켜야 하는 뼈
-    m_vecBone[2]->Compare_Name("Bone_Strife_Root"); // 이동량있는 뼈
-    
-    
-    _float f41, f42;
-    _matrix mat1 = XMMatrixIdentity();
-    _matrix mat2 = XMMatrixIdentity();
-    _vector vec1;
-    
-    
-    
-    mat1 = m_vecBone[0]->Get_CombinedTransformationMatrix();
-    mat2 = m_vecBone[2]->Get_CombinedTransformationMatrix();
-    f41 = m_vecBone[0]->Get_CombinedTransformfloat4x4ptr()->m[3][0];
-    
-    vec1 = m_vecBone[2]->Get_CombinedTransformationMatrix().r[3];
-    f42 = m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][2];
-    
-    _float4x4 mat4;
-    XMStoreFloat4x4(&mat4, XMMatrixIdentity());
-    
-    //for(size_t i = 0; i < CTransform::STATE_END; ++i)
-    //{
-    //}
-    //m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][0];
-    memcpy(&mat4.m[3][0],
-        &m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][0],
-        sizeof(_float4));
-    
-    // 변화량을 가져오긴 했음
-    // 해야할 것은 현재 애니메이션의 모든 채널을 순회하여 RootNdde에게 값을 전달해줘야 함
-        
-    for (size_t i = 0; i < m_pRootChannel.size(); i++)
-    {
-        m_pRootChannel[0]->Update_TransformationMatrix(m_vecBone, Get_CurAnimationTrackPosition(), &m_iCurKeyFrameIndex);
-    }
-    
-    
-    
-    
-     int a = 10;
-
- }
 
 HRESULT CModel::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {

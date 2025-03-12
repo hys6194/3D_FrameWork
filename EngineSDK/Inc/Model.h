@@ -55,31 +55,30 @@ public:
 
 public:
 	//재생하려고 하는 애니메이션, 루프, 보간
-	void Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop = false, _bool IsInter = true);
-	void Set_Interpolate(_bool bIsInter);
+	void								Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop = false, _bool IsInter = true);
+	void								Set_Interpolate(_bool bIsInter);
 
 public:
-	void Set_PreAnimation(_uint iPreAnimationIndex);
+	void								Set_PreAnimation(_uint iPreAnimationIndex);
 
 public:
-	void Interpolate_Animation(_float fRatio = 0.f);
-	void Play_RootAnimation(_float fTimeDelta);
+	void								Interpolate_Animation(_float fRatio = 0.1f);
 
 public:
-	virtual HRESULT Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
-	virtual HRESULT Initialize(void* pArg) override;
-	virtual HRESULT Render(_uint iMeshIndex);
+	virtual HRESULT						Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
+	virtual HRESULT						Initialize(void* pArg) override;
+	virtual HRESULT						Render(_uint iMeshIndex);
 
 public:
-	_bool	Play_Animation(_float fTimeDelta, CGameObject* pObject = nullptr);
+	_bool								Play_Animation(_float fTimeDelta, CGameObject* pObject = nullptr);
 
 public:
-	void	Reset_PreAnimation();
+	void								Reset_PreAnimation();
 
 
 public:
-	HRESULT Bind_Material(class CShader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
-	HRESULT Bind_BoneMatrix(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
+	HRESULT								Bind_Material(class CShader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
+	HRESULT								Bind_BoneMatrix(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
 
 
 private:
@@ -109,16 +108,16 @@ private:
 	// 채널에서의 현재 키프레임의 정보 위치
 	vector<vector<_uint>>				m_vecKeyFrameIndex;
 
-	_uint								m_iPreAnimationIndex = { 0 };
+	_uint								m_iPreAnimationIndex = {};
 
-	_uint								m_iPreKeyFrameIndex = { 0 };
-	_uint								m_iCurKeyFrameIndex = { 0 };
+	_uint								m_iPreKeyFrameIndex = {};
+	_uint								m_iCurKeyFrameIndex = {};
 
-	_uint								m_iPreTrackPos = { 0 };
-	_float								m_fCurTrackPos = { 0 };
+	_float								m_fPreTrackPos = {};
+	_float								m_fCurTrackPos = {};
 	_float								m_fRatio = { 0.f };
 
-	_uint								m_iNumBone = { 0 };
+	_uint								m_iNumBone = {};
 
 	vector<class CChannel*>				m_pPreChannel;
 	vector<class CChannel*>				m_pCurChannel;
@@ -128,15 +127,15 @@ private:
 	KEYFRAME							m_pCurKeyFrame = { };
 
 private:
-	HRESULT Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);
-	HRESULT Ready_Meshes();
-	HRESULT Ready_Materials(const _char* pModelFilePath);
-	HRESULT Ready_Animations();
+	HRESULT								Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);
+	HRESULT								Ready_Meshes();
+	HRESULT								Ready_Materials(const _char* pModelFilePath);
+	HRESULT								Ready_Animations();
 
 public:
-	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity());
-	virtual CComponent* Clone(void* pArg) override;
-	virtual void Free();
+	static CModel*						Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity());
+	virtual CComponent*					Clone(void* pArg) override;
+	virtual void						Free();
 };
 
 END

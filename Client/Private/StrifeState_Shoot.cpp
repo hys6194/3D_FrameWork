@@ -30,7 +30,6 @@ void CStrifeState_Shoot::PriorityUpdate_State(_float fTimeDelta)
 	// ¾È ½ð´Ù
 	else
 	{
-		//m_pModelCom->Set_Interpolate(true);
 		dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(CPlayer::STATE_IDLE);
 	}
 

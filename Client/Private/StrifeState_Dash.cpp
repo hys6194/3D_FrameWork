@@ -11,8 +11,6 @@ CStrifeState_Dash::CStrifeState_Dash(ID3D11Device* pDevice, ID3D11DeviceContext*
 
 HRESULT CStrifeState_Dash::Enter_State()
 {
-	m_iState = dynamic_cast<CPlayer*>(m_pOwner)->Get_PlayerState();
-
 	Set_CurAnimation();
 
 	return S_OK;
@@ -24,13 +22,12 @@ void CStrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 
 	if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() /2.5f)
 	{
-		if ((m_iKeyState & CPlayer::KEY_SHIFT) && !m_bDashed && (&CPlayer::IsKeyPushed))
+		if ((m_iKeyState & CPlayer::KEY_SHIFT) && !m_bDashed)
 		{	m_iState |= CPlayer::STATE_DOUBLEDASH;
 			dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(m_iState);
-
-
-			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_END);
 			m_bDashed = true;
+
+			Set_LastDashAnimation();
 		}
 		 
 		else if (&CPlayer::IsKeyPushed)
@@ -73,7 +70,6 @@ void CStrifeState_Dash::Set_CurAnimation()
 	m_pModelCom = dynamic_cast<CBody_Player*>(m_pAnimOwner)->Get_Model();
 
 	Check_KeyInput();
-
 	
 }
 
@@ -98,12 +94,20 @@ void CStrifeState_Dash::Set_PreAnimation()
 
 void CStrifeState_Dash::Check_KeyInput()
 {
-	if(&CPlayer::IsKeyPushed)
+	if( m_iKeyState & CPlayer::KEY_ARROW)
 		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH, false, true);
-	else
+
+	else if(m_iKeyState == CPlayer::KEY_NONE)
 		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_BACK, false, true);
+}
 
+void CStrifeState_Dash::Set_LastDashAnimation()
+{
+	if (m_iKeyState & CPlayer::KEY_ARROW)
+		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_END, false, true);
 
+	else if (m_iKeyState == CPlayer::KEY_SHIFT)
+		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_BACKEND, false, true);
 }
 
 CStrifeState_Dash* CStrifeState_Dash::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)

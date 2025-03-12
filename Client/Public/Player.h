@@ -30,6 +30,7 @@ public:
 		KEY_DOWN			= 0x00000002,
 		KEY_LEFT			= 0x00000004,
 		KEY_RIGHT			= 0x00000008,
+		KEY_ARROW			= 0x00000015,
 		KEY_SPACE			= 0x00000010,
 		KEY_SHIFT			= 0x00000020,
 		KEY_LB				= 0x00000040,
@@ -38,11 +39,11 @@ public:
 	};
 
 public:
-	constexpr bool IsKeyPushed(int keyState) {
-		return (keyState & CPlayer::KEY_UP) ||
-			(keyState & CPlayer::KEY_DOWN) ||
-			(keyState & CPlayer::KEY_LEFT) ||
-			(keyState & CPlayer::KEY_RIGHT);
+	inline bool IsKeyPushed() const {
+		return (m_iKey & CPlayer::KEY_UP) ||
+			(m_iKey & CPlayer::KEY_DOWN) ||
+			(m_iKey & CPlayer::KEY_LEFT) ||
+			(m_iKey & CPlayer::KEY_RIGHT);
 	}
 
 
