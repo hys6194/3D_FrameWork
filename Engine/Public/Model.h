@@ -27,9 +27,19 @@ public:
 		return m_bIsInter;
 	}
 
-	const vector<_float>* Get_Delta()
+	const vector<_float4> Get_DeltaVector()
 	{
-		return m_vecBone[2]->Get_DeltaPower();
+		return m_vecBone[2]->Get_DeltaVector();
+	}
+
+	const _float4 Get_Delta()
+	{
+		return m_vecBone[2]->Get_Delta();
+	}
+
+	const void Reset_Delta()
+	{
+		m_vecBone[2]->Reset_Delta();
 	}
 
 	const _float Get_CurAnimationDuration()
@@ -84,7 +94,7 @@ private:
 	_uint								m_iNumMaterials = {};
 	vector<class CMeshMaterial*>			m_vecMaterial;
 
-	vector<class CBone*>					m_vecBone;
+	vector<class CBone*>				m_vecBone;
 
 	_bool								m_bIsLoop = { false };
 	_bool								m_bIsInter = { false };

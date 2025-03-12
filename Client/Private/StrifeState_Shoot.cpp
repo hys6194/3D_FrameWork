@@ -69,7 +69,7 @@ void CStrifeState_Shoot::Update_Animation(_float fTimeDelta)
 
 void CStrifeState_Shoot::Set_CurAnimation()
 {
-	m_pModelCom = dynamic_cast<Body_Player*>(m_pAnimOwner)->Get_Model();
+	m_pModelCom = dynamic_cast<CBody_Player*>(m_pAnimOwner)->Get_Model();
 	
 	m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_IDLE, true, false);
 }

@@ -11,7 +11,7 @@ END
 
 BEGIN(Client)
 
-class Body_Player final : public CPartObject
+class CBody_Player final : public CPartObject
 {
 public:
 	typedef struct tagBodyPlayerDesc : public CPartObject::PARTOBJ_DESC
@@ -20,9 +20,9 @@ public:
 	}BODY_PLAYER_DESC;
 
 private:
-	Body_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Body_Player(const Body_Player& Prototype);
-	virtual ~Body_Player() = default;
+	CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CBody_Player(const CBody_Player& Prototype);
+	virtual ~CBody_Player() = default;
 
 public:
 	const _float4x4*	Get_f4SocketMatrix(const _wstring& strSocketName);
@@ -53,7 +53,7 @@ private:
 	HRESULT				Bind_SR();
 
 public:
-	static Body_Player* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CBody_Player* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg);
 	virtual void		Free() override;
 };

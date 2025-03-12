@@ -123,6 +123,8 @@ void CModel::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInt
 
     m_bIsLoop = isLoop;
 
+
+
 }
 
 void CModel::Set_Interpolate(_bool bIsInter)

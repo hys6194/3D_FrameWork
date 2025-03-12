@@ -66,7 +66,7 @@ HRESULT CStrifeState_Idle::Exit_State()
 
 void CStrifeState_Idle::Set_CurAnimation()
 {
-    m_pModelCom = dynamic_cast<Body_Player*>(m_pAnimOwner)->Get_Model();
+    m_pModelCom = dynamic_cast<CBody_Player*>(m_pAnimOwner)->Get_Model();
 
     m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::IDLE, true);
 }

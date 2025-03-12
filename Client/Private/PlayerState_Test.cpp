@@ -56,7 +56,7 @@ void PlayerState_Test::Update_Animation(_float fTimeDelta)
 
 void PlayerState_Test::Set_CurAnimation()
 {
-	m_pModelCom = dynamic_cast<Body_Player*>(m_pAnimOwner)->Get_Model();
+	m_pModelCom = dynamic_cast<CBody_Player*>(m_pAnimOwner)->Get_Model();
 	
 	m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
 }

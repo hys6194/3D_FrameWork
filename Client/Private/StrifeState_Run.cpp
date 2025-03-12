@@ -106,7 +106,7 @@ HRESULT CStrifeState_Run::Exit_State()
 
 void CStrifeState_Run::Set_CurAnimation()
 {
-    m_pModelCom = dynamic_cast<Body_Player*>(m_pAnimOwner)->Get_Model();
+    m_pModelCom = dynamic_cast<CBody_Player*>(m_pAnimOwner)->Get_Model();
 
     m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
 }

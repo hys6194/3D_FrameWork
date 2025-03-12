@@ -367,7 +367,7 @@ HRESULT CLoader::Loading_Prototype()
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_BODY,
-			Body_Player::Create(m_pDevice, m_pContext))))
+			CBody_Player::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* Prototype_GameObject_Camera_Free */

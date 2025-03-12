@@ -58,8 +58,8 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 {
 	Input_Keys();
 
-	m_pFSMCom->PriUpdate_State(fTimeDelta);
 	m_pFSMCom->Change_State(m_iState);
+	m_pFSMCom->PriUpdate_State(fTimeDelta);
 
 	__super::Priority_Update(fTimeDelta);
 }
@@ -95,7 +95,7 @@ HRESULT CPlayer::Ready_Components()
 HRESULT CPlayer::Ready_PartObjects()
 {
 	// Body
-	Body_Player::BODY_PLAYER_DESC		BodyDesc{};
+	CBody_Player::BODY_PLAYER_DESC		BodyDesc{};
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pTargetState = &m_iState;
 	
@@ -112,8 +112,8 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	CGun_Left::WEAPON_DESC  GDesc1{};
 	// WDesc.pSocketMatrix = 바디플레이어에 있는 특정 뼈(손)의 매트릭스를 가져와야 함 -> 바디 플레이어에서 특정 뼈를 가져오는 작업을 해야함
-	GDesc1.pSocketMatrix	= dynamic_cast<Body_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_LEFT);
-	GDesc1.pHandMatrix		= dynamic_cast<Body_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_LEFT_HAND);
+	GDesc1.pSocketMatrix	= dynamic_cast<CBody_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_LEFT);
+	GDesc1.pHandMatrix		= dynamic_cast<CBody_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_LEFT_HAND);
 	GDesc1.pParentMatrix	= m_pTransformCom->Get_WorldMatrix_Ptr();
 	GDesc1.pTargetState		= &m_iState;
 
@@ -121,8 +121,8 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	CGun_Right::WEAPON_DESC  GDesc2{};
 	// WDesc.pSocketMatrix = 바디플레이어에 있는 특정 뼈(손)의 매트릭스를 가져와야 함 -> 바디 플레이어에서 특정 뼈를 가져오는 작업을 해야함
-	GDesc2.pSocketMatrix	= dynamic_cast<Body_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_RIGHT);
-	GDesc2.pHandMatrix		= dynamic_cast<Body_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_RIGHT_HAND);
+	GDesc2.pSocketMatrix	= dynamic_cast<CBody_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_RIGHT);
+	GDesc2.pHandMatrix		= dynamic_cast<CBody_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_RIGHT_HAND);
 	GDesc2.pParentMatrix	= m_pTransformCom->Get_WorldMatrix_Ptr();
 	GDesc2.pTargetState		= &m_iState;
 

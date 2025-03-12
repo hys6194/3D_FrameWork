@@ -32,6 +32,9 @@ private:
 	_bool				m_bDashed = { false };
 	_uint				m_iKeyState = { 0 };
 
+	vector<_float>		m_vecDelta;
+
+
 
 public:
 	static CStrifeState_Dash* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);

@@ -22,15 +22,18 @@ void CStrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 {
 	m_iKeyState = dynamic_cast<CPlayer*>(m_pOwner)->Get_PlayerKeyState();
 
-	if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() /2.5f)
+	if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration())
 	{
 		switch (m_iKeyState)
 		{
 		case CPlayer::KEY_SHIFT:
 			m_iState |= CPlayer::STATE_DOUBLEDASH;
 			dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(m_iState);
+			m_pModelCom->Reset_Delta();
 			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_END);
-			//<CPlayer*>(m_pOwner)->Get_Transform()->Dash(AXIS_Y, 90.f, m_pModelCom->Get_)
+
+			//dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Dash(AXIS_Y, 90.f, m_pModelCom->Get_Delta());
+
 			break;
 		case (CPlayer::KEY_UP || CPlayer::KEY_DOWN || CPlayer::KEY_LEFT || CPlayer::KEY_RIGHT):
 			m_iState |= CPlayer::STATE_RUN;
@@ -51,6 +54,8 @@ void CStrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 void CStrifeState_Dash::Update_State(_float fTimeDelta)
 {
 	Update_Animation(fTimeDelta);
+
+	m_pOwner->Get_Transform()->Dash(m_pModelCom->Get_Delta());
 }
 
 void CStrifeState_Dash::LateUpdate_State(_float fTimeDelta)
@@ -68,7 +73,7 @@ HRESULT CStrifeState_Dash::Exit_State()
 
 void CStrifeState_Dash::Set_CurAnimation()
 {
-	m_pModelCom = dynamic_cast<Body_Player*>(m_pAnimOwner)->Get_Model();
+	m_pModelCom = dynamic_cast<CBody_Player*>(m_pAnimOwner)->Get_Model();
 
 	m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_BACK, false, false);
 }

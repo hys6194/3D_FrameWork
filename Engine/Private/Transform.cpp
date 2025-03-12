@@ -135,15 +135,15 @@ HRESULT CTransform::LookAt(_vector vAt)
     return S_OK;
 }
 
-HRESULT CTransform::Dash(_fvector vAxis, _float fRadian, _float fDelta)
+HRESULT CTransform::Dash(_float4 fDelta)
 {
     _vector vPos = Get_State(STATE_POS);
-    _vector vRight = Get_State(STATE_RIGHT);
-    _vector vUp = Get_State(STATE_UP);
     _vector vLook = Get_State(STATE_LOOK);
+    _vector vDelta = XMVectorSet(fDelta.z, 0.f, fDelta.z, 0.f);
 
+    vPos += XMVector4Normalize(vLook) * vDelta;
 
-
+    Set_State(STATE_POS, vPos);
 
     return S_OK;
 }
