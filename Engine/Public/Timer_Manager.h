@@ -5,7 +5,7 @@
 BEGIN(Engine)
 
 
-class CTimer_Manager : public Base
+class CTimer_Manager : public CBase
 {
 private:
 	CTimer_Manager();

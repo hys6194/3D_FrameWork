@@ -4,12 +4,12 @@
 #include "GameInstance.h"
 #include "BackGround.h"
 
-Level_Menu::Level_Menu(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:Level{ pDevice , pContext }
+CLevel_Menu::CLevel_Menu(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:CLevel{ pDevice , pContext }
 {
 }
 
-HRESULT Level_Menu::Initialize()
+HRESULT CLevel_Menu::Initialize()
 {
 	if (FAILED(Ready_Layer_LogoPlayer(TEXT("Layer_BackGround"))))
 		return E_FAIL;
@@ -17,27 +17,27 @@ HRESULT Level_Menu::Initialize()
 	return S_OK;
 }
 
-void Level_Menu::Update(_float fTimeDelta)
+void CLevel_Menu::Update(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, TEXT("현재 레벨 : 메뉴 레벨"));
 
 	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
-		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
+		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
 			return;
 	}
 
 	return;
 }
 
-HRESULT Level_Menu::Render()
+HRESULT CLevel_Menu::Render()
 {
 	return S_OK;
 }
 
-HRESULT Level_Menu::Ready_Layer_LogoPlayer(const _tchar* pLayerTag)
+HRESULT CLevel_Menu::Ready_Layer_LogoPlayer(const _tchar* pLayerTag)
 {
-	UIObject::UIOBJECT_DESC			 UIDesc = {};
+	CUIObject::UIOBJECT_DESC			 UIDesc = {};
 
 	// 선생님은 가로, 세로 1인 길이로 그리려고 0.5로 준 것이다
 	// /2 빠른 연산
@@ -56,9 +56,9 @@ HRESULT Level_Menu::Ready_Layer_LogoPlayer(const _tchar* pLayerTag)
 	return S_OK;
 }
 
-Level_Menu* Level_Menu::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel_Menu* CLevel_Menu::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	Level_Menu* pInstance = new Level_Menu(pDevice, pContext);
+	CLevel_Menu* pInstance = new CLevel_Menu(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize()))
 	{
@@ -69,7 +69,7 @@ Level_Menu* Level_Menu::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 	return pInstance;
 }
 
-void Level_Menu::Free()
+void CLevel_Menu::Free()
 {
 	__super::Free();
 }

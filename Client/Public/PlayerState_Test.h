@@ -4,15 +4,15 @@
 #include "State.h"
 
 BEGIN(Engine)
-class Model;
+class CModel;
 END
 
 BEGIN(Client)
 
-class PlayerState_Test : public State
+class PlayerState_Test : public CState
 {
 private	:
-	PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
+	PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual ~PlayerState_Test() = default;
 
 public:
@@ -29,14 +29,13 @@ public:
 
 
 private:
-	Model*				m_pModelCom;
+	CModel*				m_pModelCom;
 	_uint				m_iKeyState = { 0 };
 
 public:
-	static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
+	static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual void Free();
 
-	//static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner);
 };
 
 END

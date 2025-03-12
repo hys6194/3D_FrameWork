@@ -8,11 +8,11 @@
 
 BEGIN(Engine)
 
-class Object_Manager final : public Base
+class CObject_Manager final : public CBase
 {
 private:
-	Object_Manager();
-	virtual ~Object_Manager() = default;
+	CObject_Manager();
+	virtual ~CObject_Manager() = default;
 
 public:
 	HRESULT Initialize(_uint iNumLevel);
@@ -23,19 +23,19 @@ public:
 	void Clear(_uint iLevelIndex);
 
 public:
-	class Layer* Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
-	class GameObject* Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
+	class CLayer* Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
+	class CGameObject* Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
 
 private:
 	_uint								m_iNumLevels = { };
-	class GameInstance*					m_pGameInstance = { nullptr };
+	class CGameInstance*					m_pGameInstance = { nullptr };
 
-	map<const _wstring, class Layer*>*	m_pLayers = { nullptr };
+	map<const _wstring, class CLayer*>*	m_pLayers = { nullptr };
 	//   map<const _wstring, class Layer*>*
-	// = map<const _wstring, list<GameObject*>>
+	// = map<const _wstring, list<CGameObject*>>
 
 public:
-	static Object_Manager* Create(_uint iNumLevels);
+	static CObject_Manager* Create(_uint iNumLevels);
 	virtual void Free() override;
 };
 

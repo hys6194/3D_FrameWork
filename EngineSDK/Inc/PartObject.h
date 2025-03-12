@@ -7,18 +7,18 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL PartObject : public GameObject
+class ENGINE_DLL CPartObject : public CGameObject
 {
 public:
-	typedef struct tagPartObjectDesc : public GameObject::GAMEOBJECT_DESC
+	typedef struct tagPartObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
 		const _float4x4* pParentMatrix = { nullptr };
 	}PARTOBJ_DESC;
 
 protected:
-	PartObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	PartObject(const PartObject& Prototype);
-	virtual ~PartObject() = default;
+	CPartObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CPartObject(const CPartObject& Prototype);
+	virtual ~CPartObject() = default;
 
 public:	
 	virtual HRESULT Initialize_Prototype();
@@ -33,7 +33,7 @@ protected:
 	_float4x4				m_CombinedWorldMatrix = {};
 
 public:
-	virtual GameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
 };
 

@@ -4,12 +4,12 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Mesh : public VIBuffer
+class ENGINE_DLL CMesh : public CVIBuffer
 {
 private:
-	Mesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Mesh(const Mesh& Prototype);
-	virtual ~Mesh() = default;
+	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CMesh(const CMesh& Prototype);
+	virtual ~CMesh() = default;
 public:
 	_uint Get_MaterialIndex() const {
 		return m_iMaterialIndex;
@@ -17,15 +17,15 @@ public:
 
 
 public:
-	virtual HRESULT Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix, MODELTYPE eType, const vector<class Bone*>& Bones);
+	virtual HRESULT Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix, MODELTYPE eType, const vector<class CBone*>& Bones);
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
-	HRESULT Bind_BoneMatrix(class Shader* pShader, const _char* pContantName, const vector<class Bone*>& Bones);
+	HRESULT Bind_BoneMatrix(class CShader* pShader, const _char* pContantName, const vector<class CBone*>& Bones);
 
 private:
 	HRESULT Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
-	HRESULT Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const vector<Bone*>& Bones);
+	HRESULT Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const vector<CBone*>& Bones);
 
 private:
 	_char				m_szName[MAX_PATH] = {};
@@ -36,8 +36,8 @@ private:
 	_float4x4			m_matBone[512] = {};
 
 public:
-	static Mesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh, MODELTYPE eType, const vector<class Bone*>& Bones, _fmatrix PreTransformMatrix);
-	virtual Component* Clone(void* pArg) override;
+	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh, MODELTYPE eType, const vector<class CBone*>& Bones, _fmatrix PreTransformMatrix);
+	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 };
 

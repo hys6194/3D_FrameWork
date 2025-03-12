@@ -11,19 +11,19 @@
 
 BEGIN(Engine)
 
-class Prototype_Manager final : public Base
+class CPrototype_Manager final : public CBase
 {
 private:
-	Prototype_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~Prototype_Manager() = default;
+	CPrototype_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CPrototype_Manager() = default;
 
 public:
 	HRESULT Initialize(_uint iNumLevels);
 	// 어떤 레벨, 프로토타입 이름, 프로토타입의 주소를 받아와 원본객체 생성
-	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, Base* pPrototype);
+	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CBase* pPrototype);
 
 	// 사본 객체 생성하고 map 컨테이너에 대입
-	Base* Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg);
+	CBase* Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg);
 	
 	// 어떤 레벨의 원본객체를 삭제할 지
 	void Clear(_uint iLevelIndex);
@@ -36,8 +36,8 @@ private:
 private:
 
 	// 원형객체들을 레벨별로 나누어서 보관하기위해
-	map<const wstring, Base*>* m_pPrototype = { nullptr };
-	typedef map<const wstring, Base*> PROTOTYPES;
+	map<const wstring, CBase*>* m_pPrototype = { nullptr };
+	typedef map<const wstring, CBase*> PROTOTYPES;
 
 	// EngineDesc에 VECTOR 타입을 넣지 않았는데 왜?
 	// memcpy할 때 컴파일러가 터짐
@@ -45,10 +45,10 @@ private:
 	// Clone 함수는 언제?
 	// -> Prototype을 가진 Object를 만들 때 만들 예정
 private:
-	Base* Find_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag);
+	CBase* Find_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag);
 
 public:
-	static Prototype_Manager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevels);
+	static CPrototype_Manager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevels);
 	virtual void Free() override;
 };
 

@@ -2,25 +2,25 @@
 
 #include "GameInstance.h"
 
-BackGround::BackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: UIObject{ pDevice, pContext }
+CBackGround::CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CUIObject{ pDevice, pContext }
 {
 }
 
-BackGround::BackGround(const BackGround& Prototype)
-	:UIObject{ Prototype }
+CBackGround::CBackGround(const CBackGround& Prototype)
+	:CUIObject{ Prototype }
 	, m_eLevel{ Prototype.m_eLevel}
 {
 }
 
-HRESULT BackGround::Initialize_Prototype(LEVEL eLevel)
+HRESULT CBackGround::Initialize_Prototype(LEVEL eLevel)
 {
 	m_eLevel = eLevel;
 
     return S_OK;
 }
 
-HRESULT BackGround::Initialize(void* pArg)
+HRESULT CBackGround::Initialize(void* pArg)
 {
 	// 이 클래스에서 상속받은 Desc의 정보를 여기서 선언해서 사용하는게 맞지만,
 	// Create, Add할 때 어떤 클래스를 만들 것인지 알고 있어서
@@ -37,21 +37,21 @@ HRESULT BackGround::Initialize(void* pArg)
 	return S_OK;
 }
 
-void BackGround::Priority_Update(_float fTimeDelta)
+void CBackGround::Priority_Update(_float fTimeDelta)
 {
 	int a = 10;
 }
 
-void BackGround::Update(_float fTimeDelta)
+void CBackGround::Update(_float fTimeDelta)
 {
 }
 
-void BackGround::Late_Update(_float fTimeDelta)
+void CBackGround::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(Renderer::RENDER_PRIORITY, this);
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_PRIORITY, this);
 }
 
-HRESULT BackGround::Render()
+HRESULT CBackGround::Render()
 {
 	//_float4x4			f4Matrix;
 	//
@@ -80,7 +80,7 @@ HRESULT BackGround::Render()
     return S_OK;
 }
 
-HRESULT BackGround::Ready_Component()
+HRESULT CBackGround::Ready_Component()
 {
 	// 다른 객체가 검색할 수 있도록 맵에 보관한다
 
@@ -88,20 +88,20 @@ HRESULT BackGround::Ready_Component()
 	{
 		case LEVEL_LOGO :
 			//if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_TEX_BACKGROUND,
-			//	reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
+			//	reinterpret_cast<CComponent**>(&m_pTextureCom), TEXT("Com_Texture"))))
 			//	return E_FAIL;
 
 			if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_TEX_LOGO1,
-				reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
+				reinterpret_cast<CComponent**>(&m_pTextureCom), TEXT("Com_Texture"))))
 				return E_FAIL;
 
 			if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_COM_VI_RECT,
-				reinterpret_cast<Component**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
+				reinterpret_cast<CComponent**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
 				return E_FAIL;
 
 			/* Com_Shader */
 			if (FAILED(__super::Add_Component(LEVEL_LOGO, PRO_SHADER_POS,
-				reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader"))))
+				reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader"))))
 				return E_FAIL;
 
 
@@ -109,16 +109,16 @@ HRESULT BackGround::Ready_Component()
 			break;
 		case LEVEL_MENU :
 			if (FAILED(__super::Add_Component(LEVEL_MENU, PRO_TEX_BACKGROUND,
-				reinterpret_cast<Component**>(&m_pTextureCom), TEXT("Com_Texture"))))
+				reinterpret_cast<CComponent**>(&m_pTextureCom), TEXT("Com_Texture"))))
 				return E_FAIL;
 
 			if (FAILED(__super::Add_Component(LEVEL_MENU, PRO_COM_VI_RECT,
-				reinterpret_cast<Component**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
+				reinterpret_cast<CComponent**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
 				return E_FAIL;
 
 			/* Com_Shader */
 			if (FAILED(__super::Add_Component(LEVEL_MENU, PRO_SHADER_POS,
-				reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader"))))
+				reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader"))))
 				return E_FAIL;
 
 			break;
@@ -130,7 +130,7 @@ HRESULT BackGround::Ready_Component()
 	return S_OK;
 }
 
-HRESULT BackGround::Bind_SR()
+HRESULT CBackGround::Bind_SR()
 {
 	if (FAILED(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom)))
 		return E_FAIL;
@@ -146,9 +146,9 @@ HRESULT BackGround::Bind_SR()
 
 }
 
-BackGround* BackGround::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevel)
+CBackGround* CBackGround::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevel)
 {
-	BackGround* pInstance = new BackGround(pDevice, pContext);
+	CBackGround* pInstance = new CBackGround(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype(eLevel)))
 	{
@@ -159,9 +159,9 @@ BackGround* BackGround::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 	return pInstance;
 }
 
-GameObject* BackGround::Clone(void* pArg)
+CGameObject* CBackGround::Clone(void* pArg)
 {
-	BackGround* pInstance = new BackGround(*this);
+	CBackGround* pInstance = new CBackGround(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -172,7 +172,7 @@ GameObject* BackGround::Clone(void* pArg)
 	return pInstance;
 }
 
-void BackGround::Free()
+void CBackGround::Free()
 {
 	__super::Free();
 

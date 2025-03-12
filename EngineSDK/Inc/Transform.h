@@ -7,7 +7,7 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Transform final : public Component
+class ENGINE_DLL CTransform final : public CComponent
 {
 public:
 	typedef struct tagTransform
@@ -38,9 +38,9 @@ public:
 	}
 
 private:
-	Transform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Transform(const Transform& Prototype);
-	virtual ~Transform() = default;
+	CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CTransform(const CTransform& Prototype);
+	virtual ~CTransform() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -54,12 +54,13 @@ public:
 	HRESULT		Go_Left(_float fTimeDelta);
 	HRESULT		Jump(_float fTimeDelta);
 	HRESULT		LookAt(_vector vAt);
+	HRESULT		Dash(_float4 fDelta);
 	void		Turn(_fvector vAxis, _float fTimeDelta);
 	void		Rotation(_fvector vAxis, _float fRadian);
 
 public:
 	void SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ);
-	HRESULT Bind_SR(const _char* pConstantName, class Shader* pShader);
+	HRESULT Bind_SR(const _char* pConstantName, class CShader* pShader);
 
 private:
 	// 객체의 월드 변환을 위한 상태를 가진다
@@ -69,8 +70,8 @@ private:
 	_float				m_fRotationPerSec = {};
 
 public:
-	static Transform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual Component* Clone(void* pArg) override;
+	static CTransform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 
 

@@ -1,11 +1,11 @@
 #include "PipeLine.h"
 #include "Shader.h"
 
-PipeLine::PipeLine()
+CPipeLine::CPipeLine()
 {
 }
 
-void PipeLine::Update()
+void CPipeLine::Update()
 {
 	for (size_t i = 0; i < D3DTS_END; i++)
 	{
@@ -16,27 +16,27 @@ void PipeLine::Update()
 	memcpy(&m_vCamPosition, &m_TransformInverseMatrices[D3DTS_VIEW].m[3][0], sizeof(_float4));
 }
 
-void PipeLine::Set_Transform(TRANSFORMSTATE eState, _fmatrix Matrix)
+void CPipeLine::Set_Transform(TRANSFORMSTATE eState, _fmatrix Matrix)
 {
     XMStoreFloat4x4(&m_TransformMatrices[eState], Matrix);
 }
 
-void PipeLine::Set_Transform(TRANSFORMSTATE eState, const _float4x4* pMatrix)
+void CPipeLine::Set_Transform(TRANSFORMSTATE eState, const _float4x4* pMatrix)
 {
     m_TransformMatrices[eState] = *pMatrix;
 }
 
-HRESULT PipeLine::Bind_SR(Shader* pShader, const _char* pConstantName, TRANSFORMSTATE eState)
+HRESULT CPipeLine::Bind_SR(CShader* pShader, const _char* pConstantName, TRANSFORMSTATE eState)
 {
     return pShader->Bind_Matrix(pConstantName, &m_TransformMatrices[eState]);
 }
 
-PipeLine* PipeLine::Create()
+CPipeLine* CPipeLine::Create()
 {
-    return new PipeLine;
+    return new CPipeLine;
 }
 
-void PipeLine::Free()
+void CPipeLine::Free()
 {
     __super::Free();
 }

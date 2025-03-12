@@ -4,19 +4,19 @@
 #include "GameObject.h"
 
 BEGIN(Engine)
-class Shader;
-class Texture;
-class VIBuffer_Terrain;
+class CShader;
+class CTexture;
+class CVIBuffer_Terrain;
 END
 
 BEGIN(Client)
 
-class Terrain final : public GameObject
+class CTerrain final : public CGameObject
 {
 private:
-	Terrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Terrain(const Terrain& Prototype);
-	virtual ~Terrain() = default;
+	CTerrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CTerrain(const CTerrain& Prototype);
+	virtual ~CTerrain() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -27,9 +27,9 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	Shader* m_pShaderCom = { nullptr };
-	Texture* m_pTextureCom = { nullptr };
-	VIBuffer_Terrain* m_pVIBufferCom = { nullptr };
+	CShader* m_pShaderCom = { nullptr };
+	CTexture* m_pTextureCom = { nullptr };
+	CVIBuffer_Terrain* m_pVIBufferCom = { nullptr };
 
 private:
 	HRESULT Ready_Components();
@@ -37,8 +37,8 @@ private:
 
 
 public:
-	static Terrain* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual GameObject* Clone(void* pArg);
+	static CTerrain* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 };
 

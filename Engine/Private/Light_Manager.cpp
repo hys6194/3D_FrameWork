@@ -1,7 +1,7 @@
 #include "Light_Manager.h"
 #include "Light.h"
 
-Light_Manager::Light_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLight_Manager::CLight_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : m_pDevice{ pDevice }
     , m_pContext{ pContext }
 {
@@ -9,12 +9,12 @@ Light_Manager::Light_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
     Safe_AddRef(m_pContext);
 }
 
-HRESULT Light_Manager::Initialize()
+HRESULT CLight_Manager::Initialize()
 {
     return S_OK;
 }
 
-HRESULT Light_Manager::Add_Light(const LIGHT_DESC& pDesc)
+HRESULT CLight_Manager::Add_Light(const LIGHT_DESC& pDesc)
 {
     Light* pLight = Light::Create(m_pDevice, m_pContext, pDesc);
 
@@ -26,9 +26,9 @@ HRESULT Light_Manager::Add_Light(const LIGHT_DESC& pDesc)
     return S_OK;
 }
 
-Light_Manager* Light_Manager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLight_Manager* CLight_Manager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    Light_Manager* pInstance = new Light_Manager(pDevice, pContext);
+    CLight_Manager* pInstance = new CLight_Manager(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize()))
     {
@@ -39,7 +39,7 @@ Light_Manager* Light_Manager::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
     return pInstance;
 }
 
-void Light_Manager::Free()
+void CLight_Manager::Free()
 {
     __super::Free();
 

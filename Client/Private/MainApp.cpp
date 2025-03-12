@@ -4,7 +4,7 @@
 #include "Level_Loading.h"
 
 CMainApp::CMainApp()
-	: m_pGameInstance { GameInstance::GetInstance() }
+	: m_pGameInstance { CGameInstance::GetInstance() }
 {
 	Safe_AddRef(m_pGameInstance);
 }
@@ -84,7 +84,7 @@ HRESULT CMainApp::Render()
 HRESULT CMainApp::Start_Level(LEVEL eLevelID)
 {
 	// 어떤 레벨을 Create할 지 알아야 하기 때문에 LEVEL enum을 인자로 받아와서 호출한다.
-	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, eLevelID))))
+	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, eLevelID))))
 		return E_FAIL;
 
 	return S_OK;

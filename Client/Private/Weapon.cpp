@@ -4,12 +4,12 @@
 #include "Player.h"
 
 Weapon::Weapon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : PartObject{ pDevice, pContext }
+    : CPartObject{ pDevice, pContext }
 {
 }
 
 Weapon::Weapon(const Weapon& Prototype)
-    : PartObject{ Prototype }
+    : CPartObject{ Prototype }
 {
 }
 
@@ -31,7 +31,7 @@ HRESULT Weapon::Initialize(void* pArg)
 
     m_pTransformCom->SetUp_Scaled(0.1f, 0.1f, 0.1f);
     m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
-    //m_pTransformCom->Set_State(Transform::STATE_POS, XMVectorSet(0.7f, 0.f, 0.f, 1.f));
+    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(0.7f, 0.f, 0.f, 1.f));
 
 
     return S_OK;
@@ -64,7 +64,7 @@ void Weapon::Update(_float fTimeDelta)
 
 void Weapon::Late_Update(_float fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
+    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
 }
 
@@ -96,10 +96,10 @@ HRESULT Weapon::Render()
 HRESULT Weapon::Ready_Components()
 {
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_ForkLift"),
-        reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
-        reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
     return S_OK;
 }
@@ -110,8 +110,8 @@ HRESULT Weapon::Bind_SR()
     // 
     //FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pParentMatrix), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 
     const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
@@ -139,7 +139,7 @@ Weapon* Weapon::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     return pInstance;
 }
 
-GameObject* Weapon::Clone(void* pArg)
+CGameObject* Weapon::Clone(void* pArg)
 {
     Weapon* pInstance = new Weapon(*this);
 

@@ -7,11 +7,11 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Level abstract : public Base
+class ENGINE_DLL CLevel abstract : public CBase
 {
 protected:
-	Level(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~Level() = default;
+	CLevel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CLevel() = default;
 
 public:
 	virtual HRESULT Initialize();
@@ -21,7 +21,7 @@ public:
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
-	class GameInstance*			m_pGameInstance = { nullptr };
+	class CGameInstance*			m_pGameInstance = { nullptr };
 
 public:
 	virtual void Free() override;

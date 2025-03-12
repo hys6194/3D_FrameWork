@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CImGui_Manager : public Base
+class CImGui_Manager : public CBase
 {
 	CImGui_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CImGui_Manager() = default;

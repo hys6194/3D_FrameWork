@@ -4,17 +4,17 @@
 #include "State.h"
 
 BEGIN(Engine)
-class Shader;
-class Model;
+class CShader;
+class CModel;
 END
 
 BEGIN(Client)
 
-class StrifeState_Idle : public State
+class CStrifeState_Idle : public CState
 {
 private:
-	StrifeState_Idle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
-	virtual ~StrifeState_Idle() = default;
+	CStrifeState_Idle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	virtual ~CStrifeState_Idle() = default;
 public:
 	virtual HRESULT Enter_State();
 	virtual void PriorityUpdate_State(_float fTimeDelta);
@@ -28,14 +28,14 @@ public:
 	virtual void Set_PreAnimation();
 
 private:
-	Model*			m_pModelCom = { nullptr };
+	CModel*			m_pModelCom = { nullptr };
 	_uint			m_iKeyState = { 0 };
 
 private:
 	void		 Check_KeyInput();
 
 public:
-	static StrifeState_Idle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
+	static CStrifeState_Idle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual void Free() override;
 
 

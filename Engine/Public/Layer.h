@@ -8,29 +8,29 @@
 
 BEGIN(Engine)
 
-class Layer final : public Base
+class CLayer final : public CBase
 {
 private:
-	Layer();
-	virtual ~Layer() = default;
+	CLayer();
+	virtual ~CLayer() = default;
 
 public:
-	HRESULT Add_GameObject(class GameObject* pGameObject);
+	HRESULT Add_GameObject(class CGameObject* pGameObject);
 	void Priority_Update(_float fTimeDelta);
 	void Update(_float fTimeDelta);
 	void Late_Update(_float fTimeDelta);
 
 public:
-	GameObject* Find_Object(const _tchar* strObjectTag);
+	CGameObject* Find_Object(const _tchar* strObjectTag);
 
 
 private:
 	// 특정 게임 오브젝트들은 키 값으로 사용할 것
 	// 한 배열당 여러 객체들을 가지고 있음
-	list<class GameObject*>			m_GameObjects;
+	list<class CGameObject*>			m_GameObjects;
 
 public:
-	static Layer* Create();
+	static CLayer* Create();
 	virtual void Free() override;
 };
 

@@ -2,24 +2,24 @@
 
 #include "GameInstance.h"
 
-Monster::Monster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:GameObject{ pDevice , pContext }
+CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:CGameObject{ pDevice , pContext }
 {
 }
 
-Monster::Monster(const Monster& Prototype)
-	: GameObject{ Prototype }
+CMonster::CMonster(const CMonster& Prototype)
+	: CGameObject{ Prototype }
 {
 }
 
-HRESULT Monster::Initialize_Prototype()
+HRESULT CMonster::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT Monster::Initialize(void* pArg)
+HRESULT CMonster::Initialize(void* pArg)
 {
-	GameObject::GAMEOBJECT_DESC			Desc{};
+	CGameObject::GAMEOBJECT_DESC			Desc{};
 
 	lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Monster"));
 	Desc.fSpeedPerSec = 0.f;
@@ -31,7 +31,7 @@ HRESULT Monster::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(Transform::STATE_POS,
+	m_pTransformCom->Set_State(CTransform::STATE_POS,
 		XMVectorSet(m_pGameInstance->Random(0, 10), 1.f,
 			m_pGameInstance->Random(0, 10), 1.f));
 
@@ -49,23 +49,23 @@ HRESULT Monster::Initialize(void* pArg)
 	return S_OK;
 }
 
-void Monster::Priority_Update(_float fTimeDelta)
+void CMonster::Priority_Update(_float fTimeDelta)
 {
 }
 
-void Monster::Update(_float fTimeDelta)
+void CMonster::Update(_float fTimeDelta)
 {
 	if (true == m_pModelCom->Play_Animation(fTimeDelta))
 		int a = 10;
 }
 
 
-void Monster::Late_Update(_float fTimeDelta)
+void CMonster::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
-HRESULT Monster::Render()
+HRESULT CMonster::Render()
 {
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
@@ -92,22 +92,22 @@ HRESULT Monster::Render()
 	return S_OK;
 }
 
-HRESULT Monster::Ready_Component()
+HRESULT CMonster::Ready_Component()
 {
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-		reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")) ,E_FAIL);
+		reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")) ,E_FAIL);
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
-		reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+		reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
 	return S_OK;
 }
 
-HRESULT Monster::Bind_SR()
+HRESULT CMonster::Bind_SR()
 {
 	FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
 	
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 	
@@ -122,9 +122,9 @@ HRESULT Monster::Bind_SR()
 	//if (FAILED(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom)))
 	//	return E_FAIL;
 	//
-	//if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom,  PipeLine::D3DTS_VIEW)))
+	//if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom,  CPipeLine::D3DTS_VIEW)))
 	//	return E_FAIL;
-	//if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ)))
+	//if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ)))
 	//	return E_FAIL;
 	//
 	////if (FAILED(m_pTextureCom->Bind_SR(m_pShaderCom, "g_DiffuseTexture", 0)))
@@ -151,9 +151,9 @@ HRESULT Monster::Bind_SR()
 	return S_OK;
 }
 
-Monster* Monster::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CMonster* CMonster::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	Monster* pInstance = new Monster(pDevice, pContext);
+	CMonster* pInstance = new CMonster(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -164,9 +164,9 @@ Monster* Monster::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	return pInstance;
 }
 
-GameObject* Monster::Clone(void* pArg)
+CGameObject* CMonster::Clone(void* pArg)
 {
-	Monster* pInstance = new Monster(*this);
+	CMonster* pInstance = new CMonster(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -177,7 +177,7 @@ GameObject* Monster::Clone(void* pArg)
 	return pInstance;
 }
 
-void Monster::Free()
+void CMonster::Free()
 {
 	__super::Free();
 

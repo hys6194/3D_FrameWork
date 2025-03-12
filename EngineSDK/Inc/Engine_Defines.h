@@ -26,6 +26,7 @@ using namespace DirectX;
 #include <string>
 #include <unordered_map>
 #include <ctime>
+#include "tchar.h"
 using namespace std;
 
 #include "Engine_Enum.h"

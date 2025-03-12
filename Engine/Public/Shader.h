@@ -4,12 +4,12 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Shader final : public Component
+class ENGINE_DLL CShader final : public CComponent
 {
 private:
-	Shader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Shader(const Shader& Prototype);
-	virtual ~Shader() = default;
+	CShader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CShader(const CShader& Prototype);
+	virtual ~CShader() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype(const _tchar* pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElements);
@@ -31,8 +31,8 @@ private:
 	_uint						m_iNumPasses = { };
 
 public:
-	static Shader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElements);
-	virtual Component* Clone(void* pArg) override;
+	static CShader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElements);
+	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free();
 
 };

@@ -1,19 +1,19 @@
-#pragma once
+ #pragma once
 
 #include "Client_Defines.h"
 #include "State.h"
 
 BEGIN(Engine)
-class Model;
+class CModel;
 END
 
 BEGIN(Client)
 
-class StrifeState_Shoot : public State
+class CStrifeState_Shoot : public CState
 {
 private	:
-	StrifeState_Shoot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
-	virtual ~StrifeState_Shoot() = default;
+	CStrifeState_Shoot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	virtual ~CStrifeState_Shoot() = default;
 
 public:
 	virtual HRESULT			Enter_State();
@@ -29,14 +29,14 @@ public:
 
 
 private:
-	Model*					m_pModelCom;
+	CModel*					m_pModelCom;
 	_uint					m_iKeyState = { 0 };
 
 public:
-	static StrifeState_Shoot* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
+	static CStrifeState_Shoot* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual void Free();
 
-	//static StrifeState_Shoot* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner);
+	//static CStrifeState_Shoot* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner);
 };
 
 END

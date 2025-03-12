@@ -5,8 +5,8 @@
 
 #include "GameInstance.h"
 
-PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)
-	:State{pDevice, pContext, pOwner, pAnimOwner, m_pGameInstance }
+PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
+	:CState{pDevice, pContext, pOwner, pAnimOwner, m_pGameInstance }
 {
 }
 
@@ -19,7 +19,7 @@ HRESULT PlayerState_Test::Enter_State()
 
 void PlayerState_Test::PriorityUpdate_State(_float fTimeDelta)
 {
-	m_iKeyState = dynamic_cast<Player*>(m_pOwner)->Get_PlayerState();
+	m_iKeyState = dynamic_cast<CPlayer*>(m_pOwner)->Get_PlayerState();
 }
 
 void PlayerState_Test::Update_State(_float fTimeDelta)
@@ -56,12 +56,12 @@ void PlayerState_Test::Update_Animation(_float fTimeDelta)
 
 void PlayerState_Test::Set_CurAnimation()
 {
-	m_pModelCom = dynamic_cast<Body_Player*>(m_pAnimOwner)->Get_Model();
+	m_pModelCom = dynamic_cast<CBody_Player*>(m_pAnimOwner)->Get_Model();
 	
 	m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
 }
 
-PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner)
+PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
 {
 	PlayerState_Test* pInstance = new PlayerState_Test(pDevice, pContext, pOwner, pAnimOwner);
 
@@ -75,7 +75,7 @@ PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceCo
 	return pInstance;
 }
 
-//PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner)
+//PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, CGameObject* pOwner)
 //{
 //	PlayerState_Test* pInstance = new PlayerState_Test( pDevice, pContext, pOwner);
 //

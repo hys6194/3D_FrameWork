@@ -12,12 +12,12 @@
 
 BEGIN(Engine)
 
-class Bone final : public Base
+class CBone final : public CBase
 {
 	
 private:
-	Bone();
-	virtual ~Bone() = default;
+	CBone();
+	virtual ~CBone() = default;
 
 public:
 	_matrix Get_CombinedTransformationMatrix() const {
@@ -35,12 +35,27 @@ public:
 	}
 
 public:
-	void Reset_Delta() { m_vDelta = { 0.f,0.f,0.f,1.f }; }
+	vector<_float4> Get_DeltaVector()
+	{
+		return m_vecCurDelta;
+	}
+
+	const _float4 Get_Delta()
+	{
+		return m_vCurDelta;
+	}
+	 
+public:
+	void Reset_Delta()
+	{
+		m_vPreDelta = { 0.f,0.f,0.f,1.f };
+		m_vCurDelta = { 0.f,0.f,0.f,1.f };
+	}
 
 public:
 	HRESULT Initialize(const aiNode* pAINode, _int iParentBoneIndex);
-	void Update_CombinedTransformationMatrix(const vector<class Bone*>& Bones, const _float4x4* pPreTransformMatrix);
-	void Update_Combine_RootMatrix(const vector<class Bone*>& Bones, const _float4x4* pPreTransformMatrix, class GameObject* pObject = nullptr);
+	void Update_CombinedTransformationMatrix(const vector<class CBone*>& Bones, const _float4x4* pPreTransformMatrix);
+	void Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _float4x4* pPreTransformMatrix, class CGameObject* pObject = nullptr);
 	_bool Compare_Name(const _char* pName) {
 		return !strcmp(m_szName, pName);
 	}
@@ -59,12 +74,14 @@ private:
 	// ºÎ¸ð»ÀÀÇ ÀÎµ¦½º
 	_int					m_iParentBoneIndex = {};
 
-	_float4					m_vDelta = { 0.f,0.f,0.f,1.f };
+	_float4					m_vPreDelta = { 0.f,0.f,0.f,1.f };
+	vector<_float4>			m_vecCurDelta = {};
+	_float4					m_vCurDelta = {};
 
 
 public:
-	static Bone* Create(const aiNode* pAINode, _int iParentBoneIndex);
-	virtual Bone* Clone();
+	static CBone* Create(const aiNode* pAINode, _int iParentBoneIndex);
+	virtual CBone* Clone();
 	virtual void Free() override;
 };
 

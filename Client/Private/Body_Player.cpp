@@ -5,17 +5,17 @@
 
 #include "Player.h"
 
-Body_Player::Body_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : PartObject{ pDevice, pContext }
+CBody_Player::CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CPartObject{ pDevice, pContext }
 {
 }
 
-Body_Player::Body_Player(const Body_Player& Prototype)
-    : PartObject{ Prototype }
+CBody_Player::CBody_Player(const CBody_Player& Prototype)
+    : CPartObject{ Prototype }
 {
 }
 
-const _float4x4* Body_Player::Get_f4SocketMatrix(const _wstring& strSocketName)
+const _float4x4* CBody_Player::Get_f4SocketMatrix(const _wstring& strSocketName)
 {
     auto iter = m_mapSocketmat.find(strSocketName);
     if (iter == m_mapSocketmat.end())
@@ -25,12 +25,12 @@ const _float4x4* Body_Player::Get_f4SocketMatrix(const _wstring& strSocketName)
     return iter->second;
 }
 
-HRESULT Body_Player::Initialize_Prototype()
+HRESULT CBody_Player::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT Body_Player::Initialize(void* pArg)
+HRESULT CBody_Player::Initialize(void* pArg)
 {
     NULL_CHECK_RETURN(pArg, E_FAIL);
 
@@ -44,11 +44,11 @@ HRESULT Body_Player::Initialize(void* pArg)
     return S_OK;
 }
 
-void Body_Player::Priority_Update(_float fTimeDelta)
+void CBody_Player::Priority_Update(_float fTimeDelta)
 {
 }
 
-void Body_Player::Update(_float fTimeDelta)
+void CBody_Player::Update(_float fTimeDelta)
 {
 
     //파츠들의 매트릭스를 부모 매트릭스에 곱하여 고정시킨다
@@ -57,12 +57,12 @@ void Body_Player::Update(_float fTimeDelta)
 
 }
 
-void Body_Player::Late_Update(_float fTimeDelta)
+void CBody_Player::Late_Update(_float fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
+    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 } 
 
-HRESULT Body_Player::Render()
+HRESULT CBody_Player::Render()
 {
     if (FAILED(Bind_SR()))
         return E_FAIL;
@@ -87,18 +87,18 @@ HRESULT Body_Player::Render()
     return S_OK;
 }
 
-HRESULT Body_Player::Ready_Components()
+HRESULT CBody_Player::Ready_Components()
 {
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
-        reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
-        reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
     return S_OK;
 }
  
-HRESULT Body_Player::Ready_SocketMatrices()
+HRESULT CBody_Player::Ready_SocketMatrices()
 {
     NULL_CHECK_RETURN(m_pShaderCom, E_FAIL);
 
@@ -119,14 +119,14 @@ HRESULT Body_Player::Ready_SocketMatrices()
     return S_OK;
 }
 
-HRESULT Body_Player::Bind_SR()
+HRESULT CBody_Player::Bind_SR()
 {
     // Combined된 월드행렬을 반환해야 한다 -> 부모의 행렬만 가져오게 되면 로컬 정점에서만 적용된 행렬을 가져오기 때문
     // 
     // FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pParentMatrix), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 
     const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
@@ -141,9 +141,9 @@ HRESULT Body_Player::Bind_SR()
     return S_OK;
 }
 
-Body_Player* Body_Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_Player* CBody_Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    Body_Player* pInstance = new Body_Player(pDevice, pContext);
+    CBody_Player* pInstance = new CBody_Player(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
@@ -154,9 +154,9 @@ Body_Player* Body_Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
     return pInstance;
 }
 
-GameObject* Body_Player::Clone(void* pArg)
+CGameObject* CBody_Player::Clone(void* pArg)
 {
-    Body_Player* pInstance = new Body_Player(*this);
+    CBody_Player* pInstance = new CBody_Player(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
@@ -167,7 +167,7 @@ GameObject* Body_Player::Clone(void* pArg)
     return pInstance;
 }
 
-void Body_Player::Free()
+void CBody_Player::Free()
 {
     __super::Free();
 

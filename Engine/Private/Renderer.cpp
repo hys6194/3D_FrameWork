@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 
-Renderer::Renderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CRenderer::CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : m_pDevice { pDevice }
     , m_pContext{ pContext }
 {
@@ -10,7 +10,7 @@ Renderer::Renderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     Safe_AddRef(m_pContext);
 }
 
-HRESULT Renderer::Initialize()
+HRESULT CRenderer::Initialize()
 {
     // 추후 후처리를 여기에서 작업할 예정
 
@@ -18,7 +18,7 @@ HRESULT Renderer::Initialize()
     return S_OK;
 }
 
-HRESULT Renderer::Add_RenderObject(RENDERERGROUP eRenderGroup, GameObject* pRenderObject)
+HRESULT CRenderer::Add_RenderObject(RENDERERGROUP eRenderGroup, CGameObject* pRenderObject)
 {
     if (eRenderGroup >= RENDER_END ||
         nullptr == pRenderObject)
@@ -31,7 +31,7 @@ HRESULT Renderer::Add_RenderObject(RENDERERGROUP eRenderGroup, GameObject* pRend
     return S_OK;
 }
 
-void Renderer::Draw()
+void CRenderer::Draw()
 {
     if (FAILED(Render_Priority()))
         return;
@@ -46,7 +46,7 @@ void Renderer::Draw()
         return;
 }
 
-void Renderer::Clear()
+void CRenderer::Clear()
 {
     for (size_t i = 0; i < RENDER_END; ++i)
     {
@@ -61,7 +61,7 @@ void Renderer::Clear()
     
 }
 
-HRESULT Renderer::Render_Priority()
+HRESULT CRenderer::Render_Priority()
 {
     for (auto& iter : m_listRenderer[RENDER_PRIORITY])
     {
@@ -75,7 +75,7 @@ HRESULT Renderer::Render_Priority()
     return S_OK;
 }
 
-HRESULT Renderer::Render_NonBlend()
+HRESULT CRenderer::Render_NonBlend()
 {
     for (auto& iter : m_listRenderer[RENDER_NONBLEND])
     {
@@ -89,7 +89,7 @@ HRESULT Renderer::Render_NonBlend()
     return S_OK;
 }
 
-HRESULT Renderer::Render_Blend()
+HRESULT CRenderer::Render_Blend()
 {
     for (auto& iter : m_listRenderer[RENDER_BLEND])
     {
@@ -103,7 +103,7 @@ HRESULT Renderer::Render_Blend()
     return S_OK;
 }
 
-HRESULT Renderer::Render_UI()
+HRESULT CRenderer::Render_UI()
 {
     for (auto& iter : m_listRenderer[RENDER_UI])
     {
@@ -117,9 +117,9 @@ HRESULT Renderer::Render_UI()
     return S_OK;
 }
 
-Renderer* Renderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CRenderer* CRenderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    Renderer* pInstance = new Renderer(pDevice, pContext);
+    CRenderer* pInstance = new CRenderer(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize()))
     {
@@ -130,7 +130,7 @@ Renderer* Renderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     return pInstance;
 }
 
-void Renderer::Free()
+void CRenderer::Free()
 {
     __super::Free();
 

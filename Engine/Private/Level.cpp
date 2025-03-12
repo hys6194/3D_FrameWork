@@ -1,31 +1,31 @@
 #include "Level.h"
 #include "GameInstance.h"
 
-Level::Level(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel::CLevel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
 	, m_pContext { pContext }
-	, m_pGameInstance{ GameInstance::GetInstance()}
+	, m_pGameInstance{ CGameInstance::GetInstance()}
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 	Safe_AddRef(m_pGameInstance); // Level에서 GameInstance를 받아와서 사용할 수 있어서 Level에 한꺼번에 상속
 }
 
-HRESULT Level::Initialize()
+HRESULT CLevel::Initialize()
 {
 	return S_OK;
 }
 
-void Level::Update(_float fTimeDelta)
+void CLevel::Update(_float fTimeDelta)
 {
 }
 
-HRESULT Level::Render()
+HRESULT CLevel::Render()
 {
 	return S_OK;
 }
 
-void Level::Free()
+void CLevel::Free()
 {
 	__super::Free();
 

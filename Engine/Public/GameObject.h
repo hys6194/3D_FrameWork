@@ -6,19 +6,19 @@ BEGIN(Engine)
 
 // 왜 ENGINE_DLL -> 게임 오브젝트들을 실질적으로 만드는 곳은 Client라서 DLL 내보내기 해야함
 
-class ENGINE_DLL GameObject abstract : public Base
+class ENGINE_DLL CGameObject abstract : public CBase
 {
 public:
-	typedef struct tagGameObjectDesc : public Transform::TRANSFORM_DESC
+	typedef struct tagGameObjectDesc : public CTransform::TRANSFORM_DESC
 	{
 		// 오브젝트의 이름
 		_tchar			szGameObjectTag[MAX_PATH];
 	}GAMEOBJECT_DESC;
 
 protected:
-	GameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	GameObject(const GameObject& Prototype);
-	virtual ~GameObject() = default;
+	CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CGameObject(const CGameObject& Prototype);
+	virtual ~CGameObject() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -35,7 +35,7 @@ public:
 	};
 
 public:
-	Transform* Get_Transform()
+	CTransform* Get_Transform()
 	{
 		return m_pTransformCom;
 	};
@@ -45,13 +45,13 @@ protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
-	class GameInstance*			m_pGameInstance = { nullptr };	
-	Transform*					m_pTransformCom = { nullptr };
+	class CGameInstance*			m_pGameInstance = { nullptr };	
+	CTransform*					m_pTransformCom = { nullptr };
 	_tchar						m_szGameObjectTag[MAX_PATH] = {};
 
 
 protected:
-	map<const _wstring, class Component*>			m_mapComponent;
+	map<const _wstring, class CComponent*>			m_mapComponent;
 
 protected:
 	// 왜 GameObject에 함수를 선언? 
@@ -61,13 +61,13 @@ protected:
 	// 
 	// 
 	HRESULT Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag,
-		Component** ppOut, const _wstring& strComponentTag, void* pArg = nullptr);
+		CComponent** ppOut, const _wstring& strComponentTag, void* pArg = nullptr);
 
 private:
 	HRESULT Set_TransformCom(void* pArg);
 
 public:
-	virtual GameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
 };
 

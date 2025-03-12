@@ -5,11 +5,11 @@
 
 BEGIN(Client)
 
-class Level_GamePlay final : public Level
+class CLevel_GamePlay final : public CLevel
 {
 private:
-	Level_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~Level_GamePlay() = default;
+	CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CLevel_GamePlay() = default;
 
 public:
 	virtual HRESULT Initialize() override;
@@ -24,7 +24,7 @@ public:
 	HRESULT Ready_Lights();
 
 public:
-	static Level_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;
 };
 

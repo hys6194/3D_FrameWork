@@ -1,12 +1,12 @@
 #include "State.h"
 #include "GameInstance.h"
 
-State::State(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner, GameInstance* pGameInstance)
+CState::CState(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner, CGameInstance* pGameInstance)
 	: m_pDevice{ pDevice }
 	, m_pContext { pContext }
 	, m_pOwner{ pOwner }
 	, m_pAnimOwner{ pAnimOwner}
-	, m_pGameInstance{ GameInstance::GetInstance()}
+	, m_pGameInstance{ CGameInstance::GetInstance()}
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
@@ -14,7 +14,7 @@ State::State(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* p
 }
 
 
-void State::Free()
+void CState::Free()
 {
 	__super::Free();
 

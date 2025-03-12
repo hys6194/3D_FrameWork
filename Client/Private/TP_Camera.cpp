@@ -4,22 +4,22 @@
 #include "GameObject.h"
 #include "Layer.h"
 
-TP_Camera::TP_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: Camera { pDevice, pContext }
+CTP_Camera::CTP_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CCamera { pDevice, pContext }
 {
 }
 
-TP_Camera::TP_Camera(const TP_Camera& Prototype)
-	: Camera { Prototype }
+CTP_Camera::CTP_Camera(const CTP_Camera& Prototype)
+	: CCamera { Prototype }
 {
 }
 
-HRESULT TP_Camera::Initialize_Prototype()
+HRESULT CTP_Camera::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT TP_Camera::Initialize(void* pArg)
+HRESULT CTP_Camera::Initialize(void* pArg)
 {
 	TP_CAMERA_DESC* pDesc = static_cast<TP_CAMERA_DESC*>(pArg);
 
@@ -36,46 +36,46 @@ HRESULT TP_Camera::Initialize(void* pArg)
 	return S_OK;
 }
 
-void TP_Camera::Priority_Update(_float fTimeDelta)
+void CTP_Camera::Priority_Update(_float fTimeDelta)
 {
-	_vector vPos = m_pPlayer->Get_Transform()->Get_State(Transform::STATE_POS);
+	_vector vPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
 	_vector vEye = XMVectorSetW(XMLoadFloat3(&m_vCamEye), 0.f) + vPos;
 	_vector vLook = vPos - vEye;
 
 	vLook = XMVector4Normalize(vLook);
 
-	m_pTransformCom->Set_State(Transform::STATE_POS, vEye);
-	m_pTransformCom->Set_State(Transform::STATE_LOOK, vLook);
+	m_pTransformCom->Set_State(CTransform::STATE_POS, vEye);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
 	//m_pTransformCom->LookAt(vLook);
 	 
 	__super::Renew_Matrices();
 }
 
-void TP_Camera::Update(_float fTimeDelta)
+void CTP_Camera::Update(_float fTimeDelta)
 {
 
 }
 
-void TP_Camera::Late_Update(_float fTimeDelta)
+void CTP_Camera::Late_Update(_float fTimeDelta)
 {
 	
 }
 
-HRESULT TP_Camera::Render()
+HRESULT CTP_Camera::Render()
 {
 	
 
 	return S_OK;
 }
 
-HRESULT TP_Camera::Ready_Components()
+HRESULT CTP_Camera::Ready_Components()
 {	
 	return S_OK;
 }
 
-TP_Camera* TP_Camera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CTP_Camera* CTP_Camera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	TP_Camera* pInstance = new TP_Camera(pDevice, pContext);
+	CTP_Camera* pInstance = new CTP_Camera(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -86,9 +86,9 @@ TP_Camera* TP_Camera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 	return pInstance;
 }
 
-GameObject* TP_Camera::Clone(void* pArg)
+CGameObject* CTP_Camera::Clone(void* pArg)
 {
-	TP_Camera* pInstance = new TP_Camera(*this);
+	CTP_Camera* pInstance = new CTP_Camera(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -99,7 +99,7 @@ GameObject* TP_Camera::Clone(void* pArg)
 	return pInstance;
 }
 
-void TP_Camera::Free()
+void CTP_Camera::Free()
 {
 	__super::Free();
 

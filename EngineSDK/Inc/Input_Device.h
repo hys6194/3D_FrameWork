@@ -5,7 +5,7 @@
 
 BEGIN(Engine)
 
-class  CInput_Device : public Base
+class  CInput_Device : public CBase
 {
 private:
 	CInput_Device(void);

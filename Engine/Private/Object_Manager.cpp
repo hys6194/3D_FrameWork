@@ -4,36 +4,36 @@
 #include "GameObject.h"
 #include "Layer.h"
 
-Object_Manager::Object_Manager()
-    : m_pGameInstance{ GameInstance::GetInstance() }
+CObject_Manager::CObject_Manager()
+    : m_pGameInstance{ CGameInstance::GetInstance() }
 {
     Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT Object_Manager::Initialize(_uint iNumLevel)
+HRESULT CObject_Manager::Initialize(_uint iNumLevel)
 {
     m_iNumLevels = iNumLevel;
 
-    m_pLayers = new map<const _wstring, Layer*>[m_iNumLevels];
+    m_pLayers = new map<const _wstring, CLayer*>[m_iNumLevels];
 
     return S_OK;
 }
 
-HRESULT Object_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg)
+HRESULT CObject_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
     if (iLevelIndex >= m_iNumLevels)
         return E_FAIL;
 
     // 복제할 원형 객체를 찾아서 복제해온다
-    GameObject* pGameObject = dynamic_cast<GameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, iPrototypeLevelIndex, strPrototypeTag, pArg));
+    CGameObject* pGameObject = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, iPrototypeLevelIndex, strPrototypeTag, pArg));
     if (nullptr == pGameObject)
         return E_FAIL;
 
-    Layer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+    CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
 
     if (nullptr == pLayer)
     {
-        pLayer = Layer::Create();
+        pLayer = CLayer::Create();
 
         pLayer->Add_GameObject(pGameObject);
 
@@ -45,7 +45,7 @@ HRESULT Object_Manager::Add_GameObject(_uint iPrototypeLevelIndex, const wstring
     return S_OK;
 }
 
-void Object_Manager::Priority_Update(_float fTimeDelta)
+void CObject_Manager::Priority_Update(_float fTimeDelta)
 {
     for (size_t i = 0; i < m_iNumLevels; i++)
     {
@@ -56,7 +56,7 @@ void Object_Manager::Priority_Update(_float fTimeDelta)
 
 }
 
-void Object_Manager::Update(_float fTimeDelta)
+void CObject_Manager::Update(_float fTimeDelta)
 {
     for (size_t i = 0; i < m_iNumLevels; i++)
     {
@@ -65,7 +65,7 @@ void Object_Manager::Update(_float fTimeDelta)
     }
 }
 
-void Object_Manager::Late_Update(_float fTimeDelta)
+void CObject_Manager::Late_Update(_float fTimeDelta)
 {
     for (size_t i = 0; i < m_iNumLevels; i++)
     {
@@ -74,7 +74,7 @@ void Object_Manager::Late_Update(_float fTimeDelta)
     }
 }
 
-void Object_Manager::Clear(_uint iLevelIndex)
+void CObject_Manager::Clear(_uint iLevelIndex)
 {
     if (iLevelIndex >= m_iNumLevels)
         return;
@@ -85,7 +85,7 @@ void Object_Manager::Clear(_uint iLevelIndex)
     m_pLayers[iLevelIndex].clear();
 }
 
-Layer* Object_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
+CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 {
     auto iter = m_pLayers[iLevelIndex].find(strLayerTag);
     
@@ -95,9 +95,9 @@ Layer* Object_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag
     return iter->second;
 }
 
-GameObject* Object_Manager::Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag)
+CGameObject* CObject_Manager::Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag)
 {
-    GameObject* pGameObeject = Find_Layer(iLevelIndex, strLayerTag)->Find_Object(strObjectTag);
+    CGameObject* pGameObeject = Find_Layer(iLevelIndex, strLayerTag)->Find_Object(strObjectTag);
     
     if(nullptr == pGameObeject)
         return nullptr;
@@ -105,9 +105,9 @@ GameObject* Object_Manager::Get_GameObject(_uint iLevelIndex, const _wstring& st
     return pGameObeject;
 }
 
-Object_Manager* Object_Manager::Create(_uint iNumLevels)
+CObject_Manager* CObject_Manager::Create(_uint iNumLevels)
 {
-    Object_Manager* pInstance = new Object_Manager();
+    CObject_Manager* pInstance = new CObject_Manager();
 
     if (FAILED(pInstance->Initialize(iNumLevels)))
     {
@@ -118,7 +118,7 @@ Object_Manager* Object_Manager::Create(_uint iNumLevels)
     return pInstance;
 }
 
-void Object_Manager::Free()
+void CObject_Manager::Free()
 {
     __super::Free();
 

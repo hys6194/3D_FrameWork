@@ -6,21 +6,21 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL State abstract: public Base
+class ENGINE_DLL CState abstract: public CBase
 {
 protected:
-	State(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner, GameInstance* pGameInstance);
-	virtual ~State() = default;
+	CState(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner, CGameInstance* pGameInstance);
+	virtual ~CState() = default;
 
 public:
-	void Set_Owner(GameObject* _pOwner)
+	void Set_Owner(CGameObject* _pOwner)
 	{
 		m_pOwner = _pOwner;
 		Safe_AddRef(m_pOwner);
 	};
 
 public:
-	GameObject* Get_Owner()
+	CGameObject* Get_Owner()
 	{
 		return m_pOwner;
 	};
@@ -37,16 +37,16 @@ public:
 	virtual void Set_CurAnimation() = 0;
 
 protected:
-	_uint						m_iState = {};
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
 	_bool						m_bIsInter = { true };
+	_uint 						m_iState = {};
 
-	GameObject*					m_pOwner = { nullptr };
-	GameObject*					m_pAnimOwner = { nullptr };
+	CGameObject*					m_pOwner = { nullptr };
+	CGameObject*					m_pAnimOwner = { nullptr };
 
-	GameInstance*				m_pGameInstance = { nullptr };
+	CGameInstance*				m_pGameInstance = { nullptr };
 
 public:
 	virtual void Free() override;

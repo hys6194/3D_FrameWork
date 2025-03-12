@@ -4,31 +4,31 @@
 #include "PartObject.h"
 
 BEGIN(Engine)
-class Shader;
-class Model;
+class CShader;
+class CModel;
 END
 
 
 BEGIN(Client)
 
-class Body_Player final : public PartObject
+class CBody_Player final : public CPartObject
 {
 public:
-	typedef struct tagBodyPlayerDesc : public PartObject::PARTOBJ_DESC
+	typedef struct tagBodyPlayerDesc : public CPartObject::PARTOBJ_DESC
 	{
 		const _uint* pTargetState = { nullptr };
 	}BODY_PLAYER_DESC;
 
 private:
-	Body_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Body_Player(const Body_Player& Prototype);
-	virtual ~Body_Player() = default;
+	CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CBody_Player(const CBody_Player& Prototype);
+	virtual ~CBody_Player() = default;
 
 public:
 	const _float4x4*	Get_f4SocketMatrix(const _wstring& strSocketName);
 
 public:
-	Model* Get_Model() { return m_pModelCom; };
+	CModel* Get_Model() { return m_pModelCom; };
    
 public:
 	virtual HRESULT		Initialize_Prototype() override;
@@ -39,13 +39,13 @@ public:
 	virtual HRESULT		Render() override;
 
 private:
-	Shader*									m_pShaderCom = { nullptr };
-	Model*									m_pModelCom = { nullptr };
-	GameObject*								m_pOwner = { nullptr };
+	CShader*									m_pShaderCom = { nullptr };
+	CModel*										m_pModelCom = { nullptr };
+	CGameObject*								m_pOwner = { nullptr };
 
 private:
-	const _uint*							m_pTargetState = { nullptr };				// 플레이어의 상태를 가져와서 애니메이션의 상태를 변경하려고 함
-	map<const _wstring, const _float4x4*>	m_mapSocketmat;   // 특정 뼈들의 매트릭스를 가지고 있는 map
+	const _uint*								m_pTargetState = { nullptr };				// 플레이어의 상태를 가져와서 애니메이션의 상태를 변경하려고 함
+	map<const _wstring, const _float4x4*>		m_mapSocketmat;   // 특정 뼈들의 매트릭스를 가지고 있는 map
 
 private:
 	HRESULT				Ready_Components();
@@ -53,8 +53,8 @@ private:
 	HRESULT				Bind_SR();
 
 public:
-	static Body_Player* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual GameObject* Clone(void* pArg);
+	static CBody_Player* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject* Clone(void* pArg);
 	virtual void		Free() override;
 };
 

@@ -1,12 +1,12 @@
 #include "VIBuffer.h"
 
-VIBuffer::VIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: Component{ pDevice, pContext }
+CVIBuffer::CVIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CComponent{ pDevice, pContext }
 {
 }
 
-VIBuffer::VIBuffer(const VIBuffer& Prototype)
-	: Component{ Prototype }
+CVIBuffer::CVIBuffer(const CVIBuffer& Prototype)
+	: CComponent{ Prototype }
 	, m_pVB{ Prototype.m_pVB }
 	, m_pIB{ Prototype.m_pIB }
 	, m_iVertexStride{ Prototype.m_iVertexStride }
@@ -21,17 +21,17 @@ VIBuffer::VIBuffer(const VIBuffer& Prototype)
 	Safe_AddRef(m_pIB);
 }
 
-HRESULT VIBuffer::Initialize_Prototype()
+HRESULT CVIBuffer::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT VIBuffer::Initialize(void* pArg)
+HRESULT CVIBuffer::Initialize(void* pArg)
 {
 	return S_OK;
 }
 
-HRESULT VIBuffer::Render()
+HRESULT CVIBuffer::Render()
 {
 	if (nullptr == m_pContext)
 		return E_FAIL;
@@ -41,7 +41,7 @@ HRESULT VIBuffer::Render()
 	return S_OK;
 }
 
-HRESULT VIBuffer::Bind_Input_Assembler()
+HRESULT CVIBuffer::Bind_Input_Assembler()
 {
 	// 본래 렌더에서 호출하던 코드들이었음
 	// 왜 분리하였는가?
@@ -74,12 +74,12 @@ HRESULT VIBuffer::Bind_Input_Assembler()
 	return S_OK;
 }
 
-HRESULT VIBuffer::Create_Buffer(ID3D11Buffer** ppOut)
+HRESULT CVIBuffer::Create_Buffer(ID3D11Buffer** ppOut)
 {
 	return m_pDevice->CreateBuffer(&m_BufferDesc, &m_InitialData, ppOut);
 }
 
-void VIBuffer::Free()
+void CVIBuffer::Free()
 {
 	__super::Free();
 

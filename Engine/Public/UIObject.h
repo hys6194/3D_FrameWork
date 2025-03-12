@@ -7,19 +7,19 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL UIObject abstract : public GameObject
+class ENGINE_DLL CUIObject abstract : public CGameObject
 {
 public:
-	typedef struct tagUIObjectDesc : public GameObject::GAMEOBJECT_DESC
+	typedef struct tagUIObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
 		// 화면에 띄울 좌표와 텍스쳐의 사이즈 x,y값
 		_float		fX, fY, fSizeX, fSizeY;
 	}UIOBJECT_DESC;
 
 protected:
-	UIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	UIObject(const UIObject& Prototype);
-	virtual ~UIObject() = default;
+	CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CUIObject(const CUIObject& Prototype);
+	virtual ~CUIObject() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -38,7 +38,7 @@ protected:
 	_float4x4				m_ViewMatrix{}, m_ProjMatrix{};
 
 public:
-	virtual GameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
 
 };

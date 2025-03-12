@@ -12,13 +12,13 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL GameInstance final : public Base
+class ENGINE_DLL CGameInstance final : public CBase
 {
-	DECLARE_SINGLETON(GameInstance)
+	DECLARE_SINGLETON(CGameInstance)
 
 private:
-	GameInstance();
-	virtual ~GameInstance() = default;
+	CGameInstance();
+	virtual ~CGameInstance() = default;
 
 public:
 	HRESULT				Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext);
@@ -70,35 +70,35 @@ public:
 #pragma endregion
 
 #pragma region LEVEL_MANAGER
-	HRESULT				Open_Level(_uint iLevelIndex, class Level* pNewLevel);
+	HRESULT				Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
-	HRESULT				Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, Base* pPrototype);
+	HRESULT				Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CBase* pPrototype);
 
 	// 왜 pArg = nullptr로 디폴트 인자값으로? -> pArg가 필요할 수도 없을수도 있기 때문에
-	Base*				Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
+	CBase*				Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
 #pragma endregion
 
 #pragma region Object_MANAGER
 	HRESULT				Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
-	class Layer*		Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
-	GameObject*			Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
+	class CLayer*		Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
+	CGameObject*			Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
 #pragma endregion
 
 #pragma region RENDERER
-	HRESULT				Add_RenderObject(Renderer::RENDERERGROUP eRenderGroupID, class GameObject* pRenderObject);
+	HRESULT				Add_RenderObject(CRenderer::RENDERERGROUP eRenderGroupID, class CGameObject* pRenderObject);
 #pragma endregion
 
 #pragma region PIPELINE
-	const _float4x4*	Get_Transform_Float4x4(PipeLine::TRANSFORMSTATE eState);
-	_matrix				Get_Transform_Matrix(PipeLine::TRANSFORMSTATE eState);
-	const _float4x4*	Get_Transform_Inverse_Float4x4(PipeLine::TRANSFORMSTATE eState) const;
-	_matrix				Get_Transform_Inverse_Matrix(PipeLine::TRANSFORMSTATE eState) const;
+	const _float4x4*	Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE eState);
+	_matrix				Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE eState);
+	const _float4x4*	Get_Transform_Inverse_Float4x4(CPipeLine::TRANSFORMSTATE eState) const;
+	_matrix				Get_Transform_Inverse_Matrix(CPipeLine::TRANSFORMSTATE eState) const;
 	const _float4*		Get_CamPosition() const;
-	void				Set_Transform(PipeLine::TRANSFORMSTATE eState, _fmatrix Matrix);
-	void				Set_Transform(PipeLine::TRANSFORMSTATE eState, const _float4x4* pMatrix);
-	HRESULT				Bind_VP_Transform_SR(const _char* pConstantName, Shader* pShader, PipeLine::TRANSFORMSTATE eState);
+	void				Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix);
+	void				Set_Transform(CPipeLine::TRANSFORMSTATE eState, const _float4x4* pMatrix);
+	HRESULT				Bind_VP_Transform_SR(const _char* pConstantName, CShader* pShader, CPipeLine::TRANSFORMSTATE eState);
 #pragma endregion
 
 
@@ -113,12 +113,12 @@ private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
 	class CInput_Device*			m_pInput_Device = { nullptr };
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
-	class Level_Manager*			m_pLevel_Manager = { nullptr };
-	class Prototype_Manager*		m_pPrototype_Manager = { nullptr };
-	class Object_Manager*			m_pObject_Manager = { nullptr };
-	class Renderer*					m_pRenderer = { nullptr };	
-	class PipeLine*					m_pPipeLine = { nullptr };
-	class Light_Manager*			m_pLight_Manager = { nullptr };
+	class CLevel_Manager*			m_pLevel_Manager = { nullptr };
+	class CPrototype_Manager*		m_pPrototype_Manager = { nullptr };
+	class CObject_Manager*			m_pObject_Manager = { nullptr };
+	class CRenderer*				m_pRenderer = { nullptr };	
+	class CPipeLine*				m_pPipeLine = { nullptr };
+	class CLight_Manager*			m_pLight_Manager = { nullptr };
 	class CImGui_Manager*			m_pImGui_Manager = { nullptr };
 
 public:	

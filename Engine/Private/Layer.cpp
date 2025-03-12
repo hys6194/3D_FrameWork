@@ -2,36 +2,36 @@
 
 #include "GameObject.h"
 
-Layer::Layer()
+CLayer::CLayer()
 {
 }
 
-HRESULT Layer::Add_GameObject(GameObject* pGameObject)
+HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 {
 	m_GameObjects.push_back(pGameObject);
 
     return S_OK;
 }
 
-void Layer::Priority_Update(_float fTimeDelta)
+void CLayer::Priority_Update(_float fTimeDelta)
 {
 	for (auto& pGameObject : m_GameObjects)
 		pGameObject->Priority_Update(fTimeDelta);
 }
 
-void Layer::Update(_float fTimeDelta)
+void CLayer::Update(_float fTimeDelta)
 {
 	for (auto& pGameObject : m_GameObjects)
 		pGameObject->Update(fTimeDelta);
 }
 
-void Layer::Late_Update(_float fTimeDelta)
+void CLayer::Late_Update(_float fTimeDelta)
 {
 	for (auto& pGameObject : m_GameObjects)
 		pGameObject->Late_Update(fTimeDelta);
 }
 
-GameObject* Layer::Find_Object(const _tchar* strObjectTag)
+CGameObject* CLayer::Find_Object(const _tchar* strObjectTag)
 {
 	for (auto& iter : m_GameObjects)
 	{
@@ -42,12 +42,12 @@ GameObject* Layer::Find_Object(const _tchar* strObjectTag)
 	return nullptr;
 }
 
-Layer* Layer::Create()
+CLayer* CLayer::Create()
 {
-	return new Layer;
+	return new CLayer;
 }
 
-void Layer::Free()
+void CLayer::Free()
 {
 
  	__super::Free();

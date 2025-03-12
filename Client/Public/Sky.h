@@ -4,19 +4,19 @@
 #include "GameObject.h"
 
 BEGIN(Engine)
-class Shader;
-class Texture;
-class VIBuffer_Cube;
+class CShader;
+class CTexture;
+class CVIBuffer_Cube;
 END
 
 BEGIN(Client)
 
-class Sky final : public GameObject
+class CSky final : public CGameObject
 {
 private:
-	Sky(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Sky(const Sky& Prototype);
-	virtual ~Sky() = default;
+	CSky(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CSky(const CSky& Prototype);
+	virtual ~CSky() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -27,9 +27,9 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	Shader* m_pShaderCom = { nullptr };
-	Texture* m_pTextureCom = { nullptr };
-	VIBuffer_Cube* m_pVIBufferCom = { nullptr };
+	CShader* m_pShaderCom = { nullptr };
+	CTexture* m_pTextureCom = { nullptr };
+	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
 
 private:
 	HRESULT Ready_Components();
@@ -37,8 +37,8 @@ private:
 
 
 public:
-	static Sky* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual GameObject* Clone(void* pArg);
+	static CSky* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 };
 

@@ -1,13 +1,13 @@
 #include "Shader.h"
 
-Shader::Shader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : Component{ pDevice, pContext }
+CShader::CShader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CComponent{ pDevice, pContext }
 {
 
 }
 
-Shader::Shader(const Shader& Prototype)
-    : Component{ Prototype }
+CShader::CShader(const CShader& Prototype)
+    : CComponent{ Prototype }
     , m_pEffect{ Prototype.m_pEffect }
     , m_iNumPasses{ Prototype.m_iNumPasses }
     , m_InputLayouts{ Prototype.m_InputLayouts }
@@ -19,7 +19,7 @@ Shader::Shader(const Shader& Prototype)
 
 }
 
-HRESULT Shader::Initialize_Prototype(const _tchar* pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElements)
+HRESULT CShader::Initialize_Prototype(const _tchar* pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElements)
 {
     _uint       iHlslFlag = {};
 
@@ -70,12 +70,12 @@ HRESULT Shader::Initialize_Prototype(const _tchar* pShaderFilePath, const D3D11_
     return S_OK;
 }
 
-HRESULT Shader::Initialize(void* pArg)
+HRESULT CShader::Initialize(void* pArg)
 {
     return S_OK;
 }
 
-HRESULT Shader::Begin(_uint iPassIndex)
+HRESULT CShader::Begin(_uint iPassIndex)
 {
 
     if (iPassIndex >= m_iNumPasses)
@@ -93,7 +93,7 @@ HRESULT Shader::Begin(_uint iPassIndex)
     return S_OK;
 }
 
-HRESULT Shader::Bind_RawValue(const _char* pConstantName, const void* pData, _uint iLength)
+HRESULT CShader::Bind_RawValue(const _char* pConstantName, const void* pData, _uint iLength)
 {
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
     if (nullptr == pVariable)
@@ -102,7 +102,7 @@ HRESULT Shader::Bind_RawValue(const _char* pConstantName, const void* pData, _ui
     return pVariable->SetRawValue(pData, 0, iLength);
 }
 
-HRESULT Shader::Bind_Matrix(const _char* pConstantName, const _float4x4* pMatrix)
+HRESULT CShader::Bind_Matrix(const _char* pConstantName, const _float4x4* pMatrix)
 {
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
     if (nullptr == pVariable)
@@ -115,7 +115,7 @@ HRESULT Shader::Bind_Matrix(const _char* pConstantName, const _float4x4* pMatrix
     return pMatrixVariable->SetMatrix(reinterpret_cast<const _float*>(pMatrix));
 }
 
-HRESULT Shader::Bind_Matrices(const _char* pConstantName, const _float4x4* pMatrix, _uint iNumMatrix)
+HRESULT CShader::Bind_Matrices(const _char* pConstantName, const _float4x4* pMatrix, _uint iNumMatrix)
 {
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
     if (nullptr == pVariable)
@@ -129,7 +129,7 @@ HRESULT Shader::Bind_Matrices(const _char* pConstantName, const _float4x4* pMatr
 }
 
 
-HRESULT Shader::Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* pSRV)
+HRESULT CShader::Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* pSRV)
 {
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
     if (nullptr == pVariable)
@@ -142,9 +142,9 @@ HRESULT Shader::Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* p
     return pSRVariable->SetResource(pSRV);
 }
 
-Shader* Shader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElements)
+CShader* CShader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElements)
 {
-    Shader* pInstance = new Shader(pDevice, pContext);
+    CShader* pInstance = new CShader(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype(pShaderFilePath, pElements, iNumElements)))
     {
@@ -155,9 +155,9 @@ Shader* Shader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, con
     return pInstance;
 }
 
-Component* Shader::Clone(void* pArg)
+CComponent* CShader::Clone(void* pArg)
 {
-    Shader* pInstance = new Shader(*this);
+    CShader* pInstance = new CShader(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
@@ -169,7 +169,7 @@ Component* Shader::Clone(void* pArg)
 }
 
 
-void Shader::Free()
+void CShader::Free()
 {
     __super::Free();
 

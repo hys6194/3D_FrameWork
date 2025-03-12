@@ -3,22 +3,22 @@
 
 #include "Player.h"
 
-Gun_Left::Gun_Left(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : PartObject{ pDevice, pContext }
+CGun_Left::CGun_Left(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CPartObject{ pDevice, pContext }
 {
 }
 
-Gun_Left::Gun_Left(const Gun_Left& Prototype)
-    : PartObject{ Prototype }
+CGun_Left::CGun_Left(const CGun_Left& Prototype)
+    : CPartObject{ Prototype }
 {
 }
 
-HRESULT Gun_Left::Initialize_Prototype()
+HRESULT CGun_Left::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT Gun_Left::Initialize(void* pArg)
+HRESULT CGun_Left::Initialize(void* pArg)
 {
     NULL_CHECK_RETURN(pArg, E_FAIL);
 
@@ -32,7 +32,7 @@ HRESULT Gun_Left::Initialize(void* pArg)
 
     //m_pTransformCom->SetUp_Scaled(0.1f, 0.1f, 0.1f);
     //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-    //m_pTransformCom->Set_State(Transform::STATE_POS, XMVectorSet(0.7f, 0.f, 0.f, 1.f));
+    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(0.7f, 0.f, 0.f, 1.f));
 
     // 포켓안에 있을 때
     //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
@@ -42,16 +42,16 @@ HRESULT Gun_Left::Initialize(void* pArg)
     return S_OK;
 }
 
-void Gun_Left::Priority_Update(_float fTimeDelta)
+void CGun_Left::Priority_Update(_float fTimeDelta)
 {
     //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
     //m_pTransformCom->Rotation(AXIS_X, XMConvertToRadians(90.f));
     //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
-    m_pTransformCom->Set_State(Transform::STATE_POS, XMVectorSet(19.f, -5.f, -12.5f, 1.f));
+    m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(19.f, -5.f, -12.5f, 1.f));
 
 }
 
-void Gun_Left::Update(_float fTimeDelta)
+void CGun_Left::Update(_float fTimeDelta)
 {
     _matrix matSocket = XMLoadFloat4x4(m_pHandMatrix);
 
@@ -72,13 +72,13 @@ void Gun_Left::Update(_float fTimeDelta)
 
 }
 
-void Gun_Left::Late_Update(_float fTimeDelta)
+void CGun_Left::Late_Update(_float fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(Renderer::RENDER_NONBLEND, this);
+    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
 }
 
-HRESULT Gun_Left::Render()
+HRESULT CGun_Left::Render()
 {
     if (FAILED(Bind_SR()))
         return E_FAIL;
@@ -103,25 +103,25 @@ HRESULT Gun_Left::Render()
     return S_OK;
 }
 
-HRESULT Gun_Left::Ready_Components()
+HRESULT CGun_Left::Ready_Components()
 {
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_LGUN,
-        reinterpret_cast<Component**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
-        reinterpret_cast<Component**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
     return S_OK;
 }
 
-HRESULT Gun_Left::Bind_SR()
+HRESULT CGun_Left::Bind_SR()
 {
     // Combined된 월드행렬을 반환해야 한다
     // 
     //FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pParentMatrix), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, PipeLine::D3DTS_VIEW), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, PipeLine::D3DTS_PROJ), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 
     const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
@@ -136,9 +136,9 @@ HRESULT Gun_Left::Bind_SR()
     return S_OK;
 }
 
-Gun_Left* Gun_Left::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CGun_Left* CGun_Left::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    Gun_Left* pInstance = new Gun_Left(pDevice, pContext);
+    CGun_Left* pInstance = new CGun_Left(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
@@ -149,9 +149,9 @@ Gun_Left* Gun_Left::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     return pInstance;
 }
 
-GameObject* Gun_Left::Clone(void* pArg)
+CGameObject* CGun_Left::Clone(void* pArg)
 {
-    Gun_Left* pInstance = new Gun_Left(*this);
+    CGun_Left* pInstance = new CGun_Left(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
@@ -162,7 +162,7 @@ GameObject* Gun_Left::Clone(void* pArg)
     return pInstance;
 }
 
-void Gun_Left::Free()
+void CGun_Left::Free()
 {
     __super::Free();
 

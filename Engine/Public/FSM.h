@@ -5,25 +5,25 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL FSM : public Component
+class ENGINE_DLL CFSM : public CComponent
 {
 protected:
-	FSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	FSM(const FSM& Prototype);
-	virtual ~FSM() = default;
+	CFSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CFSM(const CFSM& Prototype);
+	virtual ~CFSM() = default;
 
 public:
 	HRESULT Initialize_Prototype();
 	HRESULT Initialize(void* pArg);
 
 public:
-	HRESULT Add_State(const _uint& iState, class State* pState);
+	HRESULT Add_State(const _uint& iState, class CState* pState);
 	// 
 	void	PriUpdate_State(_float fTimeDelta);
 	void	Update_State(_float fTimeDelta);
 	void	LateUpdate_State(_float fTimeDelta);
 
-	State*	Find_State(const _uint& iState);
+	CState*	Find_State(const _uint& iState);
 	HRESULT	Delete_State();
 
 public:
@@ -31,16 +31,16 @@ public:
 
 
 private:
-	map<const _uint, class State*>	m_mapFSM;
+	map<const _uint, class CState*>	m_mapFSM;
 	_uint							m_iCurrentState = {0};
 	_uint							m_iPreState = {0};
-	State*							m_pCurrentState;
-	//GameObject*						m_pOwner;
+	CState*							m_pCurrentState;
+	//CGameObject*						m_pOwner;
 
 
 public:
-	static FSM* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual Component* Clone(void* pArg = nullptr);
+	static CFSM* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CComponent* Clone(void* pArg = nullptr);
 	virtual void Free() override;
 
 };

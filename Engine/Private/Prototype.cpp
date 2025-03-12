@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "Component.h"
 
-Prototype_Manager::Prototype_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CPrototype_Manager::CPrototype_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
 	, m_pContext{ pContext }
 {
@@ -11,7 +11,7 @@ Prototype_Manager::Prototype_Manager(ID3D11Device* pDevice, ID3D11DeviceContext*
 	Safe_AddRef(m_pContext);
 }
 
-HRESULT Prototype_Manager::Initialize(_uint iNumLevels)
+HRESULT CPrototype_Manager::Initialize(_uint iNumLevels)
 {
 	m_iNumLevels = iNumLevels;
 
@@ -20,7 +20,7 @@ HRESULT Prototype_Manager::Initialize(_uint iNumLevels)
 	return S_OK;
 }
 
-HRESULT Prototype_Manager::Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, Base* pPrototype)
+HRESULT CPrototype_Manager::Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CBase* pPrototype)
 {
 	//m_iNumLevels = iNumLevels;
 
@@ -38,27 +38,27 @@ HRESULT Prototype_Manager::Add_Prototype(_uint iLevelIndex, const wstring& strPr
 	return S_OK;
 }
 
-Base* Prototype_Manager::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
+CBase* CPrototype_Manager::Clone_Prototype(PROTOTYPE ePrototype, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
 {
  	if (iLevelIndex >= m_iNumLevels)
 		return nullptr;
 
-	Base* pPrototype = Find_Prototype(iLevelIndex, strPrototypeTag);
+	CBase* pPrototype = Find_Prototype(iLevelIndex, strPrototypeTag);
 	if(nullptr == pPrototype)
 		return nullptr;
 
-	Base* pObject = { nullptr };
+	CBase* pObject = { nullptr };
 
 	if (PROTOTYPE::TYPE_GAMEOBJECT == ePrototype)
-		pObject = dynamic_cast<GameObject*>(pPrototype)->Clone(pArg);
+		pObject = dynamic_cast<CGameObject*>(pPrototype)->Clone(pArg);
 	else
-		pObject = dynamic_cast<Component*>(pPrototype)->Clone(pArg);
+		pObject = dynamic_cast<CComponent*>(pPrototype)->Clone(pArg);
 
 	return pObject;
 
 }
 
-void Prototype_Manager::Clear(_uint iLevelIndex)
+void CPrototype_Manager::Clear(_uint iLevelIndex)
 {
 	if (iLevelIndex >= m_iNumLevels)
 		return;
@@ -69,7 +69,7 @@ void Prototype_Manager::Clear(_uint iLevelIndex)
 	m_pPrototype[iLevelIndex].clear();
 }
 
-Base* Prototype_Manager::Find_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag)
+CBase* CPrototype_Manager::Find_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag)
 {
 	auto iter = m_pPrototype[iLevelIndex].find(strPrototypeTag);
 	
@@ -79,9 +79,9 @@ Base* Prototype_Manager::Find_Prototype(_uint iLevelIndex, const wstring& strPro
 	return iter->second;
 }
 
-Prototype_Manager* Prototype_Manager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevels)
+CPrototype_Manager* CPrototype_Manager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevels)
 {
-	Prototype_Manager* pInstance = new Prototype_Manager(pDevice, pContext);
+	CPrototype_Manager* pInstance = new CPrototype_Manager(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(iNumLevels)))
 	{
@@ -92,7 +92,7 @@ Prototype_Manager* Prototype_Manager::Create(ID3D11Device* pDevice, ID3D11Device
 	return pInstance;
 }
 
-void Prototype_Manager::Free()
+void CPrototype_Manager::Free()
 {
 	__super::Free();
 

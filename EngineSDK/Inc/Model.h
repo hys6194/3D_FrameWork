@@ -2,16 +2,17 @@
 
 #include "Component.h"
 #include "Animation.h"
+#include "Bone.h"
 
 
 BEGIN(Engine)
 
-class ENGINE_DLL Model final : public Component
+class ENGINE_DLL CModel final : public CComponent
 {
 private:
-	Model(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Model(const Model& Prototype);
-	virtual ~Model() = default;
+	CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CModel(const CModel& Prototype);
+	virtual ~CModel() = default;
 
 public:
 	_uint Get_NumMeshes() const {
@@ -24,6 +25,21 @@ public:
 
 	const _bool Get_Interpolate() {
 		return m_bIsInter;
+	}
+
+	const vector<_float4> Get_DeltaVector()
+	{
+		return m_vecBone[2]->Get_DeltaVector();
+	}
+
+	const _float4 Get_Delta()
+	{
+		return m_vecBone[2]->Get_Delta();
+	}
+
+	const void Reset_Delta()
+	{
+		m_vecBone[2]->Reset_Delta();
 	}
 
 	const _float Get_CurAnimationDuration()
@@ -39,31 +55,30 @@ public:
 
 public:
 	//재생하려고 하는 애니메이션, 루프, 보간
-	void Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop = false, _bool IsInter = true);
-	void Set_Interpolate(_bool bIsInter);
+	void								Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop = false, _bool IsInter = true);
+	void								Set_Interpolate(_bool bIsInter);
 
 public:
-	void Set_PreAnimation(_uint iPreAnimationIndex);
+	void								Set_PreAnimation(_uint iPreAnimationIndex);
 
 public:
-	void Interpolate_Animation(_float fRatio = 0.f);
-	void Play_RootAnimation(_float fTimeDelta);
+	void								Interpolate_Animation(_float fRatio = 0.1f);
 
 public:
-	virtual HRESULT Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
-	virtual HRESULT Initialize(void* pArg) override;
-	virtual HRESULT Render(_uint iMeshIndex);
+	virtual HRESULT						Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
+	virtual HRESULT						Initialize(void* pArg) override;
+	virtual HRESULT						Render(_uint iMeshIndex);
 
 public:
-	_bool	Play_Animation(_float fTimeDelta, GameObject* pObject = nullptr);
+	_bool								Play_Animation(_float fTimeDelta, CGameObject* pObject = nullptr);
 
 public:
-	void	Reset_PreAnimation();
+	void								Reset_PreAnimation();
 
 
 public:
-	HRESULT Bind_Material(class Shader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
-	HRESULT Bind_BoneMatrix(class Shader* pShader, const _char* pConstantName, _uint iMeshIndex);
+	HRESULT								Bind_Material(class CShader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
+	HRESULT								Bind_BoneMatrix(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
 
 
 private:
@@ -73,19 +88,19 @@ private:
 	_float4x4							m_PreTransformMatrix = {};
 
 	_uint								m_iNumMeshes = { };
-	vector<class Mesh*>					m_vecMesh;
+	vector<class CMesh*>					m_vecMesh;
 
 	_uint								m_iNumMaterials = {};
-	vector<class MeshMaterial*>			m_vecMaterial;
+	vector<class CMeshMaterial*>			m_vecMaterial;
 
-	vector<class Bone*>					m_vecBone;
+	vector<class CBone*>				m_vecBone;
 
 	_bool								m_bIsLoop = { false };
-	_bool								m_bIsInter = { true };
+	_bool								m_bIsInter = { false };
 	_bool								m_bIsLoot = { false };
 	_int								m_iCurrentAnimationIndex = { -1 };
 	_uint								m_iNumAnimations = {};
-	vector<class Animation*>			m_Animations;
+	vector<class CAnimation*>			m_Animations;
 
 	// 애니메이션의 현재 재생위치
 	vector<_float>						m_vecCurrentTrackPosition = {};
@@ -93,34 +108,34 @@ private:
 	// 채널에서의 현재 키프레임의 정보 위치
 	vector<vector<_uint>>				m_vecKeyFrameIndex;
 
-	_uint								m_iPreAnimationIndex = { 0 };
+	_uint								m_iPreAnimationIndex = {};
 
-	_uint								m_iPreKeyFrameIndex = { 0 };
-	_uint								m_iCurKeyFrameIndex = { 0 };
+	_uint								m_iPreKeyFrameIndex = {};
+	_uint								m_iCurKeyFrameIndex = {};
 
-	_float								m_fPreTrackPos = { 0 };
-	_float								m_fCurTrackPos = { 0 };
+	_float								m_fPreTrackPos = {};
+	_float								m_fCurTrackPos = {};
 	_float								m_fRatio = { 0.f };
 
-	_uint								m_iNumBone = { 0 };
+	_uint								m_iNumBone = {};
 
-	vector<class Channel*>				m_pPreChannel;
-	vector<class Channel*>				m_pCurChannel;
-	vector<class Channel*>				m_pRootChannel;
+	vector<class CChannel*>				m_pPreChannel;
+	vector<class CChannel*>				m_pCurChannel;
+	vector<class CChannel*>				m_pRootChannel;
 
 	KEYFRAME							m_pPreKeyFrame = { };
 	KEYFRAME							m_pCurKeyFrame = { };
 
 private:
-	HRESULT Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);
-	HRESULT Ready_Meshes();
-	HRESULT Ready_Materials(const _char* pModelFilePath);
-	HRESULT Ready_Animations();
+	HRESULT								Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);
+	HRESULT								Ready_Meshes();
+	HRESULT								Ready_Materials(const _char* pModelFilePath);
+	HRESULT								Ready_Animations();
 
 public:
-	static Model* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity());
-	virtual Component* Clone(void* pArg) override;
-	virtual void Free();
+	static CModel*						Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity());
+	virtual CComponent*					Clone(void* pArg) override;
+	virtual void						Free();
 };
 
 END

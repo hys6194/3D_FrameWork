@@ -4,40 +4,40 @@
 #include "State.h"
 
 BEGIN(Engine)
-class Shader;
-class Model;
+class CShader;
+class CModel;
 END
 
 BEGIN(Client)
 
-class StrifeState_Run : public State
+class CStrifeState_Run : public CState
 {
 private:
-	StrifeState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner, GameObject* pAnimOwner);
-	virtual ~StrifeState_Run() = default;
+								CStrifeState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	virtual						~CStrifeState_Run() = default;
 public:
-	virtual HRESULT Enter_State();
-	virtual void PriorityUpdate_State(_float fTimeDelta);
-	virtual void Update_State(_float fTimeDelta);
-	virtual void LateUpdate_State(_float fTimeDelta);
-	virtual HRESULT Exit_State();
+	virtual HRESULT				Enter_State();
+	virtual void				PriorityUpdate_State(_float fTimeDelta);
+	virtual void				Update_State(_float fTimeDelta);
+	virtual void				LateUpdate_State(_float fTimeDelta);
+	virtual HRESULT				Exit_State();
 	
 public:
-	virtual void Set_CurAnimation();
-	virtual void Update_Animation(_float fTimeDelta);
-	virtual void Set_PreAnimation();
+	virtual void				Set_CurAnimation();
+	virtual void				Update_Animation(_float fTimeDelta);
+	virtual void				Set_PreAnimation();
 
 private:
-	Model*			m_pModelCom = { nullptr };
-	_uint			m_iKeyState = { 0 };
+	CModel*						m_pModelCom = { nullptr };
+	_uint						m_iKeyState = {};
 
 
-
-	//class GameInstance* m_pGameInstance;
+private:
+	void						PlayerMove(_float fTimeDelta);
 
 public:
-	static StrifeState_Run* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, GameObject* pOwner,GameObject* pAnimOwner);
-	virtual void Free() override;
+	static CStrifeState_Run*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner,CGameObject* pAnimOwner);
+	virtual void				Free() override;
 
 
 };

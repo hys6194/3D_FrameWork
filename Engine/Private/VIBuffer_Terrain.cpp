@@ -1,18 +1,18 @@
 #include "VIBuffer_Terrain.h"
 
-VIBuffer_Terrain::VIBuffer_Terrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: VIBuffer { pDevice, pContext }
+CVIBuffer_Terrain::CVIBuffer_Terrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CVIBuffer { pDevice, pContext }
 {
 
 	
 }
 
-VIBuffer_Terrain::VIBuffer_Terrain(const VIBuffer_Terrain& Prototype)
-	: VIBuffer{ Prototype }
+CVIBuffer_Terrain::CVIBuffer_Terrain(const CVIBuffer_Terrain& Prototype)
+	: CVIBuffer{ Prototype }
 {
 }
 
-HRESULT VIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
+HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
 
 {
 	m_iVertexStride = sizeof(VTXNORTEX);
@@ -159,7 +159,7 @@ HRESULT VIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
 	return S_OK;
 }
 
-//HRESULT VIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
+//HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
 //{
 //	m_iVertexStride = sizeof(VTXNORTEX);
 //
@@ -322,14 +322,14 @@ HRESULT VIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
 //}
 
 
-HRESULT VIBuffer_Terrain::Initialize(void* pArg)
+HRESULT CVIBuffer_Terrain::Initialize(void* pArg)
 {
 	return S_OK;
 }
 
-VIBuffer_Terrain* VIBuffer_Terrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pHeightMapFilePath)
+CVIBuffer_Terrain* CVIBuffer_Terrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pHeightMapFilePath)
 {
-	VIBuffer_Terrain* pInstance = new VIBuffer_Terrain(pDevice, pContext);
+	CVIBuffer_Terrain* pInstance = new CVIBuffer_Terrain(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype(pHeightMapFilePath)))
 	{
@@ -340,9 +340,9 @@ VIBuffer_Terrain* VIBuffer_Terrain::Create(ID3D11Device* pDevice, ID3D11DeviceCo
 	return pInstance;
 }
 
-Component* VIBuffer_Terrain::Clone(void* pArg)
+CComponent* CVIBuffer_Terrain::Clone(void* pArg)
 {
-	Component* pInstance = new VIBuffer_Terrain(*this);
+	CComponent* pInstance = new CVIBuffer_Terrain(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -353,7 +353,7 @@ Component* VIBuffer_Terrain::Clone(void* pArg)
 	return pInstance;
 }
 
-void VIBuffer_Terrain::Free()
+void CVIBuffer_Terrain::Free()
 {
 	__super::Free();
 

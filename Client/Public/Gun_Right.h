@@ -4,17 +4,17 @@
 #include "PartObject.h"
 
 BEGIN(Engine)
-class Shader;
-class Model;
+class CShader;
+class CModel;
 END
 
 
 BEGIN(Client)
 
-class Gun_Right final : public PartObject
+class CGun_Right final : public CPartObject
 {
 public:
-	typedef struct tagGun_RightDesc : public PartObject::PARTOBJ_DESC
+	typedef struct tagGun_RightDesc : public CPartObject::PARTOBJ_DESC
 	{
 		const _float4x4* pSocketMatrix;
 		const _float4x4* pHandMatrix;
@@ -22,9 +22,9 @@ public:
 	}WEAPON_DESC;
 
 private:
-	Gun_Right(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Gun_Right(const Gun_Right& Prototype);
-	virtual ~Gun_Right() = default;
+	CGun_Right(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CGun_Right(const CGun_Right& Prototype);
+	virtual ~CGun_Right() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -35,8 +35,8 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	Shader* m_pShaderCom = { nullptr };
-	Model*  m_pModelCom = { nullptr };
+	CShader* m_pShaderCom = { nullptr };
+	CModel*  m_pModelCom = { nullptr };
 
 private:
 	const _float4x4* m_pSocketMatrix = { nullptr };	
@@ -50,8 +50,8 @@ private:
 
 
 public:
-	static Gun_Right* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual GameObject* Clone(void* pArg);
+	static CGun_Right* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 };
 

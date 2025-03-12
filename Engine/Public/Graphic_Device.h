@@ -9,7 +9,7 @@ BEGIN(Engine)
 /* 3. 백버퍼뷰를 생성한다. */
 /* 4. 깊이버퍼 텍스쳐를 생성하고 깊이버퍼 뷰를 생성한다. */
 
-class CGraphic_Device final : public Base
+class CGraphic_Device final : public CBase
 {	
 private:
 	CGraphic_Device();

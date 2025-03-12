@@ -4,7 +4,7 @@
 #include "Timer_Manager.h"
 #include "UIObject.h"
 
-class UIObject;
+class CUIObject;
 
 BEGIN(Engine)
 

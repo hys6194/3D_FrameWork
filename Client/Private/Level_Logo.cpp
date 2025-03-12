@@ -4,12 +4,12 @@
 #include "GameInstance.h"
 #include "BackGround.h"
 
-Level_Logo::Level_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:Level{ pDevice , pContext }
+CLevel_Logo::CLevel_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:CLevel{ pDevice , pContext }
 {
 }
 
-HRESULT Level_Logo::Initialize()
+HRESULT CLevel_Logo::Initialize()
 {
 	if (FAILED(Ready_Layer_Logo1(TEXT("Layer_Logo1"))))
 		return E_FAIL;
@@ -17,7 +17,7 @@ HRESULT Level_Logo::Initialize()
 	return S_OK;
 }
 
-void Level_Logo::Update(_float fTimeDelta)
+void CLevel_Logo::Update(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, TEXT("현재 레벨 : 로고 레벨"));
 
@@ -25,19 +25,19 @@ void Level_Logo::Update(_float fTimeDelta)
 
 	if (/*GetKeyState(VK_SPACE) & 0x8000 &&*/ 0.2f < m_fTotalTime)
 	{
-		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, Level_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
+		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
 			return;
 	}
 }
 
-HRESULT Level_Logo::Render()
+HRESULT CLevel_Logo::Render()
 {
 	return S_OK;
 }
 
-HRESULT Level_Logo::Ready_Layer_Logo1(const _tchar* pLayerTag)
+HRESULT CLevel_Logo::Ready_Layer_Logo1(const _tchar* pLayerTag)
 {
-	UIObject::UIOBJECT_DESC			 UIDesc = {};
+	CUIObject::UIOBJECT_DESC			 UIDesc = {};
 
 	// 선생님은 가로, 세로 1인 길이로 그리려고 0.5로 준 것이다
 	UIDesc.fX = g_iWinSizeX  >> 1;
@@ -54,14 +54,14 @@ HRESULT Level_Logo::Ready_Layer_Logo1(const _tchar* pLayerTag)
 	return S_OK;
 }
 
-HRESULT Level_Logo::Add_Logo(const _tchar* pLayerTag)
+HRESULT CLevel_Logo::Add_Logo(const _tchar* pLayerTag)
 {
 	return S_OK;
 }
 
-Level_Logo* Level_Logo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel_Logo* CLevel_Logo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	Level_Logo* pInstance = new Level_Logo(pDevice, pContext);
+	CLevel_Logo* pInstance = new CLevel_Logo(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize()))
 	{
@@ -72,7 +72,7 @@ Level_Logo* Level_Logo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 	return pInstance;
 }
 
-void Level_Logo::Free()
+void CLevel_Logo::Free()
 {
 	__super::Free();
 }
