@@ -22,32 +22,26 @@ void CStrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 {
 	m_iKeyState = dynamic_cast<CPlayer*>(m_pOwner)->Get_PlayerKeyState();
 
-	if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration())
+	if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() /2.5f)
 	{
-		switch (m_iKeyState)
-		{
-		case CPlayer::KEY_SHIFT:
-			m_iState |= CPlayer::STATE_DOUBLEDASH;
+		if ((m_iKeyState & CPlayer::KEY_SHIFT) && !m_bDashed && (&CPlayer::IsKeyPushed))
+		{	m_iState |= CPlayer::STATE_DOUBLEDASH;
 			dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(m_iState);
-			m_pModelCom->Reset_Delta();
+
+
 			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_END);
-
-			//dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Dash(AXIS_Y, 90.f, m_pModelCom->Get_Delta());
-
-			break;
-		case (CPlayer::KEY_UP || CPlayer::KEY_DOWN || CPlayer::KEY_LEFT || CPlayer::KEY_RIGHT):
+			m_bDashed = true;
+		}
+		 
+		else if (&CPlayer::IsKeyPushed)
+		{
 			m_iState |= CPlayer::STATE_RUN;
 			dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(m_iState);
-			//m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN);
-
-
-		default:
-			break;
 		}
 
 	}
 
-	if (true == m_bDashed)
+	if (true == m_AnimEnd)
 		dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(CPlayer::STATE_IDLE);
 }
 
@@ -68,6 +62,9 @@ HRESULT CStrifeState_Dash::Exit_State()
 	if (true == m_bDashed && m_iState & CPlayer::STATE_DOUBLEDASH)
 		m_iState ^= CPlayer::STATE_DOUBLEDASH;
 
+	m_AnimEnd = false;
+	m_bDashed = false;
+
 	return S_OK;
 }
 
@@ -75,7 +72,9 @@ void CStrifeState_Dash::Set_CurAnimation()
 {
 	m_pModelCom = dynamic_cast<CBody_Player*>(m_pAnimOwner)->Get_Model();
 
-	m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_BACK, false, false);
+	Check_KeyInput();
+
+	
 }
 
 void CStrifeState_Dash::Update_Animation(_float fTimeDelta)
@@ -85,8 +84,8 @@ void CStrifeState_Dash::Update_Animation(_float fTimeDelta)
 	//	m_pModelCom->Interpolate_Animation(0.2f);
 	//else
 	//m_pModelCom->Play_RootAnimation(fTimeDelta);
-
-	m_bDashed = m_pModelCom->Play_Animation(fTimeDelta, m_pOwner);
+	// 애니메이션 끝나면 true임
+	m_AnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pOwner);
 
 }
 
@@ -95,6 +94,16 @@ void CStrifeState_Dash::Set_PreAnimation()
 	m_pModelCom->Reset_PreAnimation();
 
 	m_pModelCom->Set_PreAnimation(PLAYER_ANIMLIST::DASH_BACK);
+}
+
+void CStrifeState_Dash::Check_KeyInput()
+{
+	if(&CPlayer::IsKeyPushed)
+		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH, false, true);
+	else
+		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_BACK, false, true);
+
+
 }
 
 CStrifeState_Dash* CStrifeState_Dash::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)

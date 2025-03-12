@@ -37,6 +37,15 @@ public:
 		KEY_NONE			= 0x00000000,
 	};
 
+public:
+	constexpr bool IsKeyPushed(int keyState) {
+		return (keyState & CPlayer::KEY_UP) ||
+			(keyState & CPlayer::KEY_DOWN) ||
+			(keyState & CPlayer::KEY_LEFT) ||
+			(keyState & CPlayer::KEY_RIGHT);
+	}
+
+
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPlayer(const CPlayer& Prototype);

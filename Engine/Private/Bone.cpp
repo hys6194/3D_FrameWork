@@ -59,6 +59,7 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
         XMStoreFloat4(&vDelta, XMVectorSetW(XMLoadFloat4(&vPreTrans) - XMLoadFloat4(&m_vPreDelta), 1.f));
         
         // 변화량을 담아서 다른 클래스에서 사용할 수 있게 저장
+        // 추후 Transform에서 원하는 값만 가져와서 사용
         m_vCurDelta = vDelta;
 
         // 이전 값을 저장

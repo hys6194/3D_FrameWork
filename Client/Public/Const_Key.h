@@ -73,7 +73,7 @@ static const std::wstring SOCKET_HOLSTER_RIGHT	= TEXT("Socket_Strife_Holster_R")
 //Bone_Strife_Holster_R
 
 
-
+#define KEY_PUSHED (m_iKeyState & CPlayer::KEY_UP) || (m_iKeyState & CPlayer::KEY_DOWN) || (m_iKeyState & CPlayer::KEY_LEFT) || (m_iKeyState & CPlayer::KEY_RIGHT)
 
 enum PLAYER_ANIMLIST
 {

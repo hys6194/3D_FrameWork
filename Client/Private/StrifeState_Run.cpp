@@ -83,8 +83,7 @@ void CStrifeState_Run::PriorityUpdate_State(_float fTimeDelta)
         dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(CPlayer::STATE_IDLE);
         break;
     }
-
-    
+  
 }
 
 void CStrifeState_Run::Update_State(_float fTimeDelta)
