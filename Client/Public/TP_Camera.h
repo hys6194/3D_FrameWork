@@ -18,26 +18,26 @@ private:
 	virtual ~CTP_Camera() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
-	virtual void Priority_Update(_float fTimeDelta) override;
-	virtual void Update(_float fTimeDelta) override;
-	virtual void Late_Update(_float fTimeDelta) override;
-	virtual HRESULT Render() override;
+	virtual HRESULT				Initialize_Prototype() override;
+	virtual HRESULT				Initialize(void* pArg) override;
+	virtual void				Priority_Update(_float fTimeDelta) override;
+	virtual void				Update(_float fTimeDelta) override;
+	virtual void				Late_Update(_float fTimeDelta) override;
+	virtual HRESULT				Render() override;
 
 private:
-	_float					m_fMouseSensor = {};
-	_float3					m_vCamEye = { 0.f, 15.f ,-15.f };
+	_float						m_fMouseSensor = {};
+	_float3						m_vCamEye = { 0.f, 25.f ,-17.5f };
 
 	CGameObject*				m_pPlayer = { nullptr };
 
 private:
-	HRESULT Ready_Components();
+	HRESULT						Ready_Components();
 
 public:
-	static CTP_Camera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg);
-	virtual void Free() override;
+	static CTP_Camera*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject*		Clone(void* pArg);
+	virtual void				Free() override;
 };
 
 END

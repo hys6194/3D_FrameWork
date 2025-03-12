@@ -88,16 +88,15 @@ private:
 	_float4x4							m_PreTransformMatrix = {};
 
 	_uint								m_iNumMeshes = { };
-	vector<class CMesh*>					m_vecMesh;
+	vector<class CMesh*>				m_vecMesh;
 
 	_uint								m_iNumMaterials = {};
-	vector<class CMeshMaterial*>			m_vecMaterial;
+	vector<class CMeshMaterial*>		m_vecMaterial;
 
 	vector<class CBone*>				m_vecBone;
 
 	_bool								m_bIsLoop = { false };
 	_bool								m_bIsInter = { false };
-	_bool								m_bIsLoot = { false };
 	_int								m_iCurrentAnimationIndex = { -1 };
 	_uint								m_iNumAnimations = {};
 	vector<class CAnimation*>			m_Animations;
@@ -121,7 +120,6 @@ private:
 
 	vector<class CChannel*>				m_pPreChannel;
 	vector<class CChannel*>				m_pCurChannel;
-	vector<class CChannel*>				m_pRootChannel;
 
 	KEYFRAME							m_pPreKeyFrame = { };
 	KEYFRAME							m_pCurKeyFrame = { };

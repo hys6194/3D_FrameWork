@@ -296,7 +296,8 @@ _bool CModel::Play_Animation(_float fTimeDelta, CGameObject* pObject)
         //
         //int a = 10;
     }
-    // 
+
+    // 루트 애니메이션의 이동량 제거
     else
     {
         bIsEnd = m_Animations[m_iCurrentAnimationIndex]->Update_TransformationMatrix(m_vecBone, fTimeDelta, m_bIsLoop, &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], m_vecKeyFrameIndex[m_iCurrentAnimationIndex], pObject);

@@ -94,6 +94,12 @@
     <Filter Include="02.GameObjects\Player\Weapon\Gun_Right">
       <UniqueIdentifier>{a9d74021-a861-4a8b-bc24-081fa66c07d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Player\States\TemPlate">
+      <UniqueIdentifier>{5f89e5c7-36f9-424c-b62d-eb33822585f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\States\PlayerKey_State">
+      <UniqueIdentifier>{bb5f00c7-34ee-4ae5-b167-0be8f1e0ed51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -147,9 +153,6 @@
     <ClInclude Include="..\Public\Weapon.h">
       <Filter>02.GameObjects\Player\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_Test.h">
-      <Filter>02.GameObjects\Player\States</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Camera_Free.h">
       <Filter>02.GameObjects\Camera\Free</Filter>
     </ClInclude>
@@ -179,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Gun_Right.h">
       <Filter>02.GameObjects\Player\Weapon\Gun_Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Test.h">
+      <Filter>02.GameObjects\Player\States\TemPlate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -234,9 +240,6 @@
     <ClCompile Include="..\Private\Weapon.cpp">
       <Filter>02.GameObjects\Player\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_Test.cpp">
-      <Filter>02.GameObjects\Player\States</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Camera_Free.cpp">
       <Filter>02.GameObjects\Camera\Free</Filter>
     </ClCompile>
@@ -263,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Gun_Right.cpp">
       <Filter>02.GameObjects\Player\Weapon\Gun_Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Test.cpp">
+      <Filter>02.GameObjects\Player\States\TemPlate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
