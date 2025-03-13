@@ -231,6 +231,10 @@ HRESULT CLoader::Loading_Models()
 			CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_FSM,
+			CFSM::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		_matrix		PreTransformMatrix = XMMatrixIdentity();
 		/* For.Prototype_Component_Model_Fiona */
 		PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -385,10 +389,6 @@ HRESULT CLoader::Loading_Prototype()
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_SKY,
 			CSky::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_FSM,
-			CFSM::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_L_GUN,

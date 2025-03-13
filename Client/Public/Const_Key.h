@@ -25,6 +25,7 @@ static const std::wstring PRO_TEX_SKY			= TEXT("Prototype_Component_Texture_Sky"
 
 /* Component */
 static const std::wstring PRO_COM_FSM			= TEXT("Prototype_Component_FSM");
+//static const std::wstring PRO_COM_PICKING		= TEXT("Prototype_Component_FSM");
 static const std::wstring PRO_COM_VI_RECT		= TEXT("Prototype_Component_VIBuffer_Rect");
 static const std::wstring PRO_COM_VI_CUBE		= TEXT("Prototype_Component_VIBuffer_Cube");
 static const std::wstring PRO_COM_VI_TERRAIN	= TEXT("Prototype_Component_VIBuffer_Terrain");

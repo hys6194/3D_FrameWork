@@ -186,6 +186,9 @@
     <ClInclude Include="..\Public\PlayerState_Test.h">
       <Filter>02.GameObjects\Player\States\TemPlate</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Player_KeyState.h">
+      <Filter>02.GameObjects\Player\States\PlayerKey_State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -269,6 +272,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Test.cpp">
       <Filter>02.GameObjects\Player\States\TemPlate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_KeyState.cpp">
+      <Filter>02.GameObjects\Player\States\PlayerKey_State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

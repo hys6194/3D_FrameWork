@@ -1,12 +1,59 @@
 
 #include "Input_Device.h"
 
-Engine::CInput_Device::CInput_Device(void)
+Engine::CInput_Device::CInput_Device(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: m_pDevice{ pDevice }
+	, m_pContext{ pContext }
 {
 	ZeroMemory(m_byCurKeyState, sizeof(m_byCurKeyState));
 	ZeroMemory(m_byPrevKeyState, sizeof(m_byPrevKeyState));
+
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
+
 }
 
+
+
+POINT CInput_Device::Get_DIMouseWindowCoord(MOUSEKEYSTATE eMouse) const
+{
+	POINT pt;
+
+	GetCursorPos(&pt);
+	ScreenToClient(m_phWnd, &pt);
+
+	//m_tMouseState.lX;
+	//m_tMouseState.lY;
+	//
+	//m_tPrevMouseState.lX;
+	//m_tPrevMouseState.lY;
+	//m_tCurMouseState.lX;
+	//m_tCurMouseState.lY;
+
+
+	return pt;
+}
+
+_float4 CInput_Device::Get_DIMouseWorldCoord(MOUSEKEYSTATE eMouse) const
+{
+	POINT pt;
+	
+	GetCursorPos(&pt);
+	ScreenToClient(m_phWnd, &pt);
+
+	_float4	fCoord{ 0.f,0.f,0.f,0.f };
+
+	fCoord.x = pt.x;
+	fCoord.y = pt.y;
+
+	//_fmatrix matProj;
+
+	//XMMatrixInverse(&fCoord, )
+
+
+
+	return fCoord;
+}
 
 _bool CInput_Device::Key_Pressing(_uint iKeyID)
 {
@@ -47,6 +94,8 @@ HRESULT Engine::CInput_Device::Initialize(HINSTANCE hInst, HWND hWnd)
 											IID_IDirectInput8,
 											(void**)&m_pInputSDK,
 											NULL), E_FAIL);
+
+	m_phWnd = hWnd;
 
 	// 키보드 객체 생성
 	FAILED_CHECK_RETURN(m_pInputSDK->CreateDevice(GUID_SysKeyboard, &m_pKeyBoard, nullptr), E_FAIL);
@@ -89,9 +138,9 @@ void Engine::CInput_Device::Update(void)
 	m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE2), &m_tCurMouseState);
 }
 
-CInput_Device* CInput_Device::Create(HINSTANCE hInstance, HWND hWnd)
+CInput_Device* CInput_Device::Create(HINSTANCE hInstance, HWND hWnd, _bool isWindowed, _uint iWinSizeX, _uint iWinSizeY, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CInput_Device* pInstance = new CInput_Device();
+	CInput_Device* pInstance = new CInput_Device(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(hInstance, hWnd)))
 	{
@@ -104,6 +153,8 @@ CInput_Device* CInput_Device::Create(HINSTANCE hInstance, HWND hWnd)
 
 void Engine::CInput_Device::Free(void)
 {
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
 	Safe_Release(m_pKeyBoard);
 	Safe_Release(m_pMouse);
 	Safe_Release(m_pInputSDK);

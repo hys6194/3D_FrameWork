@@ -30,7 +30,11 @@ public:
 
 private:
 	CModel*					m_pModelCom;
-	_uint					m_iKeyState = { 0 };
+	_uint					m_iKeyState = {};
+
+private:
+	void					Player_ShootMove(_float fTimeDelta);
+	void					Player_LookSet(_float fTimeDelta);
 
 public:
 	static CStrifeState_Shoot* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);

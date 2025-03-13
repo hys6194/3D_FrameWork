@@ -32,11 +32,15 @@ void CStrifeState_Idle::PriorityUpdate_State(_float fTimeDelta)
     }
 
 
+    if ((m_iKeyState & (CPlayer::KEY_UP | CPlayer::KEY_DOWN)) == (CPlayer::KEY_UP | CPlayer::KEY_DOWN) ||
+        (m_iKeyState & (CPlayer::KEY_LEFT | CPlayer::KEY_RIGHT)) == (CPlayer::KEY_LEFT | CPlayer::KEY_RIGHT))
+        return;
+
 	// 아무 키나 눌렀을 때
-    if (m_iKeyState & CPlayer::KEY_UP ||
-             m_iKeyState & CPlayer::KEY_DOWN ||
-             m_iKeyState & CPlayer::KEY_LEFT ||
-             m_iKeyState & CPlayer::KEY_RIGHT)
+    if (m_iKeyState & CPlayer::KEY_UP   ||
+        m_iKeyState & CPlayer::KEY_DOWN ||
+        m_iKeyState & CPlayer::KEY_LEFT ||
+        m_iKeyState & CPlayer::KEY_RIGHT)
 	{
         dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(CPlayer::STATE_RUN);
         return;

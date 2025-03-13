@@ -1,5 +1,7 @@
 #pragma once
 
+
+// 이동 관련된 클래스 들은 이 클래스를 상속받아서 이동한다
 #include "Client_Defines.h"
 #include "State.h"
 

@@ -26,7 +26,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext);
 	NULL_CHECK_RETURN(m_pGraphic_Device, E_FAIL);
 
-	m_pInput_Device = CInput_Device::Create(EngineDesc.hInstance, EngineDesc.hWnd);
+	m_pInput_Device = CInput_Device::Create(EngineDesc.hInstance, EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, *ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pInput_Device, E_FAIL);
 
 	m_pTimer_Manager = CTimer_Manager::Create();
@@ -44,7 +44,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pRenderer, E_FAIL);
 
-	m_pPipeLine = CPipeLine::Create();
+	m_pPipeLine = CPipeLine::Create(EngineDesc.hWnd);
 	NULL_CHECK_RETURN(m_pPipeLine, E_FAIL);
 
 	m_pLight_Manager = CLight_Manager::Create(*ppDevice, *ppContext);
@@ -144,15 +144,28 @@ _byte CGameInstance::Get_DIKeyState(_ubyte byKeyID)
 {
 	return m_pInput_Device->Get_DIKeyState(byKeyID);
 }
+
 _byte CGameInstance::Get_DIMouseState(MOUSEKEYSTATE eMouse)
 {
 	return m_pInput_Device->Get_DIMouseState(eMouse);
 }
+
 _long CGameInstance::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
 {
 	return m_pInput_Device->Get_DIMouseMove(eMouseState);
 
 }
+
+POINT CGameInstance::Get_DIMouseWindowCoord(MOUSEKEYSTATE eMouseState)
+{
+	return m_pInput_Device->Get_DIMouseWindowCoord(eMouseState);
+}
+
+_float4 CGameInstance::Get_DIMouseWorldCoord(MOUSEKEYSTATE eMouseState)
+{
+	return m_pInput_Device->Get_DIMouseWorldCoord(eMouseState);
+}
+
 _bool CGameInstance::Key_Pressing(_uint iKeyID)
 {
 	return m_pInput_Device->Key_Pressing(iKeyID);

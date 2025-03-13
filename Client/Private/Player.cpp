@@ -161,38 +161,38 @@ HRESULT CPlayer::Bind_SR()
 
 void CPlayer::Input_Keys()
 {
-	if (m_pGameInstance->Key_Pressing(DIK_DOWN))
+	if (m_pGameInstance->Key_Pressing(DIK_S))
 	{
 		m_iKey |= KEY_DOWN;
 	}
-	else if (!m_pGameInstance->Key_Pressing(DIK_DOWN))
+	else if (!m_pGameInstance->Key_Pressing(DIK_S))
 	{
 		m_iKey &= ~KEY_DOWN;
 	}
 
-	if (m_pGameInstance->Key_Pressing(DIK_UP))
+	if (m_pGameInstance->Key_Pressing(DIK_W))
 	{
 		m_iKey |= KEY_UP;
 	}
-	else if (!m_pGameInstance->Key_Pressing(DIK_UP))
+	else if (!m_pGameInstance->Key_Pressing(DIK_W))
 	{
 		m_iKey &= ~KEY_UP;
 	}
 
-	if (m_pGameInstance->Key_Pressing(DIK_LEFT))
+	if (m_pGameInstance->Key_Pressing(DIK_A))
 	{
 		m_iKey |= KEY_LEFT;
 	}
-	else if (!m_pGameInstance->Key_Pressing(DIK_LEFT))
+	else if (!m_pGameInstance->Key_Pressing(DIK_A))
 	{
 		m_iKey &= ~KEY_LEFT;
 	}
 
-	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
+	if (m_pGameInstance->Key_Pressing(DIK_D))
 	{
 		m_iKey |= KEY_RIGHT;
 	}
-	else if (!m_pGameInstance->Key_Pressing(DIK_RIGHT))
+	else if (!m_pGameInstance->Key_Pressing(DIK_D))
 	{
 		m_iKey &= ~KEY_RIGHT;
 	}
@@ -209,13 +209,14 @@ void CPlayer::Input_Keys()
 	if (m_pGameInstance->Get_DIMouseState(DIM_LB))
 	{
 		m_iKey |= KEY_LB;
+		m_pGameInstance->Get_DIMouseWindowCoord(DIM_LB);
 	}
 	else if (!m_pGameInstance->Get_DIMouseState(DIM_LB))
 	{
 		m_iKey &= ~KEY_LB;
 	}
-
-	if (m_pGameInstance->Key_Down(0))
+	
+	if (GetKeyState('0') & 0x8000)
 	{
 		Get_Transform()->Set_State(CTransform::STATE_POS, XMVectorSet(0.f,0.f,0.f,1.f));
 	}

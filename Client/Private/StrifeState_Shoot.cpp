@@ -24,7 +24,9 @@ void CStrifeState_Shoot::PriorityUpdate_State(_float fTimeDelta)
 	// ÃÑÀ» ½ð´Ù
 	if (m_iKeyState & CPlayer::KEY_LB)
 	{
+		Player_LookSet(fTimeDelta);
 
+		Player_ShootMove(fTimeDelta);
 	}
 
 	// ¾È ½ð´Ù
@@ -73,33 +75,65 @@ void CStrifeState_Shoot::Set_CurAnimation()
 	m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_IDLE, true, false);
 }
 
-CStrifeState_Shoot* CStrifeState_Shoot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
+void CStrifeState_Shoot::Player_ShootMove(_float fTimeDelta)
 {
-	CStrifeState_Shoot* pInstance = new CStrifeState_Shoot(pDevice, pContext, pOwner, pAnimOwner);
+    switch (m_iKeyState)
+    {
 
-	if (nullptr == pOwner)
-	{
-		MSG_BOX("Failed To Created : StrifeState_Shoot");
-		Safe_Release(pInstance);
-		return nullptr;
-	}
+	case CPlayer::KEY_DOWN | CPlayer::KEY_LEFT | CPlayer::KEY_LB:
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
 
-	return pInstance;
+    case CPlayer::KEY_UP | CPlayer::KEY_LEFT | CPlayer::KEY_LB:
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case CPlayer::KEY_UP | CPlayer::KEY_RIGHT | CPlayer::KEY_LB:
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case CPlayer::KEY_RIGHT | CPlayer::KEY_DOWN | CPlayer::KEY_LB:
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case CPlayer::KEY_DOWN | CPlayer::KEY_LB:
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case CPlayer::KEY_LEFT | CPlayer::KEY_LB:
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case CPlayer::KEY_RIGHT | CPlayer::KEY_LB:
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+
+    case CPlayer::KEY_UP | CPlayer::KEY_LB:
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        break;
+    }
 }
 
-//CStrifeState_Shoot* CStrifeState_Shoot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner)
-//{
-//	CStrifeState_Shoot* pInstance = new CStrifeState_Shoot( pDevice, pContext, pOwner);
-//
-//	if (nullptr == pOwner)
-//	{
-//		MSG_BOX("Failed To Created : BodyState_Idle");
-//		Safe_Release(pInstance);
-//		return nullptr;
-//	}
-//
-//	return pInstance;
-//}
+void CStrifeState_Shoot::Player_LookSet(_float fTimeDelta)
+{
+	_long		MouseMove{};
+
+	//m_pGameInstance->
+}
+
+CStrifeState_Shoot* CStrifeState_Shoot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
+{
+	//CStrifeState_Shoot* pInstance = new CStrifeState_Shoot(pDevice, pContext, pOwner, pAnimOwner);
+	//
+	//if (nullptr == pOwner)
+	//{
+	//	MSG_BOX("Failed To Created : StrifeState_Shoot");
+	//	Safe_Release(pInstance);
+	//	return nullptr;
+	//}
+
+	return new CStrifeState_Shoot(pDevice, pContext, pOwner, pAnimOwner);
+}
 
 void CStrifeState_Shoot::Free()
 {

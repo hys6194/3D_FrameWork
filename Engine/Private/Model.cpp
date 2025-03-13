@@ -143,7 +143,7 @@ void CModel::Set_PreAnimation(_uint iPreAnimationIndex)
 
     m_fPreTrackPos = m_vecCurrentTrackPosition[m_iPreAnimationIndex];
     
-    m_iPreKeyFrameIndex = m_vecKeyFrameIndex[m_iPreAnimationIndex][m_fPreTrackPos];
+    m_iPreKeyFrameIndex = /*m_vecKeyFrameIndex[m_iPreAnimationIndex]*/m_fPreTrackPos;
 
     m_pPreChannel = m_Animations[m_iPreAnimationIndex]->Get_Channel();
 
@@ -161,43 +161,143 @@ void CModel::Interpolate_Animation(_float fRatio)
     if (1.f <= m_fRatio)
         m_fRatio = 1.f;
     
-    KEYFRAME tPreDesc;
-    KEYFRAME tCurDesc;
+    // 이전 애니메이션에서 끝난 지점과 키프레임을 빼서 비율을 구한다
+    //_float          fPreRatio = m_fPreTrackPos - m_iPreKeyFrameIndex;
+    //
+    //KEYFRAME        tPreDesc, tPreDesc1,tCurDesc;
+    //
+    ////tPreDesc = m_pPreChannel[m_iPreKeyFrameIndex]->Get_KeyFrame();
+    ////tPreDesc1 = m_pPreChannel[m_iPreAnimationIndex]->Get_KeyFrame();
+    //
+    //// 이전 애니메이션의 끝난 시점에서의 채널과 다음 채널과 보간
+    ////tPreDesc    =   m_pPreChannel[m_iPreKeyFrameIndex]->Get_KeyFrame()[0];
+    ////tPreDesc1   =   m_pPreChannel[m_iPreKeyFrameIndex + 1]->Get_KeyFrame()[0];
+    //_vector         vScale, vRotation, vTranslation;
+    //
+    //_vector         vSourScale, vSourRotation, vSourTranslation;
+    //_vector         vDestScale, vDestRotation, vDestTranslation;
+    //
+    //_vector         vCurScale, vCurRotation, vCurTranslation;
+    //_vector         vCurScale1, vCurRotation1, vCurTranslation1;
+    //_vector         vNextScale, vNextRotation, vNextTranslation;
+
+    //tPreDesc = m_pPreChannel[m_iPreKeyFrameIndex]->Get_KeyFrame().front();
+    //tPreDesc1 = m_pPreChannel[m_iPreKeyFrameIndex]->Get_KeyFrame().back();
+    //
+    //vCurScale = XMLoadFloat3(&tPreDesc.vScale);
+    //vCurScale1 = XMLoadFloat3(&tPreDesc1.vScale);
+    //
+    //vCurRotation = XMLoadFloat4(&tPreDesc.vRotation);
+    //vCurRotation1 = XMLoadFloat4(&tPreDesc1.vRotation);
+    //
+    //vCurTranslation = XMVectorSetW(XMLoadFloat3(&tPreDesc.vTranslation), 1.f);
+    //vCurTranslation1 = XMVectorSetW(XMLoadFloat3(&tPreDesc1.vTranslation), 1.f);
+    //
+    //// 보간 비율로 
+    //vSourScale = XMVectorLerp(vCurScale, vCurScale1, fPreRatio);
+    //vSourRotation = XMQuaternionSlerp(vCurRotation, vCurRotation1, fPreRatio);
+    //vSourTranslation = XMVectorLerp(vCurTranslation, vCurTranslation1, fPreRatio);
+    //
+    //for (size_t i = 0; i < m_pCurChannel.size(); i++)
+    //{
+    //    /*tPreDesc = m_pPreChannel[i]->Get_KeyFrame().back();
+    //    tPreDesc1 = m_pPreChannel[i]->Get_KeyFrame().front();
+    //
+    //    vCurScale = XMLoadFloat3(&tPreDesc.vScale);
+    //    vCurScale1 = XMLoadFloat3(&tPreDesc1.vScale);
+    //
+    //    vCurRotation = XMLoadFloat4(&tPreDesc.vRotation);
+    //    vCurRotation1 = XMLoadFloat4(&tPreDesc1.vRotation);
+    //
+    //    vCurTranslation = XMVectorSetW(XMLoadFloat3(&tPreDesc.vTranslation), 1.f);
+    //    vCurTranslation1 = XMVectorSetW(XMLoadFloat3(&tPreDesc1.vTranslation), 1.f);
+    //
+    //    vSourScale = XMVectorLerp(vCurScale, vCurScale1, fPreRatio);
+    //    vSourRotation = XMQuaternionSlerp(vCurRotation, vCurRotation1, fPreRatio);
+    //    vSourTranslation = XMVectorLerp(vCurTranslation, vCurTranslation1, fPreRatio);*/
+    //
+    //    //tPreDesc = m_pPreChannel[m_iPreKeyFrameIndex]->Get_KeyFrame().back();
+    //    //tPreDesc1 = m_pPreChannel[m_iPreKeyFrameIndex + 1]->Get_KeyFrame().front();
+    //
+    //    tCurDesc = m_pCurChannel[i]->Get_KeyFrame()[0];
+    //
+    //    vNextScale = XMLoadFloat3(&tCurDesc.vScale);
+    //
+    //    vNextRotation = XMLoadFloat4(&tCurDesc.vRotation);
+    //
+    //    vNextTranslation = XMVectorSetW(XMLoadFloat3(&tCurDesc.vTranslation), 1.f);
+    //
+    //    vDestScale = XMVectorLerp(vSourScale, vNextScale, m_fRatio);
+    //    vDestRotation = XMQuaternionSlerp(vSourRotation, vNextRotation, m_fRatio);
+    //    vDestTranslation = XMVectorLerp(vSourTranslation, vNextTranslation, m_fRatio);
+    //
+    //    //vSourScale = vNextScale;
+    //    //vSourRotation = vNextRotation;
+    //    //vSourTranslation = vNextTranslation;
+    //
+    //    m_vecBone[tCurDesc.iBoneIndex]->Set_TransformationMatrix(
+    //        XMMatrixAffineTransformation(vDestScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vDestRotation, vDestTranslation));
+    //
+    //}
+
+    
 
     // m_fRatio 값이 1을 넘어가지 않게 해야함
-    tPreDesc = m_pPreChannel[m_iPreKeyFrameIndex]->Get_KeyFrame().back();
-    tCurDesc = m_pPreChannel[m_iPreKeyFrameIndex + 1]->Get_KeyFrame()[0];
 
 
+    //vCurScale = XMLoadFloat3(&tPreDesc.vScale);
+    //vNextScale = XMLoadFloat3(&tCurDesc.vScale);
+    //
+    //vCurRotation = XMLoadFloat4(&tPreDesc.vRotation);
+    //vNextRotation = XMLoadFloat4(&tCurDesc.vRotation);
+    //
+    //vCurTranslation = XMVectorSetW(XMLoadFloat3(&tPreDesc.vTranslation), 1.f);
+    //vNextTranslation = XMVectorSetW(XMLoadFloat3(&tCurDesc.vTranslation), 1.f);
+    //
+    //vScale = XMVectorLerp(vCurScale, vNextScale, fPreRatio);
+    //vRotation = XMQuaternionSlerp(vCurRotation, vNextRotation, fPreRatio);
+    //vTranslation = XMVectorLerp(vCurTranslation, vNextTranslation, fPreRatio);
 
-
-    for (size_t i = 0; i < m_pPreChannel.size(); i++)
+    for (size_t i = 0; i < m_pCurChannel.size(); i++)
     {
 
-        tPreDesc = m_pPreChannel[i]->Get_KeyFrame().back();
-        tCurDesc = m_pCurChannel[i]->Get_KeyFrame()[0];
+        _float          fPreRatio = m_fPreTrackPos - m_iPreKeyFrameIndex;
+
+        KEYFRAME        tPreDesc, tPreDesc1, tCurDesc;
 
         _vector         vScale, vRotation, vTranslation;
 
-        _vector vCurScale, vCurRotation, vCurTranslation;
-        _vector vNextScale, vNextRotation, vNextTranslation;
+        _vector         vSourScale, vSourRotation, vSourTranslation;
+        _vector         vDestScale, vDestRotation, vDestTranslation;
 
+        _vector         vCurScale, vCurRotation, vCurTranslation;
+        _vector         vCurScale1, vCurRotation1, vCurTranslation1;
+        _vector         vNextScale, vNextRotation, vNextTranslation;
+
+        tPreDesc = m_pPreChannel[i]->Get_KeyFrame().back();
+        tCurDesc = m_pCurChannel[i]->Get_KeyFrame()[0];
+    
+        //_vector         vScale, vRotation, vTranslation;
+        //
+        //_vector vCurScale, vCurRotation, vCurTranslation;
+        //_vector vNextScale, vNextRotation, vNextTranslation;
+        //
         vCurScale = XMLoadFloat3(&tPreDesc.vScale);
         vNextScale = XMLoadFloat3(&tCurDesc.vScale);
-
+        //
         vCurRotation = XMLoadFloat4(&tPreDesc.vRotation);
         vNextRotation = XMLoadFloat4(&tCurDesc.vRotation);
-
+        //
         vCurTranslation = XMVectorSetW(XMLoadFloat3(&tPreDesc.vTranslation), 1.f);
         vNextTranslation = XMVectorSetW(XMLoadFloat3(&tCurDesc.vTranslation), 1.f);
-
+        //
         vScale = XMVectorLerp(vCurScale, vNextScale, m_fRatio);
         vRotation = XMQuaternionSlerp(vCurRotation, vNextRotation, m_fRatio);
         vTranslation = XMVectorLerp(vCurTranslation, vNextTranslation, m_fRatio);
-
+    
         m_vecBone[tPreDesc.iBoneIndex]->Set_TransformationMatrix(
             XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation));
-
+    
     }
 
     for (auto& pBone : m_vecBone)

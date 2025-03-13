@@ -20,58 +20,64 @@ BEGIN(Engine)
 class CPipeLine final : public CBase
 {
 public:
-	enum TRANSFORMSTATE { D3DTS_VIEW, D3DTS_PROJ, D3DTS_END };
+	enum TRANSFORMSTATE					{ D3DTS_VIEW, D3DTS_PROJ, D3DTS_END };
 private:
-	CPipeLine();
-	virtual ~CPipeLine() = default;
+										CPipeLine();
+	virtual								~CPipeLine() = default;
 
 public:
-	void Update();
+	HRESULT								Initialize(HWND _hWnd);
+	void								Update();
 
 public:
-	const _float4x4* Get_Transform_Float4x4(TRANSFORMSTATE eState)
+	const _float4x4*					Get_Transform_Float4x4(TRANSFORMSTATE eState)
 	{
 		return &m_TransformMatrices[eState];
 	}
 
-	_matrix Get_Transform_Matrix(TRANSFORMSTATE eState)
+	_matrix								Get_Transform_Matrix(TRANSFORMSTATE eState)
 	{
 		return XMLoadFloat4x4(&m_TransformMatrices[eState]);
 	}
 
-	const _float4x4* Get_Transform_Inverse_Float4x4(TRANSFORMSTATE eState) const
+	const _float4x4*					Get_Transform_Inverse_Float4x4(TRANSFORMSTATE eState) const
 	{
 		return &m_TransformInverseMatrices[eState];
 	}
 
-	_matrix Get_Transform_Inverse_Matrix(TRANSFORMSTATE eState) const 
+	_matrix								Get_Transform_Inverse_Matrix(TRANSFORMSTATE eState) const 
 	{
 		return XMLoadFloat4x4(&m_TransformInverseMatrices[eState]);
 	}
 
-	const _float4* Get_CamPosition() const 
+	const _float4*						Get_CamPosition() const 
 	{
 		return &m_vCamPosition;
 	}
 
+	//GameInstance의 상호참조로 문제가 생길까봐 PipeLine클래스에 제작
+	const _float4*						Get_MouseWindowPosition() const;
+	const _float4*						Get_MouseWorldPosition() const;
 public:
 
-	void Set_Transform(TRANSFORMSTATE eState, _fmatrix Matrix);				// fmatrix 형 
-	void Set_Transform(TRANSFORMSTATE eState, const _float4x4* pMatrix);	// flaot4x4 형 
+	void								Set_Transform(TRANSFORMSTATE eState, _fmatrix Matrix);				// fmatrix 형 
+	void								Set_Transform(TRANSFORMSTATE eState, const _float4x4* pMatrix);	// flaot4x4 형 
 
 public:
-	HRESULT Bind_SR(class CShader* pShader, const _char* pConstantName, TRANSFORMSTATE eState);
+	HRESULT								Bind_SR(class CShader* pShader, const _char* pConstantName, TRANSFORMSTATE eState);
 
 private:
-	_float4x4			m_TransformMatrices[D3DTS_END] = {};	
-	_float4x4			m_TransformInverseMatrices[D3DTS_END] = {};
-	_float4				m_vCamPosition = {};
+	_float4x4							m_TransformMatrices[D3DTS_END] = {};	
+	_float4x4							m_TransformInverseMatrices[D3DTS_END] = {};
+	_float4								m_vCamPosition = {};
 
+private:
+	HWND								m_hWnd = { nullptr };
 
 
 public:
-	static CPipeLine* Create();
-	virtual void Free() override;
+	static CPipeLine*					Create(HWND _hWnd);
+	virtual void						Free() override;
 };
 
 END
