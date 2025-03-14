@@ -13,42 +13,6 @@ Engine::CInput_Device::CInput_Device(ID3D11Device* pDevice, ID3D11DeviceContext*
 
 }
 
-
-
-POINT CInput_Device::Get_DIMouseWindowCoord(MOUSEKEYSTATE eMouse) const
-{
-	POINT pt;
-
-	GetCursorPos(&pt);
-	ScreenToClient(m_phWnd, &pt);
-
-
-
-
-
-	return pt;
-}
-
-_float4 CInput_Device::Get_DIMouseWorldCoord(MOUSEKEYSTATE eMouse) const
-{
-	POINT pt;
-	
-	GetCursorPos(&pt);
-	ScreenToClient(m_phWnd, &pt);
-
-	_float4	fCoord{ 0.f,0.f,0.f,0.f };
-
-	fCoord.x = pt.x;
-	fCoord.y = pt.y;
-
-	_matrix matView, matProj;
-
-	matView = XMMatrixIdentity();
-	matProj = XMMatrixIdentity();
-
-	return fCoord;
-}
-
 _bool CInput_Device::Key_Pressing(_uint iKeyID)
 {
 	return (m_byCurKeyState[iKeyID] & 0x80) && (m_byPrevKeyState[iKeyID] & 0x80);

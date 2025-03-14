@@ -10,6 +10,7 @@
 #include "Input_Device.h"
 #include "PipeLine.h"
 #include "Light_Manager.h"
+#include "Font_Manager.h"
 #include "ImGui_Manager.h"
 
 
@@ -49,6 +50,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	m_pLight_Manager = CLight_Manager::Create(*ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pLight_Manager, E_FAIL);
+
+	m_pFont_Manager = CFont_Manager::Create(*ppDevice, *ppContext);
+	NULL_CHECK_RETURN(m_pFont_Manager, E_FAIL);
 
 	//m_pImGui_Manager = CImGui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext);
 	//NULL_CHECK_RETURN(m_pImGui_Manager, E_FAIL);
@@ -154,16 +158,6 @@ _long CGameInstance::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
 {
 	return m_pInput_Device->Get_DIMouseMove(eMouseState);
 
-}
-
-POINT CGameInstance::Get_DIMouseWindowCoord(MOUSEKEYSTATE eMouseState)
-{
-	return m_pInput_Device->Get_DIMouseWindowCoord(eMouseState);
-}
-
-_float4 CGameInstance::Get_DIMouseWorldCoord(MOUSEKEYSTATE eMouseState)
-{
-	return m_pInput_Device->Get_DIMouseWorldCoord(eMouseState);
 }
 
 _bool CGameInstance::Key_Pressing(_uint iKeyID)
@@ -340,6 +334,19 @@ const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iLightIndex) const
 }
 #pragma endregion
 
+
+#pragma region Font_Manager
+
+HRESULT CGameInstance::Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath)
+{
+	return m_pFont_Manager->Add_Font(strFontTag, pFontFilePath);
+}
+HRESULT CGameInstance::Render(const _wstring& strFontTag, const _wstring& strText, const _float2& vPosition, _fvector vColor, _float fRadian, const _float2& vOrigin, _float fScale)
+{
+	return m_pFont_Manager->Render(strFontTag, strText, vPosition, vColor, fRadian, vOrigin, fScale);
+}
+
+#pragma endregion
 void CGameInstance::Release_Engine()
 {
 	Safe_Release(m_pGraphic_Device);

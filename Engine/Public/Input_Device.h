@@ -16,13 +16,11 @@ public:
 	{
 		return m_byCurKeyState[byKeyID];
 	}
+
 	_byte								Get_DIMouseState(MOUSEKEYSTATE eMouse)
 	{
 		return m_tMouseState.rgbButtons[static_cast<_uint>(eMouse)];
 	}
-
-	POINT								Get_DIMouseWindowCoord(MOUSEKEYSTATE eMouse) const;
-	_float4								Get_DIMouseWorldCoord(MOUSEKEYSTATE eMouse) const;
 	
 	// 현재 마우스의 특정 축 좌표를 반환
 	_long								Get_DIMouseMove(MOUSEMOVESTATE eMouseState)

@@ -43,8 +43,6 @@ public:
 	_byte							Get_DIKeyState(_ubyte byKeyID);
 	_byte							Get_DIMouseState(MOUSEKEYSTATE eMouse);
 	_long							Get_DIMouseMove(MOUSEMOVESTATE eMouseState);
-	POINT							Get_DIMouseWindowCoord(MOUSEKEYSTATE eMouseState);
-	_float4							Get_DIMouseWorldCoord(MOUSEKEYSTATE eMouseState);
 
 	_bool							Key_Pressing(_uint iKeyID);
 	_bool							Key_Down(_uint iKeyID);
@@ -112,6 +110,11 @@ public:
 	const LIGHT_DESC*				Get_LightDesc(_uint iLightIndex)const;
 #pragma endregion
 
+#pragma region Font_Manager
+	HRESULT							Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath);
+	HRESULT							Render(const _wstring& strFontTag, const _wstring& strText, const _float2& vPosition, _fvector vColor, _float fRadian, const _float2& vOrigin, _float fScale);
+#pragma endregion
+
 
 
 private:
@@ -124,6 +127,7 @@ private:
 	class CRenderer*				m_pRenderer = { nullptr };	
 	class CPipeLine*				m_pPipeLine = { nullptr };
 	class CLight_Manager*			m_pLight_Manager = { nullptr };
+	class CFont_Manager*			m_pFont_Manager = { nullptr };
 	class CImGui_Manager*			m_pImGui_Manager = { nullptr };
 
 public:	
