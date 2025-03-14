@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="98.Default">
+      <UniqueIdentifier>{40e2a70c-85bc-459c-a84f-d6a46315e4e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp">
+      <UniqueIdentifier>{758a2ada-e246-4cc2-b81c-d39f25af6538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines">
+      <UniqueIdentifier>{7d8bb6a8-3886-4307-af85-e624f1303efe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines\01.Base">
+      <UniqueIdentifier>{4de73d03-147c-457f-8185-71e7e086e7d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines\00.pch">
+      <UniqueIdentifier>{c37f5dee-aaac-46a6-bc0c-49d43fb41655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines\Engine">
+      <UniqueIdentifier>{6f17d881-5613-44c9-a657-3f4df157ec3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.System">
+      <UniqueIdentifier>{6592fddb-fdd2-4a04-9ada-7ef87e947085}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.System\00.Graphic">
+      <UniqueIdentifier>{e5b19edd-f813-4e57-87f2-b0bd51d247e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.System\01.Input">
+      <UniqueIdentifier>{f317d98d-9a9f-4d21-a5ef-3cf5011ad105}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Default\framework.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Default\Resource.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Default\targetver.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Default\Tool.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MainApp.h">
+      <Filter>00.MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\pch.h">
+      <Filter>99.Defines\00.pch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Base.h">
+      <Filter>99.Defines\01.Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Defines.h">
+      <Filter>99.Defines\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Enum.h">
+      <Filter>99.Defines\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Function.h">
+      <Filter>99.Defines\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Macro.h">
+      <Filter>99.Defines\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Struct.h">
+      <Filter>99.Defines\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Typedef.h">
+      <Filter>99.Defines\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Graphic_Device.h">
+      <Filter>01.System\00.Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Input_Device.h">
+      <Filter>01.System\01.Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\System_Manager.h">
+      <Filter>01.System</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Default\small.ico">
+      <Filter>98.Default</Filter>
+    </Image>
+    <Image Include="..\Default\Tool.ico">
+      <Filter>98.Default</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Default\Tool.cpp">
+      <Filter>98.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MainApp.cpp">
+      <Filter>00.MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\pch.cpp">
+      <Filter>99.Defines\00.pch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Base.cpp">
+      <Filter>99.Defines\01.Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Input_Device.cpp">
+      <Filter>01.System\01.Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Graphic_Device.cpp">
+      <Filter>01.System\00.Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\System_Manager.cpp">
+      <Filter>01.System</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Default\Tool.rc">
+      <Filter>98.Default</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Default\Tool.vcxproj">
+      <Filter>98.Default</Filter>
+    </None>
+    <None Include="..\Default\Tool.vcxproj.filters">
+      <Filter>98.Default</Filter>
+    </None>
+    <None Include="..\Default\Tool.vcxproj.user">
+      <Filter>98.Default</Filter>
+    </None>
+  </ItemGroup>
+</Project>

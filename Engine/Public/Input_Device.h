@@ -41,7 +41,7 @@ public:
 
 
 public:
-	HRESULT								Initialize(HINSTANCE hInst, HWND hWnd);
+	HRESULT								Initialize(HINSTANCE g_hInstance, HWND hWnd);
 	void								Update(void);
 
 private:

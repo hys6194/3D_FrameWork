@@ -28,7 +28,7 @@ private:
 	void						Release_ImGui();
 
 public:
-	static CImGui_Manager* Create(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CImGui_Manager*		Create(HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	// Base을(를) 통해 상속됨
 	void Free() override;
 };

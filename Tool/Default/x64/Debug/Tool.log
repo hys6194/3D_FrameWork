@@ -1,0 +1,16 @@
+﻿  Tool.cpp
+  Base.cpp
+  Graphic_Device.cpp
+  Input_Device.cpp
+  MainApp.cpp
+  System_Manager.cpp
+  pch.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\vc140.pch : warning LNK4003: 라이브러리 형식이 잘못되었습니다. 라이브러리가 무시됩니다.
+Graphic_Device.obj : error LNK2019: D3D11CreateDevice"public: long __cdecl Engine::CGraphic_Device::Initialize(struct HWND__ *,bool,unsigned int,unsigned int,struct ID3D11Device * *,struct ID3D11DeviceContext * *)" (?Initialize@CGraphic_Device@Engine@@QEAAJPEAUHWND__@@_NIIPEAPEAUID3D11Device@@PEAPEAUID3D11DeviceContext@@@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
+Input_Device.obj : error LNK2019: DirectInput8Create"public: long __cdecl Engine::CInput_Device::Initialize(struct HINSTANCE__ *,struct HWND__ *)" (?Initialize@CInput_Device@Engine@@QEAAJPEAUHINSTANCE__@@PEAUHWND__@@@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
+Input_Device.obj : error LNK2001: 확인할 수 없는 외부 기호 IID_IDirectInput8W
+Input_Device.obj : error LNK2001: 확인할 수 없는 외부 기호 GUID_SysMouse
+Input_Device.obj : error LNK2001: 확인할 수 없는 외부 기호 GUID_SysKeyboard
+Input_Device.obj : error LNK2001: 확인할 수 없는 외부 기호 c_dfDIMouse
+Input_Device.obj : error LNK2001: 확인할 수 없는 외부 기호 c_dfDIKeyboard
+..\Bin\Tool.exe : fatal error LNK1120: 7개의 확인할 수 없는 외부 참조입니다.

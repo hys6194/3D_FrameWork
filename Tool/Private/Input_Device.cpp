@@ -1,0 +1,121 @@
+#include "pch.h"
+#include "Input_Device.h"
+
+Engine::CInput_Device::CInput_Device(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: m_pDevice{ pDevice }
+	, m_pContext{ pContext }
+{
+	ZeroMemory(m_byCurKeyState, sizeof(m_byCurKeyState));
+	ZeroMemory(m_byPrevKeyState, sizeof(m_byPrevKeyState));
+
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
+
+}
+
+_bool CInput_Device::Key_Pressing(_uint iKeyID)
+{
+	return (m_byCurKeyState[iKeyID] & 0x80) && (m_byPrevKeyState[iKeyID] & 0x80);
+}
+
+_bool CInput_Device::Key_Down(_uint iKeyID)
+{
+	return (m_byCurKeyState[iKeyID] & 0x80) && !(m_byPrevKeyState[iKeyID] & 0x80);
+}
+
+_bool CInput_Device::Key_Up(_uint iKeyID)
+{
+	return !(m_byCurKeyState[iKeyID] & 0x80) && (m_byPrevKeyState[iKeyID] & 0x80);
+}
+
+_bool CInput_Device::Mouse_Down(MOUSEKEYSTATE eMouse)
+{
+	return (m_tCurMouseState.rgbButtons[eMouse] & 0x80) && !(m_tPrevMouseState.rgbButtons[eMouse] & 0x80);
+}
+
+_bool CInput_Device::Mouse_Drag(MOUSEKEYSTATE eMouse)
+{
+	return (m_tCurMouseState.rgbButtons[eMouse] & 0x80) && (m_tPrevMouseState.rgbButtons[eMouse] & 0x80);
+}
+
+_bool CInput_Device::Mouse_Up(MOUSEKEYSTATE eMouse)
+{
+	return !(m_tCurMouseState.rgbButtons[eMouse] & 0x80) && (m_tPrevMouseState.rgbButtons[eMouse] & 0x80);
+}
+
+HRESULT CInput_Device::Initialize(HINSTANCE g_hInstance, HWND hWnd)
+{
+
+
+	// DInput 컴객체를 생성하는 함수
+	FAILED_CHECK_RETURN(DirectInput8Create(g_hInstance,
+											DIRECTINPUT_VERSION,
+											IID_IDirectInput8,
+											(void**)&m_pInputSDK,
+											NULL), E_FAIL);
+
+	m_phWnd = hWnd;
+
+	// 키보드 객체 생성
+	FAILED_CHECK_RETURN(m_pInputSDK->CreateDevice(GUID_SysKeyboard, &m_pKeyBoard, nullptr), E_FAIL);
+
+	// 생성된 키보드 객체의 대한 정보를 컴 객체에게 전달하는 함수
+	m_pKeyBoard->SetDataFormat(&c_dfDIKeyboard);
+
+	// 장치에 대한 독점권을 설정해주는 함수, (클라이언트가 떠있는 상태에서 키 입력을 받을지 말지를 결정하는 함수)
+	m_pKeyBoard->SetCooperativeLevel(hWnd, DISCL_BACKGROUND | DISCL_NONEXCLUSIVE);
+
+	// 장치에 대한 access 버전을 받아오는 함수
+	m_pKeyBoard->Acquire();
+
+
+	// 마우스 객체 생성
+	FAILED_CHECK_RETURN(m_pInputSDK->CreateDevice(GUID_SysMouse, &m_pMouse, nullptr), E_FAIL);
+
+	// 생성된 마우스 객체의 대한 정보를 컴 객체에게 전달하는 함수
+	m_pMouse->SetDataFormat(&c_dfDIMouse);
+
+	// 장치에 대한 독점권을 설정해주는 함수, 클라이언트가 떠있는 상태에서 키 입력을 받을지 말지를 결정하는 함수
+	m_pMouse->SetCooperativeLevel(hWnd, DISCL_BACKGROUND | DISCL_NONEXCLUSIVE);
+
+	// 장치에 대한 access 버전을 받아오는 함수
+	m_pMouse->Acquire();
+
+
+	return S_OK;
+}
+
+void CInput_Device::Update(void)
+{
+	//m_pKeyBoard->GetDeviceState(256, m_byKeyState);
+	m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE), &m_tMouseState);
+
+	memcpy(m_byPrevKeyState, m_byCurKeyState, sizeof(m_byCurKeyState));
+	m_pKeyBoard->GetDeviceState(0xff + 1, m_byCurKeyState);
+
+	m_tPrevMouseState = m_tCurMouseState;
+	m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE2), &m_tCurMouseState);
+}
+
+CInput_Device* CInput_Device::Create(HINSTANCE hInstance, HWND hWnd, _bool isWindowed, _uint iWinSizeX, _uint iWinSizeY, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CInput_Device* pInstance = new CInput_Device(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize(hInstance, hWnd)))
+	{
+		MSG_BOX("Failed to Created : CInput_Device");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+void CInput_Device::Free(void)
+{
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
+	Safe_Release(m_pKeyBoard);
+	Safe_Release(m_pMouse);
+	Safe_Release(m_pInputSDK);
+}
+
