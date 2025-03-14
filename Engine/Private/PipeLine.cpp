@@ -55,34 +55,14 @@ const _float4* CPipeLine::Get_MouseWindowPosition() const
 
 	vTest = XMVectorSet(fTest.x, fTest.y, fTest.z, fTest.w);
 
-	//XMVector3TransformCoord(vTest, XMLoadFloat4x4(&m_TransformInverseMatrices[D3DTS_PROJ]));
-	//
-	//vRayPos = { 0.f,0.f,0.f,1.f };
-	//vRayDir = { ViewPort.TopLeftX, ViewPort.TopLeftY, 1.f, 1,f };
-	//vRayDir = vTest - vRayPos;
-	//
-	//XMVector3TransformCoord(vRayPos, XMLoadFloat4x4(&m_TransformInverseMatrices[D3DTS_VIEW]));
-	//XMVector3TransformNormal(vRayDir, XMLoadFloat4x4(&m_TransformInverseMatrices[D3DTS_VIEW]));
-	//
-	//
-	//_matrix matInvWorld;
-	//
-	//matInvWorld = XMMatrixInverse(nullptr, XMLoadFloat4x4(TargetmatWorld));
-	//
-	//XMVector3TransformCoord(vRayPos, matInvWorld);
-	//XMVector3TransformNormal(vRayDir, matInvWorld);
-
-
 	XMVector3Unproject(vTest, 
 		ViewPort.TopLeftX, ViewPort.TopLeftY, 
 		ViewPort.Width, ViewPort.Height,
 		ViewPort.MinDepth, ViewPort.MaxDepth, 
 		XMLoadFloat4x4(&m_TransformMatrices[D3DTS_PROJ]),
 		XMLoadFloat4x4(&m_TransformMatrices[D3DTS_VIEW]),
-		XMLoadFloat4x4(TargetmatWorld));
+		XMMatrixIdentity());
 
-	//XMMatrixIdentity()
-	//XMLoadFloat4x4(TargetmatWorld)
 	return &vTest;
 }
 
