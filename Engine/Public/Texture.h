@@ -17,6 +17,7 @@ public:
 
 public:
 	HRESULT Bind_SR(const _char* pConstantName, class CShader* pShader, _uint iTextureIndex) const;
+	HRESULT Bind_SRVs(const _char* pConstantName, class CShader* pShader) const;
 
 private:
 
