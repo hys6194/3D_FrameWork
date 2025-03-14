@@ -5,13 +5,6 @@ matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 textureCUBE g_DiffuseTexture;
 
-sampler DefaultSampler = sampler_state
-{
-    filter = min_mag_mip_linear;
-    AddressU = WRAP;
-    AddressV = WRAP;
-};
-
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -60,7 +53,7 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
+    Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
     
     return Out;
 }

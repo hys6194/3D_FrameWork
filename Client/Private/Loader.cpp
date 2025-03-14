@@ -191,6 +191,17 @@ HRESULT CLoader::Loading_Textures()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_SKY,
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
 			return E_FAIL;
+
+
+		/* For.Prototype_Component_Texture_Mask */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_MASK,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Mask.dds"), 1))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Texture_Brush */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_BRUSH,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Brush.png"), 1))))
+			return E_FAIL;
 	}
 
 		break;
@@ -231,6 +242,10 @@ HRESULT CLoader::Loading_Models()
 			CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_FSM,
+			CFSM::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		_matrix		PreTransformMatrix = XMMatrixIdentity();
 		/* For.Prototype_Component_Model_Fiona */
 		PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -264,6 +279,10 @@ HRESULT CLoader::Loading_Models()
 		PreTransformMatrix *= /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationX(XMConvertToRadians(-90.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
 			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/AnimModel/Strife/Gun2.fbx", PreTransformMatrix))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_NAVI,
+			CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Navigation.dat")))))
 			return E_FAIL;
 	}
 
@@ -385,10 +404,6 @@ HRESULT CLoader::Loading_Prototype()
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_SKY,
 			CSky::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_FSM,
-			CFSM::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_L_GUN,

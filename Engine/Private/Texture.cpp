@@ -95,6 +95,11 @@ HRESULT CTexture::Bind_SR(const _char* pConstantName, class CShader* pShader, _u
     return pShader->Bind_SRV(pConstantName, m_vecSRV[iTextureIndex]);
 }
 
+HRESULT CTexture::Bind_SRVs(const _char* pConstantName, CShader* pShader)
+{
+    return pShader->Bind_SRVs(pConstantName, &m_vecSRV.front(), m_vecSRV.size());
+}
+
 CTexture* CTexture::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pTextureFilePath, _uint iNumTextures)
 {
     CTexture* pInstance = new CTexture(pDevice, pContext);

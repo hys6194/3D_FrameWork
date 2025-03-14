@@ -10,6 +10,7 @@
 #include "Input_Device.h"
 #include "PipeLine.h"
 #include "Light_Manager.h"
+#include "Font_Manager.h"
 #include "ImGui_Manager.h"
 
 
@@ -26,7 +27,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext);
 	NULL_CHECK_RETURN(m_pGraphic_Device, E_FAIL);
 
-	m_pInput_Device = CInput_Device::Create(EngineDesc.hInstance, EngineDesc.hWnd);
+	m_pInput_Device = CInput_Device::Create(EngineDesc.hInstance, EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, *ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pInput_Device, E_FAIL);
 
 	m_pTimer_Manager = CTimer_Manager::Create();
@@ -44,14 +45,17 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pRenderer, E_FAIL);
 
-	m_pPipeLine = CPipeLine::Create();
+	m_pPipeLine = CPipeLine::Create(*ppDevice, *ppContext,EngineDesc.hWnd);
 	NULL_CHECK_RETURN(m_pPipeLine, E_FAIL);
 
 	m_pLight_Manager = CLight_Manager::Create(*ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pLight_Manager, E_FAIL);
 
-	//m_pImGui_Manager = CImGui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext);
-	//NULL_CHECK_RETURN(m_pImGui_Manager, E_FAIL);
+	m_pFont_Manager = CFont_Manager::Create(*ppDevice, *ppContext);
+	NULL_CHECK_RETURN(m_pFont_Manager, E_FAIL);
+
+	m_pImGui_Manager = CImGui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext);
+	NULL_CHECK_RETURN(m_pImGui_Manager, E_FAIL);
 	
 
 	//FAILED_CHECK_RETURN 사용 못함 : 주소가 짤리는 듯함
@@ -65,7 +69,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
-	//m_pImGui_Manager->SetUp_Render_ImGui();
+	m_pImGui_Manager->SetUp_Render_ImGui();
 
 	m_pInput_Device->Update();
 
@@ -86,8 +90,8 @@ void CGameInstance::Draw_Engine()
 
 	m_pRenderer->Draw();
 
-	//m_pImGui_Manager->EndRender_ImGui();
-	//m_pGraphic_Device->Set_RenderTargets(1);
+	m_pImGui_Manager->EndRender_ImGui();
+	m_pGraphic_Device->Set_RenderTargets(1);
 
 }
 
@@ -144,15 +148,18 @@ _byte CGameInstance::Get_DIKeyState(_ubyte byKeyID)
 {
 	return m_pInput_Device->Get_DIKeyState(byKeyID);
 }
+
 _byte CGameInstance::Get_DIMouseState(MOUSEKEYSTATE eMouse)
 {
 	return m_pInput_Device->Get_DIMouseState(eMouse);
 }
+
 _long CGameInstance::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
 {
 	return m_pInput_Device->Get_DIMouseMove(eMouseState);
 
 }
+
 _bool CGameInstance::Key_Pressing(_uint iKeyID)
 {
 	return m_pInput_Device->Key_Pressing(iKeyID);
@@ -194,6 +201,11 @@ void CGameInstance::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pCon
 {
 	m_pImGui_Manager->SetUp_ImGui(pDevice, pContext, hWnd);
 }
+void CGameInstance::Set_EndMsg()
+{
+	m_pImGui_Manager->Set_EndMsg();
+}
+
 #pragma endregion
 
 #pragma region TIMER_MANAGER
@@ -290,6 +302,16 @@ const _float4* CGameInstance::Get_CamPosition() const
 	return m_pPipeLine->Get_CamPosition();
 }
 
+const _float4* CGameInstance::Get_MouseWindowPosition() const
+{
+	return m_pPipeLine->Get_MouseWindowPosition();
+}
+
+ _vector* CGameInstance::Get_MouseWorldPosition(const _float4x4* TargetmatWorld) 
+{
+	return m_pPipeLine->Get_MouseWorldPosition(TargetmatWorld);
+}
+
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)
 {
 	return m_pPipeLine->Set_Transform(eState, Matrix);
@@ -317,6 +339,19 @@ const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iLightIndex) const
 }
 #pragma endregion
 
+
+#pragma region Font_Manager
+
+HRESULT CGameInstance::Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath)
+{
+	return m_pFont_Manager->Add_Font(strFontTag, pFontFilePath);
+}
+HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _wstring& strText, const _float2& vPosition, _fvector vColor, _float fRadian, const _float2& vOrigin, _float fScale)
+{
+	return m_pFont_Manager->Render(strFontTag, strText, vPosition, vColor, fRadian, vOrigin, fScale);
+}
+
+#pragma endregion
 void CGameInstance::Release_Engine()
 {
 	Safe_Release(m_pGraphic_Device);
@@ -328,7 +363,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
-	//Safe_Release(m_pImGui_Manager);
+	Safe_Release(m_pFont_Manager);
+	Safe_Release(m_pImGui_Manager);
 
 	CGameInstance::DestroyInstance();
 }

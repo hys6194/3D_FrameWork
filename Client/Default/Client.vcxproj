@@ -116,7 +116,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.Lib;DirectXTKd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -139,7 +139,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.Lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -162,6 +162,7 @@
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\PlayerState_Test.h" />
+    <ClInclude Include="..\Public\Player_KeyState.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\StrifeState_Dash.h" />
     <ClInclude Include="..\Public\StrifeState_Idle.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\PlayerState_Test.cpp" />
+    <ClCompile Include="..\Private\Player_KeyState.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\StrifeState_Dash.cpp" />
     <ClCompile Include="..\Private\StrifeState_Idle.cpp" />

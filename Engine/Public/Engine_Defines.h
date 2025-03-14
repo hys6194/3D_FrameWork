@@ -9,8 +9,12 @@
 #include <d3dcompiler.h>
 
 #include "DirectXTK/VertexTypes.h"
+#include "DirectXTK/ScreenGrab.h"
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
+#include "DirectXTK/SpriteFont.h"
+#include "DirectXTK/SpriteBatch.h"
+
 #include "Fx11/d3dx11effect.h"
 #include "assimp_Old/scene.h"
 #include "assimp_Old/Importer.hpp"

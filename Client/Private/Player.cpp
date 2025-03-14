@@ -1,11 +1,8 @@
 #include "Player.h"
 #include "GameInstance.h"
-#include "ContainerObject.h"
 #include "Body_Player.h"
 #include "Weapon.h"
-#include "FSM.h"
 
-#include "State.h"
 #include "StrifeState_idle.h"
 #include "StrifeState_Run.h"
 #include "StrifeState_Dash.h"
@@ -58,8 +55,8 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 {
 	Input_Keys();
 
-	m_pFSMCom->Change_State(m_iState);
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
+	m_pFSMCom->Change_State(m_iState);
 
 	__super::Priority_Update(fTimeDelta);
 }
@@ -161,38 +158,38 @@ HRESULT CPlayer::Bind_SR()
 
 void CPlayer::Input_Keys()
 {
-	if (m_pGameInstance->Key_Pressing(DIK_DOWN))
+	if (m_pGameInstance->Key_Pressing(DIK_S))
 	{
 		m_iKey |= KEY_DOWN;
 	}
-	else if (!m_pGameInstance->Key_Pressing(DIK_DOWN))
+	else if (!m_pGameInstance->Key_Pressing(DIK_S))
 	{
 		m_iKey &= ~KEY_DOWN;
 	}
 
-	if (m_pGameInstance->Key_Pressing(DIK_UP))
+	if (m_pGameInstance->Key_Pressing(DIK_W))
 	{
 		m_iKey |= KEY_UP;
 	}
-	else if (!m_pGameInstance->Key_Pressing(DIK_UP))
+	else if (!m_pGameInstance->Key_Pressing(DIK_W))
 	{
 		m_iKey &= ~KEY_UP;
 	}
 
-	if (m_pGameInstance->Key_Pressing(DIK_LEFT))
+	if (m_pGameInstance->Key_Pressing(DIK_A))
 	{
 		m_iKey |= KEY_LEFT;
 	}
-	else if (!m_pGameInstance->Key_Pressing(DIK_LEFT))
+	else if (!m_pGameInstance->Key_Pressing(DIK_A))
 	{
 		m_iKey &= ~KEY_LEFT;
 	}
 
-	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
+	if (m_pGameInstance->Key_Pressing(DIK_D))
 	{
 		m_iKey |= KEY_RIGHT;
 	}
-	else if (!m_pGameInstance->Key_Pressing(DIK_RIGHT))
+	else if (!m_pGameInstance->Key_Pressing(DIK_D))
 	{
 		m_iKey &= ~KEY_RIGHT;
 	}
@@ -214,8 +211,8 @@ void CPlayer::Input_Keys()
 	{
 		m_iKey &= ~KEY_LB;
 	}
-
-	if (m_pGameInstance->Key_Down(0))
+	
+	if (GetKeyState('0') & 0x8000)
 	{
 		Get_Transform()->Set_State(CTransform::STATE_POS, XMVectorSet(0.f,0.f,0.f,1.f));
 	}

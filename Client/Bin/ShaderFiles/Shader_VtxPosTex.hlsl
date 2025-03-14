@@ -11,19 +11,7 @@
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
-float g_AlphaPerTime = 0.5f;
-
 texture2D g_Texture;
-
-sampler DefaultSampler = sampler_state
-{
-    filter = min_mag_mip_linear;
-
-    // 샘플링 방식
-    // 픽셀이 끝나면 다시 되돌아가는 방식
-    AddressU = CLAMP;
-    AddressV = CLAMP;
-};
 
 struct VS_IN
 {
@@ -90,7 +78,7 @@ PS_OUT PS_MAIN(PS_IN In)
     
     // sampling 할 때 텍스쳐를 가로 세로로 얼만큼 할 것인지 정하고 위에서 정한 sampling 옵션으로 픽셀의 값 결정
     //Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
-    Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    Out.vColor = g_Texture.Sample(LinearSampler, In.vTexcoord);
     
     //Out.vColor = In.vTexcoord.y;
     

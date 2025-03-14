@@ -18,13 +18,6 @@ float4 g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);
 
 float4 g_vCamPosition;
 
-sampler DefaultSampler = sampler_state
-{
-    filter = min_mag_mip_linear;
-    AddressU = WRAP;
-    AddressV = WRAP;
-};
-
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -92,7 +85,7 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    vector vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
+    vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
     
     if (vDiffuse.a < 0.3f)
         discard;
@@ -117,7 +110,6 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
 

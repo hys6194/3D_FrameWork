@@ -142,6 +142,21 @@
     <Filter Include="01.Utility\97.ImGui">
       <UniqueIdentifier>{bebef5d8-29ca-48f0-9077-d7751386f1cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Cell">
+      <UniqueIdentifier>{f654998d-3afa-45e3-ba30-f928d12d7ab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Navigation">
+      <UniqueIdentifier>{ed84d7da-e993-4887-bf7c-d17b8acea94a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Navigation\Cell">
+      <UniqueIdentifier>{edda6f56-07c0-403b-a399-ddad30f5f351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\08.Font">
+      <UniqueIdentifier>{16cc0a7e-2727-4f00-bead-fb89dac88798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\08.Font\Manager">
+      <UniqueIdentifier>{4f80be52-44c6-4335-9aa7-6d872e7db6e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -327,6 +342,21 @@
     <ClInclude Include="..\Public\ImGui_Manager.h">
       <Filter>01.Utility\97.ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Cell.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Cell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Cell.h">
+      <Filter>01.Utility\04. Component\Navigation\Cell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Navigation.h">
+      <Filter>01.Utility\04. Component\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MyFont.h">
+      <Filter>01.Utility\08.Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Font_Manager.h">
+      <Filter>01.Utility\08.Font\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -484,6 +514,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>01.Utility\97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cell.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Cell.cpp">
+      <Filter>01.Utility\04. Component\Navigation\Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Navigation.cpp">
+      <Filter>01.Utility\04. Component\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MyFont.cpp">
+      <Filter>01.Utility\08.Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Font_Manager.cpp">
+      <Filter>01.Utility\08.Font\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

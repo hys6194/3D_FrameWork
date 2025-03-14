@@ -65,8 +65,9 @@ HRESULT CTerrain::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-
-	//m_pVIBufferCom->Render();
+#ifdef _DEBUG
+	m_pNavigationCom->Render();
+#endif
 
 	return S_OK;
 }
@@ -78,7 +79,15 @@ HRESULT CTerrain::Ready_Components()
 
 	/* Com_Texture */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
-		reinterpret_cast<CComponent**>(&m_pTextureCom), TEXT("Com_Texture"))))
+		reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_DIFFUSE]), TEXT("Com_Texture"))))
+		return E_FAIL;
+
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Mask"),
+		reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_MASK]), TEXT("Com_Texture_Mask"))))
+		return E_FAIL;
+
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Brush"),
+		reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_BRUSH]), TEXT("Com_Texture_Brush"))))
 		return E_FAIL;
 
 	/* Com_VIBuffer */
@@ -89,6 +98,13 @@ HRESULT CTerrain::Ready_Components()
 	/* Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
 		reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader"))))
+		return E_FAIL;
+
+	CNavigation::NAVIGATION_DESC		NaviDesc{};
+	NaviDesc.pWorldMatrix				= m_pTransformCom->Get_WorldMatrix_Ptr();
+
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation"),
+		reinterpret_cast<CComponent**>(&m_pNavigationCom), TEXT("Com_Navigation"), &NaviDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -105,7 +121,13 @@ HRESULT CTerrain::Bind_SR()
 	if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom,  CPipeLine::D3DTS_PROJ)))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_SR("g_DiffuseTexture", m_pShaderCom, 0)))
+	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_SR("g_DiffuseTexture", m_pShaderCom, 0)))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_SR("g_MaskTexture", m_pShaderCom, 0)))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_SR("g_BrushTexture", m_pShaderCom, 0)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
@@ -157,8 +179,12 @@ void CTerrain::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pTextureCom);
+
+	for (auto& pTextureCom : m_pTextureCom)
+		Safe_Release(pTextureCom);
+
 	Safe_Release(m_pVIBufferCom);
 
 

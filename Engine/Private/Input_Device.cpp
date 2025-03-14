@@ -1,12 +1,17 @@
 
 #include "Input_Device.h"
 
-Engine::CInput_Device::CInput_Device(void)
+Engine::CInput_Device::CInput_Device(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: m_pDevice{ pDevice }
+	, m_pContext{ pContext }
 {
 	ZeroMemory(m_byCurKeyState, sizeof(m_byCurKeyState));
 	ZeroMemory(m_byPrevKeyState, sizeof(m_byPrevKeyState));
-}
 
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
+
+}
 
 _bool CInput_Device::Key_Pressing(_uint iKeyID)
 {
@@ -41,12 +46,15 @@ _bool CInput_Device::Mouse_Up(MOUSEKEYSTATE eMouse)
 HRESULT Engine::CInput_Device::Initialize(HINSTANCE hInst, HWND hWnd)
 {
 
+
 	// DInput 컴객체를 생성하는 함수
 	FAILED_CHECK_RETURN(DirectInput8Create(hInst,
 											DIRECTINPUT_VERSION,
 											IID_IDirectInput8,
 											(void**)&m_pInputSDK,
 											NULL), E_FAIL);
+
+	m_phWnd = hWnd;
 
 	// 키보드 객체 생성
 	FAILED_CHECK_RETURN(m_pInputSDK->CreateDevice(GUID_SysKeyboard, &m_pKeyBoard, nullptr), E_FAIL);
@@ -89,9 +97,9 @@ void Engine::CInput_Device::Update(void)
 	m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE2), &m_tCurMouseState);
 }
 
-CInput_Device* CInput_Device::Create(HINSTANCE hInstance, HWND hWnd)
+CInput_Device* CInput_Device::Create(HINSTANCE hInstance, HWND hWnd, _bool isWindowed, _uint iWinSizeX, _uint iWinSizeY, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CInput_Device* pInstance = new CInput_Device();
+	CInput_Device* pInstance = new CInput_Device(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(hInstance, hWnd)))
 	{
@@ -104,6 +112,8 @@ CInput_Device* CInput_Device::Create(HINSTANCE hInstance, HWND hWnd)
 
 void Engine::CInput_Device::Free(void)
 {
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
 	Safe_Release(m_pKeyBoard);
 	Safe_Release(m_pMouse);
 	Safe_Release(m_pInputSDK);

@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 class CFSM;
+class CNavigation;
 END
 
 BEGIN(Client)
@@ -30,22 +31,12 @@ public:
 		KEY_DOWN			= 0x00000002,
 		KEY_LEFT			= 0x00000004,
 		KEY_RIGHT			= 0x00000008,
-		KEY_ARROW			= 0x00000015,
 		KEY_SPACE			= 0x00000010,
 		KEY_SHIFT			= 0x00000020,
 		KEY_LB				= 0x00000040,
 		KEY_RB				= 0x00000080,
 		KEY_NONE			= 0x00000000,
 	};
-
-public:
-	inline bool IsKeyPushed() const {
-		return (m_iKey & CPlayer::KEY_UP) ||
-			(m_iKey & CPlayer::KEY_DOWN) ||
-			(m_iKey & CPlayer::KEY_LEFT) ||
-			(m_iKey & CPlayer::KEY_RIGHT);
-	}
-
 
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -111,6 +102,7 @@ private:
 
 private:
 	CFSM*					m_pFSMCom		= { nullptr };
+	CNavigation*			m_pNavigationCom = { nullptr };
 
 private:
 	HRESULT					Ready_Components();
