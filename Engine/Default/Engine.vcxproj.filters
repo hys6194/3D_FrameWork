@@ -142,6 +142,9 @@
     <Filter Include="01.Utility\97.ImGui">
       <UniqueIdentifier>{bebef5d8-29ca-48f0-9077-d7751386f1cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Cell">
+      <UniqueIdentifier>{f654998d-3afa-45e3-ba30-f928d12d7ab9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -327,6 +330,9 @@
     <ClInclude Include="..\Public\ImGui_Manager.h">
       <Filter>01.Utility\97.ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Cell.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Cell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -484,6 +490,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>01.Utility\97.ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cell.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Cell</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

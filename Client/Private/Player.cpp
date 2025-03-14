@@ -3,9 +3,7 @@
 #include "ContainerObject.h"
 #include "Body_Player.h"
 #include "Weapon.h"
-#include "FSM.h"
 
-#include "State.h"
 #include "StrifeState_idle.h"
 #include "StrifeState_Run.h"
 #include "StrifeState_Dash.h"
