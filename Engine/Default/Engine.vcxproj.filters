@@ -345,6 +345,8 @@
     <ClInclude Include="..\Public\Navigation.h">
       <Filter>01.Utility\04. Component\Navigation</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MyFont.h" />
+    <ClInclude Include="..\Public\Font_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -512,6 +514,8 @@
     <ClCompile Include="..\Private\Navigation.cpp">
       <Filter>01.Utility\04. Component\Navigation</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\MyFont.cpp" />
+    <ClCompile Include="..\Private\Font_Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">
