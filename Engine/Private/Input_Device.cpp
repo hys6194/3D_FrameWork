@@ -22,13 +22,8 @@ POINT CInput_Device::Get_DIMouseWindowCoord(MOUSEKEYSTATE eMouse) const
 	GetCursorPos(&pt);
 	ScreenToClient(m_phWnd, &pt);
 
-	//m_tMouseState.lX;
-	//m_tMouseState.lY;
-	//
-	//m_tPrevMouseState.lX;
-	//m_tPrevMouseState.lY;
-	//m_tCurMouseState.lX;
-	//m_tCurMouseState.lY;
+
+
 
 
 	return pt;
@@ -46,11 +41,10 @@ _float4 CInput_Device::Get_DIMouseWorldCoord(MOUSEKEYSTATE eMouse) const
 	fCoord.x = pt.x;
 	fCoord.y = pt.y;
 
-	//_fmatrix matProj;
+	_matrix matView, matProj;
 
-	//XMMatrixInverse(&fCoord, )
-
-
+	matView = XMMatrixIdentity();
+	matProj = XMMatrixIdentity();
 
 	return fCoord;
 }
@@ -87,6 +81,7 @@ _bool CInput_Device::Mouse_Up(MOUSEKEYSTATE eMouse)
 
 HRESULT Engine::CInput_Device::Initialize(HINSTANCE hInst, HWND hWnd)
 {
+
 
 	// DInput 컴객체를 생성하는 함수
 	FAILED_CHECK_RETURN(DirectInput8Create(hInst,

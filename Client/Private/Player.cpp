@@ -209,7 +209,6 @@ void CPlayer::Input_Keys()
 	if (m_pGameInstance->Get_DIMouseState(DIM_LB))
 	{
 		m_iKey |= KEY_LB;
-		m_pGameInstance->Get_DIMouseWindowCoord(DIM_LB);
 	}
 	else if (!m_pGameInstance->Get_DIMouseState(DIM_LB))
 	{

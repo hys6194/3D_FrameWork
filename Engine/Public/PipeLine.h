@@ -22,7 +22,7 @@ class CPipeLine final : public CBase
 public:
 	enum TRANSFORMSTATE					{ D3DTS_VIEW, D3DTS_PROJ, D3DTS_END };
 private:
-										CPipeLine();
+										CPipeLine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual								~CPipeLine() = default;
 
 public:
@@ -57,7 +57,7 @@ public:
 
 	//GameInstance의 상호참조로 문제가 생길까봐 PipeLine클래스에 제작
 	const _float4*						Get_MouseWindowPosition() const;
-	const _float4*						Get_MouseWorldPosition() const;
+	_vector*							Get_MouseWorldPosition(const _float4x4* TargetmatWorld);
 public:
 
 	void								Set_Transform(TRANSFORMSTATE eState, _fmatrix Matrix);				// fmatrix 형 
@@ -73,10 +73,13 @@ private:
 
 private:
 	HWND								m_hWnd = { nullptr };
+	ID3D11Device*						m_pDevice = { nullptr };
+	ID3D11DeviceContext*				m_pContext = { nullptr };
+
 
 
 public:
-	static CPipeLine*					Create(HWND _hWnd);
+	static CPipeLine*					Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND _hWnd);
 	virtual void						Free() override;
 };
 

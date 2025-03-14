@@ -1,4 +1,16 @@
+sampler LinearSampler = sampler_state
+{
+    filter = min_mag_mip_linear;
+    AddressU = WRAP;
+    AddressV = WRAP;
+};
 
+sampler PointSampler = sampler_state
+{
+    filter = min_mag_mip_point;
+    AddressU = WRAP;
+    AddressV = WRAP;
+};
 
 RasterizerState RS_Default
 {
@@ -31,7 +43,7 @@ DepthStencilState DSS_Default
 DepthStencilState DSS_None
 {
     DepthEnable = false;
-    DepthWriteMask = ZERO;    
+    DepthWriteMask = ZERO;
 };
 
 

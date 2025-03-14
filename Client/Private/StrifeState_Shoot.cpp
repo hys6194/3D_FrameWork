@@ -116,9 +116,47 @@ void CStrifeState_Shoot::Player_ShootMove(_float fTimeDelta)
 
 void CStrifeState_Shoot::Player_LookSet(_float fTimeDelta)
 {
-	_long		MouseMove{};
+	_vector vPos = m_pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
+	_vector vMouse = *m_pGameInstance->Get_MouseWorldPosition(
+		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Get_WorldMatrix_Ptr());
 
-	//m_pGameInstance->
+	_vector vzero{ 1.f,0.f,0.f,0.f };
+	vMouse = XMVector4Normalize(vMouse);
+
+	_vector vResult = XMVector4Dot(vMouse, vzero);
+
+	_float fDot = XMVectorGetW(vResult);
+
+	_float lengthA = XMVectorGetX(XMVector3Length(vMouse));
+	_float lengthB = XMVectorGetX(XMVector3Length(vzero));
+
+	_float cosTheta = fDot / (lengthA * lengthB);
+
+	m_pOwner->Get_Transform()->Rotation(AXIS_Y, acosf(cosTheta));
+
+
+
+	//_vector vMouseDir = vMouse - vzero;
+
+	//_matrix matTest;
+	//
+	//matTest = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr()));
+
+	//dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, )
+
+
+	//dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Turn(AXIS_Y, 10);
+	//vMouse = vMouse + vPos;
+	//_vector vLook = vMouse - vPos;
+	//
+	//vLook = XMVector4Normalize(vLook);
+	//
+	//dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Set_State(CTransform::STATE_LOOK, vMouse);
+
+	_vector fTest; 
+	fTest = m_pOwner->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+
+ 	int  a = 10;
 }
 
 CStrifeState_Shoot* CStrifeState_Shoot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)

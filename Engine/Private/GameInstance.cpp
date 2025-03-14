@@ -44,7 +44,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pRenderer, E_FAIL);
 
-	m_pPipeLine = CPipeLine::Create(EngineDesc.hWnd);
+	m_pPipeLine = CPipeLine::Create(*ppDevice, *ppContext,EngineDesc.hWnd);
 	NULL_CHECK_RETURN(m_pPipeLine, E_FAIL);
 
 	m_pLight_Manager = CLight_Manager::Create(*ppDevice, *ppContext);
@@ -301,6 +301,16 @@ _matrix CGameInstance::Get_Transform_Inverse_Matrix(CPipeLine::TRANSFORMSTATE eS
 const _float4* CGameInstance::Get_CamPosition() const
 {
 	return m_pPipeLine->Get_CamPosition();
+}
+
+const _float4* CGameInstance::Get_MouseWindowPosition() const
+{
+	return m_pPipeLine->Get_MouseWindowPosition();
+}
+
+ _vector* CGameInstance::Get_MouseWorldPosition(const _float4x4* TargetmatWorld) 
+{
+	return m_pPipeLine->Get_MouseWorldPosition(TargetmatWorld);
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)
