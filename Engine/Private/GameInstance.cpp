@@ -201,6 +201,11 @@ void CGameInstance::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pCon
 {
 	m_pImGui_Manager->SetUp_ImGui(pDevice, pContext, hWnd);
 }
+void CGameInstance::Set_EndMsg()
+{
+	m_pImGui_Manager->Set_EndMsg();
+}
+
 #pragma endregion
 
 #pragma region TIMER_MANAGER
@@ -359,8 +364,6 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFont_Manager);
-
-	m_pImGui_Manager->Free();
 	Safe_Release(m_pImGui_Manager);
 
 	CGameInstance::DestroyInstance();

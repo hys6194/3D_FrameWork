@@ -26,6 +26,7 @@ void CImGui_Manager::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 	ImPlot::CreateContext();
 #endif
 
+	ImGui::StyleColorsDark();
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
@@ -52,6 +53,13 @@ void CImGui_Manager::SetUp_Render_ImGui()
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
 
+	ImGui::Begin("Test");
+
+	ImGui::Text("Hello, ImGui!");   // 텍스트 출력
+	ImGui::Button("Click Me");      // 버튼 추가
+
+	ImGui::End();                   // 창 종료
+
 	Create_DockingSpace();
 }
 
@@ -61,7 +69,8 @@ void CImGui_Manager::EndRender_ImGui()
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	ImGuiIO& io = ImGui::GetIO();
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable
+		&& m_bEndMsg == false)
 	{
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
@@ -94,6 +103,7 @@ void CImGui_Manager::Create_DockingSpace()
 
 	dockspace_flags |= ImGuiDockNodeFlags_PassthruCentralNode;
 	ImGui::Begin("DockSpace Demo", 0, window_flags);
+
 	ImGui::PopStyleVar();
 	ImGui::PopStyleVar(2);
 

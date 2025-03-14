@@ -59,7 +59,7 @@ public:
 	void							EndRender_ImGui();
 	void							SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd);
 	//vector<float*>				Draw_Gizmo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _matrix& matWorld);
-
+	void							Set_EndMsg();
 
 #pragma endregion
 
