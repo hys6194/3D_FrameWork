@@ -24,6 +24,19 @@ namespace Engine
 		unsigned int	iBoneIndex;
 	}KEYFRAME;
 
+
+	typedef struct ENGINE_DLL tagVertexPosition
+	{
+		XMFLOAT3		vPosition;
+
+		const static unsigned int					iNumElements = 1;
+
+		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		};
+	}VTXPOS;
+
 	typedef struct ENGINE_DLL tagVertexPositionTexcoord
 	{
 		XMFLOAT3		vPosition;

@@ -212,6 +212,8 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\VIBuffer_Cube.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect.h" />
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
+    <ClInclude Include="Cell.h" />
+    <ClInclude Include="ㅊ디ㅣ.h" />
     <ClInclude Include="클래스 정의.h" />
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +270,8 @@ call Copy.bat</Command>
     <ClCompile Include="..\Public\ImGui\implot_demo.cpp" />
     <ClCompile Include="..\Public\ImGui\implot_items.cpp" />
     <ClCompile Include="..\Public\ImGui\ImSequencer.cpp" />
+    <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="ㅊ디ㅣ.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli" />

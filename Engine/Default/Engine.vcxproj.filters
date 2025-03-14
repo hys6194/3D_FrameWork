@@ -333,6 +333,8 @@
     <ClInclude Include="..\Public\VIBuffer_Cell.h">
       <Filter>01.Utility\04. Component\VIBuffer\Cell</Filter>
     </ClInclude>
+    <ClInclude Include="ㅊ디ㅣ.h" />
+    <ClInclude Include="Cell.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -494,6 +496,8 @@
     <ClCompile Include="..\Private\VIBuffer_Cell.cpp">
       <Filter>01.Utility\04. Component\VIBuffer\Cell</Filter>
     </ClCompile>
+    <ClCompile Include="ㅊ디ㅣ.cpp" />
+    <ClCompile Include="Cell.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">
