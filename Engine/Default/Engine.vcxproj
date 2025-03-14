@@ -156,6 +156,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\Base.h" />
     <ClInclude Include="..\Public\Bone.h" />
     <ClInclude Include="..\Public\Camera.h" />
+    <ClInclude Include="..\Public\Cell.h" />
     <ClInclude Include="..\Public\Channel.h" />
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\ContainerObject.h" />
@@ -195,6 +196,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\Mesh.h" />
     <ClInclude Include="..\Public\MeshMaterial.h" />
     <ClInclude Include="..\Public\Model.h" />
+    <ClInclude Include="..\Public\Navigation.h" />
     <ClInclude Include="..\Public\Object_Manager.h" />
     <ClInclude Include="..\Public\PartObject.h" />
     <ClInclude Include="..\Public\PipeLine.h" />
@@ -212,8 +214,6 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\VIBuffer_Cube.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect.h" />
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
-    <ClInclude Include="Cell.h" />
-    <ClInclude Include="ㅊ디ㅣ.h" />
     <ClInclude Include="클래스 정의.h" />
   </ItemGroup>
   <ItemGroup>
@@ -221,6 +221,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\Base.cpp" />
     <ClCompile Include="..\Private\Bone.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
+    <ClCompile Include="..\Private\Cell.cpp" />
     <ClCompile Include="..\Private\Channel.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\ContainerObject.cpp" />
@@ -238,6 +239,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\Mesh.cpp" />
     <ClCompile Include="..\Private\MeshMaterial.cpp" />
     <ClCompile Include="..\Private\Model.cpp" />
+    <ClCompile Include="..\Private\Navigation.cpp" />
     <ClCompile Include="..\Private\Object_Manager.cpp" />
     <ClCompile Include="..\Private\PartObject.cpp" />
     <ClCompile Include="..\Private\PipeLine.cpp" />
@@ -270,8 +272,6 @@ call Copy.bat</Command>
     <ClCompile Include="..\Public\ImGui\implot_demo.cpp" />
     <ClCompile Include="..\Public\ImGui\implot_items.cpp" />
     <ClCompile Include="..\Public\ImGui\ImSequencer.cpp" />
-    <ClCompile Include="Cell.cpp" />
-    <ClCompile Include="ㅊ디ㅣ.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli" />

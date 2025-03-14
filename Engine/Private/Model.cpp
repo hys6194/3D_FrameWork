@@ -147,6 +147,11 @@ void CModel::Set_PreAnimation(_uint iPreAnimationIndex)
 
     m_pPreChannel = m_Animations[m_iPreAnimationIndex]->Get_Channel();
 
+    for (size_t i = 0; i < m_pPreChannel.size(); i++)
+    {
+        m_vecBone[i]->Get_CombinedTransformationMatrix();
+    }
+
 }
 
 void CModel::Interpolate_Animation(_float fRatio)

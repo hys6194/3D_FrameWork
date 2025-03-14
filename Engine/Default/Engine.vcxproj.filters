@@ -145,6 +145,12 @@
     <Filter Include="01.Utility\04. Component\VIBuffer\Cell">
       <UniqueIdentifier>{f654998d-3afa-45e3-ba30-f928d12d7ab9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04. Component\Navigation">
+      <UniqueIdentifier>{ed84d7da-e993-4887-bf7c-d17b8acea94a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\Navigation\Cell">
+      <UniqueIdentifier>{edda6f56-07c0-403b-a399-ddad30f5f351}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -333,8 +339,12 @@
     <ClInclude Include="..\Public\VIBuffer_Cell.h">
       <Filter>01.Utility\04. Component\VIBuffer\Cell</Filter>
     </ClInclude>
-    <ClInclude Include="ㅊ디ㅣ.h" />
-    <ClInclude Include="Cell.h" />
+    <ClInclude Include="..\Public\Cell.h">
+      <Filter>01.Utility\04. Component\Navigation\Cell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Navigation.h">
+      <Filter>01.Utility\04. Component\Navigation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -496,8 +506,12 @@
     <ClCompile Include="..\Private\VIBuffer_Cell.cpp">
       <Filter>01.Utility\04. Component\VIBuffer\Cell</Filter>
     </ClCompile>
-    <ClCompile Include="ㅊ디ㅣ.cpp" />
-    <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="..\Private\Cell.cpp">
+      <Filter>01.Utility\04. Component\Navigation\Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Navigation.cpp">
+      <Filter>01.Utility\04. Component\Navigation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">

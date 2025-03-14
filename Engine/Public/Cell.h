@@ -11,8 +11,8 @@ public:
 	enum LINE								{ LINE_AB, LINE_BC, LINE_CA, LINE_END };
 
 private:
-											CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual									~CCell() = default;
+	CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CCell() = default;
 
 public:
 	const _float3* Get_Point(POINT ePoint)
