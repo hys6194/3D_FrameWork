@@ -11,7 +11,6 @@
 #include <assimp/scene.h>
 
 
-
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CComponent { pDevice, pContext }
 {
@@ -337,6 +336,12 @@ HRESULT CModel::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePat
     m_pAIScene = m_Importer.ReadFile(pModelFilePath, iFlag);
     if (nullptr == m_pAIScene)
         return E_FAIL;
+
+    //if (AI_SUCCESS != exporter.Export(m_pAIScene, "fbx", "../Bin/Resources/Models/AnimModel/Strife/animtest1.fbx", iFlag))
+    //{
+    //
+    //    int iTest{};
+    //}
 
     /* 모델의 기본정보는 다 로드를 했다. */
     /* aiScene안에 포함되어있기 떄문에. 우리가 사용하기좋은 형태로 변형, 분리, 보관해주는 작업을 수행해야하낟. */

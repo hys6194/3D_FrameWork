@@ -54,8 +54,8 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pFont_Manager = CFont_Manager::Create(*ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pFont_Manager, E_FAIL);
 
-	//m_pImGui_Manager = CImGui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext);
-	//NULL_CHECK_RETURN(m_pImGui_Manager, E_FAIL);
+	m_pImGui_Manager = CImGui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext);
+	NULL_CHECK_RETURN(m_pImGui_Manager, E_FAIL);
 	
 
 	//FAILED_CHECK_RETURN 사용 못함 : 주소가 짤리는 듯함
@@ -69,7 +69,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
-	//m_pImGui_Manager->SetUp_Render_ImGui();
+	m_pImGui_Manager->SetUp_Render_ImGui();
 
 	m_pInput_Device->Update();
 
@@ -90,8 +90,8 @@ void CGameInstance::Draw_Engine()
 
 	m_pRenderer->Draw();
 
-	//m_pImGui_Manager->EndRender_ImGui();
-	//m_pGraphic_Device->Set_RenderTargets(1);
+	m_pImGui_Manager->EndRender_ImGui();
+	m_pGraphic_Device->Set_RenderTargets(1);
 
 }
 
@@ -341,7 +341,7 @@ HRESULT CGameInstance::Add_Font(const _wstring& strFontTag, const _tchar* pFontF
 {
 	return m_pFont_Manager->Add_Font(strFontTag, pFontFilePath);
 }
-HRESULT CGameInstance::Render(const _wstring& strFontTag, const _wstring& strText, const _float2& vPosition, _fvector vColor, _float fRadian, const _float2& vOrigin, _float fScale)
+HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _wstring& strText, const _float2& vPosition, _fvector vColor, _float fRadian, const _float2& vOrigin, _float fScale)
 {
 	return m_pFont_Manager->Render(strFontTag, strText, vPosition, vColor, fRadian, vOrigin, fScale);
 }
@@ -358,7 +358,10 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
-	//Safe_Release(m_pImGui_Manager);
+	Safe_Release(m_pFont_Manager);
+
+	m_pImGui_Manager->Free();
+	Safe_Release(m_pImGui_Manager);
 
 	CGameInstance::DestroyInstance();
 }

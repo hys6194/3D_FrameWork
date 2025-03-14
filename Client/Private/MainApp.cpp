@@ -25,9 +25,14 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Fonts()))
+		return E_FAIL;
+
 	// 레벨 시작
 	if (FAILED(Start_Level(LEVEL_LOGO)))
 		return E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -72,9 +77,14 @@ HRESULT CMainApp::Render()
 	else
 		m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
 
+
+
 	m_pGameInstance->Clear_DepthStencil_View();
 
 	m_pGameInstance->Draw_Engine();
+
+	if (FAILED(m_pGameInstance->Draw_Text(TEXT("Font_Default"), TEXT("배\n 부르다"))))
+		return E_FAIL;
 
 	m_pGameInstance->Present();
 
@@ -85,6 +95,16 @@ HRESULT CMainApp::Start_Level(LEVEL eLevelID)
 {
 	// 어떤 레벨을 Create할 지 알아야 하기 때문에 LEVEL enum을 인자로 받아와서 호출한다.
 	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, eLevelID))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Fonts()
+{
+	/*MakeSpriteFont "넥슨lv1고딕 Bold" /FontSize:16 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 148ex.spritefont */
+
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_Default"), TEXT("../Bin/Resources/Fonts/149ex.spritefont"))))
 		return E_FAIL;
 
 	return S_OK;

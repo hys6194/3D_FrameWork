@@ -60,6 +60,7 @@ public:
 	void							SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd);
 	//vector<float*>				Draw_Gizmo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _matrix& matWorld);
 
+
 #pragma endregion
 
 
@@ -112,7 +113,7 @@ public:
 
 #pragma region Font_Manager
 	HRESULT							Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath);
-	HRESULT							Render(const _wstring& strFontTag, const _wstring& strText, const _float2& vPosition, _fvector vColor, _float fRadian, const _float2& vOrigin, _float fScale);
+	HRESULT							Draw_Text(const _wstring& strFontTag, const _wstring& strText, const _float2& vPosition = _float2(0.f, 0.f), _fvector vColor = XMVectorSet(1.f, 1.f, 1.f, 1.f), _float fRadian = 0.f, const _float2& vOrigin = _float2(0.f, 0.f), _float fScale = 1.f);
 #pragma endregion
 
 

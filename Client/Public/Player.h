@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 class CFSM;
+class CNavigation;
 END
 
 BEGIN(Client)
@@ -101,6 +102,7 @@ private:
 
 private:
 	CFSM*					m_pFSMCom		= { nullptr };
+	CNavigation*			m_pNavigationCom = { nullptr };
 
 private:
 	HRESULT					Ready_Components();
