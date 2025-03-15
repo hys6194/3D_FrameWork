@@ -4,6 +4,30 @@
     <Filter Include="98.Default">
       <UniqueIdentifier>{d03e729c-e820-4900-9689-8a0d8b9bf6ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.MainApp">
+      <UniqueIdentifier>{8bd0b3a3-aaf8-406a-b922-962e41ab0a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level">
+      <UniqueIdentifier>{74fffc1f-e9c6-4183-ac04-c80d463e2e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\Loading">
+      <UniqueIdentifier>{b0a5bdb1-a4d9-4c57-848d-10dd553e4be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\Loading\Loader">
+      <UniqueIdentifier>{418a82f1-aa92-4942-a6fb-8deaf3d34123}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\Tool">
+      <UniqueIdentifier>{43beb03e-40ec-4f51-a2d0-0731976ad80b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines">
+      <UniqueIdentifier>{7bb6223a-3d42-4450-87be-e002eb3ce702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject">
+      <UniqueIdentifier>{38895218-250a-400b-a379-025ebf6d5b24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\00.Terrain">
+      <UniqueIdentifier>{8e711247-b2ed-4e7f-a406-cede9dcafc07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -18,8 +42,27 @@
     <ClInclude Include="Tool.h">
       <Filter>98.Default</Filter>
     </ClInclude>
-    <ClInclude Include="MainApp.h" />
-    <ClInclude Include="..\Public\Tool_Defines.h" />
+    <ClInclude Include="..\Public\MainApp.h">
+      <Filter>00.MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Loading.h">
+      <Filter>01.Level\Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tool_Level.h">
+      <Filter>01.Level\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tool_Defines.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Loader.h">
+      <Filter>01.Level\Loading\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tool_ConstValue.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Terrain.h">
+      <Filter>02.GameObject\00.Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -38,6 +81,20 @@
     <ClCompile Include="Tool.cpp">
       <Filter>98.Default</Filter>
     </ClCompile>
-    <ClCompile Include="MainApp.cpp" />
+    <ClCompile Include="..\Private\MainApp.cpp">
+      <Filter>00.MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Loading.cpp">
+      <Filter>01.Level\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Tool_Level.cpp">
+      <Filter>01.Level\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Loader.cpp">
+      <Filter>01.Level\Loading\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Terrain.cpp">
+      <Filter>02.GameObject\00.Terrain</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

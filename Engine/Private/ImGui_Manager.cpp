@@ -59,13 +59,6 @@ void CImGui_Manager::SetUp_Render_ImGui()
 	ImGui::Button("Click Me");      // 버튼 추가
 
 	ImGui::End();                   // 창 종료
-
-	ImGui::Begin("Test1");
-
-	ImGui::Text("Hello, ImGui!1");   // 텍스트 출력
-	ImGui::Button("Click Me1");      // 버튼 추가
-
-	ImGui::End();
 	
 	Create_DockingSpace();
 }

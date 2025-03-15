@@ -3,16 +3,24 @@
 
 #include "framework.h"
 #include "Tool.h"
-#include "Engine_Defines.h"
+
+#include "MainApp.h"
+#include "GameInstance.h"
+
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_win32.h"
+#include "ImGui/imgui_impl_dx11.h"
+#include "ImGui/ImGuizmo.h"
+
 
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
 
-HWND g_hWnd;                                    // 현재 인스턴스입니다.
-HINSTANCE g_hInstance;                          // 현재 인스턴스입니다.
-WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
-WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+HWND            g_hWnd;                                    // 현재 인스턴스입니다.
+HINSTANCE       g_hInstance;                          // 현재 인스턴스입니다.
+WCHAR           szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
+WCHAR           szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -25,10 +33,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
+
+#ifdef _DEBUG
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
+
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 여기에 코드를 입력합니다.
+    MainApp* pMainApp = { nullptr };
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -45,17 +60,64 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
+
+    pMainApp = MainApp::Create();
+    if (nullptr == pMainApp)
+        return FALSE;
+
+    CGameInstance* pGameInstance = CGameInstance::GetInstance();
+    if (nullptr == pGameInstance)
+        return FALSE;
+
+    Safe_AddRef(pGameInstance);
+
+
+    if (FAILED(pGameInstance->Add_Timer(TEXT("Timer_Default"))))
+        return E_FAIL;
+    if (FAILED(pGameInstance->Add_Timer(TEXT("Timer_60"))))
+        return E_FAIL;
+
+
+    _float      fTimeAcc = { 0.f };
+
+
     // 기본 메시지 루프입니다:
     while (GetMessage(&msg, nullptr, 0, 0))
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            if (WM_QUIT == msg.message)
+                break;
+
+            if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+
+            pGameInstance->Set_TimeDelta(TEXT("Timer_Default"));
+
+            fTimeAcc += pGameInstance->Get_TimeDelta(TEXT("Timer_Default"));
+
+            if (fTimeAcc >= 1.f / 60.f)
+            {
+                pGameInstance->Set_TimeDelta(TEXT("Timer_60"));
+
+                pMainApp->Update(pGameInstance->Get_TimeDelta(TEXT("Timer_60")));
+                pMainApp->Render();
+
+                fTimeAcc = 0.f;
+            }
         }
     }
 
-    return (int) msg.wParam;
+
+     Safe_Release(pGameInstance);
+
+     Safe_Release(pMainApp);
+
+     return (int)msg.wParam;
+
 }
 
 
@@ -111,6 +173,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
+
+   g_hWnd = hWnd;
+
    return TRUE;
 }
 
@@ -122,8 +187,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_COMMAND  - 애플리케이션 메뉴를 처리합니다.
 //  WM_PAINT    - 주 창을 그립니다.
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
-//
-//
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -145,6 +212,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+
+    case WM_DPICHANGED: // imgui 윈도우 포지션 재정의
+        if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DpiEnableScaleViewports)
+        {
+            //const int dpi = HIWORD(wParam);
+            //printf("WM_DPICHANGED to %d (%.0f%%)\n", dpi, (float)dpi / 96.0f * 100.0f);
+            const RECT* suggested_rect = (RECT*)lParam;
+            ::SetWindowPos(hWnd, NULL, suggested_rect->left, suggested_rect->top
+                , suggested_rect->right - suggested_rect->left, suggested_rect->bottom - suggested_rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
+        }
+        break;
+
+
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
@@ -155,6 +235,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
+        CGameInstance::GetInstance()->Set_EndMsg();
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);

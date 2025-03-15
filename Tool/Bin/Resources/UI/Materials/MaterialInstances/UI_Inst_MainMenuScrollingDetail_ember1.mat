@@ -1,0 +1,5 @@
+Diffuse=nullSprite
+Opacity=UI_menuFX_emberMask2
+Other[0]=UI_menuFX_emberTile3
+Other[1]=UI_mainMenu_CloudTile
+Other[2]=UI_Menu_NoiseUV1

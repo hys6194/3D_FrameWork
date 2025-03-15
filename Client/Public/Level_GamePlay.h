@@ -12,20 +12,20 @@ private:
 	virtual ~CLevel_GamePlay() = default;
 
 public:
-	virtual HRESULT Initialize() override;
-	virtual void Update(_float fTimeDelta) override;
-	virtual HRESULT Render() override;
+	virtual HRESULT						Initialize() override;
+	virtual void						Update(_float fTimeDelta) override;
+	virtual HRESULT						Render() override;
 
 public:
-	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Monster(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Player(const _tchar* pLayerTag);
-	HRESULT Ready_Lights();
+	HRESULT								Ready_Layer_BackGround(const _tchar* pLayerTag);
+	HRESULT								Ready_Layer_Camera(const _tchar* pLayerTag);
+	HRESULT								Ready_Layer_Monster(const _tchar* pLayerTag);
+	HRESULT								Ready_Layer_Player(const _tchar* pLayerTag);
+	HRESULT								Ready_Lights();
 
 public:
-	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual void Free() override;
+	static CLevel_GamePlay*				Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual void						Free() override;
 };
 
 END

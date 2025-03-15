@@ -162,7 +162,6 @@ HRESULT CLoader::Loading_Textures()
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 			return E_FAIL;
 	}
-
 		break;
 	case LEVEL_LOGO:
 	{
@@ -285,7 +284,6 @@ HRESULT CLoader::Loading_Models()
 			CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Navigation.dat")))))
 			return E_FAIL;
 	}
-
 
 		break;
 	default:

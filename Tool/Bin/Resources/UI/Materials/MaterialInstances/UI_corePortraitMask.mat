@@ -1,0 +1,5 @@
+Diffuse=nullSprite
+Opacity=UI_genericWhiteSquare
+Other[0]=UI_particle_circleSoftEdge3
+Other[1]=ui_CreatureDetailPortraitMask
+Other[2]=UI_particle_circleSoftEdge1

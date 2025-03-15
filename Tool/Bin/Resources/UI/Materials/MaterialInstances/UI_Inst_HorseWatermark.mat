@@ -1,0 +1,6 @@
+Diffuse=nullSprite
+Opacity=UI_RuneRingInner
+Other[0]=UI_RuneRingOuter
+Other[1]=UI_RuneRingHorse
+Other[2]=UI_genericWhiteSquare
+Other[3]=UI_particle_circleSoftEdge1
