@@ -1,3 +1,7 @@
-﻿  Tool.cpp
-  LINK : ..\Bin\Tool.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
-  Tool.vcxproj -> E:\GitHub\3D_FrameWork\Tool\Bin\Tool.exe
+﻿  MainApp.cpp
+  Tool.cpp
+E:\GitHub\3D_FrameWork\Tool\Default\MainApp.cpp(90,1): error C2059: 구문 오류: '}'
+E:\GitHub\3D_FrameWork\Tool\Default\MainApp.cpp(90,1): error C2143: 구문 오류: ';'이(가) '}' 앞에 없습니다.
+E:\GitHub\3D_FrameWork\Tool\Default\MainApp.cpp(93,1): error C2143: 구문 오류: ';'이(가) '{' 앞에 없습니다.
+E:\GitHub\3D_FrameWork\Tool\Default\MainApp.cpp(93,1): error C2447: '{': 함수 헤더가 없습니다. 이전 스타일의 형식 목록입니까?
+  코드를 생성하고 있습니다...

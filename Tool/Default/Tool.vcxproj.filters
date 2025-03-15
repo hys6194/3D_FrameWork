@@ -18,6 +18,8 @@
     <ClInclude Include="Tool.h">
       <Filter>98.Default</Filter>
     </ClInclude>
+    <ClInclude Include="MainApp.h" />
+    <ClInclude Include="..\Public\Tool_Defines.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -36,5 +38,6 @@
     <ClCompile Include="Tool.cpp">
       <Filter>98.Default</Filter>
     </ClCompile>
+    <ClCompile Include="MainApp.cpp" />
   </ItemGroup>
 </Project>
