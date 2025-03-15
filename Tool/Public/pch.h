@@ -23,4 +23,8 @@
 
 using namespace std;
 
+namespace Tool
+{
+};
+
 #endif //PCH_H

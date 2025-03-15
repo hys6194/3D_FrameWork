@@ -1,16 +1,39 @@
 ﻿  Tool.cpp
   Base.cpp
-  Graphic_Device.cpp
-  Input_Device.cpp
-  MainApp.cpp
-  System_Manager.cpp
   pch.cpp
-E:\GitHub\3D_FrameWork\Tool\Public\vc140.pch : warning LNK4003: 라이브러리 형식이 잘못되었습니다. 라이브러리가 무시됩니다.
-Graphic_Device.obj : error LNK2019: D3D11CreateDevice"public: long __cdecl Engine::CGraphic_Device::Initialize(struct HWND__ *,bool,unsigned int,unsigned int,struct ID3D11Device * *,struct ID3D11DeviceContext * *)" (?Initialize@CGraphic_Device@Engine@@QEAAJPEAUHWND__@@_NIIPEAPEAUID3D11Device@@PEAPEAUID3D11DeviceContext@@@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
-Input_Device.obj : error LNK2019: DirectInput8Create"public: long __cdecl Engine::CInput_Device::Initialize(struct HINSTANCE__ *,struct HWND__ *)" (?Initialize@CInput_Device@Engine@@QEAAJPEAUHINSTANCE__@@PEAUHWND__@@@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
-Input_Device.obj : error LNK2001: 확인할 수 없는 외부 기호 IID_IDirectInput8W
-Input_Device.obj : error LNK2001: 확인할 수 없는 외부 기호 GUID_SysMouse
-Input_Device.obj : error LNK2001: 확인할 수 없는 외부 기호 GUID_SysKeyboard
-Input_Device.obj : error LNK2001: 확인할 수 없는 외부 기호 c_dfDIMouse
-Input_Device.obj : error LNK2001: 확인할 수 없는 외부 기호 c_dfDIKeyboard
-..\Bin\Tool.exe : fatal error LNK1120: 7개의 확인할 수 없는 외부 참조입니다.
+  GraphEditor.cpp
+\Private\Base.cpp(1,1): error C1083: 소스 파일을 열 수 없습니다. '..\Private\Base.cpp': No such file or directory
+  (소스 파일 '/Private/Base.cpp'을(를) 컴파일하는 중)
+  
+\Private\pch.cpp(1,1): error C1083: 소스 파일을 열 수 없습니다. '..\Private\pch.cpp': No such file or directory
+  (소스 파일 '/Private/pch.cpp'을(를) 컴파일하는 중)
+  
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\GraphEditor.cpp(1116,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  ImCurveEdit.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\ImCurveEdit.cpp(458,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  ImGradient.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\ImGradient.cpp(117,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  imgui.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\imgui.cpp(22786,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  ImGuizmo.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\ImGuizmo.cpp(3148,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  imgui_demo.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\imgui_demo.cpp(10687,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  imgui_draw.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\imgui_draw.cpp(4694,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  imgui_impl_dx11.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\imgui_impl_dx11.cpp(752,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  imgui_impl_win32.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\imgui_impl_win32.cpp(1393,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  imgui_tables.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\imgui_tables.cpp(4467,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  imgui_widgets.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\imgui_widgets.cpp(10432,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  implot.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\implot.cpp(5762,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  implot_demo.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\implot_demo.cpp(2457,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  implot_items.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\implot_items.cpp(2693,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
+  ImSequencer.cpp
+E:\GitHub\3D_FrameWork\Tool\Public\ImGui\ImSequencer.cpp(696,1): error C2857: /Ycpch.h 명령줄 옵션과 함께 지정한 '#include' 문이 소스 파일에 없습니다.
