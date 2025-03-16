@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CShader;
+class CTexture;
 class CVIBuffer_Terrain;
 END
 

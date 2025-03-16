@@ -3,10 +3,6 @@
 #include "Tool_Defines.h"
 #include "Level.h"
 
-BEGIN(Engine)
-class CLevel;
-END
-
 BEGIN(Tool)
 
 class Tool_Level : public CLevel

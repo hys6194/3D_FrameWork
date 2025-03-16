@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 
 Terrain::Terrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject{ Prototype }
+	: CGameObject{ pDevice,  pContext }
 {
 }
 
@@ -44,34 +44,48 @@ void Terrain::Update(_float fTimeDelta)
 
 void Terrain::Late_Update(_float fTimeDelta)
 {
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
 HRESULT Terrain::Render()
 {
+	if (FAILED(Bind_SR()))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Begin(3)))
+		return E_FAIL;
+
+	if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))
+		return E_FAIL;
+
+	if (FAILED(m_pVIBufferCom->Render()))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
 HRESULT Terrain::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
+	if (FAILED(__super::Add_Component(LEVEL_TOOL, PRO_TEX_TERRAIN,
 		reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_DIFFUSE]), TEXT("Com_Texture"))))
 		return E_FAIL;
 
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Mask"),
-		reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_MASK]), TEXT("Com_Texture_Mask"))))
-		return E_FAIL;
-
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Brush"),
-		reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_BRUSH]), TEXT("Com_Texture_Brush"))))
-		return E_FAIL;
+	//if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Mask"),
+	//	reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_MASK]), TEXT("Com_Texture_Mask"))))
+	//	return E_FAIL;
+	//
+	//if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Brush"),
+	//	reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_BRUSH]), TEXT("Com_Texture_Brush"))))
+	//	return E_FAIL;
 
 	/* Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+	if (FAILED(__super::Add_Component(LEVEL_TOOL, PRO_COM_VI_TERRAIN,
 		reinterpret_cast<CComponent**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
 		return E_FAIL;
 
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
+	if (FAILED(__super::Add_Component(LEVEL_TOOL, PRO_SHADER_NOR,
 		reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader"))))
 		return E_FAIL;
 
@@ -120,14 +134,38 @@ HRESULT Terrain::Bind_SR()
 
 Terrain* Terrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	return nullptr;
+	Terrain* pInstance = new Terrain(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed To Created : Terrain");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 CGameObject* Terrain::Clone(void* pArg)
 {
-	return nullptr;
+	Terrain* pInstance = new Terrain(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed To Cloned : Terrain");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void Terrain::Free()
 {
+	__super::Free();
+
+	Safe_Release(m_pShaderCom);
+
+	for (auto& pTextureCom : m_pTextureCom)
+		Safe_Release(pTextureCom);
+
+	Safe_Release(m_pVIBufferCom);
 }

@@ -3,6 +3,18 @@
 #include <Windows.h>
 #include <process.h>
 
+#include <Vfw.h>
+#pragma comment(lib, "vfw32.lib")
+
+#include <io.h>
+
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_win32.h"
+#include "ImGui/imgui_impl_dx11.h"
+#include "ImGui/ImGuizmo.h"
+
+#include "Tool_ConstValue.h"
+
 namespace Tool
 {
 	static const unsigned int	g_iWinSizeX = 1280;

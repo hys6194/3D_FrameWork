@@ -3,7 +3,9 @@
 #include "Tool_Defines.h"
 #include "Level.h"
 
-class Level_Loading : public CLevel
+BEGIN(Tool)
+
+class Level_Loading final : public CLevel
 {
 private:
 	Level_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -25,3 +27,4 @@ public:
 	virtual void					Free() override;
 };
 
+END

@@ -2,31 +2,49 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="98.Default">
-      <UniqueIdentifier>{d03e729c-e820-4900-9689-8a0d8b9bf6ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00.MainApp">
-      <UniqueIdentifier>{8bd0b3a3-aaf8-406a-b922-962e41ab0a1d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level">
-      <UniqueIdentifier>{74fffc1f-e9c6-4183-ac04-c80d463e2e4e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\Loading">
-      <UniqueIdentifier>{b0a5bdb1-a4d9-4c57-848d-10dd553e4be8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\Loading\Loader">
-      <UniqueIdentifier>{418a82f1-aa92-4942-a6fb-8deaf3d34123}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\Tool">
-      <UniqueIdentifier>{43beb03e-40ec-4f51-a2d0-0731976ad80b}</UniqueIdentifier>
+      <UniqueIdentifier>{b283b6ac-7f6d-4e2a-af2e-65e7769fe595}</UniqueIdentifier>
     </Filter>
     <Filter Include="99.Defines">
-      <UniqueIdentifier>{7bb6223a-3d42-4450-87be-e002eb3ce702}</UniqueIdentifier>
+      <UniqueIdentifier>{738212a3-bd32-46bf-b4d7-b49bfb61a745}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp">
+      <UniqueIdentifier>{8758828c-7a27-4441-b04c-521e060d3835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level">
+      <UniqueIdentifier>{fd2a5fc8-8671-4c30-959f-0302027f8648}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\00.Loading">
+      <UniqueIdentifier>{284f499c-35d1-4ac5-ac79-594770330641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\00.Loading\00.Loader">
+      <UniqueIdentifier>{5b1afb9a-c60f-4fff-9c3d-798adc81e9d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\01.Tool">
+      <UniqueIdentifier>{ac0970ff-6011-4872-8e8e-d3f542e14a01}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObject">
-      <UniqueIdentifier>{38895218-250a-400b-a379-025ebf6d5b24}</UniqueIdentifier>
+      <UniqueIdentifier>{041da9fc-d4fe-4887-b0cf-9d8253720298}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObject\00.Terrain">
-      <UniqueIdentifier>{8e711247-b2ed-4e7f-a406-cede9dcafc07}</UniqueIdentifier>
+      <UniqueIdentifier>{aa053677-6519-4986-9671-9486ef9d3f94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\01.Camera">
+      <UniqueIdentifier>{bdeaf0ca-1fff-4a2f-961d-03f588cacc91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui">
+      <UniqueIdentifier>{06583c77-fb0d-47dc-8b43-5bd050dc1930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\00.ImGui_Base">
+      <UniqueIdentifier>{445794a1-a64c-4241-947d-9acad910bb23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\01.Tool">
+      <UniqueIdentifier>{28675c41-d0a0-470e-8ac8-59965b9ef64c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\01.Tool\01.UI">
+      <UniqueIdentifier>{bc943f6a-a782-4883-b9c4-2da64381a11d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\01.Tool\00.Map">
+      <UniqueIdentifier>{9d38dbf2-dc16-4a70-9ba6-71e3a2dde8cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,23 +63,29 @@
     <ClInclude Include="..\Public\MainApp.h">
       <Filter>00.MainApp</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_Loading.h">
-      <Filter>01.Level\Loading</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Tool_Level.h">
-      <Filter>01.Level\Tool</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Tool_Defines.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Loader.h">
-      <Filter>01.Level\Loading\Loader</Filter>
+    <ClInclude Include="..\Public\Level_Loading.h">
+      <Filter>01.Level\00.Loading</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Tool_ConstValue.h">
-      <Filter>99.Defines</Filter>
+    <ClInclude Include="..\Public\Loader.h">
+      <Filter>01.Level\00.Loading\00.Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tool_Level.h">
+      <Filter>01.Level\01.Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02.GameObject\00.Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tool_FreeCam.h">
+      <Filter>02.GameObject\01.Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Base.h">
+      <Filter>97.ImGui\00.ImGui_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_UI.h">
+      <Filter>97.ImGui\01.Tool\01.UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -84,17 +108,26 @@
     <ClCompile Include="..\Private\MainApp.cpp">
       <Filter>00.MainApp</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Loader.cpp">
+      <Filter>01.Level\00.Loading\00.Loader</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp">
-      <Filter>01.Level\Loading</Filter>
+      <Filter>01.Level\00.Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Tool_Level.cpp">
-      <Filter>01.Level\Tool</Filter>
+      <Filter>01.Level\01.Tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Loader.cpp">
-      <Filter>01.Level\Loading\Loader</Filter>
+    <ClCompile Include="..\Private\Tool_FreeCam.cpp">
+      <Filter>02.GameObject\01.Camera</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
       <Filter>02.GameObject\00.Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Base.cpp">
+      <Filter>97.ImGui\00.ImGui_Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_UI.cpp">
+      <Filter>97.ImGui\01.Tool\01.UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

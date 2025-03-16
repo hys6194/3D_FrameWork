@@ -1,8 +1,8 @@
 #include "Loader.h"
 #include "GameInstance.h"
-#include "Tool_ConstValue.h"
 
-//#include "Camera_Free.h"
+
+#include "Tool_FreeCam.h"
 #include "Terrain.h"
 //#include "Monster.h"
 
@@ -106,7 +106,6 @@ HRESULT Loader::Loading_Textures()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
 		return E_FAIL;
 	
-	
 	/* For.Prototype_Component_Texture_Mask */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_TEX_MASK,
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Mask.dds"), 1))))
@@ -131,10 +130,6 @@ HRESULT Loader::Loading_Models()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_VI_CUBE,
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_FSM,
-		CFSM::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	return S_OK;
@@ -175,7 +170,7 @@ HRESULT Loader::Loading_Prototype()
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_CAM_FREE,
-		Camera_Free::Create(m_pDevice, m_pContext))))
+		CTool_FreeCam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	return S_OK;

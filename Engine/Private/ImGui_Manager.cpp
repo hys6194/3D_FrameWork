@@ -15,6 +15,7 @@ CImGui_Manager::CImGui_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 HRESULT CImGui_Manager::Initialize(HWND hWnd)
 {
 	SetUp_ImGui(m_pDevice, m_pContext, hWnd);
+
 	return S_OK;
 }
 
@@ -46,22 +47,42 @@ void CImGui_Manager::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 	ImGui_ImplDX11_Init(pDevice, pContext);
 }
 
+void CImGui_Manager::Update_ImGui_Windows(_float fTimeDelta)
+{
+
+}
+
+void CImGui_Manager::Late_Update_ImGui_Windows(_float fTimeDelta)
+{
+
+}
+
+void CImGui_Manager::Render()
+{
+	ImGui::Begin("UI_Windows");
+
+	ImGui::Button("Text");
+
+
+	ImGui::End();
+
+}
+
 void CImGui_Manager::SetUp_Render_ImGui()
 {
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
-
-	ImGui::Begin("Test");
-
-	ImGui::Text("Hello, ImGui!");   // 텍스트 출력
-	ImGui::Button("Click Me");      // 버튼 추가
-
-	ImGui::End();                   // 창 종료
 	
 	Create_DockingSpace();
 }
+
+//void CImGui_Manager::Render()
+//{
+//	// 모든 클래스의 Render를 모아서 한꺼번에 출력?
+//
+//}
 
 void CImGui_Manager::EndRender_ImGui()
 {

@@ -8,6 +8,7 @@ class CGameInstance;
 END
 
 BEGIN(Tool)
+
 class Loader final : public CBase
 {
 private:
@@ -45,8 +46,6 @@ private:
 
 private:
 	HRESULT							Loading_Tool();
-
-
 
 private:
 	HRESULT							Loading_Textures();

@@ -27,6 +27,14 @@ void CStrifeState_Shoot::PriorityUpdate_State(_float fTimeDelta)
 		Player_LookSet(fTimeDelta);
 
 		Player_ShootMove(fTimeDelta);
+
+		Apply_ShootAnimation();
+		
+	}
+
+	else if (m_iKeyState & CPlayer::KEY_RB)
+	{
+		// Ä«¸Þ¶ó ÀÌµ¿ÇÏ¸é¼­ ÃÑ ½î´Â °É·Î
 	}
 
 	// ¾È ½ð´Ù
@@ -77,6 +85,7 @@ void CStrifeState_Shoot::Set_CurAnimation()
 
 void CStrifeState_Shoot::Player_ShootMove(_float fTimeDelta)
 {
+
     switch (m_iKeyState)
     {
 
@@ -139,6 +148,15 @@ void CStrifeState_Shoot::Player_LookSet(_float fTimeDelta)
 	else
 		m_pOwner->Get_Transform()->Rotation(AXIS_Y, -acosf(cosTheta));
 
+}
+
+void CStrifeState_Shoot::Apply_ShootAnimation()
+{
+		if (m_iKeyState & CPlayer::KEY_DOWN || m_iKeyState & CPlayer::KEY_UP || m_iKeyState & CPlayer::KEY_LEFT || m_iKeyState & CPlayer::KEY_RIGHT)
+			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_WALK, true, false);
+
+		else if (!(m_iKeyState & CPlayer::KEY_DOWN) && !(m_iKeyState & CPlayer::KEY_UP) && !(m_iKeyState & CPlayer::KEY_LEFT) && !(m_iKeyState & CPlayer::KEY_RIGHT))
+			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_IDLE, true, false);
 }
 
 CStrifeState_Shoot* CStrifeState_Shoot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)

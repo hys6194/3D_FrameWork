@@ -68,7 +68,7 @@ HRESULT CMainApp::Render()
 		m_fTimeAcc = 0.f;
 	}	
 
-	//SetWindowText(g_hWnd, m_szFPS);
+	SetWindowText(g_hWnd, m_szFPS);
 	
 #endif
 

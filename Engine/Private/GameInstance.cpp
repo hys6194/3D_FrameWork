@@ -13,7 +13,6 @@
 #include "Font_Manager.h"
 #include "ImGui_Manager.h"
 
-
 IMPLEMENT_SINGLETON(CGameInstance)
 
 CGameInstance::CGameInstance()
@@ -204,6 +203,11 @@ void CGameInstance::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pCon
 void CGameInstance::Set_EndMsg()
 {
 	m_pImGui_Manager->Set_EndMsg();
+}
+
+void CGameInstance::Render_ImGui()
+{
+	m_pImGui_Manager->Render();
 }
 
 #pragma endregion

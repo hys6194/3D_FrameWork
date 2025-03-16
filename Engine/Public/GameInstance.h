@@ -60,6 +60,7 @@ public:
 	void							SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd);
 	//vector<float*>				Draw_Gizmo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _matrix& matWorld);
 	void							Set_EndMsg();
+	void							Render_ImGui();
 
 #pragma endregion
 
@@ -105,7 +106,6 @@ public:
 	HRESULT							Bind_VP_Transform_SR(const _char* pConstantName, CShader* pShader, CPipeLine::TRANSFORMSTATE eState);
 #pragma endregion
 
-
 #pragma region Light_Manager
 	HRESULT							Add_Light(const LIGHT_DESC& pDesc);
 	const LIGHT_DESC*				Get_LightDesc(_uint iLightIndex)const;
@@ -115,8 +115,6 @@ public:
 	HRESULT							Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath);
 	HRESULT							Draw_Text(const _wstring& strFontTag, const _wstring& strText, const _float2& vPosition = _float2(0.f, 0.f), _fvector vColor = XMVectorSet(1.f, 1.f, 1.f, 1.f), _float fRadian = 0.f, const _float2& vOrigin = _float2(0.f, 0.f), _float fScale = 1.f);
 #pragma endregion
-
-
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
