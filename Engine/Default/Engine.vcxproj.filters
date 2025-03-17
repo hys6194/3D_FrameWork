@@ -160,17 +160,11 @@
     <Filter Include="02.Tool\00.ImGui">
       <UniqueIdentifier>{50beb0e0-3306-4f88-9c41-741f32b12fee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Tool\01.UI">
-      <UniqueIdentifier>{9e546aae-a5fc-420a-8bfd-6bc3e2e5c54e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.Tool\02.Map">
-      <UniqueIdentifier>{87569830-5898-4d2f-b4cb-c86eb0571fce}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.Tool\00.ImGui\Default">
       <UniqueIdentifier>{1e82e46a-d89b-4d11-99cb-dcb0b05a347c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Tool\00.ImGui\00.ImGui_Base">
-      <UniqueIdentifier>{d5f031fa-8806-4433-8235-b075b88de962}</UniqueIdentifier>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Flat_Terrain">
+      <UniqueIdentifier>{cb8fa389-5d1e-4cf2-8531-7ddb18f6110e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -324,9 +318,6 @@
     <ClInclude Include="..\Public\Font_Manager.h">
       <Filter>01.Utility\08.Font\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Tool\ImGui_UI.h">
-      <Filter>02.Tool\01.UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ImGui\GraphEditor.h">
       <Filter>02.Tool\00.ImGui\Default</Filter>
     </ClInclude>
@@ -375,8 +366,8 @@
     <ClInclude Include="..\Public\ImGui\ImZoomSlider.h">
       <Filter>02.Tool\00.ImGui\Default</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Tool\ImGui_Base.h">
-      <Filter>02.Tool\00.ImGui\00.ImGui_Base</Filter>
+    <ClInclude Include="..\Public\VIBuffer_Flat_Terrain.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Flat_Terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -506,9 +497,6 @@
     <ClCompile Include="..\Private\Font_Manager.cpp">
       <Filter>01.Utility\08.Font\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Tool\ImGui_UI.cpp">
-      <Filter>02.Tool\01.UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Public\ImGui\GraphEditor.cpp">
       <Filter>02.Tool\00.ImGui\Default</Filter>
     </ClCompile>
@@ -554,8 +542,8 @@
     <ClCompile Include="..\Public\ImGui\ImSequencer.cpp">
       <Filter>02.Tool\00.ImGui\Default</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Tool\ImGui_Base.cpp">
-      <Filter>02.Tool\00.ImGui\00.ImGui_Base</Filter>
+    <ClCompile Include="..\Private\VIBuffer_Flat_Terrain.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Flat_Terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -78,7 +78,8 @@ public:
 
 #pragma region PROTOTYPE_MANAGER
 	HRESULT							Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CBase* pPrototype);
-
+	HRESULT							Collect_ProtoTag(_uint iLevelIndex);
+	vector<wstring>*				Get_PrototypeTag(_uint iLevelIndex);
 	// 왜 pArg = nullptr로 디폴트 인자값으로? -> pArg가 필요할 수도 없을수도 있기 때문에
 	CBase*							Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
 #pragma endregion

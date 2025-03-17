@@ -4,6 +4,7 @@
 
 #include "Tool_FreeCam.h"
 #include "Terrain.h"
+#include "Map_Object.h"
 //#include "Monster.h"
 
 
@@ -125,12 +126,28 @@ HRESULT Loader::Loading_Models()
 	// 지형 출력
 	/* For.Prototype_Component_VIBuffer_Terrain*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_VI_TERRAIN,
-		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
+		CVIBuffer_Flat_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_VI_CUBE,
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	_matrix		PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK1,
+		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Rock/DestRock1.fbx", PreTransformMatrix))))
+		return E_FAIL;
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK2,
+		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Rock/DestRock2.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
+	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/AnimModel/Strife/Gun2.fbx", PreTransformMatrix))))
+	//	return E_FAIL;
+
 
 	return S_OK;
 }
@@ -165,6 +182,7 @@ HRESULT Loader::Loading_Shaders()
 
 HRESULT Loader::Loading_Prototype()
 {
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_TERRAIN,
 		Terrain::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -172,6 +190,15 @@ HRESULT Loader::Loading_Prototype()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_CAM_FREE,
 		CTool_FreeCam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_ROCK1,
+		CMap_Object::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_ROCK2,
+		CMap_Object::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	return S_OK;
 }

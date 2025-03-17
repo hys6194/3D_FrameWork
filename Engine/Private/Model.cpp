@@ -327,7 +327,7 @@ HRESULT CModel::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePat
     XMStoreFloat4x4(&m_PreTransformMatrix, PreTransformMatrix);
 
     //aiProcess_CalcTangentSpace, aiProcessPreset_TargetRealtime_Fast
-    _uint        iFlag = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
+    _uint        iFlag = aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace;
 
     if (MODELTYPE::TYPE_NONANIM == eType)
         iFlag |= aiProcess_PreTransformVertices;

@@ -149,6 +149,17 @@ PS_OUT PS_MAIN1(PS_IN In)
 //    return Out;
 //}
 
+
+PS_OUT PS_MAIN3(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    vector v1 = { 1.f, 1.f, 1.f, 1.f };
+    Out.vColor = v1;
+    
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
     pass DefaultPass
@@ -192,7 +203,7 @@ technique11 DefaultTechnique
 
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile ps_5_0 PS_MAIN1();
+        PixelShader = compile ps_5_0 PS_MAIN3();
 
     }
 }

@@ -5,6 +5,7 @@ BEGIN(Engine)
 
 class CImGui_Manager : public CBase
 {
+private:
 	CImGui_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CImGui_Manager() = default;
 
@@ -32,6 +33,7 @@ private:
 	_bool								m_bEndMsg = { false };
 
 	class CImGui_UI*					m_pUI = { nullptr };
+	class CImGui_Map*					m_pMap = { nullptr };
 
 private:
 	void								Release_ImGui();

@@ -100,6 +100,9 @@
     <Filter Include="02.GameObjects\Player\States\PlayerKey_State">
       <UniqueIdentifier>{bb5f00c7-34ee-4ae5-b167-0be8f1e0ed51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Map_Object">
+      <UniqueIdentifier>{4269b7f8-3259-4824-8a04-febe5eb6a377}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -189,6 +192,9 @@
     <ClInclude Include="..\Public\Player_KeyState.h">
       <Filter>02.GameObjects\Player\States\PlayerKey_State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Map_Object.h">
+      <Filter>02.GameObjects\Map_Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -275,6 +281,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player_KeyState.cpp">
       <Filter>02.GameObjects\Player\States\PlayerKey_State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Map_Object.cpp">
+      <Filter>02.GameObjects\Map_Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

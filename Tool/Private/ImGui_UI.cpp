@@ -17,7 +17,7 @@ HRESULT CImGui_UI::Initialize()
 	SetNextWindowSize(ImVec2(500, 400));
 	SetNextWindowPos(ImVec2(100, 100));
 	SetNextWindowCollapsed(false);
-
+		
 	return S_OK;
 }
 
@@ -25,7 +25,7 @@ void CImGui_UI::Update(_float fTimeDelta)
 {
 	Begin("UI_Windows");
 
-
+	Button("Test1");
 
 	End();
 }

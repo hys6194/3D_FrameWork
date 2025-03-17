@@ -34,6 +34,7 @@ void CStrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 			m_bDashed = true;
 
 			Set_LastDashAnimation();
+			Set_Player_Direction();
 		}
 		 
 		else if ((m_iKeyState & CPlayer::KEY_UP)   ||
@@ -126,6 +127,46 @@ void CStrifeState_Dash::Set_LastDashAnimation()
 		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_BACKEND, false, true);
 
 	m_iCheckDash = 0;
+}
+
+void CStrifeState_Dash::Set_Player_Direction()
+{
+	// 상속 마렵다
+	// 할때마다 이짓거리 해야함;;
+	switch (m_iKeyState)
+	{
+	case (CPlayer::KEY_DOWN | CPlayer::KEY_LEFT):
+		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-135.f));
+		break;
+
+	case (CPlayer::KEY_UP | CPlayer::KEY_LEFT):
+		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-45.f));
+		break;
+
+	case(CPlayer::KEY_UP | CPlayer::KEY_RIGHT):
+		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(45.f));
+		break;
+
+	case(CPlayer::KEY_RIGHT | CPlayer::KEY_DOWN):
+		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(135.f));
+		break;
+
+	case CPlayer::KEY_DOWN:
+		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(180.f));
+		break;
+
+	case CPlayer::KEY_LEFT:
+		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
+		break;
+
+	case CPlayer::KEY_RIGHT:
+		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(90.f));
+		break;
+
+	case CPlayer::KEY_UP:
+		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(0.f));
+		break;
+	}
 }
 
 CStrifeState_Dash* CStrifeState_Dash::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)

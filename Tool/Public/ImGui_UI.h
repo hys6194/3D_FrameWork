@@ -2,7 +2,7 @@
 
 #include "ImGui_Base.h"
 
-BEGIN(Engine)
+BEGIN(Tool)
 
 class CImGui_UI : public CImGui_Base
 {

@@ -4,6 +4,8 @@
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui/ImGuizmo.h"
 
+
+
 CImGui_Manager::CImGui_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice{ pDevice }
 	, m_pContext{ pContext }
@@ -45,11 +47,14 @@ void CImGui_Manager::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 
 	ImGui_ImplWin32_Init(hWnd);
 	ImGui_ImplDX11_Init(pDevice, pContext);
+
+
+
+
 }
 
 void CImGui_Manager::Update_ImGui_Windows(_float fTimeDelta)
 {
-
 }
 
 void CImGui_Manager::Late_Update_ImGui_Windows(_float fTimeDelta)
@@ -59,12 +64,7 @@ void CImGui_Manager::Late_Update_ImGui_Windows(_float fTimeDelta)
 
 void CImGui_Manager::Render()
 {
-	ImGui::Begin("UI_Windows");
-
-	ImGui::Button("Text");
-
-
-	ImGui::End();
+	
 
 }
 
@@ -75,12 +75,15 @@ void CImGui_Manager::SetUp_Render_ImGui()
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
 	
+	// Update를 돌게 하는 함수를 넣어야 함
+
 	Create_DockingSpace();
 }
 
 //void CImGui_Manager::Render()
 //{
-//	// 모든 클래스의 Render를 모아서 한꺼번에 출력?
+//	// 추후 Update에서 이벤트가 갱신되면 추가로 갱신할 수 있게 해야하는 
+//  //Late_Update 자리로 한다
 //
 //}
 

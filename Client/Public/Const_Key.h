@@ -34,12 +34,13 @@ static const std::wstring PRO_COM_VI_TERRAIN	= TEXT("Prototype_Component_VIBuffe
 
 
 /* Model */
-static const std::wstring PRO_MODEL_STRIFE		= TEXT("Prototype_Component_Model_Test");
+static const std::wstring PRO_MODEL_STRIFE		= TEXT("Prototype_Component_Model_Strife");
 static const std::wstring PRO_MODEL_FIONA		= TEXT("Prototype_Component_Model_Fiona");
 static const std::wstring PRO_MODEL_FORK		= TEXT("Prototype_Component_Model_ForkLift");
 static const std::wstring PRO_MODEL_LGUN		= TEXT("Prototype_Component_Model_Gun_Left");
 static const std::wstring PRO_MODEL_RGUN		= TEXT("Prototype_Component_Model_Gun_Right");
-
+static const std::wstring PRO_MODEL_ROCK1		= TEXT("Prototype_Component_Model_Dest_Rock1");
+static const std::wstring PRO_MODEL_ROCK2		= TEXT("Prototype_Component_Model_Dest_Rock2");
 
 /* Shader */
 static const std::wstring PRO_SHADER_CUBE		= TEXT("Prototype_Component_Shader_VtxCube");

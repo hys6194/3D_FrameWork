@@ -16,57 +16,61 @@
 
 
 /* Texture */
-static const std::wstring PRO_TEX_SKY = TEXT("Prototype_Component_Texture_Sky");
-static const std::wstring PRO_TEX_MASK = TEXT("Prototype_Component_Texture_Mask");
-static const std::wstring PRO_TEX_BRUSH = TEXT("Prototype_Component_Texture_Brush");
-static const std::wstring PRO_TEX_LOGO1 = TEXT("Prototype_Component_Texture_Logo1");
-static const std::wstring PRO_TEX_LOGO2 = TEXT("Prototype_Component_Texture_Logo2");
-static const std::wstring PRO_TEX_TERRAIN = TEXT("Prototype_Component_Texture_Terrain");
-static const std::wstring PRO_TEX_BACKGROUND = TEXT("Prototype_Component_Texture_BackGround");
+static const std::wstring PRO_TEX_SKY			= TEXT("Prototype_Component_Texture_Sky");
+static const std::wstring PRO_TEX_MASK			= TEXT("Prototype_Component_Texture_Mask");
+static const std::wstring PRO_TEX_BRUSH			= TEXT("Prototype_Component_Texture_Brush");
+static const std::wstring PRO_TEX_LOGO1			= TEXT("Prototype_Component_Texture_Logo1");
+static const std::wstring PRO_TEX_LOGO2			= TEXT("Prototype_Component_Texture_Logo2");
+static const std::wstring PRO_TEX_TERRAIN		= TEXT("Prototype_Component_Texture_Terrain");
+static const std::wstring PRO_TEX_BACKGROUND	= TEXT("Prototype_Component_Texture_BackGround");
 
 
 /* Component */
-static const std::wstring PRO_COM_FSM = TEXT("Prototype_Component_FSM");
-static const std::wstring PRO_COM_NAVI = TEXT("Prototype_Component_Navigation");
-static const std::wstring PRO_COM_VI_RECT = TEXT("Prototype_Component_VIBuffer_Rect");
-static const std::wstring PRO_COM_VI_CUBE = TEXT("Prototype_Component_VIBuffer_Cube");
-static const std::wstring PRO_COM_VI_TERRAIN = TEXT("Prototype_Component_VIBuffer_Terrain");
+static const std::wstring PRO_COM_FSM			= TEXT("Prototype_Component_FSM");
+static const std::wstring PRO_COM_NAVI			= TEXT("Prototype_Component_Navigation");
+static const std::wstring PRO_COM_VI_RECT		= TEXT("Prototype_Component_VIBuffer_Rect");
+static const std::wstring PRO_COM_VI_CUBE		= TEXT("Prototype_Component_VIBuffer_Cube");
+static const std::wstring PRO_COM_VI_TERRAIN	= TEXT("Prototype_Component_VIBuffer_Terrain");
 
 
 /* Model */
-static const std::wstring PRO_MODEL_STRIFE = TEXT("Prototype_Component_Model_Test");
-static const std::wstring PRO_MODEL_FIONA = TEXT("Prototype_Component_Model_Fiona");
-static const std::wstring PRO_MODEL_FORK = TEXT("Prototype_Component_Model_ForkLift");
-static const std::wstring PRO_MODEL_LGUN = TEXT("Prototype_Component_Model_Gun_Left");
-static const std::wstring PRO_MODEL_RGUN = TEXT("Prototype_Component_Model_Gun_Right");
+static const std::wstring PRO_MODEL_STRIFE		= TEXT("Prototype_Component_Model_Test");
+static const std::wstring PRO_MODEL_FIONA		= TEXT("Prototype_Component_Model_Fiona");
+static const std::wstring PRO_MODEL_FORK		= TEXT("Prototype_Component_Model_ForkLift");
+static const std::wstring PRO_MODEL_LGUN		= TEXT("Prototype_Component_Model_Gun_Left");
+static const std::wstring PRO_MODEL_RGUN		= TEXT("Prototype_Component_Model_Gun_Right");
+static const std::wstring PRO_MODEL_ROCK1		= TEXT("Prototype_Component_Model_Dest_Rock1");
+static const std::wstring PRO_MODEL_ROCK2		= TEXT("Prototype_Component_Model_Dest_Rock2");
 
 
 /* Shader */
-static const std::wstring PRO_SHADER_CUBE = TEXT("Prototype_Component_Shader_VtxCube");
-static const std::wstring PRO_SHADER_MESH = TEXT("Prototype_Component_Shader_VtxMesh");
-static const std::wstring PRO_SHADER_NOR = TEXT("Prototype_Component_Shader_VtxNorTex");
-static const std::wstring PRO_SHADER_POS = TEXT("Prototype_Component_Shader_VtxPosTex");
-static const std::wstring PRO_SHADER_ANIM = TEXT("Prototype_Component_Shader_VtxAnimMesh");
+static const std::wstring PRO_SHADER_CUBE		= TEXT("Prototype_Component_Shader_VtxCube");
+static const std::wstring PRO_SHADER_MESH		= TEXT("Prototype_Component_Shader_VtxMesh");
+static const std::wstring PRO_SHADER_NOR		= TEXT("Prototype_Component_Shader_VtxNorTex");
+static const std::wstring PRO_SHADER_POS		= TEXT("Prototype_Component_Shader_VtxPosTex");
+static const std::wstring PRO_SHADER_ANIM		= TEXT("Prototype_Component_Shader_VtxAnimMesh");
 
 
 /* GameObject */
-static const std::wstring PRO_OBJ_SKY = TEXT("Prototype_GameObject_Sky");
-static const std::wstring PRO_OBJ_PLAYER = TEXT("Prototype_GameObject_Player");
-static const std::wstring PRO_OBJ_WEAPON = TEXT("Prototype_GameObject_Weapon");
-static const std::wstring PRO_OBJ_MONSTER = TEXT("Prototype_GameObject_Monster");
-static const std::wstring PRO_OBJ_TERRAIN = TEXT("Prototype_GameObject_Terrain");
-static const std::wstring PRO_OBJ_L_GUN = TEXT("Prototype_GameObject_Gun_Left");
-static const std::wstring PRO_OBJ_CAM_3RD = TEXT("Prototype_GameObject_TP_Camera");
-static const std::wstring PRO_OBJ_R_GUN = TEXT("Prototype_GameObject_Gun_Right");
-static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_GameObject_BackGround");
-static const std::wstring PRO_OBJ_CAM_FREE = TEXT("Prototype_GameObject_Camera_Free");
-static const std::wstring PRO_OBJ_BODY = TEXT("Prototype_GameObject_Player_Body");
+static const std::wstring PRO_OBJ_SKY			= TEXT("Prototype_GameObject_Sky");
+static const std::wstring PRO_OBJ_PLAYER		= TEXT("Prototype_GameObject_Player");
+static const std::wstring PRO_OBJ_WEAPON		= TEXT("Prototype_GameObject_Weapon");
+static const std::wstring PRO_OBJ_MONSTER		= TEXT("Prototype_GameObject_Monster");
+static const std::wstring PRO_OBJ_TERRAIN		= TEXT("Prototype_GameObject_Terrain");
+static const std::wstring PRO_OBJ_L_GUN			= TEXT("Prototype_GameObject_Gun_Left");
+static const std::wstring PRO_OBJ_CAM_3RD		= TEXT("Prototype_GameObject_TP_Camera");
+static const std::wstring PRO_OBJ_R_GUN			= TEXT("Prototype_GameObject_Gun_Right");
+static const std::wstring PRO_OBJ_BACK			= TEXT("Prototype_GameObject_BackGround");
+static const std::wstring PRO_OBJ_CAM_FREE		= TEXT("Prototype_GameObject_Camera_Free");
+static const std::wstring PRO_OBJ_BODY			= TEXT("Prototype_GameObject_Player_Body");
+static const std::wstring PRO_OBJ_ROCK1			= TEXT("Prototype_GameObject_Desert_Rock1");
+static const std::wstring PRO_OBJ_ROCK2			= TEXT("Prototype_GameObject_Desert_Rock2");
 
 /* Sockets */
-static const std::wstring SOCKET_LEFT_HAND = TEXT("Socket_Strife_Hand_L");
-static const std::wstring SOCKET_RIGHT_HAND = TEXT("Socket_Strife_Hand_R");
-static const std::wstring SOCKET_HOLSTER_LEFT = TEXT("Socket_Strife_Holster_L");
-static const std::wstring SOCKET_HOLSTER_RIGHT = TEXT("Socket_Strife_Holster_R");
+static const std::wstring SOCKET_LEFT_HAND		= TEXT("Socket_Strife_Hand_L");
+static const std::wstring SOCKET_RIGHT_HAND		= TEXT("Socket_Strife_Hand_R");
+static const std::wstring SOCKET_HOLSTER_LEFT	= TEXT("Socket_Strife_Holster_L");
+static const std::wstring SOCKET_HOLSTER_RIGHT	= TEXT("Socket_Strife_Holster_R");
 
 //static const std::wstring PRO_OBJ_BACK = TEXT("Bone_Strife_Holster_L");
 //static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_Component_Texture_BackGround");

@@ -7,6 +7,7 @@
 #pragma comment(lib, "vfw32.lib")
 
 #include <io.h>
+#include <shlobj.h> 
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_win32.h"

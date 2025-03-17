@@ -4,7 +4,7 @@
 BEGIN(Engine)
 class CShader;
 class CTexture;
-class CVIBuffer_Terrain;
+class CVIBuffer_Flat_Terrain;
 END
 
 BEGIN(Tool)
@@ -29,7 +29,7 @@ public:
 private:
 	CShader*							m_pShaderCom				= { nullptr };
 	CTexture*							m_pTextureCom[TYPE_END]		= { nullptr };
-	CVIBuffer_Terrain*					m_pVIBufferCom				= { nullptr };
+	CVIBuffer_Flat_Terrain*				m_pVIBufferCom				= { nullptr };
 
 private:
 	HRESULT								Ready_Components();

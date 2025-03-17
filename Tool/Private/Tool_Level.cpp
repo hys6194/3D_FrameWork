@@ -2,8 +2,7 @@
 #include "GameInstance.h"
 
 #include "Tool_FreeCam.h"
-
-
+#include "Tool_Manager.h"
 
 Tool_Level::Tool_Level(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CLevel{ pDevice , pContext }
@@ -27,12 +26,19 @@ HRESULT Tool_Level::Initialize()
 	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Object(TEXT("Layer_Objcet"))))
+		return E_FAIL;
+
+	m_pTool = Tool_Manager::Create(m_pDevice, m_pContext);
+
     return S_OK;
 }
 
 void Tool_Level::Update(_float fTimeDelta)
 {
 	//SetWindowText(g_hWnd, TEXT("현재 레벨 : 툴 레벨"));
+
+	m_pTool->Update(fTimeDelta);
 }
 
 HRESULT Tool_Level::Render()
@@ -84,6 +90,26 @@ HRESULT Tool_Level::Ready_Layer_Player(const _tchar* pLayerTag)
     return S_OK;
 }
 
+HRESULT Tool_Level::Ready_Layer_Object(const _tchar* pLayerTag)
+{
+	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_TOOL, PRO_OBJ_ROCK1,
+	//	LEVEL_TOOL, pLayerTag)))
+	//	return E_FAIL;
+	
+	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_TOOL, PRO_OBJ_ROCK2,
+	//	LEVEL_TOOL, pLayerTag)))
+	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT Tool_Level::Ready_Tool_Manager()
+{
+	
+
+	return S_OK;
+}
+
 HRESULT Tool_Level::Ready_Lights()
 {
 	LIGHT_DESC		LightDesc{};
@@ -106,7 +132,7 @@ Tool_Level* Tool_Level::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 	if (FAILED(pInstance->Initialize()))
 	{
-		MSG_BOX("Failed Create Level_Loading");
+		MSG_BOX("Failed Create Tool_Level");
 		Safe_Release(pInstance);
 	}
 
@@ -116,4 +142,6 @@ Tool_Level* Tool_Level::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 void Tool_Level::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pTool);
 }

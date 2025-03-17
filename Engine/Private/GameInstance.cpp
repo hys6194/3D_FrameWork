@@ -75,6 +75,11 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pPipeLine->Update();
 	m_pObject_Manager->Update(fTimeDelta);
+
+	// 여기에서 ImGui Late_Update?
+
+	m_pImGui_Manager->Update_ImGui_Windows(fTimeDelta);
+
 	m_pObject_Manager->Late_Update(fTimeDelta);
 
 	m_pLevel_Manager->Update(fTimeDelta);
@@ -188,6 +193,10 @@ _bool CGameInstance::Mouse_Up(MOUSEKEYSTATE eMouse)
 {
 	return m_pInput_Device->Mouse_Up(eMouse);
 }
+#pragma endregion
+
+#pragma region IMGUI_MANAGER
+
 void CGameInstance::SetUp_Render_ImGui()
 {
 	m_pImGui_Manager->SetUp_Render_ImGui();
@@ -243,6 +252,16 @@ HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel* pNewLevel)
 HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CBase* pPrototype)
 {
 	return m_pPrototype_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);
+}
+
+HRESULT CGameInstance::Collect_ProtoTag(_uint iLevelIndex)
+{
+	return m_pPrototype_Manager->Collect_PrototypeTag(iLevelIndex);
+}
+
+vector<wstring>* CGameInstance::Get_PrototypeTag(_uint iLevelIndex)
+{
+	return m_pPrototype_Manager->Get_PrototypeTag(iLevelIndex);
 }
 
 CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)

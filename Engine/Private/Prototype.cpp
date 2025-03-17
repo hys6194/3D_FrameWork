@@ -79,6 +79,25 @@ CBase* CPrototype_Manager::Find_Prototype(_uint iLevelIndex, const wstring& strP
 	return iter->second;
 }
 
+HRESULT CPrototype_Manager::Collect_PrototypeTag(_uint iLevelIndex)
+{
+	if (iLevelIndex >= m_iNumLevels)
+		return E_FAIL;
+
+	auto& Pair = m_pPrototype[iLevelIndex];
+
+
+	if(0 != m_vecProtoTag.size())
+	{
+		for (const auto& iter : Pair)
+		{
+			m_vecProtoTag.push_back(iter.first);
+		}
+	}
+
+	return S_OK;
+}
+
 CPrototype_Manager* CPrototype_Manager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevels)
 {
 	CPrototype_Manager* pInstance = new CPrototype_Manager(pDevice, pContext);

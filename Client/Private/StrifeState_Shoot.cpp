@@ -85,36 +85,34 @@ void CStrifeState_Shoot::Set_CurAnimation()
 
 void CStrifeState_Shoot::Player_ShootMove(_float fTimeDelta)
 {
-
     switch (m_iKeyState)
     {
-
-	case CPlayer::KEY_DOWN | CPlayer::KEY_LEFT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
-        break;
-
-    case CPlayer::KEY_UP | CPlayer::KEY_LEFT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
-        break;
-
-    case CPlayer::KEY_UP | CPlayer::KEY_RIGHT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
-        break;
-
-    case CPlayer::KEY_RIGHT | CPlayer::KEY_DOWN | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
-        break;
+	//case CPlayer::KEY_DOWN | CPlayer::KEY_LEFT | CPlayer::KEY_LB:
+    //    dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+    //    break;
+	//
+    //case CPlayer::KEY_UP | CPlayer::KEY_LEFT | CPlayer::KEY_LB:
+    //    dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+    //    break;
+	//
+    //case CPlayer::KEY_UP | CPlayer::KEY_RIGHT | CPlayer::KEY_LB:
+    //    dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+    //    break;
+	//
+    //case CPlayer::KEY_RIGHT | CPlayer::KEY_DOWN | CPlayer::KEY_LB:
+    //    dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+    //    break;
 
     case CPlayer::KEY_DOWN | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Backward(fTimeDelta);
         break;
 
     case CPlayer::KEY_LEFT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Left(fTimeDelta);
         break;
 
     case CPlayer::KEY_RIGHT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Right(fTimeDelta);
         break;
 
     case CPlayer::KEY_UP | CPlayer::KEY_LB:

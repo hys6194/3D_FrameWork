@@ -47,8 +47,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 		LEVEL_GAMEPLAY, pLayerTag)))
 		return E_FAIL;
 
-
-
 	return S_OK;
 }
 
