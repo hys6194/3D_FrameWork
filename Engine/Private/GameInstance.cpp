@@ -325,14 +325,14 @@ const _float4* CGameInstance::Get_CamPosition() const
 	return m_pPipeLine->Get_CamPosition();
 }
 
-const _float4* CGameInstance::Get_MouseWindowPosition() const
+_vector* CGameInstance::Get_MouseWindowPosition()
 {
 	return m_pPipeLine->Get_MouseWindowPosition();
 }
 
- _vector* CGameInstance::Picking_WindowsCoord(const _float4x4* TargetmatWorld) 
+ _vector* CGameInstance::Shoot_RayLazer() 
 {
-	return m_pPipeLine->Picking_WindowsCoord(TargetmatWorld);
+	return m_pPipeLine->Shoot_RayLazer();
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)

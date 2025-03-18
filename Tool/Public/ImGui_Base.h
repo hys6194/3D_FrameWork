@@ -23,12 +23,6 @@ public:
 	virtual HRESULT				Late_Update(_float fTiemDelta)		= 0;
 
 public:
-	HRESULT						Read_Objects(const _tchar* pFileName, MODELTYPE eType);
-	HRESULT						Save_Objects();
-	HRESULT						Load_Objects();
-	HRESULT						Mouse_Picking();
-
-public:
 	ImVec2						Set_Button_Offset(const char* _cButtonName, _float fX, _float fY);
 	void						Get_PrototypeList(const wstring _strDest, const wstring _strSour);
 

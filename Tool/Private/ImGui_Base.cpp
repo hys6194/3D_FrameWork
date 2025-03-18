@@ -18,26 +18,6 @@ CImGui_Base::CImGui_Base(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CImGui_Base::Read_Objects(const _tchar* pFileName, MODELTYPE eType)
-{
-	return S_OK;
-}
-
-HRESULT CImGui_Base::Save_Objects()
-{
-	return S_OK;
-}
-
-HRESULT CImGui_Base::Load_Objects()
-{
-	return S_OK;
-}
-
-HRESULT CImGui_Base::Mouse_Picking()
-{
-	return S_OK;
-}
-
 ImVec2 CImGui_Base::Set_Button_Offset(const char* _cButtonName, _float fX, _float fY)
 {
 	ImVec2 windowSize = GetWindowSize();

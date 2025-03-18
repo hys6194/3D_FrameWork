@@ -21,21 +21,7 @@ void CPipeLine::Update()
 	memcpy(&m_vCamPosition, &m_TransformInverseMatrices[D3DTS_VIEW].m[3][0], sizeof(_float4));
 }
 
-const _float4* CPipeLine::Get_MouseWindowPosition() const
-{
-	POINT pt;
-	GetCursorPos(&pt);
-	ScreenToClient(m_hWnd, &pt);
-
-	_float4 fTest { 0.f,0.f,0.f,0.f };
-
-	fTest.x = pt.x;
-	fTest.y = pt.y;
-
-	return &fTest;
-}
-
- _vector* CPipeLine::Picking_WindowsCoord(const _float4x4* TargetmatWorld)
+_vector* CPipeLine::Get_MouseWindowPosition()
 {
 	POINT pt;
 	GetCursorPos(&pt);
@@ -47,14 +33,45 @@ const _float4* CPipeLine::Get_MouseWindowPosition() const
 
 	_uint i = 1;
 	D3D11_VIEWPORT ViewPort;
-	m_pContext->RSGetViewports(&i, &ViewPort); 
+	m_pContext->RSGetViewports(&i, &ViewPort);
 
 	fTest.x = pt.x / (ViewPort.Width * 0.5f) - 1.f;
 	fTest.y = pt.y / -(ViewPort.Height * 0.5f) + 1.f;
 
 	vTest = XMVectorSet(fTest.x, fTest.y, fTest.z, fTest.w);
 
-	XMVector3Unproject(vTest, 
+	XMVector3Unproject(vTest,
+		ViewPort.TopLeftX, ViewPort.TopLeftY,
+		ViewPort.Width, ViewPort.Height,
+		ViewPort.MinDepth, ViewPort.MaxDepth,
+		XMLoadFloat4x4(&m_TransformMatrices[D3DTS_PROJ]),
+		XMLoadFloat4x4(&m_TransformMatrices[D3DTS_VIEW]),
+		XMMatrixIdentity());
+
+	return &vTest;
+}
+
+ _vector* CPipeLine::Shoot_RayLazer()
+{
+	POINT pt;
+	GetCursorPos(&pt);
+	ScreenToClient(m_hWnd, &pt);
+
+	_float3 fNear	{ 0.f,0.f,0.f };
+	_float3 fFar	{ 0.f,0.f,1.f };
+
+
+	_uint i = 1;
+	D3D11_VIEWPORT ViewPort;
+	m_pContext->RSGetViewports(&i, &ViewPort); 
+
+	fNear.x = pt.x / (ViewPort.Width * 0.5f) - 1.f;
+	fNear.y = pt.y / -(ViewPort.Height * 0.5f) + 1.f;
+
+	fFar.x = pt.x / (ViewPort.Width * 0.5f) - 1.f;
+	fFar.y = pt.y / -(ViewPort.Height * 0.5f) + 1.f;
+
+	XMVector3Unproject(XMLoadFloat3(&fNear),
 		ViewPort.TopLeftX, ViewPort.TopLeftY, 
 		ViewPort.Width, ViewPort.Height,
 		ViewPort.MinDepth, ViewPort.MaxDepth, 
@@ -62,7 +79,21 @@ const _float4* CPipeLine::Get_MouseWindowPosition() const
 		XMLoadFloat4x4(&m_TransformMatrices[D3DTS_VIEW]),
 		XMMatrixIdentity());
 
-	return &vTest;
+	XMVector3Unproject(XMLoadFloat3(&fFar),
+		ViewPort.TopLeftX, ViewPort.TopLeftY,
+		ViewPort.Width, ViewPort.Height,
+		ViewPort.MinDepth, ViewPort.MaxDepth,
+		XMLoadFloat4x4(&m_TransformMatrices[D3DTS_PROJ]),
+		XMLoadFloat4x4(&m_TransformMatrices[D3DTS_VIEW]),
+		XMMatrixIdentity());
+
+
+	_float3 fDir;
+	
+	XMStoreFloat3(&fDir, XMVectorSubtract(XMLoadFloat3(&fFar), XMLoadFloat3(&fNear)));
+
+	_vector vDir = XMLoadFloat3(&fDir);
+	return &vDir;
 }
 
 void CPipeLine::Set_Transform(TRANSFORMSTATE eState, _fmatrix Matrix)

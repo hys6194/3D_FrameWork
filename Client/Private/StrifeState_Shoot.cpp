@@ -124,8 +124,7 @@ void CStrifeState_Shoot::Player_ShootMove(_float fTimeDelta)
 void CStrifeState_Shoot::Player_LookSet(_float fTimeDelta)
 {
 	_vector vPos = m_pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
-	_vector vMouse = *m_pGameInstance->Picking_WindowsCoord(
-		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Get_WorldMatrix_Ptr());
+	_vector vMouse = *m_pGameInstance->Get_MouseWindowPosition();
 
 	_vector vzero{ 0.f,1.f,0.f,0.f };
 	vMouse = XMVector4Normalize(vMouse);

@@ -13,7 +13,7 @@ BEGIN(Tool)
 class Tool_Manager :public CBase
 {
 private:
-	Tool_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	Tool_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameInstance* pGameInstance);
 	virtual ~Tool_Manager() = default;
 
 public:
@@ -32,7 +32,7 @@ private:
 
 
 public:
-	static Tool_Manager*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static Tool_Manager*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameInstance* pGameInstance);
 	virtual void				Free() override;
 };
 

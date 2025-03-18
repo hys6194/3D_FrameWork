@@ -29,7 +29,7 @@ HRESULT Tool_Level::Initialize()
 	if (FAILED(Ready_Layer_Object(TEXT("Layer_Objcet"))))
 		return E_FAIL;
 
-	m_pTool = Tool_Manager::Create(m_pDevice, m_pContext);
+	m_pTool = Tool_Manager::Create(m_pDevice, m_pContext, m_pGameInstance);
 
     return S_OK;
 }

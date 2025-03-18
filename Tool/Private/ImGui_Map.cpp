@@ -8,7 +8,6 @@
 #include "GameInstance.h"
 #include "Map_Object.h"
 
-using namespace ImGui;
 
 CImGui_Map::CImGui_Map(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CImGui_Base { pDevice , pContext }
@@ -67,14 +66,7 @@ void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 
 	if (Button("Load"))
 	{
-		CMap_Object::MAPOBJ_DESC Desc = {};
-
-		Desc.strModelTag = m_strModelName;
-
-		// 오브젝트의 이름은 진짜 어떻게 해야함? 나도 모름
-		lstrcpy(Desc.szGameObjectTag, TEXT("Layer_Desert_Rock"));
-
-		m_pGameInstance->Add_GameObject(LEVEL_TOOL, m_strObjectName, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
+		
 
 	}
 
@@ -83,12 +75,13 @@ void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 	if (Button("+"))
 	{
 		CMap_Object::MAPOBJ_DESC Desc = {};
-	
-		Desc.strModelTag = PRO_MODEL_ROCK2;
-	
-		lstrcpy(Desc.szGameObjectTag, TEXT("Layer_Desert_Rock2"));
-	
-		m_pGameInstance->Add_GameObject(LEVEL_TOOL, PRO_OBJ_ROCK2, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
+
+		Desc.strModelTag = m_strModelName;
+
+		// 오브젝트의 이름은 진짜 어떻게 해야함? 나도 모름
+		lstrcpy(Desc.szGameObjectTag, TEXT("Layer_Desert_Rock"));
+
+		m_pGameInstance->Add_GameObject(LEVEL_TOOL, m_strObjectName, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
 	}
 
 	if (Button("-"))
