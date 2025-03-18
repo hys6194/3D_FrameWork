@@ -20,7 +20,7 @@ HRESULT CMap_Object::Initialize(void* pArg)
     if (FAILED(__super::Initialize(&pDesc)))
         return E_FAIL;
 
-    if (FAILED(Ready_Components()))
+    if (FAILED(Ready_Components(pDesc->strModelTag)))
         return E_FAIL;
 
 
@@ -62,16 +62,13 @@ HRESULT CMap_Object::Render()
     return S_OK;
 }
 
-HRESULT CMap_Object::Ready_Components()
+HRESULT CMap_Object::Ready_Components(const wstring _strModelTag)
 {
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_SHADER_MESH,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_MODEL_ROCK1,
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, _strModelTag,
         reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
-
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_MODEL_ROCK2,
-        reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model1")), E_FAIL);
 
     return S_OK;
 }

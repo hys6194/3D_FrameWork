@@ -69,6 +69,10 @@ static const std::wstring SOCKET_RIGHT_HAND		= TEXT("Socket_Strife_Hand_R");
 static const std::wstring SOCKET_HOLSTER_LEFT	= TEXT("Socket_Strife_Holster_L");
 static const std::wstring SOCKET_HOLSTER_RIGHT	= TEXT("Socket_Strife_Holster_R");
 
+/* Layer */
+static const std::wstring LAYER_DESERT_ROCK_1	= TEXT("Layer_Desert_Rock1");
+static const std::wstring LAYER_DESERT_ROCK_2	= TEXT("Layer_Desert_Rock2");
+
 //static const std::wstring PRO_OBJ_BACK = TEXT("Bone_Strife_Holster_L");
 //static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_Component_Texture_BackGround");
 //static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_Component_Texture_BackGround");

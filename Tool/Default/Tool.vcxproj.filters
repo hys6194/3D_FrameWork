@@ -111,6 +111,12 @@
     <ClInclude Include="..\Public\ImGui_Base.h">
       <Filter>97.ImGui\00.ImGui_Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Util.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tool_ConstValue.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -164,6 +170,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Base.cpp">
       <Filter>97.ImGui\00.ImGui_Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Util.cpp">
+      <Filter>99.Defines</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

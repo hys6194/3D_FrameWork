@@ -57,7 +57,7 @@ public:
 
 	//GameInstance의 상호참조로 문제가 생길까봐 PipeLine클래스에 제작
 	const _float4*						Get_MouseWindowPosition() const;
-	_vector*							Get_MouseWorldPosition(const _float4x4* TargetmatWorld);
+	_vector*							Picking_WindowsCoord(const _float4x4* TargetmatWorld);
 public:
 
 	void								Set_Transform(TRANSFORMSTATE eState, _fmatrix Matrix);				// fmatrix 형 

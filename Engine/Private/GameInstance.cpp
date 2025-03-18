@@ -330,9 +330,9 @@ const _float4* CGameInstance::Get_MouseWindowPosition() const
 	return m_pPipeLine->Get_MouseWindowPosition();
 }
 
- _vector* CGameInstance::Get_MouseWorldPosition(const _float4x4* TargetmatWorld) 
+ _vector* CGameInstance::Picking_WindowsCoord(const _float4x4* TargetmatWorld) 
 {
-	return m_pPipeLine->Get_MouseWorldPosition(TargetmatWorld);
+	return m_pPipeLine->Picking_WindowsCoord(TargetmatWorld);
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)

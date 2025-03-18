@@ -3,6 +3,8 @@
 #include "Tool_Defines.h"
 #include "Base.h"
 
+using namespace ImGui;
+
 BEGIN(Engine)
 class CGameInstance;
 END
@@ -26,10 +28,20 @@ public:
 	HRESULT						Load_Objects();
 	HRESULT						Mouse_Picking();
 
+public:
+	ImVec2						Set_Button_Offset(const char* _cButtonName, _float fX, _float fY);
+	void						Get_PrototypeList(const wstring _strDest, const wstring _strSour);
+
 protected:
 	ID3D11Device*				m_pDevice					= { nullptr };
 	ID3D11DeviceContext*		m_pContext					= { nullptr };
-	CGameInstance*				m_pGameInstance = { nullptr };
+	CGameInstance*				m_pGameInstance				= { nullptr };
+
+	vector<wstring>				m_vecProtoNames;
+	vector<wstring>				m_vecProtoTag;
+
+	wstring						m_strModelName;
+	wstring						m_strObjectName;
 
 public:
 	virtual void				Free() override;

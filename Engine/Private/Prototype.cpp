@@ -86,8 +86,7 @@ HRESULT CPrototype_Manager::Collect_PrototypeTag(_uint iLevelIndex)
 
 	auto& Pair = m_pPrototype[iLevelIndex];
 
-
-	if(0 != m_vecProtoTag.size())
+	if(0 == m_vecProtoTag.size())
 	{
 		for (const auto& iter : Pair)
 		{

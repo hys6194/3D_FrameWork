@@ -101,7 +101,7 @@ public:
 	_matrix							Get_Transform_Inverse_Matrix(CPipeLine::TRANSFORMSTATE eState) const;
 	const _float4*					Get_CamPosition() const;
 	const _float4*					Get_MouseWindowPosition() const;
-	_vector*						Get_MouseWorldPosition(const _float4x4* TargetmatWorld);
+	_vector*						Picking_WindowsCoord(const _float4x4* TargetmatWorld);
 	void							Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix);
 	void							Set_Transform(CPipeLine::TRANSFORMSTATE eState, const _float4x4* pMatrix);
 	HRESULT							Bind_VP_Transform_SR(const _char* pConstantName, CShader* pShader, CPipeLine::TRANSFORMSTATE eState);

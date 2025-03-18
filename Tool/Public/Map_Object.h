@@ -21,6 +21,8 @@ public:
 		//_float4* fTraslation;
 		//_float4* fPosition;
 
+		wstring strModelTag;
+
 	}MAPOBJ_DESC;
 
 private:
@@ -36,7 +38,7 @@ public:
 	virtual HRESULT						Render()							override;
 
 private:
-	HRESULT								Ready_Components();
+	HRESULT								Ready_Components(const wstring _strModelTag);
 	HRESULT								Bind_SR();
 
 private:

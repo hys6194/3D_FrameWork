@@ -35,7 +35,7 @@ const _float4* CPipeLine::Get_MouseWindowPosition() const
 	return &fTest;
 }
 
- _vector* CPipeLine::Get_MouseWorldPosition(const _float4x4* TargetmatWorld)
+ _vector* CPipeLine::Picking_WindowsCoord(const _float4x4* TargetmatWorld)
 {
 	POINT pt;
 	GetCursorPos(&pt);
@@ -43,7 +43,6 @@ const _float4* CPipeLine::Get_MouseWindowPosition() const
 
 	_float4 fTest{ 0.f,0.f,0.f,0.f };
 	_vector vTest{ 0.f,0.f,0.f,1.f };
-	//_vector vRayPos, vRayDir;
 
 
 	_uint i = 1;

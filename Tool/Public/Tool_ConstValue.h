@@ -11,7 +11,7 @@
 
 
 
-#define		VK_MAX		0xff
+#define	VK_MAX									0xff
 
 
 
@@ -37,10 +37,10 @@ static const std::wstring PRO_COM_VI_TERRAIN	= TEXT("Prototype_Component_VIBuffe
 static const std::wstring PRO_MODEL_STRIFE		= TEXT("Prototype_Component_Model_Test");
 static const std::wstring PRO_MODEL_FIONA		= TEXT("Prototype_Component_Model_Fiona");
 static const std::wstring PRO_MODEL_FORK		= TEXT("Prototype_Component_Model_ForkLift");
-static const std::wstring PRO_MODEL_LGUN		= TEXT("Prototype_Component_Model_Gun_Left");
-static const std::wstring PRO_MODEL_RGUN		= TEXT("Prototype_Component_Model_Gun_Right");
-static const std::wstring PRO_MODEL_ROCK1		= TEXT("Prototype_Component_Model_Dest_Rock1");
-static const std::wstring PRO_MODEL_ROCK2		= TEXT("Prototype_Component_Model_Dest_Rock2");
+static const std::wstring PRO_MODEL_LGUN		= TEXT("Prototype_Component_Model_Gun Left");
+static const std::wstring PRO_MODEL_RGUN		= TEXT("Prototype_Component_Model_Gun Right");
+static const std::wstring PRO_MODEL_ROCK1		= TEXT("Prototype_Component_Model_Desert Rock1");
+static const std::wstring PRO_MODEL_ROCK2		= TEXT("Prototype_Component_Model_Desert Rock2");
 
 
 /* Shader */
@@ -57,20 +57,26 @@ static const std::wstring PRO_OBJ_PLAYER		= TEXT("Prototype_GameObject_Player");
 static const std::wstring PRO_OBJ_WEAPON		= TEXT("Prototype_GameObject_Weapon");
 static const std::wstring PRO_OBJ_MONSTER		= TEXT("Prototype_GameObject_Monster");
 static const std::wstring PRO_OBJ_TERRAIN		= TEXT("Prototype_GameObject_Terrain");
-static const std::wstring PRO_OBJ_L_GUN			= TEXT("Prototype_GameObject_Gun_Left");
-static const std::wstring PRO_OBJ_CAM_3RD		= TEXT("Prototype_GameObject_TP_Camera");
-static const std::wstring PRO_OBJ_R_GUN			= TEXT("Prototype_GameObject_Gun_Right");
+static const std::wstring PRO_OBJ_L_GUN			= TEXT("Prototype_GameObject_Gun Left");
+static const std::wstring PRO_OBJ_CAM_3RD		= TEXT("Prototype_GameObject_TP Camera");
+static const std::wstring PRO_OBJ_R_GUN			= TEXT("Prototype_GameObject_Gun Right");
 static const std::wstring PRO_OBJ_BACK			= TEXT("Prototype_GameObject_BackGround");
-static const std::wstring PRO_OBJ_CAM_FREE		= TEXT("Prototype_GameObject_Camera_Free");
-static const std::wstring PRO_OBJ_BODY			= TEXT("Prototype_GameObject_Player_Body");
-static const std::wstring PRO_OBJ_ROCK1			= TEXT("Prototype_GameObject_Desert_Rock1");
-static const std::wstring PRO_OBJ_ROCK2			= TEXT("Prototype_GameObject_Desert_Rock2");
+static const std::wstring PRO_OBJ_CAM_FREE		= TEXT("Prototype_GameObject_Camera Free");
+static const std::wstring PRO_OBJ_BODY			= TEXT("Prototype_GameObject_Player Body");
+static const std::wstring PRO_OBJ_ROCK1			= TEXT("Prototype_GameObject_Desert Rock1");
+static const std::wstring PRO_OBJ_ROCK2			= TEXT("Prototype_GameObject_Desert Rock2");
 
 /* Sockets */
-static const std::wstring SOCKET_LEFT_HAND		= TEXT("Socket_Strife_Hand_L");
-static const std::wstring SOCKET_RIGHT_HAND		= TEXT("Socket_Strife_Hand_R");
-static const std::wstring SOCKET_HOLSTER_LEFT	= TEXT("Socket_Strife_Holster_L");
-static const std::wstring SOCKET_HOLSTER_RIGHT	= TEXT("Socket_Strife_Holster_R");
+static const std::wstring SOCKET_LEFT_HAND		= TEXT("Socket_Strife_Hand L");
+static const std::wstring SOCKET_RIGHT_HAND		= TEXT("Socket_Strife_Hand R");
+static const std::wstring SOCKET_HOLSTER_LEFT	= TEXT("Socket_Strife_Holster L");
+static const std::wstring SOCKET_HOLSTER_RIGHT	= TEXT("Socket_Strife_Holster R");
+
+
+/* Layers */
+static const std::wstring LAYER_DESERT_ROCK_1	= TEXT("Layer_Desert_Rock1");
+static const std::wstring LAYER_DESERT_ROCK_2	= TEXT("Layer_Desert_Rock2");
+
 
 //static const std::wstring PRO_OBJ_BACK = TEXT("Bone_Strife_Holster_L");
 //static const std::wstring PRO_OBJ_BACK = TEXT("Prototype_Component_Texture_BackGround");
@@ -78,9 +84,6 @@ static const std::wstring SOCKET_HOLSTER_RIGHT	= TEXT("Socket_Strife_Holster_R")
 
 //Bone_Strife_Holster_L
 //Bone_Strife_Holster_R
-
-
-#define KEY_PUSHED (m_iKeyState & CPlayer::KEY_UP) || (m_iKeyState & CPlayer::KEY_DOWN) || (m_iKeyState & CPlayer::KEY_LEFT) || (m_iKeyState & CPlayer::KEY_RIGHT)
 
 enum PLAYER_ANIMLIST
 {

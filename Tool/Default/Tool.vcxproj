@@ -143,10 +143,12 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Map_Object.h" />
     <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\Public\Tool_ConstValue.h" />
     <ClInclude Include="..\Public\Tool_Defines.h" />
     <ClInclude Include="..\Public\Tool_FreeCam.h" />
     <ClInclude Include="..\Public\Tool_Level.h" />
     <ClInclude Include="..\Public\Tool_Manager.h" />
+    <ClInclude Include="..\Public\Util.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -165,6 +167,7 @@
     <ClCompile Include="..\Private\Tool_FreeCam.cpp" />
     <ClCompile Include="..\Private\Tool_Level.cpp" />
     <ClCompile Include="..\Private\Tool_Manager.cpp" />
+    <ClCompile Include="..\Private\Util.cpp" />
     <ClCompile Include="Tool.cpp" />
   </ItemGroup>
   <ItemGroup>
