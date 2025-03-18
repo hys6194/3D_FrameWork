@@ -71,7 +71,8 @@ void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 
 		Desc.strModelTag = m_strModelName;
 
-		lstrcpy(Desc.szGameObjectTag, TEXT("Layer_Desert_Rock1"));
+		// 오브젝트의 이름은 진짜 어떻게 해야함? 나도 모름
+		lstrcpy(Desc.szGameObjectTag, TEXT("Layer_Desert_Rock"));
 
 		m_pGameInstance->Add_GameObject(LEVEL_TOOL, m_strObjectName, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
 
@@ -90,7 +91,10 @@ void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 		m_pGameInstance->Add_GameObject(LEVEL_TOOL, PRO_OBJ_ROCK2, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
 	}
 
-
+	if (Button("-"))
+	{
+		//m_pGameInstance->Add_GameObject
+	}
 
 }
 
