@@ -70,9 +70,6 @@
     <Filter Include="02.GameObjects\Sky">
       <UniqueIdentifier>{2bfe7fa5-8490-4a05-aaad-0d8ee9c6d899}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Player\Gun">
-      <UniqueIdentifier>{c3053dea-0242-4721-b3dd-7973641aa1c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Player\Strife">
       <UniqueIdentifier>{64ce13b7-e8c1-4a66-9412-df75e64da80e}</UniqueIdentifier>
     </Filter>
@@ -102,6 +99,9 @@
     </Filter>
     <Filter Include="02.GameObjects\Map_Object">
       <UniqueIdentifier>{4269b7f8-3259-4824-8a04-febe5eb6a377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\Weapon\Bullet">
+      <UniqueIdentifier>{cf645e81-3036-45ce-97fa-52085ba4694b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +195,9 @@
     <ClInclude Include="..\Public\Map_Object.h">
       <Filter>02.GameObjects\Map_Object</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Bullet.h">
+      <Filter>02.GameObjects\Player\Weapon\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -284,6 +287,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Map_Object.cpp">
       <Filter>02.GameObjects\Map_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bullet.cpp">
+      <Filter>02.GameObjects\Player\Weapon\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

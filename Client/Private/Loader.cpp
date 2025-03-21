@@ -12,6 +12,7 @@
 #include "Sky.h"
 #include "Gun_Left.h"
 #include "Gun_Right.h"
+#include "Bullet.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -253,10 +254,10 @@ HRESULT CLoader::Loading_Models()
 			return E_FAIL;
 
 		///* For.Prototype_Component_Model_ForkLift */
-		//PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
-		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/NonAnimModel/MapObject/Floor/Arena_Floor_A.fbx", PreTransformMatrix))))
-		//	return E_FAIL;
+		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
+			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/NonAnimModel/ForkLift/ForkLift.fbx", PreTransformMatrix))))
+			return E_FAIL;
 
 		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
@@ -414,6 +415,12 @@ HRESULT CLoader::Loading_Prototype()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_R_GUN,
 			CGun_Right::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_BULLET,
+			CBullet::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+
 	}
 
 

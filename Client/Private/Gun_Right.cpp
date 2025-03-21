@@ -26,9 +26,13 @@ HRESULT CGun_Right::Initialize(void* pArg)
     m_pTargetState = pDesc->pTargetState;
     m_pSocketMatrix = pDesc->pSocketMatrix;
     m_pHandMatrix = pDesc->pHandMatrix;
+    m_pOwner = pDesc->pOwner;
+
+    m_fCool = 0.1f;
 
     FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
+
 
     //m_pTransformCom->SetUp_Scaled(0.1f, 0.1f, 0.1f);
     //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
@@ -48,7 +52,43 @@ void CGun_Right::Priority_Update(_float fTimeDelta)
     //m_pTransformCom->Rotation(AXIS_X, XMConvertToRadians(-90.f));
     //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
     //m_pTransformCom->Rotation(XMQuaternionRotationAxis())
-    m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(20.f, -5.f, 12.5f, 1.f));
+    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(20.f, -5.f, 12.5f, 1.f));
+
+    m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(19.f, -5.f, 12.5f, 1.f));
+
+    m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
+
+    if (m_pGameInstance->Get_DIMouseState(DIM_LB) && m_fCool < m_fTotalTime)
+    {
+        //_vector vOwnerLook = m_pOwner->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+        //
+        //m_pTransformCom->Set_State(CTransform::STATE_LOOK, vOwnerLook);
+
+        //_float4 fTest;
+        //
+        //memcpy(&fTest, &m_pHandMatrix->m[3][0], sizeof(_float4));
+
+
+        //_vector vLeftLook = vOwnerLook + XMLoadFloat4(&fTest);
+        //
+        //_vector vNorLook = XMVector4Normalize(vLeftLook);
+        // 
+        //TCHAR debugMessage[256];
+        //_stprintf_s(debugMessage, _T("Right_Shoot : Cool = %.2f\n"), m_fCool);
+        //OutputDebugString(debugMessage);
+
+
+        m_fCool += 0.2f;
+
+        //m_fTotalTime = 0.f;
+    }
+
+    else if (!m_pGameInstance->Get_DIMouseState(DIM_LB))
+    {
+        m_fCool = 0.1f;
+        m_fTotalTime = 0.f;
+    }
+
 }
 
 void CGun_Right::Update(_float fTimeDelta)

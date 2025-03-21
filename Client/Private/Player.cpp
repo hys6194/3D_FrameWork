@@ -113,6 +113,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	GDesc1.pHandMatrix		= dynamic_cast<CBody_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_LEFT_HAND);
 	GDesc1.pParentMatrix	= m_pTransformCom->Get_WorldMatrix_Ptr();
 	GDesc1.pTargetState		= &m_iState;
+	GDesc1.pOwner = this;
 
 	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_L_GUN, PART_LGUN, &GDesc1), E_FAIL);
 
@@ -122,7 +123,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	GDesc2.pHandMatrix		= dynamic_cast<CBody_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_RIGHT_HAND);
 	GDesc2.pParentMatrix	= m_pTransformCom->Get_WorldMatrix_Ptr();
 	GDesc2.pTargetState		= &m_iState;
-
+	GDesc2.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_R_GUN, PART_RGUN, &GDesc2), E_FAIL);
 
 

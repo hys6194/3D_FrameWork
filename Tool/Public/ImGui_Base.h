@@ -3,8 +3,6 @@
 #include "Tool_Defines.h"
 #include "Base.h"
 
-using namespace ImGui;
-
 BEGIN(Engine)
 class CGameInstance;
 END

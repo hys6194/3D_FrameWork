@@ -52,6 +52,7 @@ static const std::wstring PRO_SHADER_ANIM		= TEXT("Prototype_Component_Shader_Vt
 
 /* GameObject */
 static const std::wstring PRO_OBJ_SKY			= TEXT("Prototype_GameObject_Sky");
+static const std::wstring PRO_OBJ_BULLET		= TEXT("Prototype_GameObject_Bullet");
 static const std::wstring PRO_OBJ_PLAYER		= TEXT("Prototype_GameObject_Player");
 static const std::wstring PRO_OBJ_WEAPON		= TEXT("Prototype_GameObject_Weapon");
 static const std::wstring PRO_OBJ_MONSTER		= TEXT("Prototype_GameObject_Monster");

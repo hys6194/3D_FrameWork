@@ -20,10 +20,10 @@ CImGui_Base::CImGui_Base(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 ImVec2 CImGui_Base::Set_Button_Offset(const char* _cButtonName, _float fX, _float fY)
 {
-	ImVec2 windowSize = GetWindowSize();
+	ImVec2 windowSize = ImGui::GetWindowSize();
 
-	ImVec2 textSize = CalcTextSize(_cButtonName);
-	ImVec2 buttonPadding = GetStyle().FramePadding;
+	ImVec2 textSize = ImGui::CalcTextSize(_cButtonName);
+	ImVec2 buttonPadding = ImGui::GetStyle().FramePadding;
 	ImVec2 buttonSize = ImVec2(textSize.x + buttonPadding.x * 2, textSize.y + buttonPadding.y * 2);
 
 	float posX = windowSize.x - buttonSize.x + fX;
@@ -37,7 +37,7 @@ ImVec2 CImGui_Base::Set_Button_Offset(const char* _cButtonName, _float fX, _floa
 void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSour)
 {
 
-	if(TreeNode("Prototype_List"))
+	if(ImGui::TreeNode("Prototype_List"))
 	{
 		// 모든 리스트를 찾기
 		// 이니셜라이즈 때 해버리면 읽지 못하는 순서여서 여기에 선언
@@ -70,7 +70,7 @@ void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSo
 			if (m_vecProtoTag[i].find(_strDest) != std::string::npos)
 			{
 				// 여기까지는 문제가 없음
-				if (Button(cstr))
+				if (ImGui::Button(cstr))
 				{
 					// 모델 이름 저장하기
 					m_strModelName = m_vecProtoTag[i];
@@ -97,7 +97,7 @@ void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSo
 			}
 		}
 
-		TreePop();
+		ImGui::TreePop();
 	}
 
 }

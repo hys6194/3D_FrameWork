@@ -131,8 +131,6 @@ void CStrifeState_Dash::Set_LastDashAnimation()
 
 void CStrifeState_Dash::Set_Player_Direction()
 {
-	// 상속 마렵다
-	// 할때마다 이짓거리 해야함;;
 	switch (m_iKeyState)
 	{
 	case (CPlayer::KEY_DOWN | CPlayer::KEY_LEFT):

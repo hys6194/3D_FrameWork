@@ -5,8 +5,6 @@
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui/ImGuizmo.h"
 
-using namespace ImGui;
-
 CImGui_UI::CImGui_UI(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CImGui_Base { pDevice , pContext }
 {
@@ -14,20 +12,20 @@ CImGui_UI::CImGui_UI(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT CImGui_UI::Initialize()
 {
-	SetNextWindowSize(ImVec2(500, 400));
-	SetNextWindowPos(ImVec2(100, 100));
-	SetNextWindowCollapsed(false);
+	ImGui::SetNextWindowSize(ImVec2(500, 400));
+	ImGui::SetNextWindowPos(ImVec2(100, 100));
+	ImGui::SetNextWindowCollapsed(false);
 		
 	return S_OK;
 }
 
 void CImGui_UI::Update(_float fTimeDelta)
 {
-	Begin("UI_Windows");
+	ImGui::Begin("UI_Windows");
 
-	Button("Test1");
+	ImGui::Button("Test1");
 
-	End();
+	ImGui::End();
 }
 
 HRESULT CImGui_UI::Late_Update(_float fTimeDelta)

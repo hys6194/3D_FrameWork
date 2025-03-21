@@ -82,10 +82,10 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
         //OutputDebugString(debugMessage);
 
 
-        TCHAR debugMessage[256];
-        _stprintf_s(debugMessage, _T("Player_Look: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
-            vDelta.x, vDelta.y, vDelta.z, vDelta.w);
-        OutputDebugString(debugMessage);
+        //TCHAR debugMessage[256];
+        //_stprintf_s(debugMessage, _T("Player_Look: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
+        //    vDelta.x, vDelta.y, vDelta.z, vDelta.w);
+        //OutputDebugString(debugMessage);
     
     }
 

@@ -31,17 +31,7 @@ void Tool_Manager::Update(_float fTimeDelta)
 	m_pUI->Update(fTimeDelta);
 	m_pMap->Update(fTimeDelta);
 
-	if(m_pGameInstance->Get_DIMouseState(DIM_LB))
-	{
-		_vector vRay = *m_pGameInstance->Shoot_RayLazer();
-		
-		if (1.f < XMVectorGetX(vRay) ||
-			1.f < XMVectorGetY(vRay))
-			return;
-
-
-		 
-	}
+	Picking_Objects();
 
 }
 
@@ -52,6 +42,25 @@ void Tool_Manager::Late_Update(_float fTimeDelta)
 HRESULT Tool_Manager::Render()
 {
 	return S_OK;
+}
+
+void Tool_Manager::Picking_Objects()
+{
+	if (m_pGameInstance->Get_DIMouseState(DIM_LB))
+	{
+		//_float4 fRayDir;
+		//fRayDir = *m_pGameInstance->Get_RayDirCoords();
+		//
+		//float Teset;
+		///*bool test = */
+		//TriangleTests::Intersects(
+		//	XMLoadFloat4(m_pGameInstance->Get_CamPosition()),
+		//	XMLoadFloat4(&fRayDir),
+		//	XMLoadFloat3(&pVertices[i].vPosition),
+		//	XMLoadFloat3(&pVertices[i + 1].vPosition),
+		//	XMLoadFloat3(&pVertices[i + 2].vPosition),
+		//	Teset);
+	}
 }
 
 Tool_Manager* Tool_Manager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameInstance* pGameInstance)

@@ -21,7 +21,6 @@ const _float4x4* CBody_Player::Get_f4SocketMatrix(const _wstring& strSocketName)
     if (iter == m_mapSocketmat.end())
         return nullptr;
 
-
     return iter->second;
 }
 
@@ -111,7 +110,6 @@ HRESULT CBody_Player::Ready_SocketMatrices()
     m_mapSocketmat.emplace(SOCKET_RIGHT_HAND,       m_pModelCom->Get_BoneMatrix("Bone_Strife_Hand_R"));
     m_mapSocketmat.emplace(SOCKET_HOLSTER_LEFT,     m_pModelCom->Get_BoneMatrix("Bone_Strife_Holster_L"));
     m_mapSocketmat.emplace(SOCKET_HOLSTER_RIGHT,    m_pModelCom->Get_BoneMatrix("Bone_Strife_Holster_R"));
-
 
     //    m_mapSocketmat.emplace(SOCKET_LEFT_HAND,        m_pModelCom->Get_BoneMatrix("Bone_Strife_Fing_Thumb3_L_end_end_end_end"));
     //    m_mapSocketmat.emplace(SOCKET_RIGHT_HAND,       m_pModelCom->Get_BoneMatrix("Bone_Strife_Fing_Thumb3_R_end_end_end_end"));

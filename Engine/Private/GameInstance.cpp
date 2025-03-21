@@ -330,9 +330,9 @@ _vector* CGameInstance::Get_MouseWindowPosition()
 	return m_pPipeLine->Get_MouseWindowPosition();
 }
 
- _vector* CGameInstance::Shoot_RayLazer() 
+_float4* CGameInstance::Get_RayDirCoords()
 {
-	return m_pPipeLine->Shoot_RayLazer();
+	return m_pPipeLine->Get_RayDirCoords();
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)
