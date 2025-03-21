@@ -88,6 +88,7 @@ public:
 	HRESULT							Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	class CLayer*					Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
 	CGameObject*					Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
+	CComponent*						Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
 #pragma endregion
 
 #pragma region RENDERER

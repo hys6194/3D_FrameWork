@@ -288,6 +288,11 @@ CGameObject* CGameInstance::Find_GameObject(_uint iLevelIndex, const _wstring& s
 	return m_pObject_Manager->Get_GameObject(iLevelIndex, strLayerTag, strObjectTag);
 }
 
+CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex)
+{
+	return m_pObject_Manager->Get_Component(iLevelIndex, strLayerTag, strComponentTag, iIndex);
+}
+
 #pragma endregion
 
 #pragma region RENDERER

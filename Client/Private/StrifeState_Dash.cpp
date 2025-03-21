@@ -30,7 +30,6 @@ void CStrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 		if ((2 <= m_iCheckDash) && !m_bDashed)
 		{	
 			m_iState	 |= CPlayer::STATE_DOUBLEDASH;
-			//dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(m_iState);
 			m_bDashed = true;
 
 			Set_LastDashAnimation();
@@ -58,7 +57,7 @@ void CStrifeState_Dash::Update_State(_float fTimeDelta)
 {
 	Update_Animation(fTimeDelta);
 
-	m_pOwner->Get_Transform()->Dash(m_pModelCom->Get_Delta());
+	m_pOwner->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
 }
 
 void CStrifeState_Dash::LateUpdate_State(_float fTimeDelta)

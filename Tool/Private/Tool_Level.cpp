@@ -23,7 +23,7 @@ HRESULT Tool_Level::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	if (FAILED(Ready_Layer_Navi(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Object(TEXT("Layer_Objcet"))))
@@ -80,7 +80,7 @@ HRESULT Tool_Level::Ready_Layer_Camera(const _tchar* pLayerTag)
     return S_OK;
 }
 
-HRESULT Tool_Level::Ready_Layer_Monster(const _tchar* pLayerTag)
+HRESULT Tool_Level::Ready_Layer_Navi(const _tchar* pLayerTag)
 {
     return S_OK;
 }

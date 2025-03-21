@@ -31,6 +31,8 @@ private:
 	CModel*						m_pModelCom = { nullptr };
 	_uint						m_iKeyState = {};
 
+	_float						m_fTotalTime = {};
+
 
 private:
 	void						PlayerMove(_float fTimeDelta);

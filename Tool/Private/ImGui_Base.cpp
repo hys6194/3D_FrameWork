@@ -37,7 +37,7 @@ ImVec2 CImGui_Base::Set_Button_Offset(const char* _cButtonName, _float fX, _floa
 void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSour)
 {
 
-	if(ImGui::TreeNode("Prototype_List"))
+	if(TreeNode("Prototype_List"))
 	{
 		// 모든 리스트를 찾기
 		// 이니셜라이즈 때 해버리면 읽지 못하는 순서여서 여기에 선언

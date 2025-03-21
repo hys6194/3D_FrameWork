@@ -40,6 +40,8 @@ public:
 		return m_pTransformCom;
 	};
 
+	CComponent* Get_Component(const _wstring& strComponentTag);
+
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };

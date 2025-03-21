@@ -54,6 +54,8 @@ private:
 	HRESULT						Bind_SR();
 	HRESULT						Ready_Components();
 
+	HRESULT						Create_Bullet();
+
 
 public:
 	static CGun_Right*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

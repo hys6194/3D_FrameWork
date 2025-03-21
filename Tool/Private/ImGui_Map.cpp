@@ -8,6 +8,7 @@
 #include "GameInstance.h"
 #include "Map_Object.h"
 
+using namespace ImGui;
 
 CImGui_Map::CImGui_Map(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CImGui_Base { pDevice , pContext }
@@ -16,22 +17,22 @@ CImGui_Map::CImGui_Map(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT CImGui_Map::Initialize()
 {
-	ImGui::SetNextWindowSize(ImVec2(500, 400));
-	ImGui::SetNextWindowPos(ImVec2(1280, 0));
-	ImGui::SetNextWindowCollapsed(false);
+	SetNextWindowSize(ImVec2(500, 400));
+	SetNextWindowPos(ImVec2(1280, 0));
+	SetNextWindowCollapsed(false);
 
 	return S_OK;
 }
 
 void CImGui_Map::Update(_float fTimeDelta)
 {
-	ImGui::Begin("Map_Windows");
+	Begin("Map_Windows");
 
 	Default_SetButtons(fTimeDelta);
 
 	Get_PrototypeList(TEXT("Model"), TEXT("GameObject"));
 
-	ImGui::End();
+	End();
 }
 
 HRESULT CImGui_Map::Late_Update(_float fTimeDelta)
@@ -44,21 +45,21 @@ HRESULT CImGui_Map::Late_Update(_float fTimeDelta)
 
 void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 {
-	if (ImGui::Button("Save"))
+	if (Button("Save"))
 	{
 		int a = 10;
 	}
 
-	ImGui::SameLine();
+	SameLine();
 
-	if (ImGui::Button("Load"))
+	if (Button("Load"))
 	{
 
 	}
 
-	ImGui::SameLine();
+	SameLine();
 
-	if (ImGui::Button("+"))
+	if (Button("+"))
 	{
 		CMap_Object::MAPOBJ_DESC Desc = {};
 
@@ -70,13 +71,19 @@ void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 		m_pGameInstance->Add_GameObject(LEVEL_TOOL, m_strObjectName, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
 	}
 
-	ImGui::SameLine();
+	SameLine();
 
-	if (ImGui::Button("-"))
+	if (Button("-"))
 	{
 		//m_pGameInstance->Find_Layer
 	}
 
+	SameLine();
+
+	if (Button("TTTT"))
+	{
+		//m_pGameInstance->Find_Layer
+	}
 }
 
 CImGui_Map* CImGui_Map::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

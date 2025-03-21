@@ -32,6 +32,13 @@ public:
 		return &m_f4WorldMatrix;
 	}
 
+public:
+
+	void Set_Matrix(const _float4x4* _fMatrix)
+	{
+		m_f4WorldMatrix = *_fMatrix;
+	}
+
 	void Set_State(STATE eState, _vector vState)
 	{
 		XMStoreFloat4(reinterpret_cast<_float4*>(&m_f4WorldMatrix.m[eState][0]), vState);
@@ -48,13 +55,13 @@ public:
 
 public:
 	_float3		Update_Scale();
-	HRESULT		Go_Straight(_float fTimeDelta);
-	HRESULT		Go_Backward(_float fTimeDelta);
-	HRESULT		Go_Right(_float fTimeDelta);
-	HRESULT		Go_Left(_float fTimeDelta);
+	HRESULT		Go_Straight(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT		Go_Backward(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT		Go_Right(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT		Go_Left(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
 	HRESULT		Jump(_float fTimeDelta);
 	HRESULT		LookAt(_vector vAt);
-	HRESULT		Dash(_float4 fDelta);
+	HRESULT		Dash(_float4 fTimeDelta, class CNavigation* pNavigation = nullptr);
 	void		Turn(_fvector vAxis, _float fTimeDelta);
 	void		Rotation(_fvector vAxis, _float fRadian);
 

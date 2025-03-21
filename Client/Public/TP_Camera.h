@@ -28,6 +28,7 @@ public:
 private:
 	_float						m_fMouseSensor = {};
 	_float3						m_vCamEye = { 0.f, 15.f ,-12.5f };
+	//_float3						m_vCamEye = { 0.f, 15.f , 0.f };
 
 	CGameObject*				m_pPlayer = { nullptr };
 

@@ -16,7 +16,8 @@ class CBullet : public CGameObject
 public:
 	typedef struct tagBulletDesc :public GAMEOBJECT_DESC
 	{
-		_float4 fHandPos;
+		_float4x4 f4Hand;
+		_float4 fBulletPos;
 		_float4 fLook;
 	}BULLET_DESC;
 
@@ -42,7 +43,9 @@ private:
 	CModel*						m_pModelCom = { nullptr };
 
 
-	_float4						m_fHandPos;
+	_float4x4					m_matHand;
+
+	_float4						m_fBulletPos;
 	_float4						m_fLook;
 	_float						m_fSpeed;
 	_float						m_fTotalTime = { 0.f };

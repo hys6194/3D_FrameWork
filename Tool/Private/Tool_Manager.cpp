@@ -32,7 +32,6 @@ void Tool_Manager::Update(_float fTimeDelta)
 	m_pMap->Update(fTimeDelta);
 
 	Picking_Objects();
-
 }
 
 void Tool_Manager::Late_Update(_float fTimeDelta)
@@ -48,11 +47,12 @@ void Tool_Manager::Picking_Objects()
 {
 	if (m_pGameInstance->Get_DIMouseState(DIM_LB))
 	{
-		//_float4 fRayDir;
-		//fRayDir = *m_pGameInstance->Get_RayDirCoords();
-		//
+		_float4 fRayDir;
+		fRayDir = *m_pGameInstance->Get_RayDirCoords();
+		fRayDir = *m_pGameInstance->Get_RayDirCoords();
+		
 		//float Teset;
-		///*bool test = */
+		/*bool test = */
 		//TriangleTests::Intersects(
 		//	XMLoadFloat4(m_pGameInstance->Get_CamPosition()),
 		//	XMLoadFloat4(&fRayDir),

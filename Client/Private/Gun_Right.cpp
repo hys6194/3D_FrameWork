@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "Player.h"
+#include "Bullet.h"
 
 CGun_Right::CGun_Right(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CPartObject{ pDevice, pContext }
@@ -60,27 +61,11 @@ void CGun_Right::Priority_Update(_float fTimeDelta)
 
     if (m_pGameInstance->Get_DIMouseState(DIM_LB) && m_fCool < m_fTotalTime)
     {
-        //_vector vOwnerLook = m_pOwner->Get_Transform()->Get_State(CTransform::STATE_LOOK);
-        //
-        //m_pTransformCom->Set_State(CTransform::STATE_LOOK, vOwnerLook);
 
-        //_float4 fTest;
-        //
-        //memcpy(&fTest, &m_pHandMatrix->m[3][0], sizeof(_float4));
-
-
-        //_vector vLeftLook = vOwnerLook + XMLoadFloat4(&fTest);
-        //
-        //_vector vNorLook = XMVector4Normalize(vLeftLook);
-        // 
-        //TCHAR debugMessage[256];
-        //_stprintf_s(debugMessage, _T("Right_Shoot : Cool = %.2f\n"), m_fCool);
-        //OutputDebugString(debugMessage);
-
+        Create_Bullet();
 
         m_fCool += 0.2f;
 
-        //m_fTotalTime = 0.f;
     }
 
     else if (!m_pGameInstance->Get_DIMouseState(DIM_LB))
@@ -150,6 +135,21 @@ HRESULT CGun_Right::Ready_Components()
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+
+    return S_OK;
+}
+
+HRESULT CGun_Right::Create_Bullet()
+{
+    _matrix matHand = XMMatrixMultiply(XMLoadFloat4x4(m_pHandMatrix), XMLoadFloat4x4(m_pParentMatrix));
+    CBullet::BULLET_DESC Desc{};
+    Desc.fSpeedPerSec = 0.5f;
+
+    XMStoreFloat4(&Desc.fLook, m_pOwner->Get_Transform()->Get_State(CTransform::STATE_LOOK));
+    XMStoreFloat4x4(&Desc.f4Hand, matHand);
+
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_BULLET,
+        LEVEL_GAMEPLAY, TEXT("GameObject_Bullet"), &Desc), E_FAIL);
 
     return S_OK;
 }

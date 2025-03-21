@@ -21,17 +21,16 @@ HRESULT CBullet::Initialize(void* pArg)
 {
     BULLET_DESC* pDesc = static_cast<BULLET_DESC*>(pArg);
 
-    m_fHandPos = pDesc->fHandPos;
+    m_matHand = pDesc->f4Hand;
+    m_fBulletPos = pDesc->fBulletPos;
     m_fSpeed = pDesc->fSpeedPerSec;
     m_fLook = pDesc->fLook;
 
-        FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
-    FAILED_CHECK_RETURN(Ready_Component(), E_FAIL);
+    FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
+    FAILED_CHECK_RETURN(Ready_Component(), E_FAIL)
 
-    m_pTransformCom->SetUp_Scaled(0.1f, 0.1f, 0.1f);
-    m_pTransformCom->Set_State(CTransform::STATE_POS, XMLoadFloat4(&m_fHandPos));
-
-    
+    m_pTransformCom->Set_Matrix(&m_matHand);
+    m_pTransformCom->SetUp_Scaled(0.05f, 0.05f, 0.05f);
 
     return S_OK;
 }
@@ -46,15 +45,19 @@ void CBullet::Update(_float fTimeDelta)
     m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
 
     _vector vTest = m_pTransformCom->Get_State(CTransform::STATE_POS);
-    vTest += XMLoadFloat4(&m_fLook);
+    vTest += XMLoadFloat4(&m_fLook) * m_fSpeed;
 
-    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMLoadFloat4(&m_fHandPos));
+    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMLoadFloat4(&m_fBulletPos));
     m_pTransformCom->Set_State(CTransform::STATE_POS, vTest);
+
 
     if (10.f < m_fTotalTime /*||
         몬스터와 충돌했을 때*/ )
     {
-        
+        // 총알 사라짐 구현해야 함
+        // 
+        // 아니 근데 몬스터도 어떻게 사라지게 해야하냐? 
+        //
     }
 
 }

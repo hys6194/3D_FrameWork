@@ -34,11 +34,6 @@ HRESULT CGameObject::Initialize(void* pArg)
         GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
         lstrcpy(m_szGameObjectTag, pDesc->szGameObjectTag);
     }
-   // m_pTransformCom = CTransform::Create(m_pDevice, m_pContext);
-   // if (nullptr == m_pTransformCom)
-   //     return E_FAIL;
-   // if (FAILED(m_pTransformCom->Initialize(pArg)))
-   //     return E_FAIL;
 
     HRESULT hr;
     hr = Set_TransformCom(pArg);
@@ -62,6 +57,16 @@ void CGameObject::Late_Update(_float fTimeDelta)
 HRESULT CGameObject::Render()
 {
     return S_OK;
+}
+
+CComponent* CGameObject::Get_Component(const _wstring& strComponentTag)
+{
+    auto    iter = m_mapComponent.find(strComponentTag);
+
+    if (iter == m_mapComponent.end())
+        return nullptr;
+
+    return iter->second;
 }
 
 HRESULT CGameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag, CComponent** ppOut, const _wstring& strComponentTag, void* pArg)

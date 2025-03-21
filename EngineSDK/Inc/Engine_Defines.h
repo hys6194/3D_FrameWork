@@ -3,6 +3,7 @@
 
 #pragma warning(disable : 4251)
 #pragma warning(disable : 4267)
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
@@ -10,10 +11,14 @@
 
 #include "DirectXTK/VertexTypes.h"
 #include "DirectXTK/ScreenGrab.h"
+
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
 #include "DirectXTK/SpriteFont.h"
 #include "DirectXTK/SpriteBatch.h"
+#include "DirectXTK/PrimitiveBatch.h"
+#include "DirectXTK/Effects.h"
+
 
 #include "Fx11/d3dx11effect.h"
 #include "assimp_Old/scene.h"

@@ -6,6 +6,7 @@
 BEGIN(Engine)
 class CFSM;
 class CNavigation;
+class CCollider;
 END
 
 BEGIN(Client)
@@ -80,6 +81,9 @@ public:
 	}
 
 public:
+	CNavigation*			Get_NavigationCom();
+
+public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize(void* pArg) override;
 	virtual void			Priority_Update(_float fTimeDelta) override;
@@ -103,6 +107,7 @@ private:
 private:
 	CFSM*					m_pFSMCom		= { nullptr };
 	CNavigation*			m_pNavigationCom = { nullptr };
+	CCollider*				m_pColliderCom = { nullptr };
 
 private:
 	HRESULT					Ready_Components();

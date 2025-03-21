@@ -16,9 +16,9 @@ class CGun_Left final : public CPartObject
 public:
 	typedef struct tagGun_LeftDesc : public CPartObject::PARTOBJ_DESC
 	{
-		const _float4x4*		pSocketMatrix;
-		const _float4x4*		pHandMatrix;
-		const _uint*			pTargetState = { nullptr };
+		const _float4x4*			pSocketMatrix;
+		const _float4x4*			pHandMatrix;
+		const _uint*				pTargetState = { nullptr };
 		class CPlayer*				pOwner = { nullptr };
 	}WEAPON_DESC;
 

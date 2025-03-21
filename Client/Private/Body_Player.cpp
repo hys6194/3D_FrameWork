@@ -1,8 +1,6 @@
 #include "Body_Player.h"
 #include "GameInstance.h"
 
-
-
 #include "Player.h"
 
 CBody_Player::CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -49,7 +47,6 @@ void CBody_Player::Priority_Update(_float fTimeDelta)
 
 void CBody_Player::Update(_float fTimeDelta)
 {
-
     //파츠들의 매트릭스를 부모 매트릭스에 곱하여 고정시킨다
     XMStoreFloat4x4(&m_CombinedWorldMatrix,
         XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentMatrix));

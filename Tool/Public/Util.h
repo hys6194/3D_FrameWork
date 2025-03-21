@@ -10,3 +10,4 @@ public:
 	static wstring		Get_FileName(const wstring& path);
 };
 
+using namespace ImGui;

@@ -2,6 +2,8 @@
 #include "Shader.h"
 #include "Bone.h"
 
+#include "Navigation.h"
+
 CTransform::CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CComponent{ pDevice, pContext }
 {
@@ -42,7 +44,7 @@ _float3 CTransform::Update_Scale()
     
 }
 
-HRESULT CTransform::Go_Straight(_float fTimeDelta)
+HRESULT CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
 {
     // 위치 가져오기
     _vector vPos = Get_State(STATE_POS);
@@ -54,12 +56,15 @@ HRESULT CTransform::Go_Straight(_float fTimeDelta)
     vPos += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
     // 계산한 Vector를 position에 대입한다
-    Set_State(STATE_POS, vPos);
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
 
     return S_OK;
 }
 
-HRESULT CTransform::Go_Backward(_float fTimeDelta)
+HRESULT CTransform::Go_Backward(_float fTimeDelta, CNavigation* pNavigation)
 {
     // 위치 가져오기
     _vector vPos = Get_State(STATE_POS);
@@ -71,12 +76,15 @@ HRESULT CTransform::Go_Backward(_float fTimeDelta)
     vPos -= XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
     // 계산한 Vector를 position에 대입한다
-    Set_State(STATE_POS, vPos);
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
 
     return S_OK;
 }
 
-HRESULT CTransform::Go_Right(_float fTimeDelta)
+HRESULT CTransform::Go_Right(_float fTimeDelta, CNavigation* pNavigation)
 {
     // 위치 가져오기
     _vector vPos = Get_State(STATE_POS);
@@ -88,12 +96,15 @@ HRESULT CTransform::Go_Right(_float fTimeDelta)
     vPos += XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
 
     // 계산한 Vector를 Position에 대입한다
-    Set_State(STATE_POS, vPos);
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
 
     return S_OK;
 }
 
-HRESULT CTransform::Go_Left(_float fTimeDelta)
+HRESULT CTransform::Go_Left(_float fTimeDelta, CNavigation* pNavigation)
 {
     // 위치 가져오기
     _vector vPos = Get_State(STATE_POS);
@@ -105,7 +116,10 @@ HRESULT CTransform::Go_Left(_float fTimeDelta)
     vPos -= XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
 
     // 계산한 Vector를 position에 대입한다
-    Set_State(STATE_POS, vPos);
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
 
     return S_OK;
 }
@@ -135,7 +149,7 @@ HRESULT CTransform::LookAt(_vector vAt)
     return S_OK;
 }
 
-HRESULT CTransform::Dash(_float4 fDelta)
+HRESULT CTransform::Dash(_float4 fDelta, CNavigation* pNavigation)
 {
     _vector vPos = Get_State(STATE_POS);
     _vector vLook = Get_State(STATE_LOOK);
@@ -143,14 +157,16 @@ HRESULT CTransform::Dash(_float4 fDelta)
 
     vPos += XMVector4Normalize(vLook) * vDelta;
 
-    Set_State(STATE_POS, vPos);
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
 
     return S_OK;
 }
 
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
-    _matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_fRotationPerSec * fTimeDelta);
+    _matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fTimeDelta/*m_fRotationPerSec * fTimeDelta*/);
 
     _vector		vRight = Get_State(STATE_RIGHT);
     _vector		vUp = Get_State(STATE_UP);

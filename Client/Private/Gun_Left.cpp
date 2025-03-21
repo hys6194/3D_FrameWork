@@ -123,38 +123,30 @@ HRESULT CGun_Left::Ready_Components()
 
 HRESULT CGun_Left::Create_Bullet()
 {
+    //_matrix matLocal = XMLoadFloat4x4(m_pHandMatrix);
+    //
+    //_float4 fTest =
+    //{
+    //        m_pHandMatrix->m[3][0],
+    //        m_pHandMatrix->m[3][1],
+    //        m_pHandMatrix->m[3][2] + 1.f,
+    //        m_pHandMatrix->m[3][3],
+    //};
+    //
+    //_float4x4 f5test;
+    //XMStoreFloat4x4(&f5test,  XMLoadFloat4x4(m_pHandMatrix));
+    //
+    //XMStoreFloat4(f5test.m[3], fTest);
+
+    _matrix matHand = XMMatrixMultiply(XMLoadFloat4x4(m_pHandMatrix), XMLoadFloat4x4(m_pParentMatrix));
     CBullet::BULLET_DESC Desc{};
-    Desc.fSpeedPerSec = 10.f;
+    Desc.fSpeedPerSec = 0.5f;
 
-
-    //const _vector* fTest = m_pHandMatrix->m[3];
-    //const _float4* fTest = m_pHandMatrix->m[3];
-
-    //_float4 fHandPos = m_pHandMatrix->m[3];
-    //const _vector vHandPos = m_pHandMatrix->m[3];
-    //XMStoreFloat4(&fHandPos, XMLoadFloat4(&m_pHandMatrix->m[3]));
-
-    //_vector vTest = XMLoadFloat4(&((_float4)(m_pHandMatrix->m[3])));
-    //memcpy(Desc.pHandPos, &m_pHandMatrix->m[3], sizeof(_float4));
-
-    _float4 fTest = { m_pHandMatrix->m[3][0],
-                      m_pHandMatrix->m[3][1],
-                      m_pHandMatrix->m[3][2],
-                      m_pHandMatrix->m[3][3] };
-
-    _vector vHand = XMVectorSet(m_pHandMatrix->m[3][0], 
-                                m_pHandMatrix->m[3][1],
-                                m_pHandMatrix->m[3][2],
-                                m_pHandMatrix->m[3][3]);
-
-    _vector vPos = m_pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
-    XMStoreFloat4(&Desc.fHandPos, vHand + vPos);
     XMStoreFloat4(&Desc.fLook, m_pOwner->Get_Transform()->Get_State(CTransform::STATE_LOOK));
+    XMStoreFloat4x4(&Desc.f4Hand, matHand);
 
     FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_BULLET,
         LEVEL_GAMEPLAY, TEXT("GameObject_Bullet"), &Desc), E_FAIL);
-
-
 
     return S_OK;
 }
