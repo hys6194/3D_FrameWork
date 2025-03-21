@@ -37,6 +37,7 @@ private:
 private:
 	HRESULT							Start_Level(LEVEL eLevelID);
 	HRESULT							Ready_Fonts();
+	HRESULT							Ready_Gara();
 
 public:
 	static CMainApp*				Create();

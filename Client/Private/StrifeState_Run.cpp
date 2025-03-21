@@ -84,42 +84,42 @@ void CStrifeState_Run::PlayerMove(_float fTimeDelta)
 
     case (CPlayer::KEY_DOWN | CPlayer::KEY_LEFT):
         dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-135.f));
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case (CPlayer::KEY_UP | CPlayer::KEY_LEFT):
         dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-45.f));
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case(CPlayer::KEY_UP | CPlayer::KEY_RIGHT):
         dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(45.f));
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case(CPlayer::KEY_RIGHT | CPlayer::KEY_DOWN):
         dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(135.f));
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case CPlayer::KEY_DOWN:
         dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(180.f));
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case CPlayer::KEY_LEFT:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case CPlayer::KEY_RIGHT:
         dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case CPlayer::KEY_UP:
         dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(0.f));
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     default:

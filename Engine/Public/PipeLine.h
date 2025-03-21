@@ -55,9 +55,15 @@ public:
 		return &m_vCamPosition;
 	}
 
-	//GameInstance의 상호참조로 문제가 생길까봐 PipeLine클래스에 제작
-	const _float4*						Get_MouseWindowPosition() const;
-	_vector*							Get_MouseWorldPosition(const _float4x4* TargetmatWorld);
+
+	// GameInstance의 상호참조로 문제가 생길까봐 
+	// Input_Device 말고 PipeLine클래스에서 제작
+	_vector*							Get_MouseWindowPosition();
+
+
+	// 다음에는 Ray 클래스를 따로 제작해 카메라 행렬을 가져와서
+	// 사용하고 계산하는 컴포넌트로 제작
+	_float4*							Get_RayDirCoords();
 public:
 
 	void								Set_Transform(TRANSFORMSTATE eState, _fmatrix Matrix);				// fmatrix 형 
@@ -70,6 +76,10 @@ private:
 	_float4x4							m_TransformMatrices[D3DTS_END] = {};	
 	_float4x4							m_TransformInverseMatrices[D3DTS_END] = {};
 	_float4								m_vCamPosition = {};
+
+	//[0] = Ray 원점
+	//[1] = Ray 방향
+	vector<_float4>						m_vecRays;
 
 private:
 	HWND								m_hWnd = { nullptr };

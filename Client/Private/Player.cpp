@@ -1,17 +1,14 @@
 #include "Player.h"
 #include "GameInstance.h"
 #include "Body_Player.h"
-#include "Weapon.h"
+
+#include "Gun_Left.h"
+#include "Gun_Right.h"
 
 #include "StrifeState_idle.h"
 #include "StrifeState_Run.h"
 #include "StrifeState_Dash.h"
 #include "StrifeState_Shoot.h"
-
-#include "Gun_Left.h"
-#include "Gun_Right.h"
-
-
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CContainerObject{ pDevice, pContext }
@@ -55,17 +52,22 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 {
 	Input_Keys();
 
-	m_pFSMCom->PriUpdate_State(fTimeDelta);
 	m_pFSMCom->Change_State(m_iState);
+	m_pFSMCom->PriUpdate_State(fTimeDelta);
+
+	m_pColliderCom->Reset();
 
 	__super::Priority_Update(fTimeDelta);
 }
 
 void CPlayer::Update(_float fTimeDelta)
 {
+	__super::Update(fTimeDelta);
+
 	m_pFSMCom->Update_State(fTimeDelta);
 
-	__super::Update(fTimeDelta);
+	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+
 }
 
 void CPlayer::Late_Update(_float fTimeDelta)
@@ -73,17 +75,41 @@ void CPlayer::Late_Update(_float fTimeDelta)
 	m_pFSMCom->LateUpdate_State(fTimeDelta);
 
 	__super::Late_Update(fTimeDelta);
+
+	m_pTransformCom->Set_State(CTransform::STATE_POS,
+		m_pNavigationCom->Compute_Height(m_pTransformCom->Get_State(CTransform::STATE_POS)));
+
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
 }
 
 HRESULT CPlayer::Render()
 {
+#ifdef _DEBUG
+	m_pColliderCom->Render();
+#endif
+
 	return S_OK;
 }
 
 HRESULT CPlayer::Ready_Components()
 {
+	CNavigation::NAVIGATION_DESC		NaviDesc{};
+	NaviDesc.iCellIndex = 0;
+
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_NAVI,
+		reinterpret_cast<CComponent**>(&m_pNavigationCom), COM_NAVI, &NaviDesc),E_FAIL);
+
+	CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
+	ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
+	ColliderDesc.vCenter  = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
+
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
+		reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_AABB, &ColliderDesc), E_FAIL);
+
+
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
-		reinterpret_cast<CComponent**>(&m_pFSMCom), TEXT("Com_FSM")), E_FAIL);
+		reinterpret_cast<CComponent**>(&m_pFSMCom), COM_FSM), E_FAIL);
 
 
 	return S_OK;
@@ -113,6 +139,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	GDesc1.pHandMatrix		= dynamic_cast<CBody_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_LEFT_HAND);
 	GDesc1.pParentMatrix	= m_pTransformCom->Get_WorldMatrix_Ptr();
 	GDesc1.pTargetState		= &m_iState;
+	GDesc1.pOwner = this;
 
 	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_L_GUN, PART_LGUN, &GDesc1), E_FAIL);
 
@@ -122,7 +149,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	GDesc2.pHandMatrix		= dynamic_cast<CBody_Player*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_RIGHT_HAND);
 	GDesc2.pParentMatrix	= m_pTransformCom->Get_WorldMatrix_Ptr();
 	GDesc2.pTargetState		= &m_iState;
-
+	GDesc2.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_R_GUN, PART_RGUN, &GDesc2), E_FAIL);
 
 
@@ -249,6 +276,8 @@ void CPlayer::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pNavigationCom);
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pFSMCom);
 
 }

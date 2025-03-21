@@ -12,6 +12,7 @@
 #include "Sky.h"
 #include "Gun_Left.h"
 #include "Gun_Right.h"
+#include "Bullet.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -133,17 +134,23 @@ HRESULT CLoader::Loading_GamePlay()
 {
 	m_IsFin = false;
 
-	lstrcpy(m_szLoading, TEXT("텍스쳐를(을) 로딩중입니다."));
+	lstrcpy(m_szLoading, TEXT("텍스쳐를 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Textures(), E_FAIL);
 
-	lstrcpy(m_szLoading, TEXT("모델를(을) 로딩중입니다."));
+	lstrcpy(m_szLoading, TEXT("모델을 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Models(), E_FAIL);
 
-	lstrcpy(m_szLoading, TEXT("셰이더를(을) 로딩중입니다."));
+	lstrcpy(m_szLoading, TEXT("셰이더를 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Shaders(), E_FAIL);
 
-	lstrcpy(m_szLoading, TEXT("원형객체를(을) 로딩중입니다."));
+	lstrcpy(m_szLoading, TEXT("원형객체를 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Prototype(), E_FAIL);
+
+	lstrcpy(m_szLoading, TEXT("콜라이더를 로딩중입니다."));
+	FAILED_CHECK_RETURN(Loading_Collider(), E_FAIL);
+
+	lstrcpy(m_szLoading, TEXT("네비게이션을 로딩중입니다."));
+	FAILED_CHECK_RETURN(Loading_Navigation(), E_FAIL);
 
 	lstrcpy(m_szLoading, TEXT("로딩 완료."));
 
@@ -162,13 +169,12 @@ HRESULT CLoader::Loading_Textures()
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 			return E_FAIL;
 	}
-
 		break;
 	case LEVEL_LOGO:
 	{
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_TEX_BACKGROUND,
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.dds"), 2))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_TEX_LOGO1,
@@ -253,7 +259,7 @@ HRESULT CLoader::Loading_Models()
 			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/AnimModel/Fiona/Fiona.fbx", PreTransformMatrix))))
 			return E_FAIL;
 
-		/* For.Prototype_Component_Model_ForkLift */
+		///* For.Prototype_Component_Model_ForkLift */
 		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
 			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/NonAnimModel/ForkLift/ForkLift.fbx", PreTransformMatrix))))
@@ -281,11 +287,8 @@ HRESULT CLoader::Loading_Models()
 			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/AnimModel/Strife/Gun2.fbx", PreTransformMatrix))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_NAVI,
-			CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Navigation.dat")))))
-			return E_FAIL;
-	}
 
+	}
 
 		break;
 	default:
@@ -413,6 +416,12 @@ HRESULT CLoader::Loading_Prototype()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_R_GUN,
 			CGun_Right::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_BULLET,
+			CBullet::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+
 	}
 
 
@@ -421,6 +430,43 @@ HRESULT CLoader::Loading_Prototype()
 		return E_FAIL;
 	}
 
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_Collider()
+{
+	switch (m_eNextLevelID)
+	{
+
+	case LEVEL_GAMEPLAY:
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
+			CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Collider_OBB */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
+			CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_OBB))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Collider_Sphere */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
+			CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
+			return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_Navigation()
+{
+	switch (m_eNextLevelID)
+	{
+
+	case LEVEL_GAMEPLAY:
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_NAVI,
+			CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Navigation.dat")))))
+			return E_FAIL;
+	}
 	return S_OK;
 }
 

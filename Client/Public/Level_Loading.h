@@ -18,6 +18,9 @@ public:
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+private:
+	HRESULT				Ready_Loading_Textures();
+
 
 private:
 	//_uint			m_iLevelID; -> _uint로 읽어서 가져올 게 아니라 enum으로 받아와야함

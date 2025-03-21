@@ -21,7 +21,8 @@ public:
 	void Late_Update(_float fTimeDelta);
 
 public:
-	CGameObject* Find_Object(const _tchar* strObjectTag);
+	class CGameObject* Find_Object(const _tchar* strObjectTag);
+	class CComponent*  Find_Component(const _wstring& strComponentTag, _uint iIndex = 0);
 
 
 private:

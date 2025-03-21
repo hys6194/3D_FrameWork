@@ -2,6 +2,7 @@
 
 #include "GameInstance.h"
 #include "GameObject.h"
+#include "Component.h"
 #include "Layer.h"
 
 CObject_Manager::CObject_Manager()
@@ -103,6 +104,16 @@ CGameObject* CObject_Manager::Get_GameObject(_uint iLevelIndex, const _wstring& 
         return nullptr;
 
     return pGameObeject;
+}
+
+CComponent* CObject_Manager::Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex)
+{
+    CComponent* pComponent = Find_Layer(iLevelIndex, strLayerTag)->Find_Component(strComponentTag, iIndex);
+
+    if (nullptr == pComponent)
+        return nullptr;
+
+    return pComponent;
 }
 
 CObject_Manager* CObject_Manager::Create(_uint iNumLevels)

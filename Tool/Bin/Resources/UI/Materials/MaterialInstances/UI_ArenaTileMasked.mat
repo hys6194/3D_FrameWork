@@ -1,0 +1,6 @@
+Diffuse=nullSprite
+Opacity=ArenaCardArt_01_FlameFodder
+Other[0]=UI_particle_circleSoftEdge3
+Other[1]=ArenaCardArt_AlphaMask
+Other[2]=UI_genericWhiteSquare
+Other[3]=UI_particle_circleSoftEdge1

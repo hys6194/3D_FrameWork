@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="98.Default">
+      <UniqueIdentifier>{b283b6ac-7f6d-4e2a-af2e-65e7769fe595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines">
+      <UniqueIdentifier>{738212a3-bd32-46bf-b4d7-b49bfb61a745}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp">
+      <UniqueIdentifier>{8758828c-7a27-4441-b04c-521e060d3835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level">
+      <UniqueIdentifier>{fd2a5fc8-8671-4c30-959f-0302027f8648}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\00.Loading">
+      <UniqueIdentifier>{284f499c-35d1-4ac5-ac79-594770330641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\00.Loading\00.Loader">
+      <UniqueIdentifier>{5b1afb9a-c60f-4fff-9c3d-798adc81e9d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\01.Tool">
+      <UniqueIdentifier>{ac0970ff-6011-4872-8e8e-d3f542e14a01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject">
+      <UniqueIdentifier>{041da9fc-d4fe-4887-b0cf-9d8253720298}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\00.Terrain">
+      <UniqueIdentifier>{aa053677-6519-4986-9671-9486ef9d3f94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\01.Camera">
+      <UniqueIdentifier>{bdeaf0ca-1fff-4a2f-961d-03f588cacc91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui">
+      <UniqueIdentifier>{06583c77-fb0d-47dc-8b43-5bd050dc1930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\00.ImGui_Base">
+      <UniqueIdentifier>{445794a1-a64c-4241-947d-9acad910bb23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\01.Tool">
+      <UniqueIdentifier>{28675c41-d0a0-470e-8ac8-59965b9ef64c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\01.Tool\01.UI">
+      <UniqueIdentifier>{bc943f6a-a782-4883-b9c4-2da64381a11d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\01.Tool\00.Map">
+      <UniqueIdentifier>{9d38dbf2-dc16-4a70-9ba6-71e3a2dde8cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\02. Map_Object">
+      <UniqueIdentifier>{af521821-5646-45e8-a8cb-deaf8bce263b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\02. Manager">
+      <UniqueIdentifier>{503b52f7-f2d2-47de-9d50-7ad33d24f6c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\02. Manager\00.Data">
+      <UniqueIdentifier>{4e8c4487-49cb-4e3e-947c-0a6fc8263b04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\02. Manager\01.Tool">
+      <UniqueIdentifier>{1143e806-39a3-436d-910a-01f9b82ad3ab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MainApp.h">
+      <Filter>00.MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tool_Defines.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Loading.h">
+      <Filter>01.Level\00.Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Loader.h">
+      <Filter>01.Level\00.Loading\00.Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tool_Level.h">
+      <Filter>01.Level\01.Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Terrain.h">
+      <Filter>02.GameObject\00.Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tool_FreeCam.h">
+      <Filter>02.GameObject\01.Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_UI.h">
+      <Filter>97.ImGui\01.Tool\01.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Map.h">
+      <Filter>97.ImGui\01.Tool\00.Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Map_Object.h">
+      <Filter>02.GameObject\02. Map_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tool_Manager.h">
+      <Filter>97.ImGui\02. Manager\01.Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DataMgr.h">
+      <Filter>97.ImGui\02. Manager\00.Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Base.h">
+      <Filter>97.ImGui\00.ImGui_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Util.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tool_ConstValue.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>98.Default</Filter>
+    </Image>
+    <Image Include="Tool.ico">
+      <Filter>98.Default</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Tool.rc">
+      <Filter>98.Default</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Tool.cpp">
+      <Filter>98.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MainApp.cpp">
+      <Filter>00.MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Loader.cpp">
+      <Filter>01.Level\00.Loading\00.Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Loading.cpp">
+      <Filter>01.Level\00.Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Tool_Level.cpp">
+      <Filter>01.Level\01.Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Tool_FreeCam.cpp">
+      <Filter>02.GameObject\01.Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Terrain.cpp">
+      <Filter>02.GameObject\00.Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_UI.cpp">
+      <Filter>97.ImGui\01.Tool\01.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Map.cpp">
+      <Filter>97.ImGui\01.Tool\00.Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Map_Object.cpp">
+      <Filter>02.GameObject\02. Map_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Tool_Manager.cpp">
+      <Filter>97.ImGui\02. Manager\01.Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DataMgr.cpp">
+      <Filter>97.ImGui\02. Manager\00.Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Base.cpp">
+      <Filter>97.ImGui\00.ImGui_Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Util.cpp">
+      <Filter>99.Defines</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

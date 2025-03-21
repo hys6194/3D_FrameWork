@@ -21,21 +21,7 @@ void CPipeLine::Update()
 	memcpy(&m_vCamPosition, &m_TransformInverseMatrices[D3DTS_VIEW].m[3][0], sizeof(_float4));
 }
 
-const _float4* CPipeLine::Get_MouseWindowPosition() const
-{
-	POINT pt;
-	GetCursorPos(&pt);
-	ScreenToClient(m_hWnd, &pt);
-
-	_float4 fTest { 0.f,0.f,0.f,0.f };
-
-	fTest.x = pt.x;
-	fTest.y = pt.y;
-
-	return &fTest;
-}
-
- _vector* CPipeLine::Get_MouseWorldPosition(const _float4x4* TargetmatWorld)
+_vector* CPipeLine::Get_MouseWindowPosition()
 {
 	POINT pt;
 	GetCursorPos(&pt);
@@ -43,27 +29,66 @@ const _float4* CPipeLine::Get_MouseWindowPosition() const
 
 	_float4 fTest{ 0.f,0.f,0.f,0.f };
 	_vector vTest{ 0.f,0.f,0.f,1.f };
-	//_vector vRayPos, vRayDir;
 
 
 	_uint i = 1;
 	D3D11_VIEWPORT ViewPort;
-	m_pContext->RSGetViewports(&i, &ViewPort); 
+	m_pContext->RSGetViewports(&i, &ViewPort);
 
 	fTest.x = pt.x / (ViewPort.Width * 0.5f) - 1.f;
-	fTest.y = pt.y / -(ViewPort.Height * 0.5f) + 1.f;
 
-	vTest = XMVectorSet(fTest.x, fTest.y, fTest.z, fTest.w);
+	// 원래 0.5가 뷰 포트 상 제일 중앙이 되는 좌표임 
+	// 플레이어의 팔 위치로 중점을 옮긴거 밖에 안됨
+	fTest.y = pt.y / -(ViewPort.Height * 0.33f) + 1.f;
 
-	XMVector3Unproject(vTest, 
-		ViewPort.TopLeftX, ViewPort.TopLeftY, 
-		ViewPort.Width, ViewPort.Height,
-		ViewPort.MinDepth, ViewPort.MaxDepth, 
-		XMLoadFloat4x4(&m_TransformMatrices[D3DTS_PROJ]),
-		XMLoadFloat4x4(&m_TransformMatrices[D3DTS_VIEW]),
-		XMMatrixIdentity());
+	vTest = XMVectorSet(fTest.x, fTest.y, fTest.z, 1.f);
 
 	return &vTest;
+}
+
+_float4* CPipeLine::Get_RayDirCoords()
+{
+	POINT pt;
+	GetCursorPos(&pt);
+	ScreenToClient(m_hWnd, &pt);
+
+	_float3 fFar{ 0.f, 0.f, 0.f };
+	_float4 fTest{ (_float)pt.x , (_float)pt.y ,0.f, 1.f };
+
+	_uint i = 1;
+	D3D11_VIEWPORT ViewPort;
+	m_pContext->RSGetViewports(&i, &ViewPort);
+	
+	fFar.x = pt.x / (ViewPort.Width * 0.5f) - 1.f;
+	fFar.y = pt.y / -(ViewPort.Height * 0.5f) + 1.f;
+	
+	_float4x4 fProj = m_TransformInverseMatrices[D3DTS_PROJ];
+	
+	// 투영의 역행렬
+	_vector vRayPos = { 0.f,0.f,0.f,0.f };
+	vRayPos = XMVector3TransformCoord(XMLoadFloat3(&fFar), XMLoadFloat4x4(&fProj));
+	
+	_vector vPos = { 0.f,0.f,0.f,0.f };
+	_vector vDir = { 0.f,0.f,0.f,0.f };
+	
+	vDir = vRayPos - vPos;
+	
+	// 뷰의 역행렬
+	_float4x4 fView = m_TransformInverseMatrices[D3DTS_VIEW];
+	vRayPos = XMVector3TransformCoord(vPos, XMLoadFloat4x4(&fView));
+	
+	_vector vRayDir;
+	
+	_float4 fRayPos, fRayDir;
+	vRayDir = XMVector4Normalize(vDir);
+	
+	
+	XMStoreFloat4(&fRayPos, vRayPos);
+	XMStoreFloat4(&fRayDir, vRayDir);
+	
+	XMVectorSetW(XMLoadFloat4(&fRayDir), 1.f);
+
+	return &fRayDir;
 }
 
 void CPipeLine::Set_Transform(TRANSFORMSTATE eState, _fmatrix Matrix)
@@ -103,7 +128,7 @@ CPipeLine* Engine::CPipeLine::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
 
 void CPipeLine::Free()
 {
-	//Safe_Delete(m_hWnd);
+
     __super::Free();
 
 	Safe_Release(m_pDevice);

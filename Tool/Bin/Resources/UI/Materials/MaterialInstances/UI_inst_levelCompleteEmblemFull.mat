@@ -1,0 +1,5 @@
+Diffuse=nullSprite
+Opacity=UI_RuneRingHorse
+Other[0]=Clouds
+Other[1]=UI_mainMenu_CloudTile
+Other[2]=UI_Menu_NoiseUV1

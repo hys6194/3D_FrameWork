@@ -2,6 +2,7 @@
 #include "Bone.h"
 #include "Shader.h"
 
+#include "GameInstance.h"
 CMesh::CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CVIBuffer{ pDevice, pContext }
 {
@@ -100,8 +101,6 @@ HRESULT CMesh::Bind_BoneMatrix(CShader* pShader, const _char* pContantName, cons
 
 HRESULT CMesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {
-
-
 	m_iVertexStride = sizeof(VTXMESH);
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
 	m_BufferDesc.ByteWidth = m_iVertexStride * m_iNumVertices;
@@ -135,6 +134,8 @@ HRESULT CMesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTra
 		// 0번째정점에 선언되어 있는 Texcoord를 설정하려고 하는 것이기에 [0][i]
 		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
 		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
+
+
 	}
 
 	ZeroMemory(&m_InitialData, sizeof m_InitialData);

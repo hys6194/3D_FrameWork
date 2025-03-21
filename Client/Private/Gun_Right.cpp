@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "Player.h"
+#include "Bullet.h"
 
 CGun_Right::CGun_Right(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CPartObject{ pDevice, pContext }
@@ -26,9 +27,13 @@ HRESULT CGun_Right::Initialize(void* pArg)
     m_pTargetState = pDesc->pTargetState;
     m_pSocketMatrix = pDesc->pSocketMatrix;
     m_pHandMatrix = pDesc->pHandMatrix;
+    m_pOwner = pDesc->pOwner;
+
+    m_fCool = 0.1f;
 
     FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
+
 
     //m_pTransformCom->SetUp_Scaled(0.1f, 0.1f, 0.1f);
     //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
@@ -48,7 +53,27 @@ void CGun_Right::Priority_Update(_float fTimeDelta)
     //m_pTransformCom->Rotation(AXIS_X, XMConvertToRadians(-90.f));
     //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
     //m_pTransformCom->Rotation(XMQuaternionRotationAxis())
-    m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(20.f, -5.f, 12.5f, 1.f));
+    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(20.f, -5.f, 12.5f, 1.f));
+
+    m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(19.f, -5.f, 12.5f, 1.f));
+
+    m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
+
+    if (m_pGameInstance->Get_DIMouseState(DIM_LB) && m_fCool < m_fTotalTime)
+    {
+
+        Create_Bullet();
+
+        m_fCool += 0.2f;
+
+    }
+
+    else if (!m_pGameInstance->Get_DIMouseState(DIM_LB))
+    {
+        m_fCool = 0.1f;
+        m_fTotalTime = 0.f;
+    }
+
 }
 
 void CGun_Right::Update(_float fTimeDelta)
@@ -110,6 +135,21 @@ HRESULT CGun_Right::Ready_Components()
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+
+    return S_OK;
+}
+
+HRESULT CGun_Right::Create_Bullet()
+{
+    _matrix matHand = XMMatrixMultiply(XMLoadFloat4x4(m_pHandMatrix), XMLoadFloat4x4(m_pParentMatrix));
+    CBullet::BULLET_DESC Desc{};
+    Desc.fSpeedPerSec = 0.5f;
+
+    XMStoreFloat4(&Desc.fLook, m_pOwner->Get_Transform()->Get_State(CTransform::STATE_LOOK));
+    XMStoreFloat4x4(&Desc.f4Hand, matHand);
+
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_BULLET,
+        LEVEL_GAMEPLAY, TEXT("GameObject_Bullet"), &Desc), E_FAIL);
 
     return S_OK;
 }

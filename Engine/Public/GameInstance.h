@@ -60,6 +60,7 @@ public:
 	void							SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd);
 	//vector<float*>				Draw_Gizmo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _matrix& matWorld);
 	void							Set_EndMsg();
+	void							Render_ImGui();
 
 #pragma endregion
 
@@ -77,7 +78,8 @@ public:
 
 #pragma region PROTOTYPE_MANAGER
 	HRESULT							Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CBase* pPrototype);
-
+	HRESULT							Collect_ProtoTag(_uint iLevelIndex);
+	vector<wstring>*				Get_PrototypeTag(_uint iLevelIndex);
 	// 왜 pArg = nullptr로 디폴트 인자값으로? -> pArg가 필요할 수도 없을수도 있기 때문에
 	CBase*							Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
 #pragma endregion
@@ -86,6 +88,7 @@ public:
 	HRESULT							Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	class CLayer*					Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
 	CGameObject*					Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
+	CComponent*						Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
 #pragma endregion
 
 #pragma region RENDERER
@@ -98,13 +101,12 @@ public:
 	const _float4x4*				Get_Transform_Inverse_Float4x4(CPipeLine::TRANSFORMSTATE eState) const;
 	_matrix							Get_Transform_Inverse_Matrix(CPipeLine::TRANSFORMSTATE eState) const;
 	const _float4*					Get_CamPosition() const;
-	const _float4*					Get_MouseWindowPosition() const;
-	_vector*						Get_MouseWorldPosition(const _float4x4* TargetmatWorld);
+	_vector*						Get_MouseWindowPosition();
+	_float4*						Get_RayDirCoords();
 	void							Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix);
 	void							Set_Transform(CPipeLine::TRANSFORMSTATE eState, const _float4x4* pMatrix);
 	HRESULT							Bind_VP_Transform_SR(const _char* pConstantName, CShader* pShader, CPipeLine::TRANSFORMSTATE eState);
 #pragma endregion
-
 
 #pragma region Light_Manager
 	HRESULT							Add_Light(const LIGHT_DESC& pDesc);
@@ -115,8 +117,6 @@ public:
 	HRESULT							Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath);
 	HRESULT							Draw_Text(const _wstring& strFontTag, const _wstring& strText, const _float2& vPosition = _float2(0.f, 0.f), _fvector vColor = XMVectorSet(1.f, 1.f, 1.f, 1.f), _float fRadian = 0.f, const _float2& vOrigin = _float2(0.f, 0.f), _float fScale = 1.f);
 #pragma endregion
-
-
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };

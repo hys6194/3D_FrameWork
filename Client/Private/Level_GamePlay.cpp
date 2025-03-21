@@ -31,10 +31,6 @@ HRESULT CLevel_GamePlay::Initialize()
 void CLevel_GamePlay::Update(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, TEXT("현재 레벨 : 게임플레이 레벨"));
-
-	if (m_pGameInstance->Get_DIKeyState(DIK_0))
-
-		return;
 }
 
 HRESULT CLevel_GamePlay::Render()
@@ -50,8 +46,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_SKY,
 		LEVEL_GAMEPLAY, pLayerTag)))
 		return E_FAIL;
-
-
 
 	return S_OK;
 }

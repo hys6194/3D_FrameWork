@@ -35,6 +35,7 @@ private:
 private:
 	void					Player_ShootMove(_float fTimeDelta);
 	void					Player_LookSet(_float fTimeDelta);
+	void					Apply_ShootAnimation();
 
 public:
 	static CStrifeState_Shoot* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);

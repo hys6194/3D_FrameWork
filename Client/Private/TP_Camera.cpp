@@ -39,14 +39,17 @@ HRESULT CTP_Camera::Initialize(void* pArg)
 void CTP_Camera::Priority_Update(_float fTimeDelta)
 {
 	_vector vPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
+
+	//_vector vPlayerPos = XMVectorSet(vPos)
+	m_vCamEye = { 0.f, 15.f ,-12.5f };
 	_vector vEye = XMVectorSetW(XMLoadFloat3(&m_vCamEye), 0.f) + vPos;
 	_vector vLook = vPos - vEye;
 
 	vLook = XMVector4Normalize(vLook);
+	//m_pTransformCom->LookAt(XMVectorSetW(vLook, 1.f));
 
 	m_pTransformCom->Set_State(CTransform::STATE_POS, vEye);
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
-	//m_pTransformCom->LookAt(vLook);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVectorSetW(vLook, 0.f));
 	 
 	__super::Renew_Matrices();
 }

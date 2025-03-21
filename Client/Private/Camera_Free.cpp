@@ -34,19 +34,19 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 
 void CCamera_Free::Priority_Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_DIKeyState(DIK_W) & 0x80)
+	if (m_pGameInstance->Key_Pressing(DIK_UP))
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
 	}
-	if (GetKeyState('S') & 0x8000)
+	if (m_pGameInstance->Key_Pressing(DIK_DOWN))
 	{
 		m_pTransformCom->Go_Backward(fTimeDelta);
 	}
-	if (GetKeyState('A') & 0x8000)
+	if (m_pGameInstance->Key_Pressing(DIK_LEFT))
 	{
 		m_pTransformCom->Go_Left(fTimeDelta);
 	}
-	if (GetKeyState('D') & 0x8000)
+	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
 	{
 		m_pTransformCom->Go_Right(fTimeDelta);
 	}

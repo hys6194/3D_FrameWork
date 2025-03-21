@@ -4,6 +4,8 @@
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui/ImGuizmo.h"
 
+
+
 CImGui_Manager::CImGui_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice{ pDevice }
 	, m_pContext{ pContext }
@@ -15,6 +17,7 @@ CImGui_Manager::CImGui_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 HRESULT CImGui_Manager::Initialize(HWND hWnd)
 {
 	SetUp_ImGui(m_pDevice, m_pContext, hWnd);
+
 	return S_OK;
 }
 
@@ -44,6 +47,25 @@ void CImGui_Manager::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 
 	ImGui_ImplWin32_Init(hWnd);
 	ImGui_ImplDX11_Init(pDevice, pContext);
+
+
+
+
+}
+
+void CImGui_Manager::Update_ImGui_Windows(_float fTimeDelta)
+{
+}
+
+void CImGui_Manager::Late_Update_ImGui_Windows(_float fTimeDelta)
+{
+
+}
+
+void CImGui_Manager::Render()
+{
+	
+
 }
 
 void CImGui_Manager::SetUp_Render_ImGui()
@@ -52,16 +74,18 @@ void CImGui_Manager::SetUp_Render_ImGui()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
-
-	ImGui::Begin("Test");
-
-	ImGui::Text("Hello, ImGui!");   // 텍스트 출력
-	ImGui::Button("Click Me");      // 버튼 추가
-
-	ImGui::End();                   // 창 종료
+	
+	// Update를 돌게 하는 함수를 넣어야 함
 
 	Create_DockingSpace();
 }
+
+//void CImGui_Manager::Render()
+//{
+//	// 추후 Update에서 이벤트가 갱신되면 추가로 갱신할 수 있게 해야하는 
+//  //Late_Update 자리로 한다
+//
+//}
 
 void CImGui_Manager::EndRender_ImGui()
 {

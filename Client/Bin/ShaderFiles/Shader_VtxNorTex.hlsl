@@ -18,7 +18,6 @@ float4 g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);
 
 float4 g_vCamPosition;
 
-
 float4 g_vBrushPos = float4(40.f, 0.f, 20.f, 1.f);
 float  g_fBrushRange = 5.f;
 
@@ -69,7 +68,7 @@ struct PS_OUT
 };
 
 
-
+// 빛 반사 적용
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -87,11 +86,12 @@ PS_OUT PS_MAIN(PS_IN In)
     Out.vColor = g_vLightDiffuse * vDiffuse * saturate(fShade + (g_vLightAmbient * g_vMtrlAmbient))
         + (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
     
-    Out.vColor.a = 0.5f;
+    //Out.vColor.a = 0.5f;
     
     return Out;
 }
 
+// 빛 반사 미적용
 PS_OUT PS_MAIN1(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -149,6 +149,17 @@ PS_OUT PS_MAIN1(PS_IN In)
 //    return Out;
 //}
 
+// 툴 전용
+PS_OUT PS_MAIN3(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    vector v1 = { 0.f, 0.f, 0.f, 0.f };
+    Out.vColor = v1;
+    
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
     pass DefaultPass
@@ -183,6 +194,19 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN1();
 
     }
+
+    pass DefaultPass3
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN3();
+
+    }
+
 }
 
 

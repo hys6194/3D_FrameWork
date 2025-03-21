@@ -42,6 +42,15 @@ CGameObject* CLayer::Find_Object(const _tchar* strObjectTag)
 	return nullptr;
 }
 
+CComponent* CLayer::Find_Component(const _wstring& strComponentTag, _uint iIndex)
+{
+	auto	iter = m_GameObjects.begin();
+	for (size_t i = 0; i < iIndex; i++)
+		++iter;
+
+	return (*iter)->Get_Component(strComponentTag);
+}
+
 CLayer* CLayer::Create()
 {
 	return new CLayer;

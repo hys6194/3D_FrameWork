@@ -56,6 +56,8 @@ private:
 	HRESULT Loading_Models();
 	HRESULT Loading_Shaders();
 	HRESULT Loading_Prototype();
+	HRESULT Loading_Collider();
+	HRESULT Loading_Navigation();
 
 
 public:

@@ -27,6 +27,14 @@ void CStrifeState_Shoot::PriorityUpdate_State(_float fTimeDelta)
 		Player_LookSet(fTimeDelta);
 
 		Player_ShootMove(fTimeDelta);
+
+		Apply_ShootAnimation();
+		
+	}
+
+	else if (m_iKeyState & CPlayer::KEY_RB)
+	{
+		// 카메라 이동하면서 총 쏘는 걸로
 	}
 
 	// 안 쏜다
@@ -80,56 +88,42 @@ void CStrifeState_Shoot::Player_ShootMove(_float fTimeDelta)
     switch (m_iKeyState)
     {
 
-	case CPlayer::KEY_DOWN | CPlayer::KEY_LEFT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
-        break;
-
-    case CPlayer::KEY_UP | CPlayer::KEY_LEFT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
-        break;
-
-    case CPlayer::KEY_UP | CPlayer::KEY_RIGHT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
-        break;
-
-    case CPlayer::KEY_RIGHT | CPlayer::KEY_DOWN | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
-        break;
-
     case CPlayer::KEY_DOWN | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Backward(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case CPlayer::KEY_LEFT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Left(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case CPlayer::KEY_RIGHT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Right(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case CPlayer::KEY_UP | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta);
+        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
     }
 }
 
 void CStrifeState_Shoot::Player_LookSet(_float fTimeDelta)
 {
-	_vector vPos = m_pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
-	_vector vMouse = *m_pGameInstance->Get_MouseWorldPosition(
-		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Get_WorldMatrix_Ptr());
+	_vector vOffset = XMVectorSet(0.f, 2.f, 0.f, 0.f);
+
+
+	_vector vPos = m_pOwner->Get_Transform()->Get_State(CTransform::STATE_POS) + vOffset;
+	_vector vWin = *m_pGameInstance->Get_MouseWindowPosition();
 
 	_vector vzero{ 0.f,1.f,0.f,0.f };
-	vMouse = XMVector4Normalize(vMouse);
+	_vector vMouse = XMVector4Normalize(vWin);
 
-	_vector vResult = XMVector4Dot(vMouse, vzero);
+	_vector vResult = XMVector4Dot(vWin, vzero);
 
 	_float fDot = XMVectorGetW(vResult);
 
-	_float fX = XMVectorGetX(vMouse);
+	_float fX = XMVectorGetX(vWin);
 
-	_float lengthA = XMVectorGetX(XMVector3Length(vMouse));
+	_float lengthA = XMVectorGetX(XMVector3Length(vWin));
 	_float lengthB = XMVectorGetX(XMVector3Length(vzero));
 
 	_float cosTheta = fDot / (lengthA * lengthB);
@@ -139,6 +133,15 @@ void CStrifeState_Shoot::Player_LookSet(_float fTimeDelta)
 	else
 		m_pOwner->Get_Transform()->Rotation(AXIS_Y, -acosf(cosTheta));
 
+}
+
+void CStrifeState_Shoot::Apply_ShootAnimation()
+{
+		if (m_iKeyState & CPlayer::KEY_DOWN || m_iKeyState & CPlayer::KEY_UP || m_iKeyState & CPlayer::KEY_LEFT || m_iKeyState & CPlayer::KEY_RIGHT)
+			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_WALK, true, false);
+
+		else if (!(m_iKeyState & CPlayer::KEY_DOWN) && !(m_iKeyState & CPlayer::KEY_UP) && !(m_iKeyState & CPlayer::KEY_LEFT) && !(m_iKeyState & CPlayer::KEY_RIGHT))
+			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_IDLE, true, false);
 }
 
 CStrifeState_Shoot* CStrifeState_Shoot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)

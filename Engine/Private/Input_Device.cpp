@@ -43,12 +43,12 @@ _bool CInput_Device::Mouse_Up(MOUSEKEYSTATE eMouse)
 	return !(m_tCurMouseState.rgbButtons[eMouse] & 0x80) && (m_tPrevMouseState.rgbButtons[eMouse] & 0x80);
 }
 
-HRESULT Engine::CInput_Device::Initialize(HINSTANCE hInst, HWND hWnd)
+HRESULT Engine::CInput_Device::Initialize(HINSTANCE g_hInstance, HWND hWnd)
 {
 
 
 	// DInput 컴객체를 생성하는 함수
-	FAILED_CHECK_RETURN(DirectInput8Create(hInst,
+	FAILED_CHECK_RETURN(DirectInput8Create(g_hInstance,
 											DIRECTINPUT_VERSION,
 											IID_IDirectInput8,
 											(void**)&m_pInputSDK,

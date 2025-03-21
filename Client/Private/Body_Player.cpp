@@ -1,8 +1,6 @@
 #include "Body_Player.h"
 #include "GameInstance.h"
 
-
-
 #include "Player.h"
 
 CBody_Player::CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -20,7 +18,6 @@ const _float4x4* CBody_Player::Get_f4SocketMatrix(const _wstring& strSocketName)
     auto iter = m_mapSocketmat.find(strSocketName);
     if (iter == m_mapSocketmat.end())
         return nullptr;
-
 
     return iter->second;
 }
@@ -50,7 +47,6 @@ void CBody_Player::Priority_Update(_float fTimeDelta)
 
 void CBody_Player::Update(_float fTimeDelta)
 {
-
     //파츠들의 매트릭스를 부모 매트릭스에 곱하여 고정시킨다
     XMStoreFloat4x4(&m_CombinedWorldMatrix,
         XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentMatrix));
@@ -111,7 +107,6 @@ HRESULT CBody_Player::Ready_SocketMatrices()
     m_mapSocketmat.emplace(SOCKET_RIGHT_HAND,       m_pModelCom->Get_BoneMatrix("Bone_Strife_Hand_R"));
     m_mapSocketmat.emplace(SOCKET_HOLSTER_LEFT,     m_pModelCom->Get_BoneMatrix("Bone_Strife_Holster_L"));
     m_mapSocketmat.emplace(SOCKET_HOLSTER_RIGHT,    m_pModelCom->Get_BoneMatrix("Bone_Strife_Holster_R"));
-
 
     //    m_mapSocketmat.emplace(SOCKET_LEFT_HAND,        m_pModelCom->Get_BoneMatrix("Bone_Strife_Fing_Thumb3_L_end_end_end_end"));
     //    m_mapSocketmat.emplace(SOCKET_RIGHT_HAND,       m_pModelCom->Get_BoneMatrix("Bone_Strife_Fing_Thumb3_R_end_end_end_end"));

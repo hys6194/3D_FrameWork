@@ -1,0 +1,4 @@
+Diffuse=nullSprite
+Opacity=potionUse_flashGlow1
+Other[0]=UI_genericWhiteSquare
+Other[1]=UI_particle_circleSoftEdge1

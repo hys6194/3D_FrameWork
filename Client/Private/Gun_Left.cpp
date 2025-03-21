@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "Player.h"
+#include "Bullet.h"
 
 CGun_Left::CGun_Left(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CPartObject{ pDevice, pContext }
@@ -26,29 +27,35 @@ HRESULT CGun_Left::Initialize(void* pArg)
     m_pTargetState = pDesc->pTargetState;
     m_pSocketMatrix = pDesc->pSocketMatrix;
     m_pHandMatrix = pDesc->pHandMatrix;
+    m_pOwner = pDesc->pOwner;
+
+    m_fCool = 0.f;
 
     FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
-
-    //m_pTransformCom->SetUp_Scaled(0.1f, 0.1f, 0.1f);
-    //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(0.7f, 0.f, 0.f, 1.f));
-
-    // 포켓안에 있을 때
-    //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
-
-
 
     return S_OK;
 }
 
 void CGun_Left::Priority_Update(_float fTimeDelta)
 {
-    //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-    //m_pTransformCom->Rotation(AXIS_X, XMConvertToRadians(90.f));
-    //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
     m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(19.f, -5.f, -12.5f, 1.f));
 
+    m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
+
+    if (m_pGameInstance->Get_DIMouseState(DIM_LB) && m_fCool < m_fTotalTime)
+    {
+        if(E_FAIL == Create_Bullet())
+            return;
+
+        m_fCool += 0.2f;
+    }
+
+    else if (!m_pGameInstance->Get_DIMouseState(DIM_LB))
+    {
+        m_fCool = 0.f;
+        m_fTotalTime = 0.f;
+    }
 }
 
 void CGun_Left::Update(_float fTimeDelta)
@@ -110,6 +117,36 @@ HRESULT CGun_Left::Ready_Components()
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+
+    return S_OK;
+}
+
+HRESULT CGun_Left::Create_Bullet()
+{
+    //_matrix matLocal = XMLoadFloat4x4(m_pHandMatrix);
+    //
+    //_float4 fTest =
+    //{
+    //        m_pHandMatrix->m[3][0],
+    //        m_pHandMatrix->m[3][1],
+    //        m_pHandMatrix->m[3][2] + 1.f,
+    //        m_pHandMatrix->m[3][3],
+    //};
+    //
+    //_float4x4 f5test;
+    //XMStoreFloat4x4(&f5test,  XMLoadFloat4x4(m_pHandMatrix));
+    //
+    //XMStoreFloat4(f5test.m[3], fTest);
+
+    _matrix matHand = XMMatrixMultiply(XMLoadFloat4x4(m_pHandMatrix), XMLoadFloat4x4(m_pParentMatrix));
+    CBullet::BULLET_DESC Desc{};
+    Desc.fSpeedPerSec = 0.5f;
+
+    XMStoreFloat4(&Desc.fLook, m_pOwner->Get_Transform()->Get_State(CTransform::STATE_LOOK));
+    XMStoreFloat4x4(&Desc.f4Hand, matHand);
+
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_BULLET,
+        LEVEL_GAMEPLAY, TEXT("GameObject_Bullet"), &Desc), E_FAIL);
 
     return S_OK;
 }

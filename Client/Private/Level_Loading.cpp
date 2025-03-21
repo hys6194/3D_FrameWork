@@ -62,6 +62,16 @@ HRESULT CLevel_Loading::Render()
 	return S_OK;
 }
 
+HRESULT CLevel_Loading::Ready_Loading_Textures()
+{
+	//CUIObject::
+
+
+
+
+	return S_OK;
+}
+
 CLevel_Loading* CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eLevelID)
 {
 	CLevel_Loading* pInstance = new CLevel_Loading(pDevice, pContext);

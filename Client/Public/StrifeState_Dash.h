@@ -37,6 +37,7 @@ private:
 private:					  
 	void					  Check_KeyInput();
 	void					  Set_LastDashAnimation();
+	void					  Set_Player_Direction();
 
 
 

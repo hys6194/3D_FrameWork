@@ -13,7 +13,6 @@
 #include "Font_Manager.h"
 #include "ImGui_Manager.h"
 
-
 IMPLEMENT_SINGLETON(CGameInstance)
 
 CGameInstance::CGameInstance()
@@ -76,6 +75,11 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pPipeLine->Update();
 	m_pObject_Manager->Update(fTimeDelta);
+
+	// 여기에서 ImGui Late_Update?
+
+	m_pImGui_Manager->Update_ImGui_Windows(fTimeDelta);
+
 	m_pObject_Manager->Late_Update(fTimeDelta);
 
 	m_pLevel_Manager->Update(fTimeDelta);
@@ -189,6 +193,10 @@ _bool CGameInstance::Mouse_Up(MOUSEKEYSTATE eMouse)
 {
 	return m_pInput_Device->Mouse_Up(eMouse);
 }
+#pragma endregion
+
+#pragma region IMGUI_MANAGER
+
 void CGameInstance::SetUp_Render_ImGui()
 {
 	m_pImGui_Manager->SetUp_Render_ImGui();
@@ -204,6 +212,11 @@ void CGameInstance::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pCon
 void CGameInstance::Set_EndMsg()
 {
 	m_pImGui_Manager->Set_EndMsg();
+}
+
+void CGameInstance::Render_ImGui()
+{
+	m_pImGui_Manager->Render();
 }
 
 #pragma endregion
@@ -241,6 +254,16 @@ HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const wstring& strProtot
 	return m_pPrototype_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);
 }
 
+HRESULT CGameInstance::Collect_ProtoTag(_uint iLevelIndex)
+{
+	return m_pPrototype_Manager->Collect_PrototypeTag(iLevelIndex);
+}
+
+vector<wstring>* CGameInstance::Get_PrototypeTag(_uint iLevelIndex)
+{
+	return m_pPrototype_Manager->Get_PrototypeTag(iLevelIndex);
+}
+
 CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototypeType, _uint iLevelIndex, const _wstring& strPrototypeTag, void* pArg)
 {
 	return m_pPrototype_Manager->Clone_Prototype(ePrototypeType, iLevelIndex, strPrototypeTag, pArg);
@@ -263,6 +286,11 @@ CLayer* CGameInstance::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag
 CGameObject* CGameInstance::Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag)
 {
 	return m_pObject_Manager->Get_GameObject(iLevelIndex, strLayerTag, strObjectTag);
+}
+
+CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex)
+{
+	return m_pObject_Manager->Get_Component(iLevelIndex, strLayerTag, strComponentTag, iIndex);
 }
 
 #pragma endregion
@@ -302,14 +330,14 @@ const _float4* CGameInstance::Get_CamPosition() const
 	return m_pPipeLine->Get_CamPosition();
 }
 
-const _float4* CGameInstance::Get_MouseWindowPosition() const
+_vector* CGameInstance::Get_MouseWindowPosition()
 {
 	return m_pPipeLine->Get_MouseWindowPosition();
 }
 
- _vector* CGameInstance::Get_MouseWorldPosition(const _float4x4* TargetmatWorld) 
+_float4* CGameInstance::Get_RayDirCoords()
 {
-	return m_pPipeLine->Get_MouseWorldPosition(TargetmatWorld);
+	return m_pPipeLine->Get_RayDirCoords();
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)
