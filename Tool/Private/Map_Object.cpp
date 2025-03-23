@@ -17,8 +17,7 @@ HRESULT CMap_Object::Initialize(void* pArg)
 {
     GAMEOBJECT_DESC* Desc = static_cast<GAMEOBJECT_DESC*>(pArg);
     
-    
-    lstrcpy(Desc->szGameObjectTag, TEXT("Layer_Desert_Rock" + 1));
+    lstrcpy(Desc->szGameObjectTag, TEXT("Layer_Desert_Rock"));
 
     if (FAILED(__super::Initialize(Desc)))
         return E_FAIL;
@@ -31,12 +30,12 @@ HRESULT CMap_Object::Initialize(void* pArg)
     // 여기에서 기즈모 기본 세팅을 갖춰주면 될듯 함
     // 카메라 행렬 및 월드행렬 세팅
     // Tool 세팅이라서 나중에 Client에 복붙할 때 주의해야 함
-    _uint i = 1;
-    m_pContext->RSGetViewports(&i, &m_pViewPort);
-
-    XMStoreFloat4x4(&m_matProj, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ)));
-    XMStoreFloat4x4(&m_matView, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW)));
-    XMStoreFloat4x4(&m_matWorld, XMLoadFloat4x4(Get_Transform()->Get_WorldMatrix_Ptr()));
+    //_uint i = 1;
+    //m_pContext->RSGetViewports(&i, &m_pViewPort);
+    //
+    //XMStoreFloat4x4(&m_matProj, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ)));
+    //XMStoreFloat4x4(&m_matView, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW)));
+    //XMStoreFloat4x4(&m_matWorld, XMLoadFloat4x4(Get_Transform()->Get_WorldMatrix_Ptr()));
 
     return S_OK;
 }

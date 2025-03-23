@@ -98,6 +98,8 @@ HRESULT CObject_Manager::Delete_LastLayer(_uint iLevelIndex, const _wstring& str
 {
     auto iter = m_pLayers[iLevelIndex].find(strLayerTag);
 
+    if (iter == m_pLayers[iLevelIndex].end())
+        return E_FAIL;
     //if (iter == m_pLayers[iLevelIndex].end())
     //    return E_FAIL;
     //m_pLayers[iLevelIndex].erase(iter->first);

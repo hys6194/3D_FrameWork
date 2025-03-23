@@ -50,9 +50,9 @@ private:
 	CModel*								m_pModelCom		= { nullptr };
 	CCollider*							m_pColliderCom	= { nullptr };
 
-	_float4x4							m_matProj		= {};
-	_float4x4							m_matView		= {};
-	_float4x4							m_matWorld		= {};
+	//_float4x4							m_matProj		= {};
+	//_float4x4							m_matView		= {};
+	//_float4x4							m_matWorld		= {};
 
 	_uint								m_iID = {};
 
