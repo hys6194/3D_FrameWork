@@ -49,8 +49,7 @@ void CImGui_Manager::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 	ImGui_ImplDX11_Init(pDevice, pContext);
 
 
-
-
+	
 }
 
 void CImGui_Manager::Update_ImGui_Windows(_float fTimeDelta)

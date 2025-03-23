@@ -16,7 +16,6 @@ HRESULT CMap_Object::Initialize(void* pArg)
 {
     MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(pArg);
 
-
     if (FAILED(__super::Initialize(&pDesc)))
         return E_FAIL;
 

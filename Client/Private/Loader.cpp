@@ -270,6 +270,10 @@ HRESULT CLoader::Loading_Models()
 			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/AnimModel/Strife/animtest.fbx", PreTransformMatrix))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
+			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/AnimModel/Ghoul/Ghoul.fbx", PreTransformMatrix))))
+			return E_FAIL;
+
 
 		PreTransformMatrix = /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationZ(XMConvertToRadians(180.f));
 		PreTransformMatrix *= /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationY(XMConvertToRadians(180.f));

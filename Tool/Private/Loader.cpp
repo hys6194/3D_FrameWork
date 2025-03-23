@@ -144,9 +144,36 @@ HRESULT Loader::Loading_Models()
 		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Rock/DestRock2.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
+	PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_FLOOR1,
+		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Floor/TileFloor1.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR1,
+		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Stair/Stair1.fbx", PreTransformMatrix))))
+		return E_FAIL;
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR2,
+		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Stair/Stair2.fbx", PreTransformMatrix))))
+		return E_FAIL;
+
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
 	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/AnimModel/Strife/Gun2.fbx", PreTransformMatrix))))
 	//	return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_COLL_AABB,
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Collider_OBB */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_COLL_OBB,
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_OBB))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Collider_Sphere */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_COLL_SPHERE,
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -196,6 +223,18 @@ HRESULT Loader::Loading_Prototype()
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_ROCK2,
+		CMap_Object::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_FLOOR1,
+		CMap_Object::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_FLOOR2,
+		CMap_Object::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_FLOOR3,
 		CMap_Object::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 

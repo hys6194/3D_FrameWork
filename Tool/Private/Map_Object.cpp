@@ -1,4 +1,5 @@
 #include "Map_Object.h"
+#include <iostream>
 
 #include "GameInstance.h"
 
@@ -14,25 +15,42 @@ HRESULT CMap_Object::Initialize_Prototype()
 
 HRESULT CMap_Object::Initialize(void* pArg)
 {
-    MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(pArg);
+    GAMEOBJECT_DESC* Desc = static_cast<GAMEOBJECT_DESC*>(pArg);
+    
+    
+    lstrcpy(Desc->szGameObjectTag, TEXT("Layer_Desert_Rock" + 1));
 
-
-    if (FAILED(__super::Initialize(&pDesc)))
+    if (FAILED(__super::Initialize(Desc)))
         return E_FAIL;
 
+    MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(pArg);
+    
     if (FAILED(Ready_Components(pDesc->strModelTag)))
         return E_FAIL;
 
+    // 여기에서 기즈모 기본 세팅을 갖춰주면 될듯 함
+    // 카메라 행렬 및 월드행렬 세팅
+    // Tool 세팅이라서 나중에 Client에 복붙할 때 주의해야 함
+    _uint i = 1;
+    m_pContext->RSGetViewports(&i, &m_pViewPort);
+
+    XMStoreFloat4x4(&m_matProj, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ)));
+    XMStoreFloat4x4(&m_matView, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW)));
+    XMStoreFloat4x4(&m_matWorld, XMLoadFloat4x4(Get_Transform()->Get_WorldMatrix_Ptr()));
 
     return S_OK;
 }
 
 void CMap_Object::Priority_Update(_float fTimeDelta)
 {
+  
+
+
 }
 
 void CMap_Object::Update(_float fTimeDelta)
 {
+    m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 }
 
 void CMap_Object::Late_Update(_float fTimeDelta)
@@ -46,19 +64,22 @@ HRESULT CMap_Object::Render()
         return E_FAIL;
 
     _uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
-
+    
     for (size_t i = 0; i < iNumMeshes; i++)
     {
         if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture",
             aiTextureType_DIFFUSE, i, 0)))
             return E_FAIL;
-
+    
         if (FAILED(m_pShaderCom->Begin(0)))
             return E_FAIL;
-
+    
         if (FAILED(m_pModelCom->Render(i)))
             return E_FAIL;
     }
+
+    m_pColliderCom->Render();
+
     return S_OK;
 }
 
@@ -69,6 +90,16 @@ HRESULT CMap_Object::Ready_Components(const wstring _strModelTag)
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, _strModelTag,
         reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+
+
+    CBounding_OBB::BOUNDING_OBB_DESC OBBDesc{};
+
+    OBBDesc.vRotation = _float3(0.f, 0.f, 0.f);
+    OBBDesc.vExtents = _float3(5.f, 1.f, 5.f);
+    OBBDesc.vCenter = _float3(0.f, 0.f, 0.f);
+
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_COM_COLL_OBB,
+        reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_OBB, &OBBDesc), E_FAIL);
 
     return S_OK;
 }
@@ -122,6 +153,7 @@ void CMap_Object::Free()
 {
     __super::Free();
 
+    Safe_Release(m_pColliderCom);
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pModelCom);
 }

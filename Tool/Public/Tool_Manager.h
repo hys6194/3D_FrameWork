@@ -7,11 +7,11 @@ BEGIN(Engine)
 class CGameInstance;
 END
 
-
 BEGIN(Tool)
 
 class Tool_Manager :public CBase
 {
+
 private:
 	Tool_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameInstance* pGameInstance);
 	virtual ~Tool_Manager() = default;
@@ -32,7 +32,6 @@ private:
 
 	class CImGui_UI*			m_pUI = { nullptr };
 	class CImGui_Map*			m_pMap = { nullptr };
-
 
 public:
 	static Tool_Manager*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameInstance* pGameInstance);

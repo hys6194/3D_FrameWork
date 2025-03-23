@@ -278,6 +278,11 @@ HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
 }
 
+HRESULT CGameInstance::Delete_LastObject(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pObject_Manager->Delete_LastLayer(iLevelIndex, strLayerTag);
+}
+
 CLayer* CGameInstance::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 {
 	return m_pObject_Manager->Find_Layer(iLevelIndex, strLayerTag);

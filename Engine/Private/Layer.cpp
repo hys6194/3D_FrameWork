@@ -42,6 +42,23 @@ CGameObject* CLayer::Find_Object(const _tchar* strObjectTag)
 	return nullptr;
 }
 
+HRESULT CLayer::Delete_LastObject()
+{
+	// 이렇게 지우면 레퍼런스 관리가 안됨
+
+	// 아무튼 제일 마지막을 찾아서 Safe_Release()를 호출하게 구조를 바꿔야 함
+	//m_GameObjects.end();
+
+	CGameObject* pGameObject = *m_GameObjects.rbegin();
+
+	if(nullptr != pGameObject)
+		Safe_Release(pGameObject);
+
+	m_GameObjects.pop_back();
+
+	return S_OK;
+}
+
 CComponent* CLayer::Find_Component(const _wstring& strComponentTag, _uint iIndex)
 {
 	auto	iter = m_GameObjects.begin();

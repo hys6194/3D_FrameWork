@@ -22,7 +22,6 @@ HRESULT Tool_Manager::Initialize()
 	m_pMap = CImGui_Map::Create(m_pDevice, m_pContext);
 	NULL_CHECK_RETURN(m_pMap, E_FAIL);
 
-
 	return S_OK;
 }
 
@@ -49,7 +48,7 @@ void Tool_Manager::Picking_Objects()
 	{
 		_float4 fRayDir;
 		fRayDir = *m_pGameInstance->Get_RayDirCoords();
-		fRayDir = *m_pGameInstance->Get_RayDirCoords();
+
 		
 		//float Teset;
 		/*bool test = */

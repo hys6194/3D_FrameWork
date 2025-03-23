@@ -9,6 +9,10 @@
 #define AXIS_Z									XMVectorSet(0.f, 0.f, 1.f, 0.f)
 #define AXIS_W									XMVectorSet(0.f, 0.f, 0.f, 1.f)
 
+//TCHAR debugMessage[256];
+//_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), vDelta.x, vDelta.y, vDelta.z, vDelta.w);
+//OutputDebugString(debugMessage);
+
 
 
 #define		VK_MAX		0xff
@@ -40,6 +44,7 @@ static const std::wstring PRO_COM_COLL_SPHERE	= TEXT("Prototype_Component_Collid
 /* Model */
 static const std::wstring PRO_MODEL_STRIFE		= TEXT("Prototype_Component_Model_Strife");
 static const std::wstring PRO_MODEL_FIONA		= TEXT("Prototype_Component_Model_Fiona");
+static const std::wstring PRO_MODEL_GHOUL		= TEXT("Prototype_Component_Model_Ghoul");
 static const std::wstring PRO_MODEL_FORK		= TEXT("Prototype_Component_Model_ForkLift");
 static const std::wstring PRO_MODEL_LGUN		= TEXT("Prototype_Component_Model_Gun_Left");
 static const std::wstring PRO_MODEL_RGUN		= TEXT("Prototype_Component_Model_Gun_Right");

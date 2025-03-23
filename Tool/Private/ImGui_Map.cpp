@@ -57,32 +57,54 @@ void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 
 	}
 
+	Button_AddObjects();
+
+	Button_DeleleObjects();
+
+	Button_NaviCreate();
+		
+
+}
+
+void CImGui_Map::Button_AddObjects()
+{
 	SameLine();
 
-	if (Button("+"))
+	if (Button("+") && m_strModelName != L"")
 	{
 		CMap_Object::MAPOBJ_DESC Desc = {};
 
 		Desc.strModelTag = m_strModelName;
-
-		// 오브젝트의 이름은 진짜 어떻게 해야함? 나도 모름
-		lstrcpy(Desc.szGameObjectTag, TEXT("Layer_Desert_Rock"));
+		Desc.iObjectIndex = m_iObjCnt;
 
 		m_pGameInstance->Add_GameObject(LEVEL_TOOL, m_strObjectName, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
-	}
 
+		m_iObjCnt++;
+	}
+}
+
+void CImGui_Map::Button_DeleleObjects()
+{
 	SameLine();
 
-	if (Button("-"))
+	if (Button("-") && m_iObjCnt > 0)
 	{
-		//m_pGameInstance->Find_Layer
+		HRESULT hr = m_pGameInstance->Delete_LastObject(LEVEL_TOOL, TEXT("Layer_Objcet"));
+
+		if(S_OK == hr)
+			m_iObjCnt--;
 	}
+}
 
-	SameLine();
+void CImGui_Map::Button_NaviCreate()
+{
+	SameLine(255.f, 0.f);
 
-	if (Button("TTTT"))
+	if (Checkbox("Navi", &m_bNavi))
 	{
 		//m_pGameInstance->Find_Layer
+
+		int a = 1;
 	}
 }
 
