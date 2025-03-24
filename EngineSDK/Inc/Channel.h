@@ -12,7 +12,11 @@ private:
 
 public:
 	HRESULT Initialize(const aiNodeAnim* pAIChannel, const vector<class CBone*>& pBone);
+	HRESULT Initialize(const vector<class CBone*>& _Bones, ifstream& _InStream);
+
 	void Update_TransformationMatrix(const vector<class CBone*>& pBone, _float fCurrentTrackPosition, _uint* pKeyFrameIndex);
+
+	_bool Save_Channel(ofstream& _OpenStream);
 
 
 public:
@@ -33,6 +37,7 @@ private:
 	
 public:
 	static CChannel* Create(const aiNodeAnim* pAIChannel, const vector<class CBone*>& pBone);
+	static CChannel* Create(const vector<class CBone*>& _Bones, ifstream& _InStream);
 	virtual void Free() override;
 
 };

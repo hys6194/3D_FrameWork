@@ -21,6 +21,17 @@ public:
 	virtual HRESULT				Late_Update(_float fTiemDelta)		= 0;
 
 public:
+	wstring Get_ObjectTag()
+	{
+		return m_strObjectName;
+	}
+
+	wstring Get_ModelTag()
+	{
+		return m_strModelName;
+	}
+
+protected:
 	ImVec2						Set_Button_Offset(const char* _cButtonName, _float fX, _float fY);
 	void						Get_PrototypeList(const wstring _strDest, const wstring _strSour);
 

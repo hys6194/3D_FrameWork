@@ -109,6 +109,12 @@ namespace Engine
 		XMFLOAT4		vBlendWeight;		// 뼈의 가중치, 0 ~ 1 사이의 값으로 사용
 
 
+		XMUINT4			vBlendIndex0;		// 뼈의 인덱스 개수
+		XMFLOAT4		vBlendWeight0;
+
+		XMUINT4			vBlendIndex1;		// 뼈의 인덱스 개수
+		XMFLOAT4		vBlendWeight1;
+
 		const static unsigned int					iNumElements = 6;
 		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
 		{

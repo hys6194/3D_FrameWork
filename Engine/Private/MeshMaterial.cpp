@@ -90,6 +90,142 @@ CMeshMaterial* CMeshMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
 	return pInstance;
 }
 
+HRESULT CMeshMaterial::Initialize(const aiMaterial* _pAIMaterial, const _char* _pModelFilePath, ofstream& _OutStream)
+{
+	vector<_string> Materials[AI_TEXTURE_TYPE_MAX];
+
+
+	for (size_t i = 1; i < AI_TEXTURE_TYPE_MAX; i++)
+	{
+		_uint iNumSRVs = _pAIMaterial->GetTextureCount(aiTextureType(i));
+
+
+		for (size_t j = 0; j < iNumSRVs; j++)
+		{
+			ID3D11ShaderResourceView* pSRV = { nullptr };
+
+			aiString strPath = { };
+
+			if (FAILED(_pAIMaterial->GetTexture(aiTextureType(i), j, &strPath)))
+				return E_FAIL;
+
+			_char szDrive[MAX_PATH] = { };
+			_char szDir[MAX_PATH] = { };
+			_char szFileName[MAX_PATH] = { };
+			_char szExt[MAX_PATH] = { };
+
+			_splitpath_s(_pModelFilePath, szDrive, MAX_PATH, szDir, MAX_PATH, nullptr, 0, nullptr, 0);
+			_splitpath_s(strPath.data, nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
+
+			_char szFullPath[MAX_PATH] = { };
+			strcpy_s(szFullPath, szDrive);
+			strcat_s(szFullPath, szDir);
+			strcat_s(szFullPath, szFileName);
+			strcat_s(szFullPath, szExt);
+
+			_tchar szTextureFilePath[MAX_PATH] = { };
+			MultiByteToWideChar(CP_ACP, 0, szFullPath, strlen(szFullPath), szTextureFilePath, MAX_PATH);
+
+			HRESULT hr = { };
+
+			if (strcmp(szExt, ".dds") == 0)
+				hr = CreateDDSTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+			else
+				hr = CreateWICTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+
+			if (FAILED(hr))
+				return E_FAIL;
+
+			Materials[i].push_back(szFullPath);
+
+			m_vecMaterial[i].push_back(pSRV);
+		}
+	}
+
+	for (size_t i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
+	{
+		_uint iSize = Materials[i].size();
+		_OutStream.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+		for (size_t j = 0; j < iSize; j++)
+		{
+			_uint iLength = Materials[i][j].size();
+			_char szTexturePath[MAX_PATH] = { };
+			strcpy_s(szTexturePath, Materials[i][j].c_str());
+			auto Temp = Materials[i];
+			_OutStream.write(reinterpret_cast<const char*>(&iLength), sizeof(_uint));
+			_OutStream.write(reinterpret_cast<const char*>(szTexturePath), sizeof(_char) * iLength);
+		}
+	}
+
+	return S_OK;
+}
+
+HRESULT CMeshMaterial::Initialize(ifstream& _InStream)
+{
+	for (size_t i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
+	{
+		_uint iReadByte = { };
+		_char szMaterialAttributePath[MAX_PATH] = { };
+		_InStream.read(reinterpret_cast<char*>(&iReadByte), sizeof(_uint));
+
+
+		for (size_t j = 0; j < iReadByte; j++)
+		{
+			ID3D11ShaderResourceView* pSRV = { nullptr };
+
+			_uint iLength = { };
+			_InStream.read(reinterpret_cast<char*>(&iLength), sizeof(_uint));
+			_InStream.read(reinterpret_cast<char*>(szMaterialAttributePath), sizeof(_char) * iLength);
+
+			_char szExt[MAX_PATH] = { };
+			_splitpath_s(szMaterialAttributePath, nullptr, 0, nullptr, 0, nullptr, 0, szExt, MAX_PATH);
+
+			_tchar szTextureFilePath[MAX_PATH] = { };
+			MultiByteToWideChar(CP_ACP, 0, szMaterialAttributePath, MAX_PATH, szTextureFilePath, MAX_PATH);
+
+			HRESULT hr = { };
+
+			if (strcmp(szExt, ".dds") == 0)
+				hr = CreateDDSTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+			else
+				hr = CreateWICTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+
+			if (FAILED(hr))
+				return E_FAIL;
+
+			m_vecMaterial[i].push_back(pSRV);
+		}
+	}
+
+	return S_OK;
+}
+
+CMeshMaterial* CMeshMaterial::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const aiMaterial* _pAIMaterial, const _char* _pModelFilePath, ofstream& _OutStream)
+{
+	CMeshMaterial* pInstance = new CMeshMaterial(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize(_pAIMaterial, _pModelFilePath, _OutStream)))
+	{
+		MSG_BOX("Failed To Created : CMeshMaterial");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CMeshMaterial* CMeshMaterial::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ifstream& _InStream)
+{
+	CMeshMaterial* pInstance = new CMeshMaterial(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize(_InStream)))
+	{
+		MSG_BOX("Failed To Created : CMeshMaterial");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
 void CMeshMaterial::Free()
 {
 	__super::Free();
@@ -107,3 +243,5 @@ void CMeshMaterial::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
 }
+
+

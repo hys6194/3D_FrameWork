@@ -9,11 +9,7 @@
 #define AXIS_Z									XMVectorSet(0.f, 0.f, 1.f, 0.f)
 #define AXIS_W									XMVectorSet(0.f, 0.f, 0.f, 1.f)
 
-
-
 #define	VK_MAX									0xff
-
-
 
 /* Texture */
 static const std::wstring PRO_TEX_SKY			= TEXT("Prototype_Component_Texture_Sky");
@@ -33,9 +29,9 @@ static const std::wstring PRO_COM_VI_CUBE		= TEXT("Prototype_Component_VIBuffer_
 static const std::wstring PRO_COM_VI_TERRAIN	= TEXT("Prototype_Component_VIBuffer_Terrain");
 
 /* Collider */
-static const std::wstring PRO_COM_COLL_OBB = TEXT("Prototype_Component_Collider_OBB");
-static const std::wstring PRO_COM_COLL_AABB = TEXT("Prototype_Component_Collider_AABB");
-static const std::wstring PRO_COM_COLL_SPHERE = TEXT("Prototype_Component_Collider_Sphere");
+static const std::wstring PRO_COM_COLL_OBB		= TEXT("Prototype_Component_Collider_OBB");
+static const std::wstring PRO_COM_COLL_AABB		= TEXT("Prototype_Component_Collider_AABB");
+static const std::wstring PRO_COM_COLL_SPHERE	= TEXT("Prototype_Component_Collider_Sphere");
 
 /* Model */
 static const std::wstring PRO_MODEL_STRIFE		= TEXT("Prototype_Component_Model_Test");
@@ -51,14 +47,12 @@ static const std::wstring PRO_MODEL_RGUN		= TEXT("Prototype_Component_Model_Gun 
 static const std::wstring PRO_MODEL_ROCK1		= TEXT("Prototype_Component_Model_Desert Rock1");
 static const std::wstring PRO_MODEL_ROCK2		= TEXT("Prototype_Component_Model_Desert Rock2");
 
-
 /* Shader */
 static const std::wstring PRO_SHADER_CUBE		= TEXT("Prototype_Component_Shader_VtxCube");
 static const std::wstring PRO_SHADER_MESH		= TEXT("Prototype_Component_Shader_VtxMesh");
 static const std::wstring PRO_SHADER_NOR		= TEXT("Prototype_Component_Shader_VtxNorTex");
 static const std::wstring PRO_SHADER_POS		= TEXT("Prototype_Component_Shader_VtxPosTex");
 static const std::wstring PRO_SHADER_ANIM		= TEXT("Prototype_Component_Shader_VtxAnimMesh");
-
 
 /* GameObject */
 static const std::wstring PRO_OBJ_SKY			= TEXT("Prototype_GameObject_Sky");
@@ -83,7 +77,6 @@ static const std::wstring SOCKET_LEFT_HAND		= TEXT("Socket_Strife_Hand L");
 static const std::wstring SOCKET_RIGHT_HAND		= TEXT("Socket_Strife_Hand R");
 static const std::wstring SOCKET_HOLSTER_LEFT	= TEXT("Socket_Strife_Holster L");
 static const std::wstring SOCKET_HOLSTER_RIGHT	= TEXT("Socket_Strife_Holster R");
-
 
 /* Layers */
 static const std::wstring LAYER_DESERT_ROCK_1	= TEXT("Layer_Desert_Rock1");

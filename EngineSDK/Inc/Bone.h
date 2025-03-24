@@ -59,6 +59,10 @@ public:
 	_bool Compare_Name(const _char* pName) {
 		return !strcmp(m_szName, pName);
 	}
+
+	HRESULT Initialize(ifstream& _InStream);
+	_bool Save_Bone(ofstream& _OpenStream);
+	static CBone* Create(ifstream& _InStream);
 	
 private:
 	// ª¿¿« ¿Ã∏ß

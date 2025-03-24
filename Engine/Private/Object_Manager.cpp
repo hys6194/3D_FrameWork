@@ -129,6 +129,16 @@ CComponent* CObject_Manager::Get_Component(_uint iLevelIndex, const _wstring& st
     return pComponent;
 }
 
+list<Engine::CGameObject*>* CObject_Manager::Get_GameObjectList(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+    auto iter = m_pLayers[iLevelIndex].find(strLayerTag);
+
+    if (iter == m_pLayers[iLevelIndex].end())
+        return nullptr;
+
+    return iter->second->Get_GameObjectList();
+}
+
 CObject_Manager* CObject_Manager::Create(_uint iNumLevels)
 {
     CObject_Manager* pInstance = new CObject_Manager();

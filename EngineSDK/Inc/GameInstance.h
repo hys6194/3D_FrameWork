@@ -64,7 +64,6 @@ public:
 
 #pragma endregion
 
-
 #pragma region TIMER_MANAGER
 public:
 	_float							Get_TimeDelta(const _wstring& strTimerTag);
@@ -90,6 +89,7 @@ public:
 	class CLayer*					Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
 	CGameObject*					Find_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
 	CComponent*						Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
+	list<CGameObject*>*				Get_GameObjectList(_uint iLevelIndex, const _wstring& strLayerTag);
 #pragma endregion
 
 #pragma region RENDERER
@@ -103,7 +103,9 @@ public:
 	_matrix							Get_Transform_Inverse_Matrix(CPipeLine::TRANSFORMSTATE eState) const;
 	const _float4*					Get_CamPosition() const;
 	_vector*						Get_MouseWindowPosition();
+	_vector*						Get_PlayerViewPortPos();
 	_float4*						Get_RayDirCoords();
+	vector<_float4>*				Get_RayCoords();
 	void							Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix);
 	void							Set_Transform(CPipeLine::TRANSFORMSTATE eState, const _float4x4* pMatrix);
 	HRESULT							Bind_VP_Transform_SR(const _char* pConstantName, CShader* pShader, CPipeLine::TRANSFORMSTATE eState);

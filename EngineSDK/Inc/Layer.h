@@ -24,7 +24,10 @@ public:
 	class CGameObject*					Find_Object(const _tchar* strObjectTag);
 	HRESULT								Delete_LastObject();
 	class CComponent*					Find_Component(const _wstring& strComponentTag, _uint iIndex = 0);
-
+	list<class CGameObject*>*			Get_GameObjectList()
+	{
+		return &m_GameObjects;
+	}
 
 private:
 	// 특정 게임 오브젝트들은 키 값으로 사용할 것

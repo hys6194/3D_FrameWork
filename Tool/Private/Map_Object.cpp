@@ -16,26 +16,19 @@ HRESULT CMap_Object::Initialize_Prototype()
 HRESULT CMap_Object::Initialize(void* pArg)
 {
     GAMEOBJECT_DESC* Desc = static_cast<GAMEOBJECT_DESC*>(pArg);
-    
-    lstrcpy(Desc->szGameObjectTag, TEXT("Layer_Desert_Rock"));
 
+    MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(pArg);
+    m_iID = pDesc->iObjectIndex;
+    
+    //wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(pDesc->iObjectIndex);
+
+    lstrcpy(Desc->szGameObjectTag, TEXT("Game_MapObject"));
+ 
     if (FAILED(__super::Initialize(Desc)))
         return E_FAIL;
 
-    MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(pArg);
-    
     if (FAILED(Ready_Components(pDesc->strModelTag)))
         return E_FAIL;
-
-    // 여기에서 기즈모 기본 세팅을 갖춰주면 될듯 함
-    // 카메라 행렬 및 월드행렬 세팅
-    // Tool 세팅이라서 나중에 Client에 복붙할 때 주의해야 함
-    //_uint i = 1;
-    //m_pContext->RSGetViewports(&i, &m_pViewPort);
-    //
-    //XMStoreFloat4x4(&m_matProj, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ)));
-    //XMStoreFloat4x4(&m_matView, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW)));
-    //XMStoreFloat4x4(&m_matWorld, XMLoadFloat4x4(Get_Transform()->Get_WorldMatrix_Ptr()));
 
     return S_OK;
 }
@@ -43,8 +36,6 @@ HRESULT CMap_Object::Initialize(void* pArg)
 void CMap_Object::Priority_Update(_float fTimeDelta)
 {
   
-
-
 }
 
 void CMap_Object::Update(_float fTimeDelta)
@@ -89,7 +80,6 @@ HRESULT CMap_Object::Ready_Components(const wstring _strModelTag)
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, _strModelTag,
         reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
-
 
     CBounding_OBB::BOUNDING_OBB_DESC OBBDesc{};
 

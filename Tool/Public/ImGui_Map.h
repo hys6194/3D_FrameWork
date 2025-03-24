@@ -2,6 +2,12 @@
 
 #include "Tool_Defines.h"
 #include "ImGui_Base.h"
+#include "Tool_Manager.h"
+
+BEGIN(Engine)
+class CGameObject;
+END
+
 
 BEGIN(Tool)
 
@@ -12,14 +18,31 @@ private:
 	virtual ~CImGui_Map() = default;
 
 public:
-	virtual HRESULT						Initialize() override;
+	virtual HRESULT						Initialize();
 	virtual void						Update(_float fTimeDelta) override;
 	virtual HRESULT						Late_Update(_float fTimeDelta) override;
 										
-			
+public:
+	_bool Is_Navi() 
+	{
+		return m_bNavi;
+	}
+
+	list<CGameObject*>* Get_ObjectList()
+	{
+		return m_listObject;
+	}
+
+
+
+
 private:
-	_int								m_iObjCnt = { 0 };
-										
+	_bool								m_bNavi		= { false };
+	_int								m_iObjCnt	= { 0 };		
+	_bool								m_bScale	= { false };
+
+	list<CGameObject*>*					m_listObject = { nullptr };
+
 private:								
 	void								Default_SetButtons(_float fTimeDelta);
 	
@@ -28,8 +51,7 @@ private:
 	void								Button_DeleleObjects();
 	void								Button_NaviCreate();
 
-private:
-	_bool								m_bNavi = { false };
+	void								Change_ObjectInfo();
 			
 
 public:									

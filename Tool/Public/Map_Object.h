@@ -41,6 +41,13 @@ public:
 	virtual void						Late_Update(_float fTimeDelta)		override;
 	virtual HRESULT						Render()							override;
 
+
+public:
+	CModel* Get_ModelCom()
+	{
+		return m_pModelCom;
+	}
+
 private:
 	HRESULT								Ready_Components(const wstring _strModelTag);
 	HRESULT								Bind_SR();

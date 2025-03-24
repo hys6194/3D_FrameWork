@@ -18,6 +18,8 @@ public:
 
 public:
 	virtual HRESULT Initialize_Prototype(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix, MODELTYPE eType, const vector<class CBone*>& Bones);
+	virtual HRESULT Initialize_Prototype(const aiMesh* _pAIMesh, MODELTYPE _eModelType, const vector<class CBone*>& _Bones, _fmatrix _PreTransformMatrix, ofstream& _OutStream);
+	virtual HRESULT Initialize_Prototype(MODELTYPE _eModelType, const vector<class CBone*>& _Bones, _fmatrix _PreTransformMatrix, ifstream& _InStream);
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
@@ -25,7 +27,12 @@ public:
 
 private:
 	HRESULT Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
+	HRESULT Ready_VertexBuffer_ForNonAnim_Save(const aiMesh* _pAIMesh, _fmatrix PreTransformMatrix, ofstream& _OutStream);
+	HRESULT Ready_VertexBuffer_ForNonAnim_Load(_fmatrix PreTransformMatrix, ifstream& _InStream);
+
 	HRESULT Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const vector<CBone*>& Bones);
+	HRESULT Ready_VertexBuffer_ForAnim_Save(const aiMesh* _pAIMesh, const vector<class CBone*>& _Bones, ofstream& _OutStream);
+	HRESULT Ready_VertexBuffer_ForAnim_Load(const vector<class CBone*>& _Bones, ifstream& _InStream);
 
 private:
 	_char				m_szName[MAX_PATH] = {};
@@ -37,6 +44,8 @@ private:
 
 public:
 	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pAIMesh, MODELTYPE eType, const vector<class CBone*>& Bones, _fmatrix PreTransformMatrix);
+	static CMesh* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const aiMesh* _pAIMesh, MODELTYPE _eModelType, const vector<class CBone*>& _Bones, _fmatrix _PreTransformMatrix, ofstream& _OutStream);
+	static CMesh* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, MODELTYPE _eModelType, const vector<class CBone*>& _Bones, _fmatrix _PreTransformMatrix, ifstream& _InStream);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 };

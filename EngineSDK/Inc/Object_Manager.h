@@ -28,6 +28,9 @@ public:
 	class CGameObject*						Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag);
 	class CComponent*						Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
 
+	list<class CGameObject*>*				Get_GameObjectList(_uint iLevelIndex, const _wstring& strLayerTag);
+
+
 private:
 	_uint									m_iNumLevels = { };
 	class CGameInstance*					m_pGameInstance = { nullptr };

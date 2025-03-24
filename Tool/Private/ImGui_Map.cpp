@@ -5,6 +5,7 @@
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui/ImGuizmo.h"
 
+
 #include "GameInstance.h"
 #include "Map_Object.h"
 
@@ -63,7 +64,8 @@ void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 
 	Button_NaviCreate();
 		
-
+	if (m_bScale)
+		Change_ObjectInfo();
 }
 
 void CImGui_Map::Button_AddObjects()
@@ -77,9 +79,17 @@ void CImGui_Map::Button_AddObjects()
 		Desc.strModelTag = m_strModelName;
 		Desc.iObjectIndex = m_iObjCnt;
 
-		m_pGameInstance->Add_GameObject(LEVEL_TOOL, m_strObjectName, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
+		HRESULT hr = m_pGameInstance->Add_GameObject(LEVEL_TOOL, m_strObjectName, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
 
-		m_iObjCnt++;
+		// 생성 실패해도 증가되는거라 문제되긴한데 흐음
+		if(hr != E_FAIL)
+		{
+			m_iObjCnt++;
+			m_listObject = m_pGameInstance->Get_GameObjectList(LEVEL_TOOL, TEXT("Layer_Objcet"));
+		}
+
+		// 여기서 생성할 때마다 list를 업데이트하자 
+		// 어떻게 가져올 것이냐
 	}
 }
 
@@ -102,10 +112,20 @@ void CImGui_Map::Button_NaviCreate()
 
 	if (Checkbox("Navi", &m_bNavi))
 	{
-		//m_pGameInstance->Find_Layer
-
-		int a = 1;
+		//어떻게 전달할까
 	}
+}
+
+void CImGui_Map::Change_ObjectInfo()
+{
+	Begin("Object_Transforms");
+
+	//Scale, Rotation, Translatiom의 값을 가져와야 함
+	//m_pGameInstance->Find_Layer(LEVEL_TOOL, TEXT("Layer_Objcet"));
+
+	int a = 10;
+
+	End();
 }
 
 CImGui_Map* CImGui_Map::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

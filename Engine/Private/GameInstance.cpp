@@ -298,6 +298,11 @@ CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strL
 	return m_pObject_Manager->Get_Component(iLevelIndex, strLayerTag, strComponentTag, iIndex);
 }
 
+list<CGameObject*>* CGameInstance::Get_GameObjectList(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pObject_Manager->Get_GameObjectList(iLevelIndex, strLayerTag);
+}
+
 #pragma endregion
 
 #pragma region RENDERER
@@ -340,9 +345,19 @@ _vector* CGameInstance::Get_MouseWindowPosition()
 	return m_pPipeLine->Get_MouseWindowPosition();
 }
 
+_vector* CGameInstance::Get_PlayerViewPortPos()
+{
+	return m_pPipeLine->Get_PlayerViewPortPos();
+}
+
 _float4* CGameInstance::Get_RayDirCoords()
 {
 	return m_pPipeLine->Get_RayDirCoords();
+}
+
+vector<_float4>* CGameInstance::Get_RayCoords()
+{
+	return m_pPipeLine->Get_RayCoords();
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)

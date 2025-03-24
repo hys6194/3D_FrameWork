@@ -167,6 +167,61 @@ void CChannel::Update_TransformationMatrix(const vector<class CBone*>& pBone, _f
 
 }
 
+HRESULT CChannel::Initialize(const vector<class CBone*>& _Bones, ifstream& _InStream)
+{
+	_uint iReadByte = { };
+	_char szChannelName[MAX_PATH] = { };
+
+	_InStream.read(reinterpret_cast<char*>(&iReadByte), sizeof(_uint));
+	_InStream.read(reinterpret_cast<char*>(szChannelName), sizeof(_char) * iReadByte);
+	strcpy_s(m_szName, szChannelName);
+
+	_InStream.read(reinterpret_cast<char*>(&m_iBoneIndex), sizeof(_uint));
+
+	_InStream.read(reinterpret_cast<char*>(&m_iNumFrameKeys), sizeof(_uint));
+
+	KEYFRAME KeyFrame = { };
+	for (size_t i = 0; i < m_iNumFrameKeys; i++)
+	{
+		_InStream.read(reinterpret_cast<char*>(&KeyFrame), sizeof(KEYFRAME));
+		m_vecFrame.push_back(KeyFrame);
+	}
+
+	return S_OK;
+}
+
+_bool CChannel::Save_Channel(ofstream& _OpenStream)
+{
+	if (!_OpenStream)
+		return false;
+
+	_uint iSize = sizeof(m_szName);
+	_OpenStream.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+	_OpenStream.write(m_szName, iSize);
+
+	_OpenStream.write(reinterpret_cast<const char*>(&m_iBoneIndex), sizeof(_uint));
+
+	_OpenStream.write(reinterpret_cast<const char*>(&m_iNumFrameKeys), sizeof(_uint));
+
+	for (size_t i = 0; i < m_iNumFrameKeys; i++)
+		_OpenStream.write(reinterpret_cast<const char*>(&(m_vecFrame[i])), sizeof(KEYFRAME));
+
+	return true;
+}
+
+CChannel* CChannel::Create(const vector<class CBone*>& _Bones, ifstream& _InStream)
+{
+	CChannel* pInstance = new CChannel();
+
+	if (FAILED(pInstance->Initialize(_Bones, _InStream)))
+	{
+		MSG_BOX("Failed To Created : CChannel");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
 CChannel* CChannel::Create(const aiNodeAnim* pAIChannel, const vector<class CBone*>& pBone)
 {
 	CChannel* pInstance = new CChannel();
