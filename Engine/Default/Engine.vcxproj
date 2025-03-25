@@ -221,6 +221,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\VIBuffer_Cell.h" />
     <ClInclude Include="..\Public\VIBuffer_Cube.h" />
     <ClInclude Include="..\Public\VIBuffer_Flat_Terrain.h" />
+    <ClInclude Include="..\Public\VIBuffer_Instancing.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect.h" />
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
     <ClInclude Include="클래스 정의.h" />
@@ -273,6 +274,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\VIBuffer_Cell.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Cube.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Flat_Terrain.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Instancing.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />
     <ClCompile Include="..\Public\ImGui\GraphEditor.cpp" />

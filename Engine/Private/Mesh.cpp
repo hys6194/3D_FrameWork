@@ -128,7 +128,7 @@ HRESULT CMesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTra
 	HANDLE			hFile = CreateFile(wtest.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
 	WriteFile(hFile, &m_iNumVertices, sizeof(_uint), &dwByte, nullptr);
-	WriteFile(hFile, &strMeshName, sizeof(iTest), &dwByte, nullptr);
+	WriteFile(hFile, &strMeshName, sizeof(char), &dwByte, nullptr);
 
 	for (size_t i = 0; i < m_iNumVertices; ++i)
 	{
@@ -514,14 +514,14 @@ HRESULT CMesh::Ready_VertexBuffer_ForNonAnim_Save(const aiMesh* _pAIMesh, _fmatr
 	for (size_t i = 0; i < m_iNumVertices; i++)
 	{
 		memcpy(&pVertices[i].vPosition, &_pAIMesh->mVertices[i], sizeof(_float3));
-		_OutStream.write(reinterpret_cast<const char*>(&pVertices[i].vPosition), sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vPosition,
 			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PreTransformMatrix));
+		_OutStream.write(reinterpret_cast<const char*>(&pVertices[i].vPosition), sizeof(_float3));
 
 		memcpy(&pVertices[i].vNormal, &_pAIMesh->mNormals[i], sizeof(_float3));
-		_OutStream.write(reinterpret_cast<const char*>(&pVertices[i].vNormal), sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vNormal,
 			XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), PreTransformMatrix));
+		_OutStream.write(reinterpret_cast<const char*>(&pVertices[i].vNormal), sizeof(_float3));
 
 		memcpy(&pVertices[i].vTexcoord, &_pAIMesh->mTextureCoords[0][i], sizeof(_float2)); ;
 		_OutStream.write(reinterpret_cast<const char*>(&pVertices[i].vTexcoord), sizeof(_float2));
@@ -597,46 +597,46 @@ HRESULT CMesh::Ready_VertexBuffer_ForAnim_Save(const aiMesh* _pAIMesh, const vec
 		{
 			aiVertexWeight& vertexWeight = _pAIMesh->mBones[i]->mWeights[j];
 
-			if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight0.x)
+			if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight.x)
 			{
-				pVertices[vertexWeight.mVertexId].vBlendIndex0.x = i;
-				pVertices[vertexWeight.mVertexId].vBlendWeight0.x = vertexWeight.mWeight;
+				pVertices[vertexWeight.mVertexId].vBlendIndex.x = i;
+				pVertices[vertexWeight.mVertexId].vBlendWeight.x = vertexWeight.mWeight;
 			}
-			else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight0.y)
+			else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight.y)
 			{
-				pVertices[vertexWeight.mVertexId].vBlendIndex0.y = i;
-				pVertices[vertexWeight.mVertexId].vBlendWeight0.y = vertexWeight.mWeight;
+				pVertices[vertexWeight.mVertexId].vBlendIndex.y = i;
+				pVertices[vertexWeight.mVertexId].vBlendWeight.y = vertexWeight.mWeight;
 			}
-			else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight0.z)
+			else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight.z)
 			{
-				pVertices[vertexWeight.mVertexId].vBlendIndex0.z = i;
-				pVertices[vertexWeight.mVertexId].vBlendWeight0.z = vertexWeight.mWeight;
+				pVertices[vertexWeight.mVertexId].vBlendIndex.z = i;
+				pVertices[vertexWeight.mVertexId].vBlendWeight.z = vertexWeight.mWeight;
 			}
-			else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight0.w)
+			else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight.w)
 			{
-				pVertices[vertexWeight.mVertexId].vBlendIndex0.w = i;
-				pVertices[vertexWeight.mVertexId].vBlendWeight0.w = vertexWeight.mWeight;
+				pVertices[vertexWeight.mVertexId].vBlendIndex.w = i;
+				pVertices[vertexWeight.mVertexId].vBlendWeight.w = vertexWeight.mWeight;
 			}
-			else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight1.x)
-			{
-				pVertices[vertexWeight.mVertexId].vBlendIndex1.x = i;
-				pVertices[vertexWeight.mVertexId].vBlendWeight1.x = vertexWeight.mWeight;
-			}
-			else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight1.y)
-			{
-				pVertices[vertexWeight.mVertexId].vBlendIndex1.y = i;
-				pVertices[vertexWeight.mVertexId].vBlendWeight1.y = vertexWeight.mWeight;
-			}
-			else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight1.z)
-			{
-				pVertices[vertexWeight.mVertexId].vBlendIndex1.z = i;
-				pVertices[vertexWeight.mVertexId].vBlendWeight1.z = vertexWeight.mWeight;
-			}
-			else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight1.w)
-			{
-				pVertices[vertexWeight.mVertexId].vBlendIndex1.w = i;
-				pVertices[vertexWeight.mVertexId].vBlendWeight1.w = vertexWeight.mWeight;
-			}
+			//else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight1.x)
+			//{
+			//	pVertices[vertexWeight.mVertexId].vBlendIndex1.x = i;
+			//	pVertices[vertexWeight.mVertexId].vBlendWeight1.x = vertexWeight.mWeight;
+			//}
+			//else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight1.y)
+			//{
+			//	pVertices[vertexWeight.mVertexId].vBlendIndex1.y = i;
+			//	pVertices[vertexWeight.mVertexId].vBlendWeight1.y = vertexWeight.mWeight;
+			//}
+			//else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight1.z)
+			//{
+			//	pVertices[vertexWeight.mVertexId].vBlendIndex1.z = i;
+			//	pVertices[vertexWeight.mVertexId].vBlendWeight1.z = vertexWeight.mWeight;
+			//}
+			//else if (0.f == pVertices[vertexWeight.mVertexId].vBlendWeight1.w)
+			//{
+			//	pVertices[vertexWeight.mVertexId].vBlendIndex1.w = i;
+			//	pVertices[vertexWeight.mVertexId].vBlendWeight1.w = vertexWeight.mWeight;
+			//}
 		}
 	}
 

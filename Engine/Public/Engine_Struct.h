@@ -105,17 +105,23 @@ namespace Engine
 		XMFLOAT2		vTexcoord;			// UV º¤ÅÍ
 		XMFLOAT3		vTangent;			// Á¢¼± º¤ÅÍ
 
+		// 4-Bone
 		XMUINT4			vBlendIndex;		// »ÀÀÇ ÀÎµ¦½º °³¼ö
 		XMFLOAT4		vBlendWeight;		// »ÀÀÇ °¡ÁßÄ¡, 0 ~ 1 »çÀÌÀÇ °ªÀ¸·Î »ç¿ë
 
+		// 8-Bone
+		//XMUINT4			vBlendIndex0;		// »ÀÀÇ ÀÎµ¦½º °³¼ö
+		//XMFLOAT4		vBlendWeight0;
+		//
+		//XMUINT4			vBlendIndex1;		// »ÀÀÇ ÀÎµ¦½º °³¼ö
+		//XMFLOAT4		vBlendWeight1;
 
-		XMUINT4			vBlendIndex0;		// »ÀÀÇ ÀÎµ¦½º °³¼ö
-		XMFLOAT4		vBlendWeight0;
-
-		XMUINT4			vBlendIndex1;		// »ÀÀÇ ÀÎµ¦½º °³¼ö
-		XMFLOAT4		vBlendWeight1;
-
+		// 4-Bone
 		const static unsigned int					iNumElements = 6;
+
+		// 8-Bone
+		//const static unsigned int					iNumElements = 8;
+
 		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -124,6 +130,10 @@ namespace Engine
 			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0},
 			{ "BLENDINDEX", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0, 44, D3D11_INPUT_PER_VERTEX_DATA, 0},
 			{ "BLENDWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 60, D3D11_INPUT_PER_VERTEX_DATA, 0},
+
+			// 8-Bone
+			//{ "BLENDINDEX1", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0, 76, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			//{ "BLENDWEIGHT1", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 92, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 	}VTXANIMESH;
 
@@ -139,6 +149,14 @@ namespace Engine
 		XMFLOAT4		vAmbient;			// ¿¥ºñ¾ðÆ® (¹Ý»ç±¤)
 		XMFLOAT4		vSpecular;			// Á¤¹Ý»ç
 	}LIGHT_DESC;
+
+	typedef struct tagInstancingVertex
+	{
+		XMFLOAT4	vRight;
+		XMFLOAT4	vUp;
+		XMFLOAT4	vLook;
+		XMFLOAT4	vTranslation;
+	}INSTVTX;
 }
 
 

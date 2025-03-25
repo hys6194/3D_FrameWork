@@ -111,10 +111,12 @@ void Tool_Manager::Create_NaviCells()
 	{
 		_float fCoord = 0.f;
 
-		_bool bTest = iter->Get_ModelCom()->CheckRayColl_Mesh(fRayOrigin, fRayDir, &fCoord);
 
-		if (bTest)
-			return;
+
+		//_bool bTest = iter->Get_ModelCom()->CheckRayColl_Mesh(fRayOrigin, fRayDir, &fCoord);
+
+		//if (bTest)
+		//	return;
 
 	}
 

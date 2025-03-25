@@ -23,7 +23,7 @@ void CStrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 	if (m_pGameInstance->Key_Down(DIK_LSHIFT))
 		m_iCheckDash++;
 
-	if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() /2.5f)
+	if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() / 2.5f)
 	{
 		m_iKeyState = dynamic_cast<CPlayer*>(m_pOwner)->Get_PlayerKeyState();
 
@@ -110,7 +110,7 @@ void CStrifeState_Dash::Check_KeyInput()
 		(m_iKeyState & CPlayer::KEY_RIGHT))
 		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH, false, true);
 
-	else /*if(m_iKeyState == CPlayer::KEY_NONE)*/
+	else 
 		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::DASH_BACK, false, true);
 }
 
@@ -133,35 +133,35 @@ void CStrifeState_Dash::Set_Player_Direction()
 	switch (m_iKeyState)
 	{
 	case (CPlayer::KEY_DOWN | CPlayer::KEY_LEFT):
-		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-135.f));
+		m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-135.f));
 		break;
 
 	case (CPlayer::KEY_UP | CPlayer::KEY_LEFT):
-		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-45.f));
+		m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-45.f));
 		break;
 
 	case(CPlayer::KEY_UP | CPlayer::KEY_RIGHT):
-		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(45.f));
+		m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(45.f));
 		break;
 
 	case(CPlayer::KEY_RIGHT | CPlayer::KEY_DOWN):
-		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(135.f));
+		m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(135.f));
 		break;
 
 	case CPlayer::KEY_DOWN:
-		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(180.f));
+		m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(180.f));
 		break;
 
 	case CPlayer::KEY_LEFT:
-		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
+		m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
 		break;
 
 	case CPlayer::KEY_RIGHT:
-		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(90.f));
+		m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(90.f));
 		break;
 
 	case CPlayer::KEY_UP:
-		dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(0.f));
+		m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(0.f));
 		break;
 	}
 }

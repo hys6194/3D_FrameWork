@@ -151,11 +151,11 @@ void CStrifeState_Shoot::Player_LookSet(_float fTimeDelta)
 
 void CStrifeState_Shoot::Apply_ShootAnimation()
 {
-		if (m_iKeyState & CPlayer::KEY_DOWN || m_iKeyState & CPlayer::KEY_UP || m_iKeyState & CPlayer::KEY_LEFT || m_iKeyState & CPlayer::KEY_RIGHT)
-			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_WALK, true, false);
+	if (m_iKeyState & CPlayer::KEY_DOWN || m_iKeyState & CPlayer::KEY_UP || m_iKeyState & CPlayer::KEY_LEFT || m_iKeyState & CPlayer::KEY_RIGHT)
+		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_WALK, true, false);
 
-		else if (!(m_iKeyState & CPlayer::KEY_DOWN) && !(m_iKeyState & CPlayer::KEY_UP) && !(m_iKeyState & CPlayer::KEY_LEFT) && !(m_iKeyState & CPlayer::KEY_RIGHT))
-			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_IDLE, true, false);
+	else if (!(m_iKeyState & CPlayer::KEY_DOWN) && !(m_iKeyState & CPlayer::KEY_UP) && !(m_iKeyState & CPlayer::KEY_LEFT) && !(m_iKeyState & CPlayer::KEY_RIGHT))
+		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_IDLE, true, false);
 }
 
 CStrifeState_Shoot* CStrifeState_Shoot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)

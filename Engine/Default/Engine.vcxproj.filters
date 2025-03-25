@@ -70,20 +70,11 @@
     <Filter Include="01.Utility\04. Component\VIBuffer\Cube">
       <UniqueIdentifier>{f8cf5a8f-6acd-4c45-97fe-e32e060a25b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04. Component\VIBuffer\Particle">
-      <UniqueIdentifier>{67ae12ba-5b60-4ab9-84cd-f4b6df8c5fcc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\04. Component\VIBuffer\Terrain">
       <UniqueIdentifier>{d24ca421-4279-44c7-94be-dec0af24f9e4}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Utility\04. Component\VIBuffer\Rect">
       <UniqueIdentifier>{2fb9d1da-e05e-4aa0-b143-c38cbe209bd8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\04. Component\VIBuffer\Particle\Point">
-      <UniqueIdentifier>{0c431eb0-9045-412b-a0b7-f08e0320e613}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\04. Component\VIBuffer\Particle\Rect">
-      <UniqueIdentifier>{16f4119b-5a5b-44b5-b921-04ee34bc6be8}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Utility\04. Component\FSM">
       <UniqueIdentifier>{8ce777ad-4781-4982-bfe5-008b78ae3e11}</UniqueIdentifier>
@@ -183,6 +174,18 @@
     </Filter>
     <Filter Include="01.Utility\04. Component\Collider\Bounding\Sphere">
       <UniqueIdentifier>{7c546952-6eaa-4f56-93e0-a952ae387956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Instancing">
+      <UniqueIdentifier>{57129fe6-771d-4411-8b9f-28ac13bd1d5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Instancing\Particle">
+      <UniqueIdentifier>{67ae12ba-5b60-4ab9-84cd-f4b6df8c5fcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Instancing\Particle\Point">
+      <UniqueIdentifier>{0c431eb0-9045-412b-a0b7-f08e0320e613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Instancing\Particle\Rect">
+      <UniqueIdentifier>{16f4119b-5a5b-44b5-b921-04ee34bc6be8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -405,6 +408,9 @@
     <ClInclude Include="..\Public\Bounding_Sphere.h">
       <Filter>01.Utility\04. Component\Collider\Bounding\Sphere</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Instancing.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Instancing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -598,6 +604,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Bounding_Sphere.cpp">
       <Filter>01.Utility\04. Component\Collider\Bounding\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Instancing.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Instancing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

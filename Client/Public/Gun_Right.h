@@ -19,7 +19,7 @@ public:
 		const _float4x4*	pSocketMatrix;
 		const _float4x4*	pHandMatrix;
 		const _uint*		pTargetState = { nullptr };
-		class CPlayer*			pOwner = { nullptr };
+		class CPlayer*		pOwner = { nullptr };
 	}WEAPON_DESC;
 
 private:
@@ -48,6 +48,7 @@ private:
 	class CPlayer*				m_pOwner = { nullptr };
 
 	_float						m_fCool = {};
+	_bool						m_bShoot = { false };
 	_float						m_fTotalTime = {0.f};
 
 private:

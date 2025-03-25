@@ -66,7 +66,7 @@ _vector* CPipeLine::Get_PlayerViewPortPos()
 	// 플레이어의 팔 위치로 중점을 옮긴거 밖에 안됨
 	fTest.y = pt.y / -(ViewPort.Height * 0.33f) + 1.f;
 
-	vTest = XMVectorSet(fTest.x, fTest.y, fTest.z, 1.f);
+	vTest = XMVectorSet(fTest.x, fTest.y, 0.f, 1.f);
 
 	return &vTest;
 }
@@ -77,7 +77,6 @@ _float4* CPipeLine::Get_RayDirCoords()
 	ScreenToClient(m_hWnd, &pt);
 
 	_float3 fFar{ 0.f, 0.f, 0.f };
-	_float4 fTest{ (_float)pt.x , (_float)pt.y ,0.f, 0.f };
 
 	_uint i = 1;
 	D3D11_VIEWPORT ViewPort;
@@ -126,38 +125,41 @@ vector<_float4>* CPipeLine::Get_RayCoords()
 	_float3 fFar{ 0.f, 0.f, 0.f };
 	_float4 fTest{ (_float)pt.x , (_float)pt.y ,0.f, 0.f };
 
+	// 뷰 포트 가져오기
 	_uint i = 1;
 	D3D11_VIEWPORT ViewPort;
 	m_pContext->RSGetViewports(&i, &ViewPort);
 
+	// 원래 식 = 2 * pt.x / widtth - 1
 	fFar.x = pt.x / (ViewPort.Width * 0.5f) - 1.f;
 	fFar.y = pt.y / -(ViewPort.Height * 0.5f) + 1.f;
 
+	// 투영의 역행렬
 	_float4x4 fProj = m_TransformInverseMatrices[D3DTS_PROJ];
 
-	// 투영의 역행렬
-	_vector vRayPos = { 0.f,0.f,0.f,0.f };
-	vRayPos = XMVector3TransformCoord(XMLoadFloat3(&fFar), XMLoadFloat4x4(&fProj));
+	_float4 fPos;
+	XMStoreFloat4(&fPos, XMVector3TransformCoord(XMLoadFloat3(&fFar), XMLoadFloat4x4(&fProj)));
+
+	//vRayPos = XMVector3TransformCoord(XMLoadFloat3(&fFar), XMLoadFloat4x4(&fProj));
+
 
 	_vector vPos = { 0.f,0.f,0.f,1.f };
-	_vector vDir = { 0.f,0.f,0.f,0.f };
+	_vector vDir = { fPos.x, fPos.y, 1.f, 0.f };
 
+	_vector vRayPos = { 0.f,0.f,0.f,0.f };
 	_vector vRayDir;
-	vDir = XMVector4Normalize(vRayPos - vPos);
-	vRayDir = XMVector4Normalize(vDir);
 
 	// 뷰의 역행렬
 	_float4x4 fView = m_TransformInverseMatrices[D3DTS_VIEW];
-	vRayPos = XMVector3TransformCoord(vPos, XMLoadFloat4x4(&fView));
-
+	vRayPos = XMVector3TransformCoord(vRayPos, XMLoadFloat4x4(&fView));
+	vRayDir = XMVector3TransformCoord(vDir, XMLoadFloat4x4(&fView));
 
 	_float4 fRayPos, fRayDir;
-	//vRayDir = vDir;
 
 	XMStoreFloat4(&fRayPos, vRayPos);
-	XMStoreFloat4(&fRayDir, vDir);
+	XMStoreFloat4(&fRayDir, XMVector4Normalize(vRayDir));
 
-	//XMVectorSetW(XMLoadFloat4(&fRayDir), 0.f);	
+	//XMVectorSetW(XMLoadFloat4(&fRayDir), 0.f);	 
 	m_vecRays.push_back(fRayPos);
 	m_vecRays.push_back(fRayDir);
 

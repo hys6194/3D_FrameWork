@@ -12,6 +12,17 @@ protected:
 	virtual ~CVIBuffer() = default;
 
 public:
+	_uint Get_VertexStride()
+	{
+		return m_iVertexStride;
+	}
+
+	_uint Get_VerticesNum()
+	{
+		return m_iNumVertices;
+	}
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual HRESULT Render();

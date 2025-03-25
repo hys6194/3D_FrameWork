@@ -253,45 +253,104 @@ HRESULT CLoader::Loading_Models()
 			return E_FAIL;
 
 		_matrix		PreTransformMatrix = XMMatrixIdentity();
-		/* For.Prototype_Component_Model_Fiona */
-		PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FIONA,
-			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/AnimModel/Fiona/Fiona.fbx", PreTransformMatrix))))
-			return E_FAIL;
 
 		///* For.Prototype_Component_Model_ForkLift */
-		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+		PreTransformMatrix = XMMatrixScaling(0.2f, 0.2f, 0.2f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/NonAnimModel/ForkLift/ForkLift.fbx", PreTransformMatrix))))
+		//	return E_FAIL;
+		// 
+		// 저장용
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+		//		"../Bin/Resources/Models/NonAnimModel/ForkLift/ForkLift.fbx",
+		//		"../Bin/DataFiles/Nonanim/PartObject/ForkLift.bin",
+		//		PreTransformMatrix))))
+		//	return E_FAIL;
+
+		// 불러오기
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
-			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/NonAnimModel/ForkLift/ForkLift.fbx", PreTransformMatrix))))
+			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/ForkLift.bin", PreTransformMatrix))))
 			return E_FAIL;
 
+		//// 저장용
+		//PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
+		//		"../Bin/Resources/Models/AnimModel/Strife/animtest.fbx",
+		//		"../Bin/DataFiles/anim/Heroes/Strife.bin",
+		//		PreTransformMatrix))))
+		//	return E_FAIL;
 		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
-			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/AnimModel/Strife/animtest.fbx", PreTransformMatrix))))
+			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Heroes/Strife.bin", PreTransformMatrix))))
 			return E_FAIL;
 
+		//// 저장용
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
+		//		"../Bin/Resources/Models/AnimModel/Ghoul/Ghoul.fbx",
+		//		"../Bin/DataFiles/anim/Creature/Ghoul.bin",
+		//		PreTransformMatrix))))
+		//	return E_FAIL;
+
+		// 불러오기
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
-			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/AnimModel/Ghoul/Ghoul.fbx", PreTransformMatrix))))
+			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/Ghoul.bin", PreTransformMatrix))))
 			return E_FAIL;
 
+		//// 
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/AnimModel/Strife/animtest.fbx", PreTransformMatrix))))
+		//	return E_FAIL;
+		//
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM, "../Bin/Resources/Models/AnimModel/Ghoul/Ghoul.fbx", PreTransformMatrix))))
+		//	return E_FAIL;
 
-		PreTransformMatrix = /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationZ(XMConvertToRadians(180.f));
-		PreTransformMatrix *= /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationY(XMConvertToRadians(180.f));
-		PreTransformMatrix *= /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationX(XMConvertToRadians(90.f));
+		PreTransformMatrix =  XMMatrixRotationZ(XMConvertToRadians(180.f));
+		PreTransformMatrix *= XMMatrixRotationY(XMConvertToRadians(180.f));
+		PreTransformMatrix *= XMMatrixRotationX(XMConvertToRadians(90.f));
+		//// 저장용
+		//
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_LGUN,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+		//		"../Bin/Resources/Models/NonAnimModel/ForkLift/ForkLift.fbx",
+		//		"../Bin/DataFiles/Nonanim/PartObject/Gun1.bin",
+		//		PreTransformMatrix))))
+		//	return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_LGUN,
-			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/AnimModel/Strife/Gun1.fbx", PreTransformMatrix))))
+			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/Gun1.bin", PreTransformMatrix))))
 			return E_FAIL;
+		//
+		//
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+		//		"../Bin/Resources/Models/AnimModel/Strife/Gun2.fbx",
+		//		"../Bin/DataFiles/Nonanim/PartObject/Gun2.bin",
+		//		PreTransformMatrix))))
+		//	return E_FAIL;
 
+		// 불러오기
 
-		PreTransformMatrix = /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationZ(XMConvertToRadians(180.f));
-		PreTransformMatrix *= /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationY(XMConvertToRadians(180.f));
-		PreTransformMatrix *= /*XMMatrixScaling(0.02f, 0.02f, 0.02f) **/ XMMatrixRotationX(XMConvertToRadians(-90.f));
+		PreTransformMatrix *= XMMatrixRotationX(XMConvertToRadians(-90.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
-			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/AnimModel/Strife/Gun2.fbx", PreTransformMatrix))))
+			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/Gun2.bin", PreTransformMatrix))))
 			return E_FAIL;
 
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_LGUN,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, 
+		//		"../Bin/Resources/Models/AnimModel/Strife/Gun1.fbx", PreTransformMatrix))))
+		//	return E_FAIL;
 
+
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, 
+		//		"../Bin/Resources/Models/AnimModel/Strife/Gun2.fbx", PreTransformMatrix))))
+		//	return E_FAIL;
+
+		int a = 10;
 	}
 
 		break;
@@ -367,8 +426,7 @@ HRESULT CLoader::Loading_Prototype()
 
 		break;
 	case LEVEL_LOGO: 
-		{
-
+	{
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_OBJ_BACK,
 			CBackGround::Create(m_pDevice, m_pContext, LEVEL_LOGO))))
 			return E_FAIL;
@@ -424,7 +482,6 @@ HRESULT CLoader::Loading_Prototype()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_BULLET,
 			CBullet::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
-
 
 	}
 
