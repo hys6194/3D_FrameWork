@@ -103,6 +103,12 @@
     <Filter Include="02.GameObjects\Player\Weapon\Bullet">
       <UniqueIdentifier>{cf645e81-3036-45ce-97fa-52085ba4694b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Instancing">
+      <UniqueIdentifier>{e534ec76-a309-4819-9e61-54818ddd6093}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Instancing\Snow">
+      <UniqueIdentifier>{5ea669f2-b24c-4d1b-9c36-6c990d23e73d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -198,6 +204,9 @@
     <ClInclude Include="..\Public\Bullet.h">
       <Filter>02.GameObjects\Player\Weapon\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Snow.h">
+      <Filter>02.GameObjects\Instancing\Snow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -291,6 +300,9 @@
     <ClCompile Include="..\Private\Bullet.cpp">
       <Filter>02.GameObjects\Player\Weapon\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Snow.cpp">
+      <Filter>02.GameObjects\Instancing\Snow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">
@@ -316,7 +328,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectParticle.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

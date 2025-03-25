@@ -62,7 +62,7 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNu
                 D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET,	//BindFlags : 리소스와 타깃 모두 사용가능
                 0,														//CPUAccessFlags : Cpu Access 하지 않음
                 D3D11_RESOURCE_MISC_GENERATE_MIPS,						//MiscFlags
-                WIC_LOADER_FORCE_SRGB,										//이부분은 수정이 필요할 수도 있음 -> WIC_LOADER_FORCE_SRGB 같은
+                WIC_LOADER_DEFAULT,										//이부분은 수정이 필요할 수도 있음 -> WIC_LOADER_FORCE_SRGB 같은
                 nullptr,
                 &pSRV)))
                 return E_FAIL;

@@ -28,7 +28,7 @@ public:
 	virtual HRESULT Render();
 
 public:
-	HRESULT Bind_Input_Assembler();
+	virtual HRESULT Bind_Input_Assembler();
 
 protected:
 	// 정점들의 메모리 공간을 의미하는 컴객체

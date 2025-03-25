@@ -24,7 +24,6 @@ namespace Engine
 		unsigned int	iBoneIndex;
 	}KEYFRAME;
 
-
 	typedef struct ENGINE_DLL tagVertexPosition
 	{
 		XMFLOAT3		vPosition;
@@ -137,6 +136,23 @@ namespace Engine
 		};
 	}VTXANIMESH;
 
+	typedef struct ENGINE_DLL tagVertexPosTexInstance
+	{
+		const	  static unsigned int						  iNumElements = 6;
+		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
+		{
+			{ "POSITION", 0,	 DXGI_FORMAT_R32G32B32_FLOAT,	 0, 0,  D3D11_INPUT_PER_VERTEX_DATA,   0},
+			{ "TEXCOORD", 0,	 DXGI_FORMAT_R32G32_FLOAT,		 0, 12, D3D11_INPUT_PER_VERTEX_DATA,   0},
+
+			// "TEXCOORD", 1 :   셰이더의 시멘틱 넘버 구별을 위해서 수를 넣은 것
+			//  1 :		         인스턴싱하면서 버퍼를 두 개 만들었는데 몇 번째 버퍼인지 알려주기 위해서 선언한 것
+			{ "TEXCOORD", 1,	 DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0,  D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "TEXCOORD", 2,	 DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "TEXCOORD", 3,	 DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "TEXCOORD", 4,	 DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+
+		};
+	}INST_VTXPOSTEX;
 	typedef struct tagLightDesc
 	{
 		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
@@ -150,7 +166,7 @@ namespace Engine
 		XMFLOAT4		vSpecular;			// 정반사
 	}LIGHT_DESC;
 
-	typedef struct tagInstancingVertex
+	typedef struct ENGINE_DLL tagInstancingVertex
 	{
 		XMFLOAT4	vRight;
 		XMFLOAT4	vUp;

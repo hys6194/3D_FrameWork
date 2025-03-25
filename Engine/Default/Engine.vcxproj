@@ -126,6 +126,12 @@ call Copy.bat</Command>
       <Command>
       </Command>
     </PreBuildEvent>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -149,6 +155,12 @@ call Copy.bat</Command>
       <Command>cd /d $(SolutionDir)
 call Copy.bat</Command>
     </PostBuildEvent>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\AbstractFactory.h" />
@@ -222,7 +234,9 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\VIBuffer_Cube.h" />
     <ClInclude Include="..\Public\VIBuffer_Flat_Terrain.h" />
     <ClInclude Include="..\Public\VIBuffer_Instancing.h" />
+    <ClInclude Include="..\public\VIBuffer_Particle.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect.h" />
+    <ClInclude Include="..\public\VIBuffer_Rect_Instancing.h" />
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
     <ClInclude Include="클래스 정의.h" />
   </ItemGroup>
@@ -275,7 +289,9 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\VIBuffer_Cube.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Flat_Terrain.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Instancing.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Particle.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Rect_Instancing.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />
     <ClCompile Include="..\Public\ImGui\GraphEditor.cpp" />
     <ClCompile Include="..\Public\ImGui\ImCurveEdit.cpp" />
@@ -295,6 +311,9 @@ call Copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

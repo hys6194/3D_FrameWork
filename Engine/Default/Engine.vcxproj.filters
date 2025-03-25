@@ -411,6 +411,12 @@
     <ClInclude Include="..\Public\VIBuffer_Instancing.h">
       <Filter>01.Utility\04. Component\VIBuffer\Instancing</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Particle.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Instancing\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Rect_Instancing.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Instancing\Particle\Rect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -608,10 +614,21 @@
     <ClCompile Include="..\Private\VIBuffer_Instancing.cpp">
       <Filter>01.Utility\04. Component\VIBuffer\Instancing</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Particle.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Instancing\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Rect_Instancing.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Instancing\Particle\Rect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">
       <Filter>98.ShaderFiles</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
+      <Filter>98.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

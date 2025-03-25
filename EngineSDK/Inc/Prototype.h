@@ -11,6 +11,7 @@
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_Flat_Terrain.h"
+#include "VIBuffer_Rect_Instancing.h"
 
 #include "Bounding_AABB.h"
 #include "Bounding_OBB.h"

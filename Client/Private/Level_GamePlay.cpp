@@ -25,6 +25,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
+		return E_FAIL;
+
     return S_OK;
 }
 
@@ -52,39 +55,39 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 {
-	//CCamera_Free::CAMERA_FREE_DESC   FreeCam_Desc{};
-	//
-	//FreeCam_Desc.vEye = _float3(0.f, 20.f, -20.f);
-	//FreeCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	//FreeCam_Desc.fFov = XMConvertToRadians(60.f);
-	//FreeCam_Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	//FreeCam_Desc.fNear = 0.1f;
-	//FreeCam_Desc.fFar = 300.f;
-	//FreeCam_Desc.fMouseSensor = 0.05f;
-	//lstrcpy(FreeCam_Desc.szGameObjectTag, TEXT("GameObject_Camera_Free"));
-	//FreeCam_Desc.fSpeedPerSec = 10.f;
-	//FreeCam_Desc.fRotationPerSec = XMConvertToRadians(90.f);
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_CAM_FREE,
-	//	LEVEL_GAMEPLAY, pLayerTag, &FreeCam_Desc)))
-	//	return E_FAIL;
-
-	CTP_Camera::TP_CAMERA_DESC   TPCam_Desc{};
+	CCamera_Free::CAMERA_FREE_DESC   FreeCam_Desc{};
 	
-	TPCam_Desc.vEye = _float3(0.f, 10.f, -10.f);
-	TPCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	TPCam_Desc.fFov = XMConvertToRadians(65.f);
-	TPCam_Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	TPCam_Desc.fNear = 0.1f;
-	TPCam_Desc.fFar = 300.f;
-	TPCam_Desc.fMouseSensor = 0.05f;
-	lstrcpy(TPCam_Desc.szGameObjectTag, TEXT("GameObject_TP_Camera"));
-	TPCam_Desc.fSpeedPerSec = 10.f;
-	TPCam_Desc.fRotationPerSec = XMConvertToRadians(90.f);
+	FreeCam_Desc.vEye = _float3(0.f, 20.f, -20.f);
+	FreeCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
+	FreeCam_Desc.fFov = XMConvertToRadians(60.f);
+	FreeCam_Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	FreeCam_Desc.fNear = 0.1f;
+	FreeCam_Desc.fFar = 300.f;
+	FreeCam_Desc.fMouseSensor = 0.05f;
+	lstrcpy(FreeCam_Desc.szGameObjectTag, TEXT("GameObject_Camera_Free"));
+	FreeCam_Desc.fSpeedPerSec = 10.f;
+	FreeCam_Desc.fRotationPerSec = XMConvertToRadians(90.f);
 	
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_CAM_3RD,
-		LEVEL_GAMEPLAY, pLayerTag, &TPCam_Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_CAM_FREE,
+		LEVEL_GAMEPLAY, pLayerTag, &FreeCam_Desc)))
 		return E_FAIL;
+
+	//CTP_Camera::TP_CAMERA_DESC   TPCam_Desc{};
+	//
+	//TPCam_Desc.vEye = _float3(0.f, 10.f, -10.f);
+	//TPCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
+	//TPCam_Desc.fFov = XMConvertToRadians(65.f);
+	//TPCam_Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	//TPCam_Desc.fNear = 0.1f;
+	//TPCam_Desc.fFar = 300.f;
+	//TPCam_Desc.fMouseSensor = 0.05f;
+	//lstrcpy(TPCam_Desc.szGameObjectTag, TEXT("GameObject_TP_Camera"));
+	//TPCam_Desc.fSpeedPerSec = 10.f;
+	//TPCam_Desc.fRotationPerSec = XMConvertToRadians(90.f);
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_CAM_3RD,
+	//	LEVEL_GAMEPLAY, pLayerTag, &TPCam_Desc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -112,6 +115,15 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _tchar* pLayerTag)
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Effect(const _tchar* pLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Snow"),
+		LEVEL_GAMEPLAY, pLayerTag)))
+		return E_FAIL;
+	return S_OK;
+
 }
 
 HRESULT CLevel_GamePlay::Ready_Lights()
