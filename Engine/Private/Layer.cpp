@@ -42,6 +42,18 @@ CGameObject* CLayer::Find_Object(const _tchar* strObjectTag)
 	return nullptr;
 }
 
+HRESULT CLayer::Delete_LastObject()
+{
+	CGameObject* pGameObject = *m_GameObjects.rbegin();
+
+	if(nullptr != pGameObject)
+		Safe_Release(pGameObject);
+
+	m_GameObjects.pop_back();
+
+	return S_OK;
+}
+
 CComponent* CLayer::Find_Component(const _wstring& strComponentTag, _uint iIndex)
 {
 	auto	iter = m_GameObjects.begin();

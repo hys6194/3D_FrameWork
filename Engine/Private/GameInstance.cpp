@@ -278,6 +278,11 @@ HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
 }
 
+HRESULT CGameInstance::Delete_LastObject(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pObject_Manager->Delete_LastLayer(iLevelIndex, strLayerTag);
+}
+
 CLayer* CGameInstance::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 {
 	return m_pObject_Manager->Find_Layer(iLevelIndex, strLayerTag);
@@ -291,6 +296,11 @@ CGameObject* CGameInstance::Find_GameObject(_uint iLevelIndex, const _wstring& s
 CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex)
 {
 	return m_pObject_Manager->Get_Component(iLevelIndex, strLayerTag, strComponentTag, iIndex);
+}
+
+list<CGameObject*>* CGameInstance::Get_GameObjectList(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pObject_Manager->Get_GameObjectList(iLevelIndex, strLayerTag);
 }
 
 #pragma endregion
@@ -335,9 +345,19 @@ _vector* CGameInstance::Get_MouseWindowPosition()
 	return m_pPipeLine->Get_MouseWindowPosition();
 }
 
+_vector* CGameInstance::Get_PlayerViewPortPos()
+{
+	return m_pPipeLine->Get_PlayerViewPortPos();
+}
+
 _float4* CGameInstance::Get_RayDirCoords()
 {
 	return m_pPipeLine->Get_RayDirCoords();
+}
+
+vector<_float4>* CGameInstance::Get_RayCoords()
+{
+	return m_pPipeLine->Get_RayCoords();
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix Matrix)

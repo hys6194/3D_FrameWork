@@ -12,12 +12,23 @@ protected:
 	virtual ~CVIBuffer() = default;
 
 public:
+	_uint Get_VertexStride()
+	{
+		return m_iVertexStride;
+	}
+
+	_uint Get_VerticesNum()
+	{
+		return m_iNumVertices;
+	}
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual HRESULT Render();
 
 public:
-	HRESULT Bind_Input_Assembler();
+	virtual HRESULT Bind_Input_Assembler();
 
 protected:
 	// 정점들의 메모리 공간을 의미하는 컴객체

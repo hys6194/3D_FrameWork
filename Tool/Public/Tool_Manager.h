@@ -7,11 +7,11 @@ BEGIN(Engine)
 class CGameInstance;
 END
 
-
 BEGIN(Tool)
 
 class Tool_Manager :public CBase
 {
+
 private:
 	Tool_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameInstance* pGameInstance);
 	virtual ~Tool_Manager() = default;
@@ -23,9 +23,6 @@ public:
 	HRESULT						Render();
 
 private:
-	void						Picking_Objects();
-
-private:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 	CGameInstance*				m_pGameInstance = { nullptr };
@@ -33,6 +30,12 @@ private:
 	class CImGui_UI*			m_pUI = { nullptr };
 	class CImGui_Map*			m_pMap = { nullptr };
 
+	_bool						m_bRayShoot;
+
+
+private:
+	void						Picking_Objects();
+	void						Create_NaviCells();
 
 public:
 	static Tool_Manager*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameInstance* pGameInstance);

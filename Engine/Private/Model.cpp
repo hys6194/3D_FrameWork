@@ -122,8 +122,6 @@ void CModel::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInt
 
     m_bIsLoop = isLoop;
 
-
-
 }
 
 void CModel::Set_Interpolate(_bool bIsInter)
@@ -267,15 +265,15 @@ void CModel::Interpolate_Animation(_float fRatio)
 
         _float          fPreRatio = m_fPreTrackPos - m_iPreKeyFrameIndex;
 
-        KEYFRAME        tPreDesc, tPreDesc1, tCurDesc;
+        KEYFRAME        tPreDesc, /*tPreDesc1, */tCurDesc;
 
         _vector         vScale, vRotation, vTranslation;
 
-        _vector         vSourScale, vSourRotation, vSourTranslation;
-        _vector         vDestScale, vDestRotation, vDestTranslation;
+        //_vector         vSourScale, vSourRotation, vSourTranslation;
+        //_vector         vDestScale, vDestRotation, vDestTranslation;
 
         _vector         vCurScale, vCurRotation, vCurTranslation;
-        _vector         vCurScale1, vCurRotation1, vCurTranslation1;
+        //_vector         vCurScale1, vCurRotation1, vCurTranslation1;
         _vector         vNextScale, vNextRotation, vNextTranslation;
 
         tPreDesc = m_pPreChannel[i]->Get_KeyFrame().back();
@@ -336,12 +334,6 @@ HRESULT CModel::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePat
     m_pAIScene = m_Importer.ReadFile(pModelFilePath, iFlag);
     if (nullptr == m_pAIScene)
         return E_FAIL;
-
-    //if (AI_SUCCESS != exporter.Export(m_pAIScene, "fbx", "../Bin/Resources/Models/AnimModel/Strife/animtest1.fbx", iFlag))
-    //{
-    //
-    //    int iTest{};
-    //}
 
     /* 모델의 기본정보는 다 로드를 했다. */
     /* aiScene안에 포함되어있기 떄문에. 우리가 사용하기좋은 형태로 변형, 분리, 보관해주는 작업을 수행해야하낟. */
@@ -440,6 +432,122 @@ HRESULT CModel::Bind_BoneMatrix(CShader* pShader, const _char* pConstantName, _u
     m_vecMesh[iMeshIndex]->Bind_BoneMatrix(pShader, pConstantName, m_vecBone);
 
     return S_OK;
+}
+
+_bool CModel::CheckRayColl_Mesh(_float4 _fCamPos, _float4 _fRayDir, _float* _fCoord)
+{
+    _bool bResult;
+
+    // 바이너리 파일을 어떻게 읽어들일 것이냐
+    // 또한 PreMatrix를 곱한 값만큼 어떻게 정점을 가져올 것이냐
+    // 바이너리 파일에는 PreMatrix 값은 적용되어있지 않음
+    //ifstream InStream("../../Client/Bin/DataFiles/Nonanim/TileFloor1.bin", ios::binary);
+    //
+    //if (InStream.is_open() == false)
+    //    return E_FAIL;
+    //
+    //for (size_t i = 0; i < m_iNumMeshes; i++)
+    //{
+    //    _uint iNumVertices = m_vecMesh[i]->Get_VerticesNum();
+    //
+    //    VTXMESH* pVertices = new VTXMESH[iNumVertices];
+    //    ZeroMemory(pVertices, sizeof(VTXMESH) * iNumVertices);
+    //    // 해당 메쉬의 면 개수만큼 루프
+    //    for (size_t j = 0; j < 5; j++)
+    //    {
+    //        _float3 fVertex1, fVertex2, fVertex3;
+    //        InStream.read(reinterpret_cast<char*>(&pVertices[i * 3].vPosition), sizeof(_float3));
+    //        InStream.read(reinterpret_cast<char*>(&pVertices[i * 3 + 1].vPosition), sizeof(_float3));
+    //        InStream.read(reinterpret_cast<char*>(&pVertices[i * 3 + 2].vPosition), sizeof(_float3));
+    //        XMStoreFloat3(&fVertex1,
+    //            XMLoadFloat3(&pVertices[i * 3].vPosition));
+    //        XMStoreFloat3(&fVertex2,
+    //            XMLoadFloat3(&pVertices[i * 3 + 1].vPosition));
+    //        XMStoreFloat3(&fVertex3,
+    //            XMLoadFloat3(&pVertices[i * 3 + 2].vPosition));
+    //        
+    //
+    //
+    //    }
+    //
+    //}
+
+    //_ulong			dwByte = {};
+    //_wstring wtest = TEXT("../../Client/Bin/DataFiles/Dn_HL_FloorTiles_A_Mesh.dat");
+    //const char* strMeshName;
+    //
+    //_uint iNumVertices = m_vecMesh[0]->Get_VerticesNum();
+    //
+    //VTXMESH* pVertices = new VTXMESH[iNumVertices];
+    //ZeroMemory(pVertices, sizeof(VTXMESH) * iNumVertices);
+    //
+    //HANDLE hFile1 = CreateFile(wtest.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+    //if (0 == hFile1)
+    //    return E_FAIL;
+    //
+    //ReadFile(hFile1, &strMeshName, sizeof(char) * 3, &dwByte, nullptr);
+    //ReadFile(hFile1, &pVertices[0].vPosition, sizeof(_float3), &dwByte, nullptr);
+    //ReadFile(hFile1, &pVertices[0].vNormal, sizeof(_float3), &dwByte, nullptr);
+    //ReadFile(hFile1, &pVertices[0].vTexcoord, sizeof(_float2), &dwByte, nullptr);
+    //ReadFile(hFile1, &pVertices[0].vTangent, sizeof(_float3), &dwByte, nullptr);
+    //
+    //int a = 10;
+
+    //
+    //TCHAR debugMessage[256];
+    //_stprintf_s(debugMessage, _T("vPosition: x = %.6f, y = %.6f, z = %.6f\n"),
+    //	pVertices[0].vPosition.x, pVertices[0].vPosition.y, pVertices[0].vPosition.z);
+    //OutputDebugString(debugMessage);
+    //
+    //TCHAR debugMessage1[256];
+    //_stprintf_s(debugMessage1, _T("vNormal: x = %.6f, y = %.6f, z = %.6f\n"),
+    //	pVertices[0].vNormal.x, pVertices[0].vNormal.y, pVertices[0].vNormal.z);
+    //OutputDebugString(debugMessage1);
+    //
+    //TCHAR debugMessage2[256];
+    //_stprintf_s(debugMessage2, _T("vTexcoord: x = %.6f, y = %.6ff\n"),
+    //	pVertices[0].vTexcoord.x, pVertices[0].vTexcoord.y);
+    //OutputDebugString(debugMessage2);
+
+    //
+    //TCHAR debugMessage3[256];
+    //_stprintf_s(debugMessage3, _T("vTangent: x = %.6f, y = %.6f, z = %.6f\n"),
+    //	pVertices[0].vTangent.x, pVertices[0].vTangent.y, pVertices[0].vTangent.z);
+    //OutputDebugString(debugMessage3);
+
+
+    
+
+    //해당 모델의 메쉬 개수만큼
+    for (size_t i = 0; i < m_pAIScene->mNumMeshes; i++)
+    {
+        // 메쉬의 버텍스 개수만큼 루프
+        for (size_t j = 0; j < m_pAIScene->mMeshes[i]->mNumFaces; j++)
+        {
+            _vector vVertex1, vVertex2, vVertex3;
+    
+            vVertex1 = XMVectorSet(m_pAIScene->mMeshes[i]->mVertices[j * 3].x,     m_pAIScene->mMeshes[i]->mVertices[j * 3].y,     m_pAIScene->mMeshes[i]->mVertices[j * 3].z, 1.f);
+            vVertex2 = XMVectorSet(m_pAIScene->mMeshes[i]->mVertices[j * 3 + 1].x, m_pAIScene->mMeshes[i]->mVertices[j * 3 + 1].y, m_pAIScene->mMeshes[i]->mVertices[j * 3 + 1].z, 1.f);
+            vVertex3 = XMVectorSet(m_pAIScene->mMeshes[i]->mVertices[j * 3 + 2].x, m_pAIScene->mMeshes[i]->mVertices[j * 3 + 2].y, m_pAIScene->mMeshes[i]->mVertices[j * 3 + 2].z, 1.f);
+    
+            _vector v1, v2;
+            v1 = XMLoadFloat4(&_fCamPos);
+            v2 = XMLoadFloat4(&_fRayDir);
+    
+            bResult = DirectX::TriangleTests::Intersects(
+                      v1,
+                      v2,
+                      vVertex1,
+                      vVertex2,
+                      vVertex3,
+                      *_fCoord);
+
+        if (bResult)
+            return true;
+        }
+    }
+
+    return false;
 }
 
 HRESULT CModel::Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex)
@@ -544,6 +652,224 @@ CComponent* CModel::Clone(void* pArg)
 
     return pInstance;
 }
+
+
+#pragma region 창홍이형의 바이너리
+
+HRESULT CModel::Initialize_Prototype(MODELTYPE _eType, const _char* _pModelFilePath, const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix)
+{
+    m_eModelType = _eType;
+
+    ofstream OutStream(_pBinaryFilePath, ios::binary | ios::out);
+
+    if (OutStream.is_open() == false)
+        return E_FAIL;
+
+    OutStream.write(reinterpret_cast<const char*>(&m_eModelType), sizeof(MODELTYPE));
+
+    XMStoreFloat4x4(&m_PreTransformMatrix, _PreTransformMatrix);
+
+    _uint iFlag = aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace/* | aiProcessPreset_TargetRealtime_Fast*/;
+
+    if (_eType == MODELTYPE::TYPE_NONANIM)
+        iFlag |= aiProcess_PreTransformVertices;
+
+    m_pAIScene = m_Importer.ReadFile(_pModelFilePath, iFlag);
+    if (m_pAIScene == nullptr)
+        return E_FAIL;
+
+    if (FAILED(Ready_Bones(m_pAIScene->mRootNode, -1)))
+        return E_FAIL;
+
+    _uint iWriteByte = m_vecBone.size();
+    OutStream.write(reinterpret_cast<const char*>(&iWriteByte), sizeof(_uint));
+    for (auto& pBone : m_vecBone)
+        pBone->Save_Bone(OutStream);
+
+    if (FAILED(Ready_Meshes_Save(OutStream)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Materials_Save(_pModelFilePath, OutStream)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Animations()))
+        return E_FAIL;
+
+    OutStream.write(reinterpret_cast<const char*>(&m_iNumAnimations), sizeof(_uint));
+    for (auto& pAnimation : m_Animations)
+        pAnimation->Save_Animation(OutStream);
+
+    OutStream.close();
+
+
+    return S_OK;
+}
+
+HRESULT CModel::Initialize_Prototype(const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix)
+{
+    ifstream InStream(_pBinaryFilePath, ios::binary);
+
+    if (InStream.is_open() == false)
+        return E_FAIL;
+
+    InStream.read(reinterpret_cast<char*>(&m_eModelType), sizeof(MODELTYPE));
+
+    XMStoreFloat4x4(&m_PreTransformMatrix, _PreTransformMatrix);
+
+    _uint iWriteByte = m_vecBone.size();
+    InStream.read(reinterpret_cast<char*>(&iWriteByte), sizeof(_uint));
+    Ready_Bones_Load(iWriteByte, InStream);
+
+    if (FAILED(Ready_Meshes_Load(InStream)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Materials_Load(InStream)))
+        return E_FAIL; 
+
+    if (FAILED(Ready_Animation_Load(InStream)))
+        return E_FAIL;
+
+    InStream.read(reinterpret_cast<char*>(&m_iNumAnimations), sizeof(_uint));
+    Ready_Animation_Load(InStream);
+
+    InStream.close();
+
+
+    return S_OK;
+}
+
+HRESULT CModel::Ready_Bones_Load(_uint _iNumBones, ifstream& _InStream)
+{
+    for (size_t i = 0; i < _iNumBones; i++)
+    {
+        CBone* pBone = CBone::Create(_InStream);
+        if (nullptr == pBone)
+            return E_FAIL;
+
+        m_vecBone.push_back(pBone);
+
+    }
+
+    return S_OK;
+}
+
+HRESULT CModel::Ready_Meshes_Save(ofstream& _OutStream)
+{
+    m_iNumMeshes = m_pAIScene->mNumMeshes;
+
+    _uint iWriteByte = m_iNumMeshes;
+    _OutStream.write(reinterpret_cast<const char*>(&iWriteByte), sizeof(_uint));
+
+    for (size_t i = 0; i < m_iNumMeshes; i++)
+    {
+        const aiMesh* pAIMesh = m_pAIScene->mMeshes[i];
+
+        CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, pAIMesh, m_eModelType, m_vecBone, XMLoadFloat4x4(&m_PreTransformMatrix), _OutStream);
+        if (pMesh == nullptr)
+            return E_FAIL;
+
+        m_vecMesh.push_back(pMesh);
+    }
+
+    return S_OK;
+}
+
+HRESULT CModel::Ready_Materials_Save(const _char* _pModelFilePath, ofstream& _OutStream)
+{
+    m_iNumMaterials = m_pAIScene->mNumMaterials;
+
+    _uint iWriteByte = m_iNumMaterials;
+    _OutStream.write(reinterpret_cast<const char*>(&iWriteByte), sizeof(_uint));
+
+    for (size_t i = 0; i < m_iNumMaterials; i++)
+    {
+        CMeshMaterial* pMaterial = CMeshMaterial::Create(m_pDevice, m_pContext, m_pAIScene->mMaterials[i], _pModelFilePath, _OutStream);
+        if (pMaterial == nullptr)
+            return E_FAIL;
+
+        m_vecMaterial.push_back(pMaterial);
+    }
+
+    return S_OK;
+}
+
+HRESULT CModel::Ready_Meshes_Load(ifstream& _InStream)
+{
+    _InStream.read(reinterpret_cast<char*>(&m_iNumMeshes), sizeof(_uint));
+
+    for (size_t j = 0; j < m_iNumMeshes; j++)
+    {
+        CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eModelType, m_vecBone, XMLoadFloat4x4(&m_PreTransformMatrix), _InStream);
+        if (pMesh == nullptr)
+            return E_FAIL;
+
+        m_vecMesh.push_back(pMesh);
+    }
+
+    return S_OK;
+}
+
+HRESULT CModel::Ready_Materials_Load(ifstream& _InStream)
+{
+    _InStream.read(reinterpret_cast<char*>(&m_iNumMaterials), sizeof(_uint));
+
+    for (size_t j = 0; j < m_iNumMaterials; j++)
+    {
+        CMeshMaterial* pMaterial = CMeshMaterial::Create(m_pDevice, m_pContext, _InStream);
+        if (pMaterial == nullptr)
+            return E_FAIL;
+
+        m_vecMaterial.push_back(pMaterial);
+    }
+
+    return S_OK;
+}
+
+HRESULT CModel::Ready_Animation_Load(ifstream& _InStream)
+{
+    m_vecCurrentTrackPosition.resize(m_iNumAnimations);
+    m_vecKeyFrameIndex.resize(m_iNumAnimations);
+
+    for (size_t i = 0; i < m_iNumAnimations; i++)
+    {
+        CAnimation* pAnimation = CAnimation::Create(m_vecBone, _InStream, m_vecKeyFrameIndex[i]);
+        if (pAnimation == nullptr)
+            return E_FAIL;
+
+        m_Animations.push_back(pAnimation);
+    }
+
+    return S_OK;
+}
+
+CModel* CModel::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, MODELTYPE _eType, const _char* _pModelFilePath, const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix)
+{
+    CModel* pInstance = new CModel(_pDevice, _pContext);
+
+    if (FAILED(pInstance->Initialize_Prototype(_eType, _pModelFilePath, _pBinaryFilePath, _PreTransformMatrix)))
+    {
+        MSG_BOX("Failed To Created : CModel");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
+CModel* CModel::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix)
+{
+    CModel* pInstance = new CModel(_pDevice, _pContext);
+
+    if (FAILED(pInstance->Initialize_Prototype(_pBinaryFilePath, _PreTransformMatrix)))
+    {
+        MSG_BOX("Failed To Created : CModel");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
+
+#pragma endregion
 
 
 void CModel::Free()

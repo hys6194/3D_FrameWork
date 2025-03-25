@@ -56,6 +56,7 @@ public:
 	}
 
 
+	_vector*							Get_PlayerViewPortPos();
 	// GameInstance의 상호참조로 문제가 생길까봐 
 	// Input_Device 말고 PipeLine클래스에서 제작
 	_vector*							Get_MouseWindowPosition();
@@ -64,6 +65,7 @@ public:
 	// 다음에는 Ray 클래스를 따로 제작해 카메라 행렬을 가져와서
 	// 사용하고 계산하는 컴포넌트로 제작
 	_float4*							Get_RayDirCoords();
+	vector<_float4>*					Get_RayCoords();
 public:
 
 	void								Set_Transform(TRANSFORMSTATE eState, _fmatrix Matrix);				// fmatrix 형 

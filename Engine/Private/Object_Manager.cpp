@@ -53,8 +53,6 @@ void CObject_Manager::Priority_Update(_float fTimeDelta)
         for (auto& Pair : m_pLayers[i])
             Pair.second->Priority_Update(fTimeDelta);
     }
-
-
 }
 
 void CObject_Manager::Update(_float fTimeDelta)
@@ -96,6 +94,21 @@ CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerT
     return iter->second;
 }
 
+HRESULT CObject_Manager::Delete_LastLayer(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+    auto iter = m_pLayers[iLevelIndex].find(strLayerTag);
+
+    if (iter == m_pLayers[iLevelIndex].end())
+        return E_FAIL;
+    //if (iter == m_pLayers[iLevelIndex].end())
+    //    return E_FAIL;
+    //m_pLayers[iLevelIndex].erase(iter->first);
+
+    iter->second->Delete_LastObject();
+
+    return S_OK;
+}
+
 CGameObject* CObject_Manager::Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag)
 {
     CGameObject* pGameObeject = Find_Layer(iLevelIndex, strLayerTag)->Find_Object(strObjectTag);
@@ -114,6 +127,16 @@ CComponent* CObject_Manager::Get_Component(_uint iLevelIndex, const _wstring& st
         return nullptr;
 
     return pComponent;
+}
+
+list<Engine::CGameObject*>* CObject_Manager::Get_GameObjectList(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+    auto iter = m_pLayers[iLevelIndex].find(strLayerTag);
+
+    if (iter == m_pLayers[iLevelIndex].end())
+        return nullptr;
+
+    return iter->second->Get_GameObjectList();
 }
 
 CObject_Manager* CObject_Manager::Create(_uint iNumLevels)

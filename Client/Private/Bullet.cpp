@@ -30,7 +30,7 @@ HRESULT CBullet::Initialize(void* pArg)
     FAILED_CHECK_RETURN(Ready_Component(), E_FAIL)
 
     m_pTransformCom->Set_Matrix(&m_matHand);
-    m_pTransformCom->SetUp_Scaled(0.05f, 0.05f, 0.05f);
+    m_pTransformCom->SetUp_Scaled(3.f, 3.f, 3.f);
 
     return S_OK;
 }
@@ -43,6 +43,7 @@ void CBullet::Priority_Update(_float fTimeDelta)
 void CBullet::Update(_float fTimeDelta)
 {
     m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
+
 
     _vector vTest = m_pTransformCom->Get_State(CTransform::STATE_POS);
     vTest += XMLoadFloat4(&m_fLook) * m_fSpeed;

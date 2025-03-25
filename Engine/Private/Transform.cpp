@@ -192,6 +192,158 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
     Set_State(STATE_LOOK, XMVector4Transform(vLook, RotationMatrix));
 }
 
+HRESULT CTransform::Move_Straight(_float fTimeDelta, CNavigation* pNavigation)
+{
+    _vector vPos = Get_State(STATE_POS);
+
+    // 움직일 벡터 설정
+    _vector vDir = AXIS_Z;
+
+    // Right 벡터의 방향으로 fSpeedPerSec의 값만큼 fTimeDelta 초 만큼 이동한다
+    vPos += XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
+
+    // 계산한 Vector를 position에 대입한다
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
+
+    return S_OK;
+}
+
+HRESULT CTransform::Move_Backward(_float fTimeDelta, CNavigation* pNavigation)
+{
+    _vector vPos = Get_State(STATE_POS);
+
+    // 움직일 벡터 설정
+    _vector vDir = AXIS_Z;
+
+    // Right 벡터의 방향으로 fSpeedPerSec의 값만큼 fTimeDelta 초 만큼 이동한다
+    vPos -= XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
+
+    // 계산한 Vector를 position에 대입한다
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
+
+    return S_OK;
+}
+
+HRESULT CTransform::Move_Right(_float fTimeDelta, CNavigation* pNavigation)
+{
+    _vector vPos = Get_State(STATE_POS);
+
+    // 움직일 벡터 설정
+    _vector vDir = AXIS_X;
+
+    // Right 벡터의 방향으로 fSpeedPerSec의 값만큼 fTimeDelta 초 만큼 이동한다
+    vPos += XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
+
+    // 계산한 Vector를 position에 대입한다
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
+
+    return S_OK;
+}
+
+HRESULT CTransform::Move_Left(_float fTimeDelta, CNavigation* pNavigation)
+{
+    _vector vPos = Get_State(STATE_POS);
+
+    // 움직일 벡터 설정
+    _vector vDir = AXIS_X;
+
+    // Right 벡터의 방향으로 fSpeedPerSec의 값만큼 fTimeDelta 초 만큼 이동한다
+    vPos -= XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
+
+    // 계산한 Vector를 position에 대입한다
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
+
+    return S_OK;
+}
+
+HRESULT CTransform::Move_Left_Up(_float fTimeDelta, CNavigation* pNavigation)
+{
+    _vector vPos = Get_State(STATE_POS);
+
+    // 움직일 벡터 설정
+    _vector vDir = -AXIS_XMZ;
+
+    // Right 벡터의 방향으로 fSpeedPerSec의 값만큼 fTimeDelta 초 만큼 이동한다
+    vPos += XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
+
+    // 계산한 Vector를 position에 대입한다
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
+
+    return S_OK;
+}
+
+HRESULT CTransform::Move_Right_Up(_float fTimeDelta, CNavigation* pNavigation)
+{
+    _vector vPos = Get_State(STATE_POS);
+
+    // 움직일 벡터 설정
+    _vector vDir = AXIS_XZ;
+
+    // Right 벡터의 방향으로 fSpeedPerSec의 값만큼 fTimeDelta 초 만큼 이동한다
+    vPos += XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
+
+    // 계산한 Vector를 position에 대입한다
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
+
+    return S_OK;
+}
+
+HRESULT CTransform::Move_Left_Down(_float fTimeDelta, CNavigation* pNavigation)
+{
+    _vector vPos = Get_State(STATE_POS);
+
+    // 움직일 벡터 설정
+    _vector vDir = -AXIS_XZ;
+
+    // Right 벡터의 방향으로 fSpeedPerSec의 값만큼 fTimeDelta 초 만큼 이동한다
+    vPos += XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
+
+    // 계산한 Vector를 position에 대입한다
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
+
+    return S_OK;
+}
+
+HRESULT CTransform::Move_Right_Down(_float fTimeDelta, CNavigation* pNavigation)
+{
+    _vector vPos = Get_State(STATE_POS);
+
+    // 움직일 벡터 설정
+    _vector vDir = AXIS_XMZ;
+
+    // Right 벡터의 방향으로 fSpeedPerSec의 값만큼 fTimeDelta 초 만큼 이동한다
+    vPos += XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
+
+    // 계산한 Vector를 position에 대입한다
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
+
+    return S_OK;
+}
+
 void CTransform::SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ)
 {
     _vector			vRight = Get_State(STATE_RIGHT);

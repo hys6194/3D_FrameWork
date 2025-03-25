@@ -12,11 +12,16 @@ private:
 
 public:
 	HRESULT Initialize(const aiAnimation* pAIAnimation, const vector<class CBone*>& pBone, vector<_uint>& iCurrentKeyFrameIndices);
+	HRESULT Initialize(const vector<class CBone*>& _Bones, ifstream& _InStream, vector<_uint>& _CurrentKeyFrameIndices);
 
 	// 애니메이션의 행렬 업데이트
 	_bool Update_TransformationMatrix(const vector<class CBone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex);
 	_bool Update_TransformationMatrix(const vector<class CBone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex, class CGameObject* pObject);
 	void KeyFrame_Reset();
+
+public:
+	_bool Save_Animation(ofstream& _OpenStream);
+
 
 public:
 	vector<class CChannel*> Get_Channel()
@@ -51,6 +56,7 @@ private:
 
 public:
 	static CAnimation* Create(const aiAnimation* pAIAnimation, const vector<class CBone*>& pBone, vector<_uint>& iCurrentKeyFrameIndices);
+	static CAnimation* Create(const vector<class CBone*>& _Bones, ifstream& _InStream, vector<_uint>& _CurrentKeyFrameIndices);
 	virtual void Free() override;
 };
 

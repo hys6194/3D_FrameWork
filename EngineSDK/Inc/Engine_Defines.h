@@ -35,9 +35,12 @@ using namespace DirectX;
 #include <string>
 #include <unordered_map>
 #include <ctime>
-#include "tchar.h"
+#include <io.h>
+#include <iostream>
+#include <fstream>
 using namespace std;
 
+#include "tchar.h"
 #include "Engine_Enum.h"
 #include "Engine_Macro.h"
 #include "Engine_Struct.h"
@@ -51,6 +54,7 @@ namespace Engine
 {
 	// Transform을 어디에서든 끌고오기 위해서 전역으로 선언
 	const wstring g_strTransformTag = TEXT("Com_Transform");
+	const _wstring strPathName = TEXT("../../Client/Bin/DataFiles/");
 }
 
 #define TIME60									TEXT("Timer_60")
@@ -58,6 +62,9 @@ namespace Engine
 #define AXIS_Y									XMVectorSet(0.f, 1.f, 0.f, 0.f)
 #define AXIS_Z									XMVectorSet(0.f, 0.f, 1.f, 0.f)
 #define AXIS_W									XMVectorSet(0.f, 0.f, 0.f, 1.f)
+
+#define AXIS_XZ									XMVectorSet(1.f, 0.f, 1.f, 0.f)
+#define AXIS_XMZ								XMVectorSet(1.f, 0.f, -1.f, 0.f)
 
 #ifdef _DEBUG
 

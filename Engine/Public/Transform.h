@@ -66,6 +66,17 @@ public:
 	void		Rotation(_fvector vAxis, _float fRadian);
 
 public:
+	HRESULT		Move_Straight(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT		Move_Backward(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT		Move_Right(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT		Move_Left(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+
+	HRESULT		Move_Left_Up(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT		Move_Right_Up(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT		Move_Left_Down(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT		Move_Right_Down(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+
+public:
 	void SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ);
 	HRESULT Bind_SR(const _char* pConstantName, class CShader* pShader);
 

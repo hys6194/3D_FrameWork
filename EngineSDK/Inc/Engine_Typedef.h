@@ -24,6 +24,7 @@ namespace Engine
 	typedef		double						_double;
 
 	typedef		wstring						_wstring;
+	typedef		string						_string;
 
 	typedef		XMFLOAT2					_float2;	// 저장용
 	typedef		XMFLOAT3					_float3;	// 저장용

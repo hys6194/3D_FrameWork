@@ -98,6 +98,50 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
 
 }
 
+HRESULT CBone::Initialize(ifstream& _InStream)
+{
+    _uint iReadByte = { };
+    _char szBoneName[MAX_PATH] = { };
+
+    _InStream.read(reinterpret_cast<char*>(&iReadByte), sizeof(_uint));
+    _InStream.read(reinterpret_cast<char*>(szBoneName), sizeof(_char) * iReadByte);
+    strcpy_s(m_szName, szBoneName);
+
+    _InStream.read(reinterpret_cast<char*>(&m_matTransform), sizeof(_float4x4));
+    _InStream.read(reinterpret_cast<char*>(&m_iParentBoneIndex), sizeof(_int));
+
+    return S_OK;
+}
+
+_bool CBone::Save_Bone(ofstream& _OpenStream)
+{
+    if (!_OpenStream)
+        return false;
+
+    _uint iSize = sizeof(m_szName);
+    _OpenStream.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+    _OpenStream.write(m_szName, iSize);
+
+    _OpenStream.write(reinterpret_cast<const char*>(&m_matTransform), sizeof(_float4x4));
+
+    _OpenStream.write(reinterpret_cast<const char*>(&m_iParentBoneIndex), sizeof(_int));
+
+    return true;
+}
+
+CBone* CBone::Create(ifstream& _InStream)
+{
+    CBone* pInstance = new CBone();
+
+    if (FAILED(pInstance->Initialize(_InStream)))
+    {
+        MSG_BOX("Failed To Created : CBone");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
 CBone* CBone::Create(const aiNode* pAINode, _int iParentBoneIndex)
 {
     CBone* pInstance = new CBone();

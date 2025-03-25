@@ -48,6 +48,7 @@ private:
 	const _uint*				m_pTargetState = { nullptr };	//플레이어의 상태를 가져와서 애니메이션의 상태를 변경하려고 함
 
 	_float						m_fCool = {};
+	_bool						m_bShoot = { false };
 	class CPlayer*				m_pOwner = { nullptr };
 
 private:
@@ -55,9 +56,6 @@ private:
 	HRESULT						Ready_Components();
 
 	HRESULT						Create_Bullet();
-
-
-
 
 public:
 	static CGun_Left*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

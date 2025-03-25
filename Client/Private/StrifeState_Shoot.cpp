@@ -87,21 +87,36 @@ void CStrifeState_Shoot::Player_ShootMove(_float fTimeDelta)
 {
     switch (m_iKeyState)
     {
+	case CPlayer::KEY_LEFT | CPlayer::KEY_UP | CPlayer::KEY_LB:
+		m_pOwner->Get_Transform()->Move_Left_Up(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+		break;
+
+	case CPlayer::KEY_RIGHT | CPlayer::KEY_DOWN | CPlayer::KEY_LB:
+		m_pOwner->Get_Transform()->Move_Right_Down(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+		break;
+
+	case CPlayer::KEY_LEFT | CPlayer::KEY_DOWN | CPlayer::KEY_LB:
+		m_pOwner->Get_Transform()->Move_Left_Down(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+		break;
+
+	case CPlayer::KEY_RIGHT | CPlayer::KEY_UP | CPlayer::KEY_LB:
+		m_pOwner->Get_Transform()->Move_Right_Up(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+		break;
 
     case CPlayer::KEY_DOWN | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Backward(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+        m_pOwner->Get_Transform()->Move_Backward(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case CPlayer::KEY_LEFT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Left(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+        m_pOwner->Get_Transform()->Move_Left(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case CPlayer::KEY_RIGHT | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Right(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+        m_pOwner->Get_Transform()->Move_Right(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
 
     case CPlayer::KEY_UP | CPlayer::KEY_LB:
-        dynamic_cast<CPlayer*>(m_pOwner)->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+        m_pOwner->Get_Transform()->Move_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
         break;
     }
 }
@@ -110,9 +125,8 @@ void CStrifeState_Shoot::Player_LookSet(_float fTimeDelta)
 {
 	_vector vOffset = XMVectorSet(0.f, 2.f, 0.f, 0.f);
 
-
 	_vector vPos = m_pOwner->Get_Transform()->Get_State(CTransform::STATE_POS) + vOffset;
-	_vector vWin = *m_pGameInstance->Get_MouseWindowPosition();
+	_vector vWin = *m_pGameInstance->Get_PlayerViewPortPos();
 
 	_vector vzero{ 0.f,1.f,0.f,0.f };
 	_vector vMouse = XMVector4Normalize(vWin);
@@ -137,11 +151,11 @@ void CStrifeState_Shoot::Player_LookSet(_float fTimeDelta)
 
 void CStrifeState_Shoot::Apply_ShootAnimation()
 {
-		if (m_iKeyState & CPlayer::KEY_DOWN || m_iKeyState & CPlayer::KEY_UP || m_iKeyState & CPlayer::KEY_LEFT || m_iKeyState & CPlayer::KEY_RIGHT)
-			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_WALK, true, false);
+	if (m_iKeyState & CPlayer::KEY_DOWN || m_iKeyState & CPlayer::KEY_UP || m_iKeyState & CPlayer::KEY_LEFT || m_iKeyState & CPlayer::KEY_RIGHT)
+		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_WALK, true, false);
 
-		else if (!(m_iKeyState & CPlayer::KEY_DOWN) && !(m_iKeyState & CPlayer::KEY_UP) && !(m_iKeyState & CPlayer::KEY_LEFT) && !(m_iKeyState & CPlayer::KEY_RIGHT))
-			m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_IDLE, true, false);
+	else if (!(m_iKeyState & CPlayer::KEY_DOWN) && !(m_iKeyState & CPlayer::KEY_UP) && !(m_iKeyState & CPlayer::KEY_LEFT) && !(m_iKeyState & CPlayer::KEY_RIGHT))
+		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_IDLE, true, false);
 }
 
 CStrifeState_Shoot* CStrifeState_Shoot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)

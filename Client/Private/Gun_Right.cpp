@@ -59,7 +59,7 @@ void CGun_Right::Priority_Update(_float fTimeDelta)
 
     m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
 
-    if (m_pGameInstance->Get_DIMouseState(DIM_LB) && m_fCool < m_fTotalTime)
+    if ((CPlayer::STATE_SHOOT & *m_pTargetState) && m_fCool < m_fTotalTime)
     {
 
         Create_Bullet();
@@ -68,7 +68,7 @@ void CGun_Right::Priority_Update(_float fTimeDelta)
 
     }
 
-    else if (!m_pGameInstance->Get_DIMouseState(DIM_LB))
+    else if (CPlayer::STATE_SHOOT & ~*m_pTargetState)
     {
         m_fCool = 0.1f;
         m_fTotalTime = 0.f;

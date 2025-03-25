@@ -19,6 +19,11 @@ public:
 		return m_iNumMeshes;
 	}
 
+	vector<class CMesh*> Get_Meshes()
+	{
+		return m_vecMesh;
+	}
+
 	const _uint Get_PreAnimIndex() { return m_iPreAnimationIndex; };
 
 	const _float4x4* Get_BoneMatrix(const _char* pBoneName);
@@ -51,7 +56,6 @@ public:
 	{
 		return m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
 	}
-	
 
 public:
 	//재생하려고 하는 애니메이션, 루프, 보간
@@ -66,8 +70,14 @@ public:
 
 public:
 	virtual HRESULT						Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
+	virtual HRESULT						Initialize_Prototype(MODELTYPE _eType, const _char* _pModelFilePath, const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix);
+	virtual HRESULT						Initialize_Prototype(const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix);
 	virtual HRESULT						Initialize(void* pArg) override;
 	virtual HRESULT						Render(_uint iMeshIndex);
+
+public:
+	static CModel* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, MODELTYPE _eType, const _char* _pModelFilePath, const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix = XMMatrixIdentity());
+	static CModel* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix = XMMatrixIdentity());
 
 public:
 	_bool								Play_Animation(_float fTimeDelta, CGameObject* pObject = nullptr);
@@ -80,6 +90,8 @@ public:
 	HRESULT								Bind_Material(class CShader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
 	HRESULT								Bind_BoneMatrix(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
 
+public:
+	_bool								CheckRayColl_Mesh(_float4 _fCamPos, _float4 _fRayDir, _float* _fCoord);
 
 private:
 	const aiScene*						m_pAIScene = { nullptr };
@@ -123,6 +135,14 @@ private:
 
 	KEYFRAME							m_pPreKeyFrame = { };
 	KEYFRAME							m_pCurKeyFrame = { };
+
+private:
+	HRESULT								Ready_Bones_Load(_uint _iNumBones, ifstream& _InStream);
+	HRESULT								Ready_Meshes_Save(ofstream& _OutStream);
+	HRESULT								Ready_Materials_Save(const _char* _pModelFilePath, ofstream& _OutStream);
+	HRESULT								Ready_Meshes_Load(ifstream& _InStream);
+	HRESULT								Ready_Materials_Load(ifstream& _InStream);
+	HRESULT								Ready_Animation_Load(ifstream& _InStream);
 
 private:
 	HRESULT								Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex);

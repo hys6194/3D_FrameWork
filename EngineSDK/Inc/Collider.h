@@ -29,10 +29,10 @@ public:
 #endif
 
 private:
-	TYPE						m_eColliderType = { TYPE_END };
-	class CBounding*			m_pBounding = { nullptr };
+	TYPE									m_eColliderType = { TYPE_END };
+	class CBounding*						m_pBounding = { nullptr };
 
-	_bool						m_isColl = { false };
+	_bool									m_isColl = { false };
 
 #ifdef _DEBUG
 private:
