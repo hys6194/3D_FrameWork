@@ -155,42 +155,42 @@ HRESULT Loader::Loading_Models()
 		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Stair/Stair2.fbx", PreTransformMatrix))))
 		return E_FAIL;
 
-	// 저장용
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK1,
-		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-			"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Rock/DestRock1.fbx",
-			"../../Client/Bin/DataFiles/Nonanim/DestRock1.bin",
-			PreTransformMatrix))))
-		return E_FAIL;
-	
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK2,
-		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-			"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Rock/DestRock2.fbx",
-			"../../Client/Bin/DataFiles/Nonanim/DestRock2.bin",
-			PreTransformMatrix))))
-		return E_FAIL;
-	
-	PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_FLOOR1,
-		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-			"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Floor/TileFloor1.fbx",
-			"../../Client/Bin/DataFiles/Nonanim/TileFloor1.bin",
-			PreTransformMatrix))))
-		return E_FAIL;
-	
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR1,
-		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-			"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Stair/Stair1.fbx",
-			"../../Client/Bin/DataFiles/Nonanim/Stair1.bin",
-			PreTransformMatrix))))
-		return E_FAIL;
-	
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR2,
-		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-			"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Stair/Stair2.fbx",
-			"../../Client/Bin/DataFiles/Nonanim/Stair2.bin",
-			PreTransformMatrix))))
-		return E_FAIL;
+	//// 저장용
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK1,
+	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+	//		"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Rock/DestRock1.fbx",
+	//		"../../Client/Bin/DataFiles/Nonanim/DestRock1.bin",
+	//		PreTransformMatrix))))
+	//	return E_FAIL;
+	//
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK2,
+	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+	//		"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Rock/DestRock2.fbx",
+	//		"../../Client/Bin/DataFiles/Nonanim/DestRock2.bin",
+	//		PreTransformMatrix))))
+	//	return E_FAIL;
+	//
+	//PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_FLOOR1,
+	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+	//		"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Floor/TileFloor1.fbx",
+	//		"../../Client/Bin/DataFiles/Nonanim/TileFloor1.bin",
+	//		PreTransformMatrix))))
+	//	return E_FAIL;
+	//
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR1,
+	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+	//		"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Stair/Stair1.fbx",
+	//		"../../Client/Bin/DataFiles/Nonanim/Stair1.bin",
+	//		PreTransformMatrix))))
+	//	return E_FAIL;
+	//
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR2,
+	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+	//		"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Stair/Stair2.fbx",
+	//		"../../Client/Bin/DataFiles/Nonanim/Stair2.bin",
+	//		PreTransformMatrix))))
+	//	return E_FAIL;
 
 	//// 불러오기
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK1,

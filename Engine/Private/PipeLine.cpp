@@ -154,14 +154,20 @@ vector<_float4>* CPipeLine::Get_RayCoords()
 	vRayPos = XMVector3TransformCoord(vRayPos, XMLoadFloat4x4(&fView));
 	vRayDir = XMVector3TransformCoord(vDir, XMLoadFloat4x4(&fView));
 
+	_vector vTest = vRayDir - vRayPos;
+
 	_float4 fRayPos, fRayDir;
 
 	XMStoreFloat4(&fRayPos, vRayPos);
-	XMStoreFloat4(&fRayDir, XMVector4Normalize(vRayDir));
+	XMStoreFloat4(&fRayDir, XMVector4Normalize(vTest));
 
-	//XMVectorSetW(XMLoadFloat4(&fRayDir), 0.f);	 
 	m_vecRays.push_back(fRayPos);
 	m_vecRays.push_back(fRayDir);
+
+	TCHAR debugMessage3[256];
+	_stprintf_s(debugMessage3, _T("fRayDir: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
+		fRayDir.x, fRayDir.y, fRayDir.z, fRayDir.w);
+	OutputDebugString(debugMessage3);
 
 	return &m_vecRays;
 }
