@@ -119,6 +119,7 @@ HRESULT CMainApp::Ready_Gara()
 {
 	_ulong			dwByte = {};
 	HANDLE			hFile = CreateFile(TEXT("../Bin/DataFiles/Navigation.dat"), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	
 	if (0 == hFile)
 		return E_FAIL;
 

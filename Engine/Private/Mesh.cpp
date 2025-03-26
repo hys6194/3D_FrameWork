@@ -94,9 +94,58 @@ HRESULT CMesh::Bind_BoneMatrix(CShader* pShader, const _char* pContantName, cons
 			Bones[m_vecBone[i]]->Get_CombinedTransformationMatrix());
 	}
 
-	pShader->Bind_Matrices(pContantName, m_matBone, m_iNumBones);
+	pShader->Bind_Matrices(pContantName, m_matBone, m_iNumBones);	
 
 	return S_OK;
+}
+
+_bool CMesh::Search_Picked_Face(_float4* _fPos)
+{
+	// 여기에서 TriangleTest를 하자
+	// 만약 True라면 피킹해서 나온 값을 인자로 받은 값에 전달하여 내보내는 것으로 하자
+	_bool bTest{};
+	float fDistance = 0.f;
+
+	vector<_float4> vecCoord = *m_pGameInstance->Get_RayCoords();
+
+	_vector vRayOrigin = XMLoadFloat4(&vecCoord[0]);
+	_vector vRayDir = XMLoadFloat4(&vecCoord[1]);
+
+	for (size_t i = 0; i < m_vecIndicesIndex.size() / 3; ++i)
+	{		
+		_vector v1 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3]].vPosition), 1.f)		;
+		_vector v2 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 1]].vPosition), 1.f)	;
+		_vector v3 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 2]].vPosition), 1.f)	;
+		bTest = DirectX::TriangleTests::Intersects(
+					vRayOrigin,
+					vRayDir,
+					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3]].vPosition), 1.f),
+					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 1]].vPosition), 1.f),
+					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 2]].vPosition), 1.f),
+					fDistance);
+		
+		if (bTest)
+		{		
+			// 디버깅
+			TCHAR debugMessage[256];
+			_stprintf_s(debugMessage, _T("fDistance: %.6f\n"),
+				fDistance);
+			OutputDebugString(debugMessage);
+
+			XMStoreFloat4(_fPos, (vRayOrigin + fDistance * vRayDir));
+
+
+			return bTest;
+		}
+	}
+
+
+	TCHAR debugMessage[256];
+	_stprintf_s(debugMessage, _T("저런.. 바깥을 찍었어요\n")
+	);
+	OutputDebugString(debugMessage);
+
+	return bTest;
 }
 
 HRESULT CMesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
@@ -110,25 +159,8 @@ HRESULT CMesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTra
 	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
 
-	_wstring wtest;
-	const char* strMeshName = pAIMesh->mName.data;
-	_wstring strFileType = TEXT("_Mesh.dat");
-
-	size_t iTest = strlen(strMeshName);
-
-	_wstring strFileName(strMeshName, strMeshName + strlen(strMeshName));
-
-	wtest = Engine::strPathName + strFileName + strFileType;
-
 	VTXMESH* pVertices = new VTXMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
-
-
-	_ulong			dwByte = {};
-	HANDLE			hFile = CreateFile(wtest.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
-
-	WriteFile(hFile, &m_iNumVertices, sizeof(_uint), &dwByte, nullptr);
-	WriteFile(hFile, &strMeshName, sizeof(char), &dwByte, nullptr);
 
 	for (size_t i = 0; i < m_iNumVertices; ++i)
 	{
@@ -143,52 +175,16 @@ HRESULT CMesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTra
 		// w 값을 1로 만들어서 위치 좌표로 만들어 준다는 의미
 		XMStoreFloat3(&pVertices[i].vPosition,
 			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PreTransformMatrix));
-		WriteFile(hFile, &pVertices[i].vPosition, sizeof(_float3), &dwByte, nullptr);
 
 		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vNormal,
 			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vNormal), PreTransformMatrix));
-		WriteFile(hFile, &pVertices[i].vNormal, sizeof(_float3), &dwByte, nullptr);
-
 
 		// 0번째정점에 선언되어 있는 Texcoord를 설정하려고 하는 것이기에 [0][i]
 		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
-		WriteFile(hFile, &pVertices[i].vTexcoord, sizeof(_float2), &dwByte, nullptr);
-
 		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
-		WriteFile(hFile, &pVertices[i].vTangent, sizeof(_float3), &dwByte, nullptr);
 
 	}
-	CloseHandle(hFile);
-
-
-	//HANDLE hFile1 = CreateFile(wtest.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-	//ReadFile(hFile, &strMeshName, sizeof(_float3) * 3, &dwByte, nullptr);
-	//ReadFile(hFile, &pVertices[0].vPosition, sizeof(_float3), &dwByte, nullptr);
-	//ReadFile(hFile, &pVertices[0].vNormal, sizeof(_float3), &dwByte, nullptr);
-	//ReadFile(hFile, &pVertices[0].vTexcoord, sizeof(_float2), &dwByte, nullptr);
-	//ReadFile(hFile, &pVertices[0].vTangent, sizeof(_float3), &dwByte, nullptr);
-	//
-	//TCHAR debugMessage[256];
-	//_stprintf_s(debugMessage, _T("vPosition: x = %.6f, y = %.6f, z = %.6f\n"),
-	//	pVertices[0].vPosition.x, pVertices[0].vPosition.y, pVertices[0].vPosition.z);
-	//OutputDebugString(debugMessage);
-	//
-	//TCHAR debugMessage1[256];
-	//_stprintf_s(debugMessage1, _T("vNormal: x = %.6f, y = %.6f, z = %.6f\n"),
-	//	pVertices[0].vNormal.x, pVertices[0].vNormal.y, pVertices[0].vNormal.z);
-	//OutputDebugString(debugMessage1);
-	//
-	//TCHAR debugMessage2[256];
-	//_stprintf_s(debugMessage2, _T("vTexcoord: x = %.6f, y = %.6ff\n"),
-	//	pVertices[0].vTexcoord.x, pVertices[0].vTexcoord.y);
-	//OutputDebugString(debugMessage2);
-	//
-	//TCHAR debugMessage3[256];
-	//_stprintf_s(debugMessage3, _T("vTangent: x = %.6f, y = %.6f, z = %.6f\n"),
-	//	pVertices[0].vTangent.x, pVertices[0].vTangent.y, pVertices[0].vTangent.z);
-	//OutputDebugString(debugMessage3);
-
 
 	ZeroMemory(&m_InitialData, sizeof m_InitialData);
 	m_InitialData.pSysMem = pVertices;
@@ -223,6 +219,7 @@ HRESULT CMesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const vector<CBone
 		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
 		memcpy(&pVertices[i].vTexcoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2)); ;
 		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
+
 	}
 
 	/* 이 메시에 영향을 주는 뼈의 갯수 .*/
@@ -422,11 +419,17 @@ HRESULT CMesh::Initialize_Prototype(const aiMesh* _pAIMesh, MODELTYPE _eModelTyp
 	for (size_t i = 0; i < _pAIMesh->mNumFaces; i++)
 	{
 		pIndices[iNumIndices++] = _pAIMesh->mFaces[i].mIndices[0];
+		m_vecIndicesIndex.push_back(_pAIMesh->mFaces[i].mIndices[0]);
+
 		pIndices[iNumIndices++] = _pAIMesh->mFaces[i].mIndices[1];
+		m_vecIndicesIndex.push_back(_pAIMesh->mFaces[i].mIndices[1]);
+
 		pIndices[iNumIndices++] = _pAIMesh->mFaces[i].mIndices[2];
+		m_vecIndicesIndex.push_back(_pAIMesh->mFaces[i].mIndices[2]);
 	}
 
 	_OutStream.write(reinterpret_cast<const char*>(pIndices), (sizeof(_uint) * m_iNumIndices));
+	_OutStream.write(reinterpret_cast<const char*>(m_vecIndicesIndex.data()), (sizeof(_uint) * m_iNumIndices));
 
 	ZeroMemory(&m_InitialData, sizeof(m_InitialData));
 	m_InitialData.pSysMem = pIndices;
@@ -484,6 +487,10 @@ HRESULT CMesh::Initialize_Prototype(MODELTYPE _eModelType, const vector<class CB
 	ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
 
 	_InStream.read(reinterpret_cast<char*>(pIndices), (sizeof(_uint) * m_iNumIndices));
+	m_vecIndicesIndex.resize(m_iNumIndices);
+	_InStream.read(reinterpret_cast<char*>(m_vecIndicesIndex.data()), (sizeof(_uint) * m_iNumIndices));
+
+
 
 	ZeroMemory(&m_InitialData, sizeof(m_InitialData));
 	m_InitialData.pSysMem = pIndices;
@@ -527,7 +534,12 @@ HRESULT CMesh::Ready_VertexBuffer_ForNonAnim_Save(const aiMesh* _pAIMesh, _fmatr
 		_OutStream.write(reinterpret_cast<const char*>(&pVertices[i].vTexcoord), sizeof(_float2));
 		memcpy(&pVertices[i].vTangent, &_pAIMesh->mTangents[i], sizeof(_float3));
 		_OutStream.write(reinterpret_cast<const char*>(&pVertices[i].vTangent), sizeof(_float3));
+
+		m_vecVertices.push_back(pVertices[i]);
 	}
+
+	_OutStream.write(reinterpret_cast<const char*>(m_vecVertices.data()), sizeof(VTXMESH) * m_iNumVertices);
+
 
 	ZeroMemory(&m_InitialData, sizeof m_InitialData);
 	m_InitialData.pSysMem = pVertices;
@@ -561,6 +573,8 @@ HRESULT CMesh::Ready_VertexBuffer_ForAnim_Save(const aiMesh* _pAIMesh, const vec
 		memcpy(&pVertices[i].vNormal, &_pAIMesh->mNormals[i], sizeof(_float3));
 		memcpy(&pVertices[i].vTexcoord, &_pAIMesh->mTextureCoords[0][i], sizeof(_float2)); ;
 		memcpy(&pVertices[i].vTangent, &_pAIMesh->mTangents[i], sizeof(_float3));
+
+		m_vecVerticesAnim.push_back(pVertices[i]);
 	}
 
 	/* 이 메시에 영향을 주는 뼈의 갯수 .*/
@@ -678,6 +692,8 @@ HRESULT CMesh::Ready_VertexBuffer_ForAnim_Save(const aiMesh* _pAIMesh, const vec
 	for (auto& Bone : m_vecBone)
 		_OutStream.write(reinterpret_cast<const char*>(&Bone), sizeof(_int));
 
+	_OutStream.write(reinterpret_cast<const char*>(m_vecVerticesAnim.data()), sizeof(VTXANIMESH)* m_iNumVertices);
+
 
 	Safe_Delete_Array(pVertices);
 
@@ -708,11 +724,15 @@ HRESULT CMesh::Ready_VertexBuffer_ForNonAnim_Load(_fmatrix PreTransformMatrix, i
 			XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), PreTransformMatrix));
 		_InStream.read(reinterpret_cast<char*>(&pVertices[i].vTexcoord), sizeof(_float2));
 		_InStream.read(reinterpret_cast<char*>(&pVertices[i].vTangent), sizeof(_float3));
-
+		
 	}
 
 	ZeroMemory(&m_InitialData, sizeof m_InitialData);
 	m_InitialData.pSysMem = pVertices;
+
+	m_vecVertices.resize(m_iNumVertices);
+	_InStream.read(reinterpret_cast<char*>(m_vecVertices.data()), sizeof(VTXMESH) * m_iNumVertices);
+
 
 	if (FAILED(__super::Create_Buffer(&m_pVB)))
 		return E_FAIL;
@@ -754,6 +774,9 @@ HRESULT CMesh::Ready_VertexBuffer_ForAnim_Load(const vector<class CBone*>& _Bone
 
 	ZeroMemory(&m_InitialData, sizeof m_InitialData);
 	m_InitialData.pSysMem = pVertices;
+
+	m_vecVerticesAnim.resize(m_iNumVertices);
+	_InStream.read(reinterpret_cast<char*>(m_vecVerticesAnim.data()), sizeof(VTXANIMESH) * m_iNumVertices);
 
 	if (FAILED(__super::Create_Buffer(&m_pVB)))
 		return E_FAIL;

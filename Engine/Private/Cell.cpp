@@ -106,8 +106,6 @@ _vector CCell::Compute_Height(_fvector vPosition)
 		1.f);
 }
 
-
-
 #ifdef _DEBUG
 HRESULT CCell::Render()
 {

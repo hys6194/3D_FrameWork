@@ -91,7 +91,7 @@ public:
 	HRESULT								Bind_BoneMatrix(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
 
 public:
-	_bool								CheckRayColl_Mesh(_float4 _fCamPos, _float4 _fRayDir, _float* _fCoord);
+	_bool								CheckRayColl_Mesh(_float4* _fCoord);
 
 private:
 	const aiScene*						m_pAIScene = { nullptr };

@@ -60,31 +60,31 @@ HRESULT Tool_Manager::Render()
 void Tool_Manager::Picking_Objects()
 {
 	// 여기서 해당 오브젝트의 충돌을 확인해야 함
-	_float4 fRayDir;
-	fRayDir = *m_pGameInstance->Get_RayDirCoords();
-	
-	_float4 fRayOrigin;
-	XMStoreFloat4(&fRayOrigin, XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
-	
-	// GameObjectTag에 해당하는 Object를 모은 list
-	list<CGameObject*>* pList = m_pMap->Get_ObjectList();
-	
-	// 리스트가 생성되지 않았으면 return
-	if (nullptr == pList)
-		return;
-	
-	list<CMap_Object*> test = *reinterpret_cast<list<CMap_Object*>*>(pList);
-	
-	for (auto& iter : test)
-	{
-		_float fCoord;
-	
-		_bool bTest = iter->Get_ModelCom()->CheckRayColl_Mesh(fRayOrigin, fRayDir,&fCoord);
-	
-		if (bTest)
-			return;
-	
-	}
+	//_float4 fRayDir;
+	//fRayDir = *m_pGameInstance->Get_RayDirCoords();
+	//
+	//_float4 fRayOrigin;
+	//XMStoreFloat4(&fRayOrigin, XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
+	//
+	//// GameObjectTag에 해당하는 Object를 모은 list
+	//list<CGameObject*>* pList = m_pMap->Get_ObjectList();
+	//
+	//// 리스트가 생성되지 않았으면 return
+	//if (nullptr == pList)
+	//	return;
+	//
+	//list<CMap_Object*> test = *reinterpret_cast<list<CMap_Object*>*>(pList);
+	//
+	//for (auto& iter : test)
+	//{
+	//	_float4 fCoord;
+	//
+	//	_bool bTest = iter->Get_ModelCom()->CheckRayColl_Mesh(&fCoord);
+	//
+	//	if (bTest)
+	//		return;
+	//
+	//}
 
 	int a = 10;
 }
@@ -100,26 +100,17 @@ void Tool_Manager::Create_NaviCells()
 
 	list<CMap_Object*> test = *reinterpret_cast<list<CMap_Object*>*>(pList);
 
-	_float4 fRayOrigin, fRayDir;
-	vector<_float4> vectest = *m_pGameInstance->Get_RayCoords();
-
-	fRayOrigin = vectest[0];
-	fRayDir = vectest[1];
-
 	for (auto& iter : test)
 	{
-		_float fCoord = 0.f;
+		_float4 fCoord;
 
+		_bool bTest = iter->Get_ModelCom()->CheckRayColl_Mesh(&fCoord);
 
-
-		//_bool bTest = iter->Get_ModelCom()->CheckRayColl_Mesh(fRayOrigin, fRayDir, &fCoord);
-
-		//if (bTest)
+		//if (bTes
 		//	return;
 
 	}
 
-	int a = 10;
 
 }
 
