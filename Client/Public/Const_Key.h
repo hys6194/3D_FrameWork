@@ -57,6 +57,7 @@ static const std::wstring PRO_MODEL_ROCK1		= TEXT("Prototype_Component_Model_Des
 static const std::wstring PRO_MODEL_ROCK2		= TEXT("Prototype_Component_Model_Desert Rock2");
 
 /* Shader */
+static const std::wstring PRO_SHADER_CELL		= TEXT("Prototype_Component_Shader_VtxCell");
 static const std::wstring PRO_SHADER_CUBE		= TEXT("Prototype_Component_Shader_VtxCube");
 static const std::wstring PRO_SHADER_MESH		= TEXT("Prototype_Component_Shader_VtxMesh");
 static const std::wstring PRO_SHADER_NOR		= TEXT("Prototype_Component_Shader_VtxNorTex");

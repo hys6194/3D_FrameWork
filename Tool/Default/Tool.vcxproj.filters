@@ -58,8 +58,11 @@
     <Filter Include="97.ImGui\02. Manager\01.Tool">
       <UniqueIdentifier>{1143e806-39a3-436d-910a-01f9b82ad3ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\03. Navi_Cell">
+    <Filter Include="02.GameObject\03. Cell_Guide">
       <UniqueIdentifier>{267910ca-c45e-478c-9595-64345da5c7a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\03. Cell_Guide\CNavi_Cell">
+      <UniqueIdentifier>{363604b3-66ca-4fa9-ab58-f04b3b99dc5c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,8 +123,8 @@
     <ClInclude Include="..\Public\Tool_ConstValue.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Navi_Cell.h">
-      <Filter>02.GameObject\03. Navi_Cell</Filter>
+    <ClInclude Include="..\Public\Cell_Guide.h">
+      <Filter>02.GameObject\03. Cell_Guide</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -180,8 +183,8 @@
     <ClCompile Include="..\Private\Util.cpp">
       <Filter>99.Defines</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Navi_Cell.cpp">
-      <Filter>02.GameObject\03. Navi_Cell</Filter>
+    <ClCompile Include="..\Private\Cell_Guide.cpp">
+      <Filter>02.GameObject\03. Cell_Guide</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

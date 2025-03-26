@@ -27,11 +27,13 @@ private:
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 	CGameInstance*				m_pGameInstance = { nullptr };
 
+private:
 	class CImGui_UI*			m_pUI = { nullptr };
 	class CImGui_Map*			m_pMap = { nullptr };
+	class CCell_Guide*			m_pCell = { nullptr };
 
+private:
 	_bool						m_bRayShoot;
-
 
 private:
 	void						Picking_Objects();

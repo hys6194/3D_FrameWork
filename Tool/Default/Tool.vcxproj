@@ -142,7 +142,7 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Map_Object.h" />
-    <ClInclude Include="..\Public\Navi_Cell.h" />
+    <ClInclude Include="..\Public\Cell_Guide.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Tool_ConstValue.h" />
     <ClInclude Include="..\Public\Tool_Defines.h" />
@@ -164,7 +164,7 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Map_Object.cpp" />
-    <ClCompile Include="..\Private\Navi_Cell.cpp" />
+    <ClCompile Include="..\Private\Cell_Guide.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Tool_FreeCam.cpp" />
     <ClCompile Include="..\Private\Tool_Level.cpp" />
