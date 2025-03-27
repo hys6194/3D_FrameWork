@@ -434,13 +434,13 @@ HRESULT CModel::Bind_BoneMatrix(CShader* pShader, const _char* pConstantName, _u
     return S_OK;
 }
 
-_bool CModel::CheckRayColl_Mesh(_float4* _fCoord)
+_bool CModel::CheckRayColl_Mesh(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord)
 {
     _bool bResult;
     
     for (size_t i = 0; i < m_vecMesh.size(); i++)
     {
-        bResult = m_vecMesh[i]->Search_Picked_Face(_fCoord);
+        bResult = m_vecMesh[i]->Search_Picked_Face(vPos, vDir, _fDistance, _fCoord);
     }
 
     return bResult;

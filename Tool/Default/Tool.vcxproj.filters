@@ -126,7 +126,9 @@
     <ClInclude Include="..\Public\Cell_Guide.h">
       <Filter>02.GameObject\03. Cell_Guide</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Navi_Cell.h" />
+    <ClInclude Include="..\Public\Navi_Cell.h">
+      <Filter>02.GameObject\03. Cell_Guide\CNavi_Cell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -187,6 +189,8 @@
     <ClCompile Include="..\Private\Cell_Guide.cpp">
       <Filter>02.GameObject\03. Cell_Guide</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Navi_Cell.cpp" />
+    <ClCompile Include="..\Private\Navi_Cell.cpp">
+      <Filter>02.GameObject\03. Cell_Guide\CNavi_Cell</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

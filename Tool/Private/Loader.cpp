@@ -5,6 +5,7 @@
 #include "Tool_FreeCam.h"
 #include "Terrain.h"
 #include "Map_Object.h"
+#include "Navi_Cell.h"
 //#include "Monster.h"
 
 
@@ -133,8 +134,8 @@ HRESULT Loader::Loading_Models()
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_VI_CELL,
-		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_VI_GUIDE,
+		CNavi_Cell::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
@@ -264,6 +265,12 @@ HRESULT Loader::Loading_Shaders()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_SHADER_CUBE,
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::ElementDesc, VTXCUBE::iNumElements))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_SHADER_CELL,
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"),
+			VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
+		return E_FAIL;
+
 
 	return S_OK;
 }

@@ -34,6 +34,11 @@ private:
 
 private:
 	_bool						m_bRayShoot;
+	_bool						m_bTest = { false };
+	_float						m_fDistance{};
+	_float						m_fPreDistance{};
+	_vector						m_vCellCoord{};
+
 
 private:
 	void						Picking_Objects();

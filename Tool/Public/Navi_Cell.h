@@ -29,21 +29,16 @@ public:
 	virtual HRESULT				Render();
 
 public:
-	void						Modify_VertexPoint();
+	void						Modify_VertexPoint(_uint iVertexIndex, _vector vCoord);
 
 private:
-	// 이거도 행렬을 가져야 함
-	ID3D11Buffer*				m_pVB_Guide = { nullptr };
-	ID3D11Buffer*				m_pIB_Guide = { nullptr };
-
 	// 어떻게 삼각형을 동적으로 그려야 하는 것일까?
 	// 우선 그리기 위해서는 뭐가 필요할까
 	// 그 전에 Tool에서 
 	// 
 	// 스트라이드 필요하고 
 	// 구조체를 만들 것인가?
-	_uint						m_iGuideStride;
-	INSTVTX*					m_pInstVTX;	// 이건 필요 없어보이는데
+
 
 public:
 	static  CNavi_Cell*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

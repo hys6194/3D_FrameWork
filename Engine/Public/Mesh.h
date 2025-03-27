@@ -30,7 +30,7 @@ public:
 	HRESULT								Bind_BoneMatrix(class CShader* pShader, const _char* pContantName, const vector<class CBone*>& Bones);
 
 public:
-	_bool								Search_Picked_Face(_float4* _fPos);
+	_bool								Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord);
 
 private:
 	HRESULT								Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);

@@ -99,17 +99,12 @@ HRESULT CMesh::Bind_BoneMatrix(CShader* pShader, const _char* pContantName, cons
 	return S_OK;
 }
 
-_bool CMesh::Search_Picked_Face(_float4* _fPos)
+_bool CMesh::Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord)
 {
 	// 여기에서 TriangleTest를 하자
 	// 만약 True라면 피킹해서 나온 값을 인자로 받은 값에 전달하여 내보내는 것으로 하자
 	_bool bTest{};
 	float fDistance = 0.f;
-
-	vector<_float4> vecCoord = *m_pGameInstance->Get_RayCoords();
-
-	_vector vRayOrigin = XMLoadFloat4(&vecCoord[0]);
-	_vector vRayDir = XMLoadFloat4(&vecCoord[1]);
 
 	for (size_t i = 0; i < m_vecIndicesIndex.size() / 3; ++i)
 	{		
@@ -117,25 +112,25 @@ _bool CMesh::Search_Picked_Face(_float4* _fPos)
 		_vector v2 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 1]].vPosition), 1.f)	;
 		_vector v3 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 2]].vPosition), 1.f)	;
 		bTest = DirectX::TriangleTests::Intersects(
-					vRayOrigin,
-					vRayDir,
+					vPos,
+					vDir,
 					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3]].vPosition), 1.f),
 					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 1]].vPosition), 1.f),
 					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 2]].vPosition), 1.f),
-					fDistance);
+					*_fDistance);
 		
 		if (bTest)
 		{		
 			// 디버깅
-			TCHAR debugMessage[256];
-			_stprintf_s(debugMessage, _T("fDistance: %.6f\n"),
-				fDistance);
-			OutputDebugString(debugMessage);
+			XMStoreFloat4(_fCoord, (vPos + (*_fDistance) * vDir));
 
-			XMStoreFloat4(_fPos, (vRayOrigin + fDistance * vRayDir));
+			TCHAR debugMessage1[256];
+			_stprintf_s(debugMessage1, _T("fCoord: x = %.6f, y = %.6f, z = %.6f\n"),
+				_fCoord->x, _fCoord->y, _fCoord->z);
+			OutputDebugString(debugMessage1);
+			 
 
-
-			return bTest;
+ 			return bTest;
 		}
 	}
 

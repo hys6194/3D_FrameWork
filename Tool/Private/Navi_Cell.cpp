@@ -18,8 +18,7 @@ HRESULT CNavi_Cell::Initialize_Prototype()
 HRESULT CNavi_Cell::Initialize(void* pArg)
 {
     //INSTVTX
-   // 색으로 해두는 게 좋을 것 같아
-    m_iVertexStride = sizeof(VTXPOSTEX);
+    m_iVertexStride = sizeof(VTXPOS);
     m_iNumVertices = 3;
     m_iIndexStride = 2;
     m_iNumIndices = 4;
@@ -29,7 +28,7 @@ HRESULT CNavi_Cell::Initialize(void* pArg)
 
 #pragma region VTX
 
-    ZeroMemory(&m_BufferDesc, sizeof(VTXPOSTEX));
+    ZeroMemory(&m_BufferDesc, sizeof(VTXPOS));
     m_BufferDesc.ByteWidth = m_iVertexStride * m_iNumVertices;
     m_BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
     m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -37,17 +36,17 @@ HRESULT CNavi_Cell::Initialize(void* pArg)
     m_BufferDesc.MiscFlags = 0;
     m_BufferDesc.StructureByteStride = m_iVertexStride; // 이거 주의해서 생각하자
 
-    VTXPOSTEX* pVertices = new VTXPOSTEX[m_iNumVertices];
-    ZeroMemory(&pVertices, sizeof(VTXPOSTEX) * m_iNumVertices);
+    VTXPOS* pVertices = new VTXPOS[m_iNumVertices];
+    ZeroMemory(pVertices, sizeof(VTXPOS) * m_iNumVertices);
 
-    pVertices[0].vPosition = _float3(0.f, 0.f, 0.f);
-    pVertices[1].vPosition = _float3(0.f, 0.f, 1.f);
-    pVertices[2].vPosition = _float3(1.f, 0.f, 0.f);
+    pVertices[0].vPosition = _float3(0.f, 2.f, 0.f);
+    pVertices[1].vPosition = _float3(0.f, 2.f, 1.f);
+    pVertices[2].vPosition = _float3(1.f, 2.f, 0.f);
 
     ZeroMemory(&m_InitialData, sizeof m_InitialData);
     m_InitialData.pSysMem = pVertices;
 
-    FAILED_CHECK_RETURN(__super::Create_Buffer(&m_pVB_Guide), E_FAIL);
+    FAILED_CHECK_RETURN(__super::Create_Buffer(&m_pVB), E_FAIL);
 
     Safe_Delete_Array(pVertices);
 
@@ -60,7 +59,7 @@ HRESULT CNavi_Cell::Initialize(void* pArg)
     m_BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
     m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
     m_BufferDesc.StructureByteStride = m_iIndexStride;
-    m_BufferDesc.CPUAccessFlags = 0;
+    m_BufferDesc.CPUAccessFlags = D3D10_CPU_ACCESS_WRITE;
     m_BufferDesc.MiscFlags = 0;
 
     _ushort* pIndices = new _ushort[m_iNumIndices];
@@ -74,7 +73,7 @@ HRESULT CNavi_Cell::Initialize(void* pArg)
     ZeroMemory(&m_InitialData, sizeof m_InitialData);
     m_InitialData.pSysMem = pIndices;
 
-    if (FAILED(__super::Create_Buffer(&m_pIB_Guide)))
+    if (FAILED(__super::Create_Buffer(&m_pIB)))
         return E_FAIL;
 
     Safe_Delete_Array(pIndices);
@@ -95,14 +94,24 @@ HRESULT CNavi_Cell::Render()
     return S_OK;
 }
 
-void CNavi_Cell::Modify_VertexPoint()
+void CNavi_Cell::Modify_VertexPoint(_uint iVertexIndex, _vector vCoord)
 {
+    // 여기에서 동적으로 버퍼의 위치를 설정해보자
     D3D11_MAPPED_SUBRESOURCE GuideSubResource{};
 
-    m_pContext->Map(m_pVB_Guide, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &GuideSubResource);
+    m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &GuideSubResource);
+    
+    // 정점을 어떻게 수정할까
+    VTXPOS* pVertices = (VTXPOS*)GuideSubResource.pData;
+
+    _float4 fTest{};
+    
+    XMStoreFloat4(&fTest, vCoord);
+
+    pVertices[iVertexIndex].vPosition = _float3(fTest.x, fTest.y, fTest.z);
 
 
-    m_pContext->Unmap(m_pVB_Guide, 0);
+    m_pContext->Unmap(m_pVB, 0);
 }
 
 HRESULT CNavi_Cell::Bind_Input_Assembler()
@@ -110,18 +119,18 @@ HRESULT CNavi_Cell::Bind_Input_Assembler()
     ID3D11Buffer* pBuffer[] =
     {
         m_pVB,
-        m_pVB_Guide,
+
     };
 
     _uint           iStrides[] = {
         m_iVertexStride,
-        m_iGuideStride,
+
     };
 
     _uint Offsets[] =
     {
         0,
-        0,
+    
     };
 
     m_pContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pBuffer, iStrides, Offsets);
