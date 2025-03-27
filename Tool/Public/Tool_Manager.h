@@ -27,10 +27,17 @@ private:
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 	CGameInstance*				m_pGameInstance = { nullptr };
 
+private:
 	class CImGui_UI*			m_pUI = { nullptr };
 	class CImGui_Map*			m_pMap = { nullptr };
+	class CCell_Guide*			m_pCell = { nullptr };
 
+private:
 	_bool						m_bRayShoot;
+	_bool						m_bTest = { false };
+	_float						m_fDistance{};
+	_float						m_fPreDistance{};
+	_vector						m_vCellCoord{};
 
 
 private:

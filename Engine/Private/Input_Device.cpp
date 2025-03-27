@@ -88,13 +88,13 @@ HRESULT Engine::CInput_Device::Initialize(HINSTANCE g_hInstance, HWND hWnd)
 void Engine::CInput_Device::Update(void)
 {
 	//m_pKeyBoard->GetDeviceState(256, m_byKeyState);
-	m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE), &m_tMouseState);
+	//m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE), &m_tMouseState);
 
 	memcpy(m_byPrevKeyState, m_byCurKeyState, sizeof(m_byCurKeyState));
 	m_pKeyBoard->GetDeviceState(0xff + 1, m_byCurKeyState);
 
 	m_tPrevMouseState = m_tCurMouseState;
-	m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE2), &m_tCurMouseState);
+	m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE), &m_tCurMouseState);
 }
 
 CInput_Device* CInput_Device::Create(HINSTANCE hInstance, HWND hWnd, _bool isWindowed, _uint iWinSizeX, _uint iWinSizeY, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

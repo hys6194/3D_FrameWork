@@ -122,8 +122,7 @@ vector<_float4>* CPipeLine::Get_RayCoords()
 	GetCursorPos(&pt);
 	ScreenToClient(m_hWnd, &pt);
 
-	_float3 fFar{ 0.f, 0.f, 0.f };
-	_float4 fTest{ (_float)pt.x , (_float)pt.y ,0.f, 0.f };
+	_float3 fMouse{ 0.f, 0.f, 0.f };
 
 	// 뷰 포트 가져오기
 	_uint i = 1;
@@ -131,28 +130,23 @@ vector<_float4>* CPipeLine::Get_RayCoords()
 	m_pContext->RSGetViewports(&i, &ViewPort);
 
 	// 원래 식 = 2 * pt.x / widtth - 1
-	fFar.x = pt.x / (ViewPort.Width * 0.5f) - 1.f;
-	fFar.y = pt.y / -(ViewPort.Height * 0.5f) + 1.f;
+	fMouse.x = pt.x / (ViewPort.Width * 0.5f) - 1.f;
+	fMouse.y = pt.y / -(ViewPort.Height * 0.5f) + 1.f;
+
+	_vector vPos = { fMouse.x, fMouse.y, 0.f, 1.f };
+	_vector vDir = { fMouse.x, fMouse.y, 1.f, 1.f };
 
 	// 투영의 역행렬
 	_float4x4 fProj = m_TransformInverseMatrices[D3DTS_PROJ];
 
-	_float4 fPos;
-	XMStoreFloat4(&fPos, XMVector3TransformCoord(XMLoadFloat3(&fFar), XMLoadFloat4x4(&fProj)));
+	vPos =  XMVector3TransformCoord(vPos, XMLoadFloat4x4(&fProj));
+	vDir =  XMVector3TransformCoord(vDir, XMLoadFloat4x4(&fProj));
 
-	//vRayPos = XMVector3TransformCoord(XMLoadFloat3(&fFar), XMLoadFloat4x4(&fProj));
-
-
-	_vector vPos = { 0.f,0.f,0.f,1.f };
-	_vector vDir = { fPos.x, fPos.y, 1.f, 0.f };
-
-	_vector vRayPos = { 0.f,0.f,0.f,0.f };
-	_vector vRayDir;
+	_float4x4 fView = m_TransformInverseMatrices[D3DTS_VIEW];
 
 	// 뷰의 역행렬
-	_float4x4 fView = m_TransformInverseMatrices[D3DTS_VIEW];
-	vRayPos = XMVector3TransformCoord(vRayPos, XMLoadFloat4x4(&fView));
-	vRayDir = XMVector3TransformCoord(vDir, XMLoadFloat4x4(&fView));
+	_vector vRayPos = XMVector3TransformCoord(vPos, XMLoadFloat4x4(&fView));
+	_vector vRayDir = XMVector3TransformCoord(vDir, XMLoadFloat4x4(&fView));
 
 	_vector vTest = vRayDir - vRayPos;
 
@@ -165,8 +159,10 @@ vector<_float4>* CPipeLine::Get_RayCoords()
 	m_vecRays.push_back(fRayDir);
 
 	TCHAR debugMessage3[256];
-	_stprintf_s(debugMessage3, _T("fRayDir: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
-		fRayDir.x, fRayDir.y, fRayDir.z, fRayDir.w);
+	_stprintf_s(debugMessage3, 
+		_T("fRayDir: x = %.6f, y = %.6f, z = %.6f, w = %.6f \n fRayPos: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
+		fRayDir.x, fRayDir.y, fRayDir.z, fRayDir.w,
+		fRayPos.x, fRayPos.y, fRayPos.z, fRayPos.w);
 	OutputDebugString(debugMessage3);
 
 	return &m_vecRays;

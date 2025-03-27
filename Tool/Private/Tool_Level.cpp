@@ -39,10 +39,14 @@ void Tool_Level::Update(_float fTimeDelta)
 	//SetWindowText(g_hWnd, TEXT("현재 레벨 : 툴 레벨"));
 
 	m_pTool->Update(fTimeDelta);
+
+	m_pTool->Late_Update(fTimeDelta);
 }
 
 HRESULT Tool_Level::Render()
 {
+	
+
     return S_OK;
 }
 

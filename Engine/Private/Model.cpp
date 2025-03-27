@@ -434,120 +434,16 @@ HRESULT CModel::Bind_BoneMatrix(CShader* pShader, const _char* pConstantName, _u
     return S_OK;
 }
 
-_bool CModel::CheckRayColl_Mesh(_float4 _fCamPos, _float4 _fRayDir, _float* _fCoord)
+_bool CModel::CheckRayColl_Mesh(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord)
 {
     _bool bResult;
-
-    // 바이너리 파일을 어떻게 읽어들일 것이냐
-    // 또한 PreMatrix를 곱한 값만큼 어떻게 정점을 가져올 것이냐
-    // 바이너리 파일에는 PreMatrix 값은 적용되어있지 않음
-    //ifstream InStream("../../Client/Bin/DataFiles/Nonanim/TileFloor1.bin", ios::binary);
-    //
-    //if (InStream.is_open() == false)
-    //    return E_FAIL;
-    //
-    //for (size_t i = 0; i < m_iNumMeshes; i++)
-    //{
-    //    _uint iNumVertices = m_vecMesh[i]->Get_VerticesNum();
-    //
-    //    VTXMESH* pVertices = new VTXMESH[iNumVertices];
-    //    ZeroMemory(pVertices, sizeof(VTXMESH) * iNumVertices);
-    //    // 해당 메쉬의 면 개수만큼 루프
-    //    for (size_t j = 0; j < 5; j++)
-    //    {
-    //        _float3 fVertex1, fVertex2, fVertex3;
-    //        InStream.read(reinterpret_cast<char*>(&pVertices[i * 3].vPosition), sizeof(_float3));
-    //        InStream.read(reinterpret_cast<char*>(&pVertices[i * 3 + 1].vPosition), sizeof(_float3));
-    //        InStream.read(reinterpret_cast<char*>(&pVertices[i * 3 + 2].vPosition), sizeof(_float3));
-    //        XMStoreFloat3(&fVertex1,
-    //            XMLoadFloat3(&pVertices[i * 3].vPosition));
-    //        XMStoreFloat3(&fVertex2,
-    //            XMLoadFloat3(&pVertices[i * 3 + 1].vPosition));
-    //        XMStoreFloat3(&fVertex3,
-    //            XMLoadFloat3(&pVertices[i * 3 + 2].vPosition));
-    //        
-    //
-    //
-    //    }
-    //
-    //}
-
-    //_ulong			dwByte = {};
-    //_wstring wtest = TEXT("../../Client/Bin/DataFiles/Dn_HL_FloorTiles_A_Mesh.dat");
-    //const char* strMeshName;
-    //
-    //_uint iNumVertices = m_vecMesh[0]->Get_VerticesNum();
-    //
-    //VTXMESH* pVertices = new VTXMESH[iNumVertices];
-    //ZeroMemory(pVertices, sizeof(VTXMESH) * iNumVertices);
-    //
-    //HANDLE hFile1 = CreateFile(wtest.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-    //if (0 == hFile1)
-    //    return E_FAIL;
-    //
-    //ReadFile(hFile1, &strMeshName, sizeof(char) * 3, &dwByte, nullptr);
-    //ReadFile(hFile1, &pVertices[0].vPosition, sizeof(_float3), &dwByte, nullptr);
-    //ReadFile(hFile1, &pVertices[0].vNormal, sizeof(_float3), &dwByte, nullptr);
-    //ReadFile(hFile1, &pVertices[0].vTexcoord, sizeof(_float2), &dwByte, nullptr);
-    //ReadFile(hFile1, &pVertices[0].vTangent, sizeof(_float3), &dwByte, nullptr);
-    //
-    //int a = 10;
-
-    //
-    //TCHAR debugMessage[256];
-    //_stprintf_s(debugMessage, _T("vPosition: x = %.6f, y = %.6f, z = %.6f\n"),
-    //	pVertices[0].vPosition.x, pVertices[0].vPosition.y, pVertices[0].vPosition.z);
-    //OutputDebugString(debugMessage);
-    //
-    //TCHAR debugMessage1[256];
-    //_stprintf_s(debugMessage1, _T("vNormal: x = %.6f, y = %.6f, z = %.6f\n"),
-    //	pVertices[0].vNormal.x, pVertices[0].vNormal.y, pVertices[0].vNormal.z);
-    //OutputDebugString(debugMessage1);
-    //
-    //TCHAR debugMessage2[256];
-    //_stprintf_s(debugMessage2, _T("vTexcoord: x = %.6f, y = %.6ff\n"),
-    //	pVertices[0].vTexcoord.x, pVertices[0].vTexcoord.y);
-    //OutputDebugString(debugMessage2);
-
-    //
-    //TCHAR debugMessage3[256];
-    //_stprintf_s(debugMessage3, _T("vTangent: x = %.6f, y = %.6f, z = %.6f\n"),
-    //	pVertices[0].vTangent.x, pVertices[0].vTangent.y, pVertices[0].vTangent.z);
-    //OutputDebugString(debugMessage3);
-
-
     
-
-    //해당 모델의 메쉬 개수만큼
-    for (size_t i = 0; i < m_pAIScene->mNumMeshes; i++)
+    for (size_t i = 0; i < m_vecMesh.size(); i++)
     {
-        // 메쉬의 버텍스 개수만큼 루프
-        for (size_t j = 0; j < m_pAIScene->mMeshes[i]->mNumFaces; j++)
-        {
-            _vector vVertex1, vVertex2, vVertex3;
-    
-            vVertex1 = XMVectorSet(m_pAIScene->mMeshes[i]->mVertices[j * 3].x,     m_pAIScene->mMeshes[i]->mVertices[j * 3].y,     m_pAIScene->mMeshes[i]->mVertices[j * 3].z, 1.f);
-            vVertex2 = XMVectorSet(m_pAIScene->mMeshes[i]->mVertices[j * 3 + 1].x, m_pAIScene->mMeshes[i]->mVertices[j * 3 + 1].y, m_pAIScene->mMeshes[i]->mVertices[j * 3 + 1].z, 1.f);
-            vVertex3 = XMVectorSet(m_pAIScene->mMeshes[i]->mVertices[j * 3 + 2].x, m_pAIScene->mMeshes[i]->mVertices[j * 3 + 2].y, m_pAIScene->mMeshes[i]->mVertices[j * 3 + 2].z, 1.f);
-    
-            _vector v1, v2;
-            v1 = XMLoadFloat4(&_fCamPos);
-            v2 = XMLoadFloat4(&_fRayDir);
-    
-            bResult = DirectX::TriangleTests::Intersects(
-                      v1,
-                      v2,
-                      vVertex1,
-                      vVertex2,
-                      vVertex3,
-                      *_fCoord);
-
-        if (bResult)
-            return true;
-        }
+        bResult = m_vecMesh[i]->Search_Picked_Face(vPos, vDir, _fDistance, _fCoord);
     }
 
-    return false;
+    return bResult;
 }
 
 HRESULT CModel::Ready_Bones(const aiNode* pAINode, _int iParentBoneIndex)

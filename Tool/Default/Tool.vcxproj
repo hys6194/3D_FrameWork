@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\Cell_Guide.h" />
     <ClInclude Include="..\Public\DataMgr.h" />
     <ClInclude Include="..\Public\ImGui_Base.h" />
     <ClInclude Include="..\Public\ImGui_Map.h" />
@@ -142,6 +143,7 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Map_Object.h" />
+    <ClInclude Include="..\Public\Navi_Cell.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Tool_ConstValue.h" />
     <ClInclude Include="..\Public\Tool_Defines.h" />
@@ -155,6 +157,7 @@
     <ClInclude Include="Tool.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\Cell_Guide.cpp" />
     <ClCompile Include="..\Private\DataMgr.cpp" />
     <ClCompile Include="..\Private\ImGui_Base.cpp" />
     <ClCompile Include="..\Private\ImGui_Map.cpp" />
@@ -163,6 +166,7 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Map_Object.cpp" />
+    <ClCompile Include="..\Private\Navi_Cell.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Tool_FreeCam.cpp" />
     <ClCompile Include="..\Private\Tool_Level.cpp" />

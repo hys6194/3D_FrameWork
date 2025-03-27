@@ -5,6 +5,7 @@
 #include "Tool_FreeCam.h"
 #include "Terrain.h"
 #include "Map_Object.h"
+#include "Navi_Cell.h"
 //#include "Monster.h"
 
 
@@ -133,27 +134,31 @@ HRESULT Loader::Loading_Models()
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_VI_GUIDE,
+		CNavi_Cell::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 	PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK1,
-		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Rock/DestRock1.fbx", PreTransformMatrix))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK2,
-		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Rock/DestRock2.fbx", PreTransformMatrix))))
-		return E_FAIL;
-	PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_FLOOR1,
-		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Floor/TileFloor1.fbx", PreTransformMatrix))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR1,
-		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Stair/Stair1.fbx", PreTransformMatrix))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR2,
-		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Stair/Stair2.fbx", PreTransformMatrix))))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK1,
+	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Rock/DestRock1.fbx", PreTransformMatrix))))
+	//	return E_FAIL;
+	//
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK2,
+	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Rock/DestRock2.fbx", PreTransformMatrix))))
+	//	return E_FAIL;
+	//PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_FLOOR1,
+	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Floor/TileFloor1.fbx", PreTransformMatrix))))
+	//	return E_FAIL;
+	//
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR1,
+	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Stair/Stair1.fbx", PreTransformMatrix))))
+	//	return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR2,
+	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Stair/Stair2.fbx", PreTransformMatrix))))
+	//	return E_FAIL;
 
 	//// 저장용
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK1,
@@ -192,27 +197,27 @@ HRESULT Loader::Loading_Models()
 	//		PreTransformMatrix))))
 	//	return E_FAIL;
 
-	//// 불러오기
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK1,
-	//	CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/DestRock1.bin"))))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK2,
-	//	CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/DestRock2.bin"))))
-	//	return E_FAIL;
-	//
-	//PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_FLOOR1,
-	//	CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/TileFloor1.bin"))))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR1,
-	//	CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Stair1.bin"))))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR2,
-	//	CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Stair2.bin"))))
-	//	return E_FAIL;
+	// 불러오기
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK1,
+		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/DestRock1.bin"))))
+		return E_FAIL;
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK2,
+		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/DestRock2.bin"))))
+		return E_FAIL;
+	
+	PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_FLOOR1,
+		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/TileFloor1.bin"))))
+		return E_FAIL;
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR1,
+		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Stair1.bin"))))
+		return E_FAIL;
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR2,
+		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Stair2.bin"))))
+		return E_FAIL;
 	
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
 		CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM, "../Bin/Resources/Models/AnimModel/Strife/Gun2.fbx", PreTransformMatrix))))
@@ -260,6 +265,12 @@ HRESULT Loader::Loading_Shaders()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_SHADER_CUBE,
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::ElementDesc, VTXCUBE::iNumElements))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_SHADER_CELL,
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"),
+			VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
+		return E_FAIL;
+
 
 	return S_OK;
 }
