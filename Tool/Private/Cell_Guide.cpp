@@ -56,11 +56,12 @@ void CCell_Guide::Priority_Update(_float fTimeDelta)
 void CCell_Guide::Update(_float fTimeDelta, _vector vCoord)
 {
     // 처음엔 0
+    // 걍 터트려
     m_vecBufferComs.back()->Modify_VertexPoint(m_iIndex, vCoord);
 
     // 클릭하면 인덱스 증가
     // 한 프레임 사이에 갑자기 훅 증가하네
-    if (GetAsyncKeyState(VK_LBUTTON) & 0x0001)
+    if (m_pGameInstance->Mouse_Down(DIM_LB))
     {
         //m_bIsClicked = true;
 
@@ -86,10 +87,16 @@ void CCell_Guide::Update(_float fTimeDelta, _vector vCoord)
 void CCell_Guide::Late_Update(_float fTimeDelta)
 {
     // 여기서 정점들의 위치를 선언하면 matrix 값을 직접 수정해야 함
-    if (m_pGameInstance->Get_DIKeyState(DIK_MINUS) && m_iIndex > 0)
+    if (m_pGameInstance->Key_Down(DIK_MINUS) && m_iIndex > 0)
         m_iIndex--;
 
-    if (m_pGameInstance->Get_DIKeyState(DIK_DELETE))
+    if (m_pGameInstance->Key_Down(DIK_MINUS))
+        int a = 10;
+
+    if (m_pGameInstance->Mouse_Down(DIM_LB))
+        int a = 10;
+
+    if (m_pGameInstance->Key_Down(DIK_DELETE) && m_vecBufferComs.size() > 1)
         m_vecBufferComs.pop_back();
 
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
@@ -103,7 +110,7 @@ HRESULT CCell_Guide::Render()
 
     m_pShaderCom->Begin(0);
 
-    if(m_bIsModify)
+    if(!m_vecBufferComs.empty())
     {
         for (auto& iter : m_vecBufferComs)
         {
