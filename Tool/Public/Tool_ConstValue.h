@@ -24,8 +24,10 @@ static const std::wstring PRO_TEX_BACKGROUND	= TEXT("Prototype_Component_Texture
 /* Component */
 static const std::wstring PRO_COM_FSM			= TEXT("Prototype_Component_FSM");
 static const std::wstring PRO_COM_NAVI			= TEXT("Prototype_Component_Navigation");
-static const std::wstring PRO_COM_VI_RECT		= TEXT("Prototype_Component_VIBuffer_Rect");
+static const std::wstring PRO_COM_VI_CELL		= TEXT("Prototype_Component_VIBuffer_Cell");
 static const std::wstring PRO_COM_VI_CUBE		= TEXT("Prototype_Component_VIBuffer_Cube");
+static const std::wstring PRO_COM_VI_RECT		= TEXT("Prototype_Component_VIBuffer_Rect");
+static const std::wstring PRO_COM_VI_GUIDE		= TEXT("Prototype_Component_VIBuffer_Guide");
 static const std::wstring PRO_COM_VI_TERRAIN	= TEXT("Prototype_Component_VIBuffer_Terrain");
 
 /* Collider */
@@ -88,16 +90,18 @@ static const std::wstring LAYER_DESERT_ROCK_2	= TEXT("Layer_Desert_Rock2");
 
 
 /* Component */
-static const std::wstring COM_FSM = TEXT("Component_FSM");
-static const std::wstring COM_NAVI = TEXT("Component_Navigation");
-static const std::wstring COM_VI_RECT = TEXT("Component_VIBuffer_Rect");
-static const std::wstring COM_VI_CUBE = TEXT("Component_VIBuffer_Cube");
-static const std::wstring COM_VI_TERRAIN = TEXT("Component_VIBuffer_Terrain");
+static const std::wstring COM_FSM				= TEXT("Component_FSM");
+static const std::wstring COM_NAVI				= TEXT("Component_Navigation");
+static const std::wstring COM_VI_CELL			= TEXT("Component_VIBuffer_Cell");
+static const std::wstring COM_VI_CUBE			= TEXT("Component_VIBuffer_Cube");
+static const std::wstring COM_VI_RECT			= TEXT("Component_VIBuffer_Rect");
+static const std::wstring COM_VI_GUIDE			= TEXT("Component_VIBuffer_Guide");
+static const std::wstring COM_VI_TERRAIN		= TEXT("Component_VIBuffer_Terrain");
 
 /* Collider */
-static const std::wstring COM_COLL_OBB = TEXT("Component_Collider_OBB");
-static const std::wstring COM_COLL_AABB = TEXT("Component_Collider_AABB");
-static const std::wstring COM_COLL_SPHERE = TEXT("Component_Collider_Sphere");
+static const std::wstring COM_COLL_OBB			= TEXT("Component_Collider_OBB");
+static const std::wstring COM_COLL_AABB			= TEXT("Component_Collider_AABB");
+static const std::wstring COM_COLL_SPHERE		= TEXT("Component_Collider_Sphere");
 
 
 //static const std::wstring PRO_OBJ_BACK = TEXT("Bone_Strife_Holster_L");
