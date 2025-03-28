@@ -23,6 +23,14 @@ BEGIN(Tool)
 
 class CCell_Guide : public CGameObject
 {
+
+public:
+	typedef struct tagCellPoint {
+
+		_vector v0;
+		_vector v1;
+		_vector v2;
+	}CELL_POS;
 private:
 	CCell_Guide(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCell_Guide(const CCell_Guide& Prototype);
@@ -79,12 +87,13 @@ private:
 	_uint							m_iIndex = { 0 };
 	_float4x4						m_matWorld = {};
 
-	_float3							m_vPoint[3];
+	_vector							m_vPoint[3];
+
 	//어떻게 해야 0,1,2의 정보가 담겨있는 배열을 저장할 수 있을까
-	vector<_float3>					m_vecCellPos;
+	vector<CELL_POS>				m_vecCellPos;
 private:
 	void							Check_Cell_Translation();
-	_float3							Correct_CellPoint(_vector vCoord);
+	_vector							Correct_CellPoint(_vector vCoord);
 
 public:
 	static CCell_Guide*				Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

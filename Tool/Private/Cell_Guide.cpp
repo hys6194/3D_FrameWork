@@ -52,11 +52,11 @@ void CCell_Guide::Priority_Update(_float fTimeDelta)
 
 void CCell_Guide::Update(_float fTimeDelta, _vector vCoord)
 {
-    // 처음엔 0
-    // 걍 터트려
-    Correct_CellPoint(vCoord);
+    // 마우스 포인트 보정
+    _vector vResult = Correct_CellPoint(vCoord);
 
-    m_pVIBufferCom->Modify_VertexPoint(m_iIndex, vCoord);
+    // 가이드 Cell 조정
+    m_pVIBufferCom->Modify_VertexPoint(m_iIndex, vResult);
 
     // 클릭하면 인덱스 증가
     // 좌표 값을 저장해야 함
@@ -66,7 +66,13 @@ void CCell_Guide::Update(_float fTimeDelta, _vector vCoord)
 
         if (2 <= m_iIndex)
         {
-            //m_vecCellPos.push_back(m_vPoint);
+            CELL_POS pDesc{};
+
+            pDesc.v0 = m_vPoint[0];
+            pDesc.v1 = m_vPoint[1];
+            pDesc.v2 = m_vPoint[2];
+
+            m_vecCellPos.push_back(pDesc);
             m_vecBufferComs.push_back(m_pVIBufferCom);
 
             m_pVIBufferCom = dynamic_cast<CNavi_Cell*>(m_pGameInstance->
@@ -111,11 +117,11 @@ HRESULT CCell_Guide::Render()
 
     if(!m_vecBufferComs.empty())
     {
-        //for (auto& iter : m_vecBufferComs)
-        //{
-        //    iter->Bind_Input_Assembler();
-        //    iter->Render();
-        //}
+        for (auto& iter : m_vecBufferComs)
+        {
+            iter->Bind_Input_Assembler();
+            iter->Render();
+        }
 
         m_pVIBufferCom->Bind_Input_Assembler();
         m_pVIBufferCom->Render();
@@ -150,7 +156,7 @@ HRESULT CCell_Guide::Ready_Component()
 
 HRESULT CCell_Guide::Clone_VIBuffer()
 {
-    CNavi_Cell* pInstance =
+    m_pVIBufferCom =
         dynamic_cast<CNavi_Cell*>(m_pGameInstance->
             Clone_Prototype(PROTOTYPE::TYPE_COMPONENT,
             LEVEL_TOOL, PRO_COM_VI_GUIDE));
@@ -158,29 +164,68 @@ HRESULT CCell_Guide::Clone_VIBuffer()
     // 여기 수정해야 함
     // 처음 생성했을 때에만
     if(m_vecBufferComs.empty())
-        m_vecBufferComs.push_back(pInstance);
+        m_vecBufferComs.push_back(m_pVIBufferCom);
 
     m_bIsModify = true;
 
     return S_OK;
 }
 
-_float3 CCell_Guide::Correct_CellPoint(_vector vCoord)
+_vector CCell_Guide::Correct_CellPoint(_vector vCoord)
 {
-    // 빌런 짓 해볼까
-    XMStoreFloat3(&m_vPoint[m_iIndex], vCoord );
+    m_vPoint[m_iIndex] = vCoord;
 
-    for (size_t i = 0; i < 3; i++)
+    if (m_vecCellPos.empty())
+        return m_vPoint[m_iIndex];
+
+    _vector vDistance = { 2.f,2.f,2.f,1.f };
+
+    for (auto iter = m_vecCellPos.rbegin();
+        iter != m_vecCellPos.rend();
+        iter++)
     {
-        TCHAR debugMessage[256];
-        _stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f\n"), m_vPoint[i].x, m_vPoint[i].y, m_vPoint[i].z);
-        OutputDebugString(debugMessage);
+        _vector vResult  = XMVectorNearEqual(iter->v0, m_vPoint[m_iIndex], vDistance);
+        _vector vResult1 = XMVectorNearEqual(iter->v1, m_vPoint[m_iIndex], vDistance);
+        _vector vResult2 = XMVectorNearEqual(iter->v2, m_vPoint[m_iIndex], vDistance);
+
+        if (XMVector4EqualInt(vResult, XMVectorTrueInt()))
+        {
+            return m_vPoint[m_iIndex] = iter->v0;
+            break;
+        }
+        if (XMVector4EqualInt(vResult1, XMVectorTrueInt()))
+        {
+            return m_vPoint[m_iIndex] = iter->v1;
+            break;
+        }
+        if (XMVector4EqualInt(vResult2, XMVectorTrueInt()))
+        {
+            return m_vPoint[m_iIndex] = iter->v2;
+            break;
+        }
+    }    
+
+    // 디버깅
+    //for (size_t i = 0; i < 3; i++)
+    //{
+    //}
+
+    if(m_pGameInstance->Mouse_Down(DIM_LB))
+    {
+        //TCHAR debugMessage[256];
+        //_stprintf_s(debugMessage, _T("Debug_Value: m_iIndex = %d, x = %.6f, y = %.6f, z = %.6f\n"),
+        //    m_iIndex, fMin.x, fMin.y, fMin.z);
+        //OutputDebugString(debugMessage);
+        //
+        //
+        //TCHAR debugMessage1[256];
+        //_stprintf_s(debugMessage1, _T("Debug_Value: m_iIndex = %d, x = %.6f, y = %.6f, z = %.6f\n"),
+        //    m_iIndex, fMax.x, fMax.y, fMax.z);
+        //OutputDebugString(debugMessage1);
     }
 
-
-
     
-    return m_vPoint[m_iIndex];
+    return vCoord;
 }
 
 void CCell_Guide::Check_Cell_Translation()

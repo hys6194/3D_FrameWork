@@ -68,7 +68,7 @@ HRESULT CMap_Object::Render()
             return E_FAIL;
     }
 
-    m_pColliderCom->Render();
+    //m_pColliderCom->Render();
 
     return S_OK;
 }
