@@ -64,17 +64,12 @@ public:
 
 	HRESULT							Clone_VIBuffer();
 	// 야 이거 상속 게임 오브젝트로 하는게 맞다
-	// 그래야 트랜스 폼으로 값을 저장할 수 있겠음 또한 값 수정까지 편할듯 해
+	// 그래야 트랜스 폼으로 Add_Renderer랑 Bind시킨다
 
 private:
 	CShader*						m_pShaderCom	 = { nullptr };
 	class CNavi_Cell*				m_pVIBufferCom	 = { nullptr };
-	//class CGameInstance*			m_pGameInstance;
 
-	//ID3D11Device*					m_pDevice;
-	//ID3D11DeviceContext*			m_pContext;
-
-	vector<_float3>					m_vecCellPos;
 	vector<class CNavi_Cell*>		m_vecBufferComs;
 	
 
@@ -83,8 +78,13 @@ private:
 
 	_uint							m_iIndex = { 0 };
 	_float4x4						m_matWorld = {};
+
+	_float3							m_vPoint[3];
+	//어떻게 해야 0,1,2의 정보가 담겨있는 배열을 저장할 수 있을까
+	vector<_float3>					m_vecCellPos;
 private:
 	void							Check_Cell_Translation();
+	_float3							Correct_CellPoint(_vector vCoord);
 
 public:
 	static CCell_Guide*				Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

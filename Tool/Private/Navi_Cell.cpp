@@ -25,6 +25,8 @@ HRESULT CNavi_Cell::Initialize(void* pArg)
     m_iNumVertexBuffers = 1;
     m_eIndexFormat = DXGI_FORMAT_R16_UINT;
     m_eTopology = D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
+    //D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+    //D3D_PRIMITIVE_TOPOLOGY_LINESTRIP
 
 #pragma region VTX
 
@@ -130,7 +132,6 @@ HRESULT CNavi_Cell::Bind_Input_Assembler()
     _uint Offsets[] =
     {
         0,
-    
     };
 
     m_pContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pBuffer, iStrides, Offsets);

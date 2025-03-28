@@ -41,9 +41,6 @@ HRESULT CCell_Guide::Initialize(void* pArg)
     // 이니셜라이즈 할때 뭘 해야할까?
     // 포인트를 0,1,2 순서로 먼저 만들까
     // 일단 패스
-    
-    // 행렬 정보는 필요해 보임
-
 
     return S_OK;
 }
@@ -57,27 +54,36 @@ void CCell_Guide::Update(_float fTimeDelta, _vector vCoord)
 {
     // 처음엔 0
     // 걍 터트려
-    m_vecBufferComs.back()->Modify_VertexPoint(m_iIndex, vCoord);
+    Correct_CellPoint(vCoord);
+
+    m_pVIBufferCom->Modify_VertexPoint(m_iIndex, vCoord);
 
     // 클릭하면 인덱스 증가
-    // 한 프레임 사이에 갑자기 훅 증가하네
+    // 좌표 값을 저장해야 함
     if (m_pGameInstance->Mouse_Down(DIM_LB))
     {
         //m_bIsClicked = true;
 
         if (2 <= m_iIndex)
         {
-            m_pVIBufferCom =
-                dynamic_cast<CNavi_Cell*>(m_pGameInstance->
+            //m_vecCellPos.push_back(m_vPoint);
+            m_vecBufferComs.push_back(m_pVIBufferCom);
+
+            m_pVIBufferCom = dynamic_cast<CNavi_Cell*>(m_pGameInstance->
                     Clone_Prototype(PROTOTYPE::TYPE_COMPONENT,
                         LEVEL_TOOL, PRO_COM_VI_GUIDE));
 
-            m_vecBufferComs.push_back(m_pVIBufferCom);
+            // 여기서 정점 0, 1, 2를 저장하고 Cell을 Create해야할 듯 함
+
+
+
 
             m_iIndex = 0;
 
             return;
         }
+
+
         m_iIndex++;
         //한번만 실행하게 bool 타입 하나 추가 해야 할 듯 함
         //m_bIsClicked = false;
@@ -86,15 +92,8 @@ void CCell_Guide::Update(_float fTimeDelta, _vector vCoord)
 
 void CCell_Guide::Late_Update(_float fTimeDelta)
 {
-    // 여기서 정점들의 위치를 선언하면 matrix 값을 직접 수정해야 함
     if (m_pGameInstance->Key_Down(DIK_MINUS) && m_iIndex > 0)
         m_iIndex--;
-
-    if (m_pGameInstance->Key_Down(DIK_MINUS))
-        int a = 10;
-
-    if (m_pGameInstance->Mouse_Down(DIM_LB))
-        int a = 10;
 
     if (m_pGameInstance->Key_Down(DIK_DELETE) && m_vecBufferComs.size() > 1)
         m_vecBufferComs.pop_back();
@@ -108,19 +107,22 @@ HRESULT CCell_Guide::Render()
     // 내가 메시를 어디어디 찍었는지도 알아야 함
     FAILED_CHECK_RETURN(Bind_SR(), E_FAIL);
 
-    m_pShaderCom->Begin(0);
+    m_pShaderCom->Begin(1);
 
     if(!m_vecBufferComs.empty())
     {
-        for (auto& iter : m_vecBufferComs)
-        {
-            iter->Bind_Input_Assembler();
-            iter->Render();
-        }
+        //for (auto& iter : m_vecBufferComs)
+        //{
+        //    iter->Bind_Input_Assembler();
+        //    iter->Render();
+        //}
+
+        m_pVIBufferCom->Bind_Input_Assembler();
+        m_pVIBufferCom->Render();
 
     }
     //else
-
+    
 
 	return S_OK;
 }
@@ -148,7 +150,7 @@ HRESULT CCell_Guide::Ready_Component()
 
 HRESULT CCell_Guide::Clone_VIBuffer()
 {
-    m_pVIBufferCom =
+    CNavi_Cell* pInstance =
         dynamic_cast<CNavi_Cell*>(m_pGameInstance->
             Clone_Prototype(PROTOTYPE::TYPE_COMPONENT,
             LEVEL_TOOL, PRO_COM_VI_GUIDE));
@@ -156,13 +158,29 @@ HRESULT CCell_Guide::Clone_VIBuffer()
     // 여기 수정해야 함
     // 처음 생성했을 때에만
     if(m_vecBufferComs.empty())
-        m_vecBufferComs.push_back(m_pVIBufferCom);
-
-    Safe_AddRef(m_pVIBufferCom);
+        m_vecBufferComs.push_back(pInstance);
 
     m_bIsModify = true;
 
     return S_OK;
+}
+
+_float3 CCell_Guide::Correct_CellPoint(_vector vCoord)
+{
+    // 빌런 짓 해볼까
+    XMStoreFloat3(&m_vPoint[m_iIndex], vCoord );
+
+    for (size_t i = 0; i < 3; i++)
+    {
+        TCHAR debugMessage[256];
+        _stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f\n"), m_vPoint[i].x, m_vPoint[i].y, m_vPoint[i].z);
+        OutputDebugString(debugMessage);
+    }
+
+
+
+    
+    return m_vPoint[m_iIndex];
 }
 
 void CCell_Guide::Check_Cell_Translation()
@@ -202,13 +220,14 @@ void CCell_Guide::Free()
     __super::Free();
 
     for (auto& iter : m_vecBufferComs)
-        Safe_Release(m_pVIBufferCom);
-
+        Safe_Release(iter);
+    
     m_vecBufferComs.clear();
 
+    Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pShaderCom);
 
-    Safe_Release(m_pDevice);
-    Safe_Release(m_pContext);
-    Safe_Release(m_pGameInstance);
+    //Safe_Release(m_pDevice);
+    //Safe_Release(m_pContext);
+    //Safe_Release(m_pGameInstance);
 }

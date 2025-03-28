@@ -140,7 +140,7 @@ HRESULT CNavigation::Render()
     if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShader, CPipeLine::D3DTS_PROJ)))
         return E_FAIL;
 
-    m_pShader->Begin(0);
+    m_pShader->Begin(1);
 
     for (auto& pCell : m_Cells)
         pCell->Render();

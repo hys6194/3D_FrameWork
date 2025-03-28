@@ -268,7 +268,7 @@ HRESULT Loader::Loading_Shaders()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_SHADER_CELL,
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"),
-			VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
+			VTXPOS::ElementDesc, VTXPOS::iNumElements))))
 		return E_FAIL;
 
 

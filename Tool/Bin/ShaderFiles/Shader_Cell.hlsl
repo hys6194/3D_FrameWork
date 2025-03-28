@@ -35,7 +35,6 @@ VS_OUT VS_MAIN(VS_IN In)
 struct PS_IN
 {
     float4 vPosition : SV_POSITION;
-
 };
 
 struct PS_OUT
@@ -50,6 +49,15 @@ PS_OUT PS_MAIN(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
     
     Out.vColor = g_vColor;    
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN1(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    Out.vColor = float4(0.f, 1.f, 0.f, 0.f);
     
     return Out;
 }
@@ -71,6 +79,16 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
+    }
+
+    pass DefaultPass1
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN1();
     }
 
 

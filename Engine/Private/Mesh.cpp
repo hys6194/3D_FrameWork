@@ -124,10 +124,10 @@ _bool CMesh::Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, 
 			// µğ¹ö±ë
 			XMStoreFloat4(_fCoord, (vPos + (*_fDistance) * vDir));
 
-			TCHAR debugMessage1[256];
-			_stprintf_s(debugMessage1, _T("fCoord: x = %.6f, y = %.6f, z = %.6f\n"),
-				_fCoord->x, _fCoord->y, _fCoord->z);
-			OutputDebugString(debugMessage1);
+			//TCHAR debugMessage1[256];
+			//_stprintf_s(debugMessage1, _T("fCoord: x = %.6f, y = %.6f, z = %.6f\n"),
+			//	_fCoord->x, _fCoord->y, _fCoord->z);
+			//OutputDebugString(debugMessage1);
 			 
 
  			return bTest;
@@ -135,10 +135,10 @@ _bool CMesh::Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, 
 	}
 
 
-	TCHAR debugMessage[256];
-	_stprintf_s(debugMessage, _T("Àú·±.. ¹Ù±ùÀ» Âï¾ú¾î¿ä\n")
-	);
-	OutputDebugString(debugMessage);
+	//TCHAR debugMessage[256];
+	//_stprintf_s(debugMessage, _T("Àú·±.. ¹Ù±ùÀ» Âï¾ú¾î¿ä\n")
+	//);
+	//OutputDebugString(debugMessage);
 
 	return bTest;
 }
