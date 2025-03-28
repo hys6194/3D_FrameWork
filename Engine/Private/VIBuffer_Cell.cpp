@@ -18,7 +18,7 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 	m_iNumIndices = 4;
 	m_iNumVertexBuffers = 1;
 	m_eIndexFormat = DXGI_FORMAT_R16_UINT;
-	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
 
 #pragma region VERTEXBUFFER
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);

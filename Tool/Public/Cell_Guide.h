@@ -37,7 +37,6 @@ private:
 	virtual ~CCell_Guide() = default;
 
 public:
-	void Toggle_Modify()
 
 	_bool Get_Modify()
 	{
@@ -92,6 +91,7 @@ private:
 
 public:
 	void							Save_Data();
+	void							Load_Data();
 
 public:
 	static CCell_Guide*				Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

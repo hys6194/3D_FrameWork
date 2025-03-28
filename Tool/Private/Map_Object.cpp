@@ -17,8 +17,7 @@ HRESULT CMap_Object::Initialize(void* pArg)
 {
     GAMEOBJECT_DESC* Desc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
-    MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(pArg);
-    m_iID = pDesc->iObjectIndex;
+    m_pDesc = static_cast<MAPOBJ_DESC*>(pArg);
     
     //wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(pDesc->iObjectIndex);
 
@@ -27,15 +26,43 @@ HRESULT CMap_Object::Initialize(void* pArg)
     if (FAILED(__super::Initialize(Desc)))
         return E_FAIL;
 
-    if (FAILED(Ready_Components(pDesc->strModelTag)))
+    if (FAILED(Ready_Components(m_pDesc->strModelTag)))
         return E_FAIL;
+
+    //_uint i = 1;
+    //m_pContext->RSGetViewpor  ts(&i, &m_pViewPort);
+    //
+    //m_matProj  = XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ));
+    //m_matView  = XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW));
+    //m_matWorld = XMLoadFloat4x4(Get_Transform()->Get_WorldMatrix_Ptr());
+
+    XMStoreFloat4x4(&m_matProj, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ)));
+    XMStoreFloat4x4(&m_matView, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW)));
+    XMStoreFloat4x4(&m_matWorld, XMLoadFloat4x4(Get_Transform()->Get_WorldMatrix_Ptr()));
 
     return S_OK;
 }
 
 void CMap_Object::Priority_Update(_float fTimeDelta)
 {
-  
+    //_uint i = 1;
+    //m_pContext->RSGetViewports(&i, &m_pViewPort);
+    //
+    //
+    //ImGuiIO& io = ImGui::GetIO();
+    //
+    //ImGuizmo::SetDrawlist();
+    //ImGuizmo::SetRect(0,0, io.DisplaySize.x, io.DisplaySize.x);
+
+    
+    //bool bTest = ImGuizmo::Manipulate((float*)&m_matView,
+    //                (float*)&m_matProj,
+    //                eGizmoType,
+    //                ImGuizmo::WORLD,
+    //                (float*)&m_matWorld);
+
+
+    int a = 10;
 }
 
 void CMap_Object::Update(_float fTimeDelta)
@@ -45,6 +72,17 @@ void CMap_Object::Update(_float fTimeDelta)
 
 void CMap_Object::Late_Update(_float fTimeDelta)
 {
+    //if (ImGuizmo::IsOver())
+    //{
+    //    int a = 10;
+    //}
+    //
+    //if (ImGuizmo::IsUsing())
+    //{
+    //    int a = 10;
+    //}
+
+
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
@@ -75,6 +113,7 @@ HRESULT CMap_Object::Render()
 
 HRESULT CMap_Object::Ready_Components(const wstring _strModelTag)
 {
+
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_SHADER_MESH,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 

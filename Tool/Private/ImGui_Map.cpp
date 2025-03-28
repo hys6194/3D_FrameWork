@@ -9,6 +9,7 @@
 #include "GameInstance.h"
 #include "Map_Object.h"
 
+ 
 using namespace ImGui;
 
 CImGui_Map::CImGui_Map(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -38,14 +39,40 @@ void CImGui_Map::Update(_float fTimeDelta)
 
 HRESULT CImGui_Map::Late_Update(_float fTimeDelta)
 {
-	
-
-
 	return S_OK;
 }
 
 void CImGui_Map::Save_MapObjects()
 {
+}
+
+void CImGui_Map::Set_TransformInfo(CMap_Object* pObject)
+{
+	m_pObject = pObject;
+	m_pTransform = m_pObject->Get_Transform();
+}
+
+void CImGui_Map::Render_TransformInfo()
+{
+	// 여기에서 Scale, Rotation, Pos에 관한 정보들을 담아볼 것
+	//_vector vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
+	//_vector vRight = m_pTransform->Get_State(CTransform::STATE_RIGHT);
+	//_vector vUp = m_pTransform->Get_State(CTransform::STATE_UP);
+	//_vector vPos = m_pTransform->Get_State(CTransform::STATE_POS);
+	//
+	//// 스케일 설정 방법
+	//m_pObject->Get_Transform()->SetUp_Scaled(1.f, 1.f, 1.f);
+	//
+	//// 행렬 정보 세팅 방법
+	//_vector vTest{1.f,1.f,1.f,1.f};
+	//m_pTransform->Set_State(CTransform::STATE_RIGHT, vTest);
+	//m_pTransform->Set_State(CTransform::STATE_UP, vTest);
+	//m_pTransform->Set_State(CTransform::STATE_POS, vTest);
+	//m_pTransform->Set_State(CTransform::STATE_LOOK, vTest);
+
+	Button_TransformScale();
+
+
 }
 
 void CImGui_Map::Default_SetButtons(_float fTimeDelta)
@@ -60,7 +87,7 @@ void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 
 	if (Button("Load"))
 	{
-
+		m_bLoad = true;
 	}
 
 	Button_AddObjects();
@@ -69,7 +96,7 @@ void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 
 	Button_NaviCreate();
 		
-	if (m_bScale)
+	if (m_bSelect)
 		Change_ObjectInfo();
 }
 
@@ -82,7 +109,7 @@ void CImGui_Map::Button_AddObjects()
 		CMap_Object::MAPOBJ_DESC Desc = {};
 
 		Desc.strModelTag = m_strModelName;
-		Desc.iObjectIndex = m_iObjCnt;
+		Desc.strObjectTag = m_strObjectName;
 
 		HRESULT hr = m_pGameInstance->Add_GameObject(LEVEL_TOOL, m_strObjectName, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
 
@@ -117,16 +144,43 @@ void CImGui_Map::Button_NaviCreate()
 
 	if (Checkbox("Navi", &m_bNavi))
 	{
-		//어떻게 전달할까
 	}
+}
+
+void CImGui_Map::Button_TransformScale()
+{
+	//const _tchar szScale;
+		
+	_float4 fScale =
+	{
+		m_pTransform->Get_WorldMatrix_Ptr()->m[0][0],
+		m_pTransform->Get_WorldMatrix_Ptr()->m[1][1],
+		m_pTransform->Get_WorldMatrix_Ptr()->m[2][2],
+		m_pTransform->Get_WorldMatrix_Ptr()->m[3][3],
+	};
+
+	Button_Info(fScale);
+
+}
+
+void CImGui_Map::Button_TransformRotation()
+{
+
+}
+
+void CImGui_Map::Button_TransformPosition()
+{
+
 }
 
 void CImGui_Map::Change_ObjectInfo()
 {
 	Begin("Object_Transforms");
 
-	//Scale, Rotation, Translatiom의 값을 가져와야 함
-	//m_pGameInstance->Find_Layer(LEVEL_TOOL, TEXT("Layer_Objcet"));
+	BulletText("Scale");
+	Render_TransformInfo();
+
+
 
 	int a = 10;
 

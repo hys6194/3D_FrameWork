@@ -69,7 +69,7 @@ void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSo
 
 			if (m_vecProtoTag[i].find(_strDest) != std::string::npos)
 			{
-				// 여기까지는 문제가 없음
+				
 				if (ImGui::Button(cstr))
 				{
 					// 모델 이름 저장하기
@@ -98,6 +98,40 @@ void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSo
 		}
 
 		ImGui::TreePop();
+	}
+
+}
+
+void CImGui_Base::Button_Info(_float4 _fValue)
+{
+	char cInfoX[MAX_PATH]{};
+	sprintf_s(cInfoX, sizeof(cInfoX), "x : %.2f", _fValue.x);
+
+	char cInfoY[MAX_PATH]{};
+	sprintf_s(cInfoY, sizeof(cInfoY), "y : %.2f", _fValue.y);
+
+
+	char cInfoZ[MAX_PATH]{};
+	sprintf_s(cInfoZ, sizeof(cInfoZ), "z : %.2f", _fValue.z);
+
+
+	if (Button(cInfoX))
+	{
+		m_bEvent1 = !m_bEvent1;
+	}
+
+	SameLine();
+
+	if (Button(cInfoY))
+	{
+		m_bEvent2 = !m_bEvent2;
+	}
+
+	SameLine();
+
+	if (Button(cInfoZ))
+	{
+		m_bEvent3 = !m_bEvent3;
 	}
 
 }

@@ -25,7 +25,7 @@ public:
 private:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
-	CGameInstance*				m_pGameInstance = { nullptr };
+	class CGameInstance*				m_pGameInstance = { nullptr };
 
 private:
 	class CImGui_UI*			m_pUI = { nullptr };
@@ -34,7 +34,7 @@ private:
 
 private:
 	_bool						m_bRayShoot;
-	_bool						m_bTest = { false };
+	_bool						m_bColl = { false };
 	_float						m_fDistance{};
 	_float						m_fPreDistance{};
 	_vector						m_vCellCoord{};
@@ -45,7 +45,7 @@ private:
 	void						Create_NaviCells();
 
 public:
-	static Tool_Manager*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameInstance* pGameInstance);
+	static Tool_Manager*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, class CGameInstance* pGameInstance);
 	virtual void				Free() override;
 };
 

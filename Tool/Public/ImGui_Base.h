@@ -36,6 +36,9 @@ protected:
 	void						Get_PrototypeList(const wstring _strDest, const wstring _strSour);
 
 protected:
+	void						Button_Info(_float4 _fValue);
+
+protected:
 	ID3D11Device*				m_pDevice					= { nullptr };
 	ID3D11DeviceContext*		m_pContext					= { nullptr };
 	CGameInstance*				m_pGameInstance				= { nullptr };
@@ -45,6 +48,10 @@ protected:
 
 	wstring						m_strModelName;
 	wstring						m_strObjectName;
+
+	_bool						m_bEvent1					= { false };
+	_bool						m_bEvent2					= { false };
+	_bool						m_bEvent3					= { false };
 
 public:
 	virtual void				Free() override;

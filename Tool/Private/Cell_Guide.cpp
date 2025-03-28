@@ -129,10 +129,7 @@ HRESULT CCell_Guide::Bind_SR()
 }
 
 HRESULT CCell_Guide::Ready_Component()
-{
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_COM_VI_GUIDE,
-        reinterpret_cast<CComponent**>(&m_pVIBufferCom), TEXT("Com_VIBuffer")), E_FAIL);
-    
+{   
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_SHADER_CELL,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
@@ -189,25 +186,6 @@ void CCell_Guide::Correct_CellPoint(_vector vCoord)
             break;
         }
     }    
-
-    // 디버깅
-    //for (size_t i = 0; i < 3; i++)
-    //{
-    //}
-
-    if(m_pGameInstance->Mouse_Down(DIM_LB))
-    {
-        //TCHAR debugMessage[256];
-        //_stprintf_s(debugMessage, _T("Debug_Value: m_iIndex = %d, x = %.6f, y = %.6f, z = %.6f\n"),
-        //    m_iIndex, fMin.x, fMin.y, fMin.z);
-        //OutputDebugString(debugMessage);
-        //
-        //
-        //TCHAR debugMessage1[256];
-        //_stprintf_s(debugMessage1, _T("Debug_Value: m_iIndex = %d, x = %.6f, y = %.6f, z = %.6f\n"),
-        //    m_iIndex, fMax.x, fMax.y, fMax.z);
-        //OutputDebugString(debugMessage1);
-    }
 }
 
 void CCell_Guide::Calculate_CellNorvec()
@@ -232,13 +210,49 @@ void CCell_Guide::Calculate_CellNorvec()
 
 void CCell_Guide::Save_Data()
 {
-
-
+    _ulong			dwByte = {};
+    HANDLE			hFile = CreateFile(TEXT("../../Client/Bin/DataFiles/Navigation.dat"), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+    //"../../Client/Bin/DataFiles/Navigation.dat"
+    if (0 == hFile)
+        return;
     //벡터에 담긴 데이터들을 기반으로 Navigation.dat 생성하자
     for (auto& iter : m_vecCellPos)
     {
-        
+        _float3 vPoint[3];
+
+        XMStoreFloat3(&vPoint[0], iter.v0);
+        XMStoreFloat3(&vPoint[1], iter.v1);
+        XMStoreFloat3(&vPoint[2], iter.v2);
+
+        WriteFile(hFile, vPoint, sizeof(_float3) * 3, &dwByte, nullptr);
+
+        //vPoints[0] = _float3(0.f, 0.f, 10.f);
+        //vPoints[1] = _float3(10.f, 0.f, 10.f);
+        //vPoints[2] = _float3(10.f, 0.f, 0.f);
+        //WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+        //
+        //vPoints[0] = _float3(0.f, 0.f, 20.f);
+        //vPoints[1] = _float3(10.f, 0.f, 10.f);
+        //vPoints[2] = _float3(0.f, 0.f, 10.f);
+        //WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+        //
+        //vPoints[0] = _float3(10.f, 0.f, 10.f);
+        //vPoints[1] = _float3(20.f, 0.f, 0.f);
+        //vPoints[2] = _float3(10.f, 0.f, 0.f);
+        //WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
     }
+    CloseHandle(hFile);
+}
+
+void CCell_Guide::Load_Data()
+{
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_NAVI,
+        CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Navigation.dat")))))
+        return;
+
+    int a = 1;
+
+
 }
 
 void CCell_Guide::Check_Cell_Translation()

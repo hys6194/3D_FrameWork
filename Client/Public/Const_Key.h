@@ -30,13 +30,13 @@ static const std::wstring PRO_TEX_BACKGROUND	= TEXT("Prototype_Component_Texture
 
 
 /* Component */
-static const std::wstring PRO_COM_FSM = TEXT("Prototype_Component_FSM");
-static const std::wstring PRO_COM_NAVI = TEXT("Prototype_Component_Navigation");
-static const std::wstring PRO_COM_VI_CELL = TEXT("Prototype_Component_VIBuffer_Cell");
-static const std::wstring PRO_COM_VI_CUBE = TEXT("Prototype_Component_VIBuffer_Cube");
-static const std::wstring PRO_COM_VI_RECT = TEXT("Prototype_Component_VIBuffer_Rect");
-static const std::wstring PRO_COM_VI_GUIDE = TEXT("Prototype_Component_VIBuffer_Guide");
-static const std::wstring PRO_COM_VI_TERRAIN = TEXT("Prototype_Component_VIBuffer_Terrain");
+static const std::wstring PRO_COM_FSM			= TEXT("Prototype_Component_FSM");
+static const std::wstring PRO_COM_NAVI			= TEXT("Prototype_Component_Navigation");
+static const std::wstring PRO_COM_VI_CELL		= TEXT("Prototype_Component_VIBuffer_Cell");
+static const std::wstring PRO_COM_VI_CUBE		= TEXT("Prototype_Component_VIBuffer_Cube");
+static const std::wstring PRO_COM_VI_RECT		= TEXT("Prototype_Component_VIBuffer_Rect");
+static const std::wstring PRO_COM_VI_GUIDE		= TEXT("Prototype_Component_VIBuffer_Guide");
+static const std::wstring PRO_COM_VI_TERRAIN	= TEXT("Prototype_Component_VIBuffer_Terrain");
 
 /* Collider */
 static const std::wstring PRO_COM_COLL_OBB		= TEXT("Prototype_Component_Collider_OBB");

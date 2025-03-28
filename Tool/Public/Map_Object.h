@@ -13,19 +13,15 @@ BEGIN(Tool)
 
 class CMap_Object final : public CGameObject
 {
+
+
 public:
 	typedef struct tagMapObjectDesc : public GAMEOBJECT_DESC
 	{
-		// 클라이언트에서 좌표의 위치를 받기 위해서 대충 만듦
-		// 행렬을 던지는게 나아보임
-		// 해당 맵 오브젝트들의 좌표를 받기위해 만든 구조체 
-		//_float4* fScale;
-		//_float4* fRotation;
-		//_float4* fTraslation;
-		//_float4* fPosition;
 
-		wstring strModelTag;
-		_uint   iObjectIndex;
+		_wstring  strModelTag;
+		_wstring  strObjectTag;
+		_float4x4 matWorld;		// 월드 행렬을 가져오는 것이 좋지 않을까? 그래야 값저장때 편할듯
 
 	}MAPOBJ_DESC;
 
@@ -48,6 +44,12 @@ public:
 		return m_pModelCom;
 	}
 
+	MAPOBJ_DESC* Get_MapObjDesc()
+	{
+		return m_pDesc;
+	}
+
+
 private:
 	HRESULT								Ready_Components(const wstring _strModelTag);
 	HRESULT								Bind_SR();
@@ -57,11 +59,11 @@ private:
 	CModel*								m_pModelCom		= { nullptr };
 	CCollider*							m_pColliderCom	= { nullptr };
 
-	//_float4x4							m_matProj		= {};
-	//_float4x4							m_matView		= {};
-	//_float4x4							m_matWorld		= {};
+	_float4x4							m_matProj		= {};
+	_float4x4							m_matView		= {};
+	_float4x4							m_matWorld		= {};
 
-	_uint								m_iID = {};
+	MAPOBJ_DESC*						m_pDesc;
 
 	D3D11_VIEWPORT						m_pViewPort;
 
