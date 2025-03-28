@@ -20,15 +20,12 @@ CCell_Guide::CCell_Guide(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CCell_Guide::CCell_Guide(const CCell_Guide& Prototype)
     : CGameObject { Prototype }
-    , m_matWorld { Prototype.m_matWorld }
     , m_bIsModify { Prototype.m_bIsModify }
 {
 }
 
 HRESULT CCell_Guide::Initialize_Prototype()
 {
-    XMStoreFloat4x4(&m_matWorld, XMMatrixIdentity());
-    
     void* pTest = nullptr;
     FAILED_CHECK_RETURN(__super::Initialize(pTest), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Component(), E_FAIL);
@@ -53,10 +50,10 @@ void CCell_Guide::Priority_Update(_float fTimeDelta)
 void CCell_Guide::Update(_float fTimeDelta, _vector vCoord)
 {
     // 마우스 포인트 보정
-    _vector vResult = Correct_CellPoint(vCoord);
+    Correct_CellPoint(vCoord);
 
     // 가이드 Cell 조정
-    m_pVIBufferCom->Modify_VertexPoint(m_iIndex, vResult);
+    m_pVIBufferCom->Modify_VertexPoint(m_iIndex, m_vPoint[m_iIndex]);
 
     // 클릭하면 인덱스 증가
     // 좌표 값을 저장해야 함
@@ -66,33 +63,21 @@ void CCell_Guide::Update(_float fTimeDelta, _vector vCoord)
 
         if (2 <= m_iIndex)
         {
-            CELL_POS pDesc{};
+            Calculate_CellNorvec();
 
-            pDesc.v0 = m_vPoint[0];
-            pDesc.v1 = m_vPoint[1];
-            pDesc.v2 = m_vPoint[2];
-
-            m_vecCellPos.push_back(pDesc);
             m_vecBufferComs.push_back(m_pVIBufferCom);
 
             m_pVIBufferCom = dynamic_cast<CNavi_Cell*>(m_pGameInstance->
                     Clone_Prototype(PROTOTYPE::TYPE_COMPONENT,
                         LEVEL_TOOL, PRO_COM_VI_GUIDE));
 
-            // 여기서 정점 0, 1, 2를 저장하고 Cell을 Create해야할 듯 함
-
-
-
-
             m_iIndex = 0;
 
             return;
         }
 
-
         m_iIndex++;
-        //한번만 실행하게 bool 타입 하나 추가 해야 할 듯 함
-        //m_bIsClicked = false;
+
     }
 }
 
@@ -171,14 +156,14 @@ HRESULT CCell_Guide::Clone_VIBuffer()
     return S_OK;
 }
 
-_vector CCell_Guide::Correct_CellPoint(_vector vCoord)
+void CCell_Guide::Correct_CellPoint(_vector vCoord)
 {
     m_vPoint[m_iIndex] = vCoord;
 
     if (m_vecCellPos.empty())
-        return m_vPoint[m_iIndex];
+        m_vPoint[m_iIndex];
 
-    _vector vDistance = { 2.f,2.f,2.f,1.f };
+    _vector vDistance = { 0.5f, 0.5f, 0.5f, 1.f };
 
     for (auto iter = m_vecCellPos.rbegin();
         iter != m_vecCellPos.rend();
@@ -190,17 +175,17 @@ _vector CCell_Guide::Correct_CellPoint(_vector vCoord)
 
         if (XMVector4EqualInt(vResult, XMVectorTrueInt()))
         {
-            return m_vPoint[m_iIndex] = iter->v0;
+            m_vPoint[m_iIndex] = iter->v0;
             break;
         }
         if (XMVector4EqualInt(vResult1, XMVectorTrueInt()))
         {
-            return m_vPoint[m_iIndex] = iter->v1;
+            m_vPoint[m_iIndex] = iter->v1;
             break;
         }
         if (XMVector4EqualInt(vResult2, XMVectorTrueInt()))
         {
-            return m_vPoint[m_iIndex] = iter->v2;
+            m_vPoint[m_iIndex] = iter->v2;
             break;
         }
     }    
@@ -223,9 +208,37 @@ _vector CCell_Guide::Correct_CellPoint(_vector vCoord)
         //    m_iIndex, fMax.x, fMax.y, fMax.z);
         //OutputDebugString(debugMessage1);
     }
+}
 
-    
-    return vCoord;
+void CCell_Guide::Calculate_CellNorvec()
+{
+    CELL_POS pDesc{};
+
+    pDesc.v0 = m_vPoint[0];
+    pDesc.v1 = m_vPoint[1];
+    pDesc.v2 = m_vPoint[2];
+
+    _vector v1 = XMVector4Normalize(XMVectorSubtract(m_vPoint[1], m_vPoint[0]));
+    _vector v2 = XMVector4Normalize(XMVectorSubtract(m_vPoint[2], m_vPoint[1]));
+
+    _vector vNor = {0.f,0.f,0.f,0.f};
+    vNor = XMVector3Cross(v1, v2);
+
+    if (vNor.m128_f32[1] < 0)
+        swap(pDesc.v1, pDesc.v2);
+
+    m_vecCellPos.push_back(pDesc);
+}
+
+void CCell_Guide::Save_Data()
+{
+
+
+    //벡터에 담긴 데이터들을 기반으로 Navigation.dat 생성하자
+    for (auto& iter : m_vecCellPos)
+    {
+        
+    }
 }
 
 void CCell_Guide::Check_Cell_Translation()

@@ -23,17 +23,35 @@ public:
 	virtual HRESULT						Late_Update(_float fTimeDelta) override;
 										
 public:
-	_bool Is_Navi() 
+	_bool								Is_Navi() 
 	{
 		return m_bNavi;
 	}
 
-	list<CGameObject*>* Get_ObjectList()
+	_bool								Is_Save()
+	{
+		return m_bSave;
+	}
+
+	_bool								Is_Load()
+	{
+		return m_bLoad;
+	}
+
+	list<CGameObject*>*					Get_ObjectList()
 	{
 		return m_listObject;
 	}
 
+public:
 
+	void Toogle_Save()
+	{
+		m_bSave = !m_bSave;
+	}
+
+public:
+	void								Save_MapObjects();
 
 
 private:
@@ -42,6 +60,9 @@ private:
 	_bool								m_bScale	= { false };
 
 	list<CGameObject*>*					m_listObject = { nullptr };
+
+	_bool								m_bSave = { false };
+	_bool								m_bLoad = { false };
 
 private:								
 	void								Default_SetButtons(_float fTimeDelta);

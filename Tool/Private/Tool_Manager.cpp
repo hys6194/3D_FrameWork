@@ -60,11 +60,18 @@ void Tool_Manager::Update(_float fTimeDelta)
 
 void Tool_Manager::Late_Update(_float fTimeDelta)
 {
-	if (m_pCell->Get_Modify() && !m_pCell->Is_Empty())
+	if (!m_pCell->Is_Empty())
 		m_pCell->Late_Update(1.f);
 
 	//m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, 
 	//	m_pCell->Late_Update);
+
+	//세이브를 여기서 처리
+	if (m_pMap->Is_Save() == true)
+	{
+		m_pCell->Save_Data();
+		m_pMap->Toogle_Save();
+	}
 }
 
 HRESULT Tool_Manager::Render()

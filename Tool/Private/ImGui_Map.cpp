@@ -44,11 +44,16 @@ HRESULT CImGui_Map::Late_Update(_float fTimeDelta)
 	return S_OK;
 }
 
+void CImGui_Map::Save_MapObjects()
+{
+}
+
 void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 {
 	if (Button("Save"))
 	{
-		int a = 10;
+		Save_MapObjects();
+		m_bSave = true;
 	}
 
 	SameLine();

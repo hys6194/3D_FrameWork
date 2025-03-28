@@ -38,9 +38,6 @@ private:
 
 public:
 	void Toggle_Modify()
-	{
-		m_bIsModify = !m_bIsModify;
-	}
 
 	_bool Get_Modify()
 	{
@@ -82,10 +79,7 @@ private:
 	
 
 	_bool							m_bIsModify = { false };
-	_bool							m_bIsClicked = { false };
-
 	_uint							m_iIndex = { 0 };
-	_float4x4						m_matWorld = {};
 
 	_vector							m_vPoint[3];
 
@@ -93,7 +87,11 @@ private:
 	vector<CELL_POS>				m_vecCellPos;
 private:
 	void							Check_Cell_Translation();
-	_vector							Correct_CellPoint(_vector vCoord);
+	void							Correct_CellPoint(_vector vCoord);
+	void							Calculate_CellNorvec();
+
+public:
+	void							Save_Data();
 
 public:
 	static CCell_Guide*				Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
