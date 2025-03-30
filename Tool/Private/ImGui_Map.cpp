@@ -8,6 +8,7 @@
 
 #include "GameInstance.h"
 #include "Map_Object.h"
+#include "Tool_FreeCam.h"
 
  
 using namespace ImGui;
@@ -34,6 +35,28 @@ void CImGui_Map::Update(_float fTimeDelta)
 
 	Get_PrototypeList(TEXT("Model"), TEXT("GameObject"));
 
+
+	// 키 누르면 마지막 오브젝트로의 카메라 이동
+	if (m_pGameInstance->Key_Pressing(DIK_GRAVE))
+	{
+		_vector vPos = m_pObject->Get_Transform()->Get_State(CTransform::STATE_POS);
+
+		_float4 fPos{};
+
+		XMStoreFloat4(&fPos, vPos);
+
+		fPos.x = fPos.x * m_pObject->Get_Transform()->Update_Scale().x;
+		fPos.y = (fPos.y + 30) * m_pObject->Get_Transform()->Update_Scale().x;
+		fPos.z = (fPos.z - 30) * m_pObject->Get_Transform()->Update_Scale().x;
+
+		m_pGameInstance->Find_GameObject(
+			LEVEL_TOOL,
+			TEXT("Layer_Camera"),
+			TEXT("GameObject_Camera_Free"))->
+			Get_Transform()->Set_State(CTransform::STATE_POS, XMLoadFloat4(&fPos));
+
+	}
+
 	End();
 }
 
@@ -50,29 +73,6 @@ void CImGui_Map::Set_TransformInfo(CMap_Object* pObject)
 {
 	m_pObject = pObject;
 	m_pTransform = m_pObject->Get_Transform();
-}
-
-void CImGui_Map::Render_TransformInfo()
-{
-	// 여기에서 Scale, Rotation, Pos에 관한 정보들을 담아볼 것
-	//_vector vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
-	//_vector vRight = m_pTransform->Get_State(CTransform::STATE_RIGHT);
-	//_vector vUp = m_pTransform->Get_State(CTransform::STATE_UP);
-	//_vector vPos = m_pTransform->Get_State(CTransform::STATE_POS);
-	//
-	//// 스케일 설정 방법
-	//m_pObject->Get_Transform()->SetUp_Scaled(1.f, 1.f, 1.f);
-	//
-	//// 행렬 정보 세팅 방법
-	//_vector vTest{1.f,1.f,1.f,1.f};
-	//m_pTransform->Set_State(CTransform::STATE_RIGHT, vTest);
-	//m_pTransform->Set_State(CTransform::STATE_UP, vTest);
-	//m_pTransform->Set_State(CTransform::STATE_POS, vTest);
-	//m_pTransform->Set_State(CTransform::STATE_LOOK, vTest);
-
-	Button_TransformScale();
-
-
 }
 
 void CImGui_Map::Default_SetButtons(_float fTimeDelta)
@@ -110,6 +110,7 @@ void CImGui_Map::Button_AddObjects()
 
 		Desc.strModelTag = m_strModelName;
 		Desc.strObjectTag = m_strObjectName;
+		Desc.fRotValue = { 0.f,0.f,0.f };
 
 		HRESULT hr = m_pGameInstance->Add_GameObject(LEVEL_TOOL, m_strObjectName, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
 
@@ -147,10 +148,38 @@ void CImGui_Map::Button_NaviCreate()
 	}
 }
 
-void CImGui_Map::Button_TransformScale()
+void CImGui_Map::Button_TransformPosition()
 {
-	//const _tchar szScale;
-		
+	_float4 fPosition;
+	XMStoreFloat4(&fPosition, m_pTransform->Get_State(CTransform::STATE_POS));
+
+	Button_Info(fPosition);
+
+}
+
+void CImGui_Map::Change_ObjectInfo()
+{
+	Begin("Object_Transforms");
+
+	// 스케일
+	BulletText("Scale");
+	Render_TransformScale();
+
+	// 회전
+	BulletText("Rotation");
+	Render_TransformRotation();
+
+	// 포지션
+	BulletText("Position");
+	Render_TransformPosition();
+
+
+	End();
+
+}
+
+void CImGui_Map::Render_TransformScale()
+{
 	_float4 fScale =
 	{
 		m_pTransform->Get_WorldMatrix_Ptr()->m[0][0],
@@ -161,30 +190,254 @@ void CImGui_Map::Button_TransformScale()
 
 	Button_Info(fScale);
 
+	if(m_bEvent1)
+		m_fScale = fScale.x;
+	else if (m_bEvent2)
+		m_fScale = fScale.y;
+	else if (m_bEvent3)
+		m_fScale = fScale.z;
+
+
+	SameLine(250, 0);
+	BulletText("Set_Scale");
+
+
+	SameLine(360, 0);
+	PushItemWidth(50.0f);
+
+
+	if (InputFloat("##Set_Scale", &m_fScale) &&
+		m_pGameInstance->Key_Down(DIK_RETURN))
+	{
+		m_pTransform->SetUp_Scaled(m_fScale, m_fScale, m_fScale);
+		//_float4x4 matScale{};
+		//XMStoreFloat4x4(&matScale, XMMatrixScaling(fScale.x, fScale.y, fScale.z));
+		//
+		//_vector vScale, vRotation, vPosition;
+		//
+		//HRESULT hr = XMMatrixDecompose(&vScale, &vRotation, &vPosition, XMLoadFloat4x4(m_pTransform->Get_WorldMatrix_Ptr()));
+		//
+		//if (hr != E_FAIL)
+		//{
+		//	_float4x4 matRot{};
+		//
+		//	XMStoreFloat4x4(&matRot, XMMatrixRotationQuaternion(vRotation));
+		//
+		//	int a = 10;
+		//}
+
+		//_float4x4 matRot{};
+		//XMStoreFloat4x4(&matRot, ())
+
+	}
+	ImGui::PopItemWidth();
+
+	if (ImGui::SliderFloat("Scale", &m_fScale, m_fScale - 0.1f, m_fScale + 0.1f))
+	{
+		m_pTransform->SetUp_Scaled(m_fScale, m_fScale, m_fScale);
+
+		//if (m_bEvent1)
+		//	fScale.x = m_fScale;
+		//else if (m_bEvent2)
+		//	fScale.y = m_fScale;
+		//else if (m_bEvent3)
+		//	fScale.z = m_fScale;
+		//_float4x4 matScale{};
+		//XMStoreFloat4x4(&matScale, XMMatrixScaling(fScale.x, fScale.y, fScale.z));
+		//
+		//_vector vScale, vRotation, vPosition;
+		//
+		//HRESULT hr = XMMatrixDecompose(&vScale, &vRotation, &vPosition, XMLoadFloat4x4(m_pTransform->Get_WorldMatrix_Ptr()));
+		//
+		//if (hr != E_FAIL)
+		//{
+		//	_float4x4 matRot{};
+		//
+		//	XMStoreFloat4x4(&matRot, XMMatrixRotationQuaternion(vRotation));
+		//
+		//	m_pTransform->Set_Matrix(&matScale);
+		//	m_pTransform->Set_Matrix(&matRot);
+		//
+		//	int a = 10;
+		//}
+
+		//_float4x4 matRot{};
+		//XMStoreFloat4x4(&matRot, ())
+
+		
+
+	}
+
 }
 
-void CImGui_Map::Button_TransformRotation()
+void CImGui_Map::Render_TransformRotation()
 {
+	_float4 fRotation =	{
+		m_pObject->Get_MapObjDesc().fRotValue.x,
+		m_pObject->Get_MapObjDesc().fRotValue.y,
+		m_pObject->Get_MapObjDesc().fRotValue.z,
+		1.f
+	};
 
+	Button_Info(fRotation);
+	
+	if (m_bEvent1)
+	{	
+		m_fValue = m_pObject->Get_MapObjDesc().fRotValue.x;
+	}
+	else if (m_bEvent2)
+	{
+		m_fValue = m_pObject->Get_MapObjDesc().fRotValue.y;
+	}
+	else if (m_bEvent3)
+	{
+		m_fValue = m_pObject->Get_MapObjDesc().fRotValue.z;
+	}
+
+
+	SameLine(250, 0);
+	BulletText("Set_Rotation");
+
+	SameLine(360, 0);
+	PushItemWidth(50.0f);
+
+	if (InputFloat("##Set_Rotation", &m_fValue) &&
+		m_pGameInstance->Key_Down(DIK_RETURN))
+	{
+		_vector vPos = m_pTransform->Get_State(CTransform::STATE_POS);
+
+		_vector vResult = XMQuaternionRotationRollPitchYaw(fRotation.x, fRotation.y, fRotation.z);
+
+		_float4x4 fMatrix{};
+
+		XMStoreFloat4x4(&fMatrix, XMMatrixRotationQuaternion(vResult));
+		m_pTransform->Set_Matrix(&fMatrix);
+
+		if (m_bEvent1)
+		{
+			m_pObject->Get_MapObjDesc().fRotValue.x = m_fValue;
+		}
+		else if (m_bEvent2)
+		{
+			m_pObject->Get_MapObjDesc().fRotValue.y = m_fValue;
+		}
+		else if (m_bEvent3)
+		{
+			m_pObject->Get_MapObjDesc().fRotValue.z = m_fValue;
+		}
+
+		m_pTransform->Set_State(CTransform::STATE_POS, vPos);
+
+	}
+	PopItemWidth();
+
+	if (SliderFloat("Rotation", &m_fValue, -3.5f, 3.5f))
+	{
+		//m_pTransform->Rotation(m_vAixs, XMConvertToRadians(m_fValue));
+
+		_vector vResult = XMQuaternionRotationRollPitchYaw(fRotation.x, fRotation.y, fRotation.z);
+
+		_vector vPos = m_pTransform->Get_State(CTransform::STATE_POS);
+		_float4x4 fMatrix {};
+
+
+		XMStoreFloat4x4(&fMatrix, XMMatrixRotationQuaternion(vResult));
+		m_pTransform->Set_Matrix(&fMatrix);
+
+		if (m_bEvent1)
+		{
+			m_pObject->Get_MapObjDesc().fRotValue.x = m_fValue;
+		}
+		else if (m_bEvent2)
+		{
+			m_pObject->Get_MapObjDesc().fRotValue.y = m_fValue;
+		}
+		else if (m_bEvent3)
+		{
+			m_pObject->Get_MapObjDesc().fRotValue.z = m_fValue;
+		}
+
+		m_pTransform->Set_State(CTransform::STATE_POS, vPos);
+	}
 }
 
-void CImGui_Map::Button_TransformPosition()
+void CImGui_Map::Render_TransformPosition()
 {
+	_float4 fPos{};
+	XMStoreFloat4(&fPos, m_pTransform->Get_State(CTransform::STATE_POS));
 
-}
+	Button_Info(fPos);
 
-void CImGui_Map::Change_ObjectInfo()
-{
-	Begin("Object_Transforms");
+	_float fValueX, fValueY, fValueZ = {};
 
-	BulletText("Scale");
-	Render_TransformInfo();
+	fValueX = fPos.x;
+	fValueY = fPos.y;	
+	fValueZ = fPos.z;
+
+	//SameLine(250, 0);
+	BulletText("Set_Position");
+
+	//SameLine(360, 0);
+	PushItemWidth(50.0f);
+#pragma region X Input
+	Text("x : ");
+	SameLine(40, -1);
+	if (InputFloat("##x : ", &fValueX) &&
+		m_pGameInstance->Key_Down(DIK_RETURN))
+	{
+		m_pTransform->Set_State(CTransform::STATE_POS,
+			XMVectorSet(fValueX, fValueY, fValueZ, 1.f));
+	}
+	SameLine(100, 0);
+#pragma endregion X Input
+
+#pragma region Y Input
+	Text("y : ");
+	SameLine(130, 0);
+	if (InputFloat("##y : ", &fValueY) &&
+		m_pGameInstance->Key_Down(DIK_RETURN))
+	{
+		m_pTransform->Set_State(CTransform::STATE_POS,
+			XMVectorSet(fValueX, fValueY, fValueZ, 1.f));
+	}
+	SameLine(190, 0);
+#pragma endregion Y Input
+
+#pragma region Z Input
+	Text("z : ");
+	SameLine(220, 0);
+
+	if (InputFloat("##z : ", &fValueZ) &&
+		m_pGameInstance->Key_Down(DIK_RETURN))
+	{
+		m_pTransform->Set_State(CTransform::STATE_POS,
+			XMVectorSet(fValueX, fValueY, fValueZ, 1.f));
+	}
+
+#pragma endregion Z Input
+	ImGui::PopItemWidth();
+
+	if (m_bEvent1)
+		m_fValue = fValueX;
+	else if (m_bEvent2)
+		m_fValue = fValueY;
+	else if (m_bEvent3)
+		m_fValue = fValueZ;
+
+	if (SliderFloat("Position", &m_fValue, m_fValue - 1.f, m_fValue + 1.f))
+	{
+		if (m_bEvent1)
+			m_pTransform->Set_State(CTransform::STATE_POS,
+				XMVectorSet(m_fValue, fValueY, fValueZ, 1.f));
+		else if (m_bEvent2)
+			m_pTransform->Set_State(CTransform::STATE_POS,
+				XMVectorSet(fValueX, m_fValue, fValueZ, 1.f));
+		else if (m_bEvent3)
+			m_pTransform->Set_State(CTransform::STATE_POS,
+				XMVectorSet(fValueX, fValueY, m_fValue, 1.f));
+	}
 
 
-
-	int a = 10;
-
-	End();
 }
 
 CImGui_Map* CImGui_Map::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -204,4 +457,6 @@ void CImGui_Map::Free()
 {
 	__super::Free();
 
+	//Safe_Release(m_pTransform);
+	//Safe_Release(m_pObject);
 }

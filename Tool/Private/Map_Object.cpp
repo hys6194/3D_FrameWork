@@ -17,7 +17,7 @@ HRESULT CMap_Object::Initialize(void* pArg)
 {
     GAMEOBJECT_DESC* Desc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
-    m_pDesc = static_cast<MAPOBJ_DESC*>(pArg);
+    m_pDesc = *static_cast<MAPOBJ_DESC*>(pArg);
     
     //wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(pDesc->iObjectIndex);
 
@@ -26,7 +26,7 @@ HRESULT CMap_Object::Initialize(void* pArg)
     if (FAILED(__super::Initialize(Desc)))
         return E_FAIL;
 
-    if (FAILED(Ready_Components(m_pDesc->strModelTag)))
+    if (FAILED(Ready_Components(m_pDesc.strModelTag)))
         return E_FAIL;
 
     //_uint i = 1;
@@ -36,9 +36,9 @@ HRESULT CMap_Object::Initialize(void* pArg)
     //m_matView  = XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW));
     //m_matWorld = XMLoadFloat4x4(Get_Transform()->Get_WorldMatrix_Ptr());
 
-    XMStoreFloat4x4(&m_matProj, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ)));
-    XMStoreFloat4x4(&m_matView, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW)));
-    XMStoreFloat4x4(&m_matWorld, XMLoadFloat4x4(Get_Transform()->Get_WorldMatrix_Ptr()));
+    //XMStoreFloat4x4(&m_matProj, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ)));
+    //XMStoreFloat4x4(&m_matView, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW)));
+    //XMStoreFloat4x4(&m_matWorld, XMLoadFloat4x4(Get_Transform()->Get_WorldMatrix_Ptr()));
 
     return S_OK;
 }
@@ -106,7 +106,7 @@ HRESULT CMap_Object::Render()
             return E_FAIL;
     }
 
-    //m_pColliderCom->Render();
+    m_pColliderCom->Render();
 
     return S_OK;
 }

@@ -6,6 +6,7 @@
 #include "Map_Object.h"
 #include "Mesh.h"
 #include "Cell_Guide.h"
+#include "Tool_FreeCam.h"
 
 Tool_Manager::Tool_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameInstance* pGameInstance)
 	: m_pDevice { pDevice }
@@ -87,7 +88,7 @@ HRESULT Tool_Manager::Render()
 void Tool_Manager::Picking_Objects()
 {
 	// 여기서 메쉬 충돌 해서 해당 오브젝트를 가져와야 함
-	list<CGameObject*>* pList = m_pMap->Get_ObjectList();
+	list<CGameObject*>* pList = m_pGameInstance->Get_GameObjectList(LEVEL_TOOL, TEXT("Layer_Objcet"));;
 
 	// 리스트가 생성되지 않았으면 return
 	if (nullptr == pList)
@@ -105,23 +106,33 @@ void Tool_Manager::Picking_Objects()
 		// 이게 훨씬 나음
 		list<CMap_Object*> listObjects = *reinterpret_cast<list<CMap_Object*>*>(pList);
 
-		for (auto& iter : listObjects)
+		for (auto iter : listObjects)
 		{
 			// 해당 메쉬의 월드 정점
+			CMap_Object* pObject = dynamic_cast<CMap_Object*>(iter);
 			_float4 fCoord;
+			
+			_matrix matWorld = XMLoadFloat4x4(pObject->Get_Transform()->Get_WorldMatrix_Ptr());
 
-			_bool bColl = iter->Get_ModelCom()->CheckRayColl_Mesh(vRayOrigin, vRayDir, &fDistance, &fCoord);
+			_vector vScale, vRotation, vTranslation;
+			XMMatrixDecompose(&vScale, &vRotation, &vTranslation, matWorld);
+
+			//_bool bColl = iter->Get_ModelCom()->CheckRayColl_Mesh(vRayOrigin, vRayDir, &fDistance, &fCoord);
+			_bool bColl = pObject->Get_ModelCom()->
+				CheckRayColl_Mesh(vRayOrigin, vRayDir, &fDistance, &fCoord, vScale, vRotation, vTranslation);
 
 			if (bColl)
 			{
 				m_pMap->Set_Select(true);
-				m_pMap->Set_TransformInfo(iter);
+				m_pMap->Set_TransformInfo(pObject);
+
+				//Move_CamPos(pObject);
 			}
-			else
-			{
-				m_pMap->Set_Select(false);
-				return;
-			}
+			//else
+			//{
+			//	//m_pMap->Set_Select(false);
+			//	return;
+			//}
 
 		}
 	}
@@ -156,7 +167,12 @@ void Tool_Manager::Create_NaviCells()
 		// 해당 메쉬의 월드 정점
 		_float4 fCoord;
 
-		_bool bColl = iter->Get_ModelCom()->CheckRayColl_Mesh(vRayOrigin, vRayDir, &fDistance, &fCoord);
+		_matrix matWorld = XMLoadFloat4x4(iter->Get_Transform()->Get_WorldMatrix_Ptr());
+
+		_vector vScale, vRotation, vTranslation;
+		XMMatrixDecompose(&vScale, &vRotation, &vTranslation, matWorld);
+
+		_bool bColl = iter->Get_ModelCom()->CheckRayColl_Mesh(vRayOrigin, vRayDir, &fDistance, &fCoord, vScale, vRotation, vTranslation);
 
 		if (bColl)
 		{
@@ -176,6 +192,27 @@ void Tool_Manager::Create_NaviCells()
 	}
 
 	m_bColl = false;
+}
+
+void Tool_Manager::Move_CamPos(CMap_Object* pObject)
+{
+	// 오브젝트 클릭하면 해당 오브젝트로 이동
+	_vector vPos = pObject->Get_Transform()->Get_State(CTransform::STATE_POS);
+
+	_float4 fPos{};
+
+	XMStoreFloat4(&fPos, vPos);
+
+	fPos.x = fPos.x * pObject->Get_Transform()->Update_Scale().x;
+	fPos.y = (fPos.y + 30) * pObject->Get_Transform()->Update_Scale().x;
+	fPos.z = (fPos.z - 30) * pObject->Get_Transform()->Update_Scale().x;
+
+	m_pGameInstance->Find_GameObject(
+		LEVEL_TOOL,
+		TEXT("Layer_Camera"),
+		TEXT("GameObject_Camera_Free"))->
+		Get_Transform()->Set_State(CTransform::STATE_POS, XMLoadFloat4(&fPos));
+
 }
 
 Tool_Manager* Tool_Manager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameInstance* pGameInstance)

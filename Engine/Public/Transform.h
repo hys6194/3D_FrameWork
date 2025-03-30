@@ -50,47 +50,47 @@ private:
 	virtual ~CTransform() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
+	virtual HRESULT				Initialize_Prototype() override;
+	virtual HRESULT				Initialize(void* pArg) override;
 
 public:
-	_float3		Update_Scale();
-	HRESULT		Go_Straight(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
-	HRESULT		Go_Backward(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
-	HRESULT		Go_Right(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
-	HRESULT		Go_Left(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
-	HRESULT		Jump(_float fTimeDelta);
-	HRESULT		LookAt(_vector vAt);
-	HRESULT		Dash(_float4 fTimeDelta, class CNavigation* pNavigation = nullptr);
-	void		Turn(_fvector vAxis, _float fTimeDelta);
-	void		Rotation(_fvector vAxis, _float fRadian);
+	_float3						Update_Scale();
+	HRESULT						Go_Straight(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Go_Backward(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Go_Right(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Go_Left(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Jump(_float fTimeDelta);
+	HRESULT						LookAt(_vector vAt);
+	HRESULT						Dash(_float4 fTimeDelta, class CNavigation* pNavigation = nullptr);
+	void						Turn(_fvector vAxis, _float fTimeDelta);
+	void						Rotation(_fvector vAxis, _float fRadian);
 
 public:
-	HRESULT		Move_Straight(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
-	HRESULT		Move_Backward(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
-	HRESULT		Move_Right(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
-	HRESULT		Move_Left(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Move_Straight(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Move_Backward(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Move_Right(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Move_Left(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
 
-	HRESULT		Move_Left_Up(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
-	HRESULT		Move_Right_Up(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
-	HRESULT		Move_Left_Down(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
-	HRESULT		Move_Right_Down(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Move_Left_Up(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Move_Right_Up(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Move_Left_Down(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Move_Right_Down(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
 
 public:
-	void SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ);
-	HRESULT Bind_SR(const _char* pConstantName, class CShader* pShader);
+	void						SetUp_Scaled(_float fScaleX, _float fScaleY, _float fScaleZ);
+	HRESULT						Bind_SR(const _char* pConstantName, class CShader* pShader);
 
 private:
 	// 객체의 월드 변환을 위한 상태를 가진다
-	_float4x4			m_f4WorldMatrix = {};
+	_float4x4					m_f4WorldMatrix = {};
 
-	_float				m_fSpeedPerSec = {};
-	_float				m_fRotationPerSec = {};
+	_float						m_fSpeedPerSec = {};
+	_float						m_fRotationPerSec = {};
 
 public:
-	static CTransform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CComponent* Clone(void* pArg) override;
-	virtual void Free() override;
+	static CTransform*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CComponent*			Clone(void* pArg) override;
+	virtual void				Free() override;
 
 
 };

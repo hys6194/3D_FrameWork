@@ -65,7 +65,10 @@ public:
 public:
 	void								Save_MapObjects();
 	void								Set_TransformInfo(class CMap_Object* pObject);
-	void								Render_TransformInfo();
+
+	void								Render_TransformScale();
+	void								Render_TransformRotation();
+	void								Render_TransformPosition();
 
 
 private:
@@ -89,9 +92,6 @@ private:
 	void								Button_NaviCreate();
 
 private:
-
-	void								Button_TransformScale();
-	void								Button_TransformRotation();
 	void								Button_TransformPosition();
 
 

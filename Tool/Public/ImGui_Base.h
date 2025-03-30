@@ -53,6 +53,12 @@ protected:
 	_bool						m_bEvent2					= { false };
 	_bool						m_bEvent3					= { false };
 
+	_float						m_fScale					{};
+
+	_vector						m_vAixs						= AXIS_X;
+	_float 						m_fValue;
+
+
 public:
 	virtual void				Free() override;
 };

@@ -53,6 +53,7 @@ void CCell_Guide::Update(_float fTimeDelta, _vector vCoord)
     Correct_CellPoint(vCoord);
 
     // 가이드 Cell 조정
+    
     m_pVIBufferCom->Modify_VertexPoint(m_iIndex, m_vPoint[m_iIndex]);
 
     // 클릭하면 인덱스 증가
@@ -86,7 +87,7 @@ void CCell_Guide::Late_Update(_float fTimeDelta)
     if (m_pGameInstance->Key_Down(DIK_MINUS) && m_iIndex > 0)
         m_iIndex--;
 
-    if (m_pGameInstance->Key_Down(DIK_DELETE) && m_vecBufferComs.size() > 1)
+    if (m_pGameInstance->Key_Down(DIK_DELETE) && m_vecBufferComs.empty())
         m_vecBufferComs.pop_back();
 
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);

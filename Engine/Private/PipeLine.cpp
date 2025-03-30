@@ -158,12 +158,12 @@ vector<_float4>* CPipeLine::Get_RayCoords()
 	m_vecRays.push_back(fRayPos);
 	m_vecRays.push_back(fRayDir);
 
-	//TCHAR debugMessage3[256];
-	//_stprintf_s(debugMessage3, 
-	//	_T("fRayDir: x = %.6f, y = %.6f, z = %.6f, w = %.6f \n fRayPos: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
-	//	fRayDir.x, fRayDir.y, fRayDir.z, fRayDir.w,
-	//	fRayPos.x, fRayPos.y, fRayPos.z, fRayPos.w);
-	//OutputDebugString(debugMessage3);
+	TCHAR debugMessage3[256];
+	_stprintf_s(debugMessage3, 
+		_T("fRayDir: x = %.6f, y = %.6f, z = %.6f, w = %.6f \n fRayPos: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
+		fRayDir.x, fRayDir.y, fRayDir.z, fRayDir.w,
+		fRayPos.x, fRayPos.y, fRayPos.z, fRayPos.w);
+	OutputDebugString(debugMessage3);
 
 	return &m_vecRays;
 }

@@ -70,6 +70,8 @@ void CTool_FreeCam::Priority_Update(_float fTimeDelta)
 
 void CTool_FreeCam::Update(_float fTimeDelta)
 {
+	
+
 }
 
 void CTool_FreeCam::Late_Update(_float fTimeDelta)

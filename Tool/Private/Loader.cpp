@@ -298,11 +298,11 @@ HRESULT Loader::Loading_Prototype()
 		CMap_Object::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_FLOOR2,
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_STAIR1,
 		CMap_Object::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_FLOOR3,
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_STAIR2,
 		CMap_Object::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 

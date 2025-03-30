@@ -18,10 +18,10 @@ class CMap_Object final : public CGameObject
 public:
 	typedef struct tagMapObjectDesc : public GAMEOBJECT_DESC
 	{
-
 		_wstring  strModelTag;
 		_wstring  strObjectTag;
-		_float4x4 matWorld;		// 월드 행렬을 가져오는 것이 좋지 않을까? 그래야 값저장때 편할듯
+		_float3  fRotValue;
+		//_float4x4 matWorld;		// 월드 행렬을 가져오는 것이 좋지 않을까? 그래야 값저장때 편할듯
 
 	}MAPOBJ_DESC;
 
@@ -44,9 +44,17 @@ public:
 		return m_pModelCom;
 	}
 
-	MAPOBJ_DESC* Get_MapObjDesc()
+	MAPOBJ_DESC& Get_MapObjDesc()
 	{
 		return m_pDesc;
+	}
+
+public:
+	void Set_DescValue(_float3 fValue)
+	{
+		m_pDesc.fRotValue.x = fValue.x;
+		m_pDesc.fRotValue.y = fValue.y;
+		m_pDesc.fRotValue.z = fValue.z;
 	}
 
 
@@ -63,7 +71,7 @@ private:
 	_float4x4							m_matView		= {};
 	_float4x4							m_matWorld		= {};
 
-	MAPOBJ_DESC*						m_pDesc;
+	MAPOBJ_DESC							m_pDesc;
 
 	D3D11_VIEWPORT						m_pViewPort;
 

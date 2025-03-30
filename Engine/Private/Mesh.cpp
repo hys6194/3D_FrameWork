@@ -99,7 +99,7 @@ HRESULT CMesh::Bind_BoneMatrix(CShader* pShader, const _char* pContantName, cons
 	return S_OK;
 }
 
-_bool CMesh::Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord)
+_bool CMesh::Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord, _vector vScale, _vector vRotation, _vector vTranslation)
 {
 	// 여기에서 TriangleTest를 하자
 	// 만약 True라면 피킹해서 나온 값을 인자로 받은 값에 전달하여 내보내는 것으로 하자
@@ -111,16 +111,24 @@ _bool CMesh::Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, 
 		_vector v1 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3]].vPosition), 1.f)		;
 		_vector v2 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 1]].vPosition), 1.f)	;
 		_vector v3 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 2]].vPosition), 1.f)	;
+
+		_vector vWorld1 = XMVectorAdd(XMVector3Rotate(XMVectorMultiply(v1, vScale), vRotation), vTranslation);
+		_vector vWorld2 = XMVectorAdd(XMVector3Rotate(XMVectorMultiply(v2, vScale), vRotation), vTranslation);
+		_vector vWorld3 = XMVectorAdd(XMVector3Rotate(XMVectorMultiply(v3, vScale), vRotation), vTranslation);
+		
+
+		 
 		bTest = DirectX::TriangleTests::Intersects(
 					vPos,
 					vDir,
-					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3]].vPosition), 1.f),
-					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 1]].vPosition), 1.f),
-					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 2]].vPosition), 1.f),
+					vWorld1,
+					vWorld2,
+					vWorld3,
 					*_fDistance);
 		
 		if (bTest)
 		{		
+
 			// 디버깅
 			XMStoreFloat4(_fCoord, (vPos + (*_fDistance) * vDir));
 
@@ -129,7 +137,8 @@ _bool CMesh::Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, 
 			//	_fCoord->x, _fCoord->y, _fCoord->z);
 			//OutputDebugString(debugMessage1);
 			 
-
+			// 여기에서 거리비교를 계속해야함
+			// 야 이거 일단 이대로 가자
  			return bTest;
 		}
 	}

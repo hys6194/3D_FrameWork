@@ -110,7 +110,21 @@ void CNavi_Cell::Modify_VertexPoint(_uint iVertexIndex, _vector vCoord)
     
     XMStoreFloat4(&fTest, vCoord);
 
-    pVertices[iVertexIndex].vPosition = _float3(fTest.x, fTest.y + 0.4f, fTest.z);
+    if (0 == iVertexIndex)
+    {
+        pVertices[iVertexIndex].vPosition = _float3(fTest.x, fTest.y + 0.4f, fTest.z);
+        pVertices[iVertexIndex + 1].vPosition = _float3(fTest.x + 1, fTest.y + 0.4f, fTest.z);
+        pVertices[iVertexIndex + 2].vPosition = _float3(fTest.x, fTest.y + 0.4f, fTest.z + 1);
+    }
+
+    else
+    {
+        for (size_t i = iVertexIndex; i < 3; i++)
+        {
+            pVertices[i].vPosition = _float3(fTest.x, fTest.y + 0.4f, fTest.z);
+        }
+    }
+
 
 
     m_pContext->Unmap(m_pVB, 0);
