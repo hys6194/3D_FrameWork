@@ -31,7 +31,7 @@ public:
 
 public:
 	_bool								Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord, _vector vScale, _vector vRotation, _vector vTranslation);
-
+	_bool								Check_Coll_Meshes(_vector vPos, _vector vDir, _vector vScale, _vector vRotation, _vector vTranslation);
 private:
 	HRESULT								Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
 	HRESULT								Ready_VertexBuffer_ForNonAnim_Save(const aiMesh* _pAIMesh, _fmatrix PreTransformMatrix, ofstream& _OutStream);

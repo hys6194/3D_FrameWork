@@ -1,19 +1,20 @@
 #include "Loader.h"
 #include "GameInstance.h"
 
+#include "Body_Player.h"
 #include "Camera_Free.h"
-#include "TP_Camera.h"
+#include "Map_Object.h"
 #include "BackGround.h"
+#include "TP_Camera.h"
+#include "Gun_Right.h"
+#include "Gun_Left.h"
 #include "Terrain.h"
 #include "Monster.h"
-#include "Player.h"
-#include "Body_Player.h"
-#include "Weapon.h"
-#include "Sky.h"
-#include "Gun_Left.h"
-#include "Gun_Right.h"
 #include "Bullet.h"
+#include "Player.h"
+#include "Weapon.h"
 #include "Snow.h"
+#include "Sky.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -257,6 +258,17 @@ HRESULT CLoader::Loading_Models()
 			CFSM::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+
+		CVIBuffer_Particle::INSTANCE_DESC		SnowDesc{};
+
+		SnowDesc.iNumInstances = 3000;
+		SnowDesc.vCenter = _float3(65.f, 10.f, 65.f);
+		SnowDesc.vRange = _float3(129.f, 1.f, 129.f);
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Snow"),
+			CVIBuffer_Rect_Instancing::Create(m_pDevice, m_pContext, &SnowDesc))))
+			return E_FAIL;
+
 		_matrix		PreTransformMatrix = XMMatrixIdentity();
 
 		/////* For.Prototype_Component_Model_ForkLift */
@@ -333,25 +345,32 @@ HRESULT CLoader::Loading_Models()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/Gun1.bin", PreTransformMatrix))))
 			return E_FAIL;
 		
-		
-		
 		// Gun2 불러오기
 		PreTransformMatrix *= XMMatrixRotationX(XMConvertToRadians(-90.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/Gun2.bin", PreTransformMatrix))))
 			return E_FAIL;
 
-		CVIBuffer_Particle::INSTANCE_DESC		SnowDesc{};
-
-		SnowDesc.iNumInstances = 3000;
-		SnowDesc.vCenter = _float3(65.f, 10.f, 65.f);
-		SnowDesc.vRange = _float3(129.f, 1.f, 129.f);
-
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Snow"),
-			CVIBuffer_Rect_Instancing::Create(m_pDevice, m_pContext, &SnowDesc))))
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_ROCK1,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/DestRock1.bin"))))
 			return E_FAIL;
 
-		int a = 10;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_ROCK2,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/DestRock2.bin"))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FLOOR1,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/TileFloor1.bin"))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STAIR1,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Stair1.bin"))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STAIR2,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Stair2.bin"))))
+			return E_FAIL;
+
 	}
 
 		break;
@@ -490,10 +509,29 @@ HRESULT CLoader::Loading_Prototype()
 			CBullet::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_ROCK1,
+			CMap_Object::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_ROCK2,
+			CMap_Object::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_FLOOR1,
+			CMap_Object::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_STAIR1,
+			CMap_Object::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_STAIR2,
+			CMap_Object::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Snow"),
 			CSnow::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
-
 
 	}
 

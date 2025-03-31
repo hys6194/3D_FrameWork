@@ -67,6 +67,100 @@ HRESULT CImGui_Map::Late_Update(_float fTimeDelta)
 
 void CImGui_Map::Save_MapObjects()
 {
+	//list<CMap_Object*> plist = dynamic_cast<CMap_Object*>(m_listObject);
+	list<CMap_Object*>* listObjects = reinterpret_cast<list<CMap_Object*>*>(m_listObject);
+	CMap_Object::MAPOBJ_DESC Desc{};
+
+	_ulong			dwByte = {};
+	HANDLE			hFile = CreateFile(TEXT("../../Client/Bin/DataFiles/MapObjectData.dat"), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	_uint iMapObjCount = listObjects->size();
+
+	WriteFile(hFile, &iMapObjCount, sizeof(_uint), &dwByte, nullptr);
+
+	for (auto iter = listObjects->begin();
+		iter != listObjects->end();
+		iter++)
+	{
+		Desc = (*iter)->Get_MapObjDesc();
+
+		MODELTYPE eModelType = Desc.eType;
+		WriteFile(hFile, &eModelType, sizeof(eModelType), &dwByte, nullptr);
+
+		_wstring strModelTag = Desc.strModelTag;
+		size_t  iModelTagLen = strModelTag.length();
+		WriteFile(hFile, &iModelTagLen, sizeof(iModelTagLen), &dwByte, nullptr);
+		WriteFile(hFile, strModelTag.data(), iModelTagLen * sizeof(wchar_t), &dwByte, nullptr);
+
+		_wstring strObjectTag = Desc.strObjectTag;
+		size_t  iObjectTagLen = strObjectTag.length();
+		WriteFile(hFile, &iObjectTagLen, sizeof(iObjectTagLen), &dwByte, nullptr);
+		WriteFile(hFile, strObjectTag.data(), iObjectTagLen * sizeof(wchar_t), &dwByte, nullptr);
+
+		_float3 fRotValue = Desc.fRotValue;
+		WriteFile(hFile, &fRotValue, sizeof(_float3), &dwByte, nullptr);
+
+		_float4x4 matWorld = *(*iter)->Get_Transform()->Get_WorldMatrix_Ptr();
+		WriteFile(hFile, &matWorld, sizeof(matWorld), &dwByte, nullptr);
+		
+	}
+
+	CloseHandle(hFile);
+}
+
+void CImGui_Map::Load_MapObjects()
+{
+	_ulong          dwByte = {};
+	CMap_Object::MAPOBJ_DESC Desc{};
+	HANDLE          hFile = CreateFile(TEXT("../../Client/Bin/DataFiles/MapObjectData.dat"), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	if (0 == hFile)
+		return;
+
+	_uint iMapObjCount;
+	ReadFile(hFile, &iMapObjCount, sizeof(_uint), &dwByte, nullptr);
+
+	for (size_t i = 0; i < iMapObjCount; i++)
+	{
+		// ¸ðµ¨ Å¸ÀÔ
+		MODELTYPE eModelType;
+		ReadFile(hFile, &eModelType, sizeof(eModelType), &dwByte, nullptr);
+
+		// ¸ðµ¨ ÀÌ¸§
+		size_t  iModelTagLen;
+		ReadFile(hFile, &iModelTagLen, sizeof(iModelTagLen), &dwByte, nullptr);
+
+		wstring strModelTag(iModelTagLen, L'\0');
+		ReadFile(hFile, &strModelTag[0], iModelTagLen * sizeof(wchar_t), &dwByte, nullptr);
+
+		// ¿ÀºêÁ§Æ® ÀÌ¸§
+		size_t  iObjectTagLen;
+		ReadFile(hFile, &iObjectTagLen, sizeof(iObjectTagLen), &dwByte, nullptr);
+
+		wstring strObjectTag(iObjectTagLen, L'\0');
+		ReadFile(hFile, &strObjectTag[0], iObjectTagLen * sizeof(wchar_t), &dwByte, nullptr);
+
+		// È¸Àü ¹ë·ù
+		_float3 fRotValue;
+		ReadFile(hFile, &fRotValue, sizeof(_float3), &dwByte, nullptr);
+
+		_float4x4 matWorld;
+		ReadFile(hFile, &matWorld, sizeof(matWorld), &dwByte, nullptr);
+
+		int a = 10;
+
+		Desc.eType = eModelType;
+		Desc.strModelTag = strModelTag;
+		Desc.strObjectTag = strObjectTag;
+		Desc.fRotValue = fRotValue;
+		Desc.matWorld = matWorld;
+
+		m_pGameInstance->Add_GameObject(LEVEL_TOOL, Desc.strObjectTag, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
+	}
+
+	CloseHandle(hFile);
 }
 
 void CImGui_Map::Set_TransformInfo(CMap_Object* pObject)
@@ -87,6 +181,7 @@ void CImGui_Map::Default_SetButtons(_float fTimeDelta)
 
 	if (Button("Load"))
 	{
+		Load_MapObjects();
 		m_bLoad = true;
 	}
 
@@ -108,9 +203,11 @@ void CImGui_Map::Button_AddObjects()
 	{
 		CMap_Object::MAPOBJ_DESC Desc = {};
 
-		Desc.strModelTag = m_strModelName;
-		Desc.strObjectTag = m_strObjectName;
-		Desc.fRotValue = { 0.f,0.f,0.f };
+		Desc.eType				= MODELTYPE::TYPE_NONANIM;
+		Desc.strModelTag		= m_strModelName;
+		Desc.strObjectTag		= m_strObjectName;
+		Desc.fRotValue			= { 0.f,0.f,0.f };
+		Desc.iObjectIndex		= m_iObjCnt;
 
 		HRESULT hr = m_pGameInstance->Add_GameObject(LEVEL_TOOL, m_strObjectName, LEVEL_TOOL, TEXT("Layer_Objcet"), &Desc);
 
@@ -180,13 +277,8 @@ void CImGui_Map::Change_ObjectInfo()
 
 void CImGui_Map::Render_TransformScale()
 {
-	_float4 fScale =
-	{
-		m_pTransform->Get_WorldMatrix_Ptr()->m[0][0],
-		m_pTransform->Get_WorldMatrix_Ptr()->m[1][1],
-		m_pTransform->Get_WorldMatrix_Ptr()->m[2][2],
-		m_pTransform->Get_WorldMatrix_Ptr()->m[3][3],
-	};
+	_float4 fScale{};
+	XMStoreFloat4(&fScale, m_pTransform->Get_Scale());
 
 	Button_Info(fScale);
 
@@ -209,25 +301,10 @@ void CImGui_Map::Render_TransformScale()
 	if (InputFloat("##Set_Scale", &m_fScale) &&
 		m_pGameInstance->Key_Down(DIK_RETURN))
 	{
-		m_pTransform->SetUp_Scaled(m_fScale, m_fScale, m_fScale);
-		//_float4x4 matScale{};
-		//XMStoreFloat4x4(&matScale, XMMatrixScaling(fScale.x, fScale.y, fScale.z));
-		//
-		//_vector vScale, vRotation, vPosition;
-		//
-		//HRESULT hr = XMMatrixDecompose(&vScale, &vRotation, &vPosition, XMLoadFloat4x4(m_pTransform->Get_WorldMatrix_Ptr()));
-		//
-		//if (hr != E_FAIL)
-		//{
-		//	_float4x4 matRot{};
-		//
-		//	XMStoreFloat4x4(&matRot, XMMatrixRotationQuaternion(vRotation));
-		//
-		//	int a = 10;
-		//}
+		if (m_fScale == 0)
+			return;
 
-		//_float4x4 matRot{};
-		//XMStoreFloat4x4(&matRot, ())
+		m_pTransform->SetUp_Scaled(m_fScale, m_fScale, m_fScale);
 
 	}
 	ImGui::PopItemWidth();
@@ -304,6 +381,11 @@ void CImGui_Map::Render_TransformRotation()
 	if (InputFloat("##Set_Rotation", &m_fValue) &&
 		m_pGameInstance->Key_Down(DIK_RETURN))
 	{
+
+		_float4 fScale{};
+		XMStoreFloat4(&fScale, m_pTransform->Get_Scale());
+
+
 		_vector vPos = m_pTransform->Get_State(CTransform::STATE_POS);
 
 		_vector vResult = XMQuaternionRotationRollPitchYaw(fRotation.x, fRotation.y, fRotation.z);
@@ -328,18 +410,20 @@ void CImGui_Map::Render_TransformRotation()
 
 		m_pTransform->Set_State(CTransform::STATE_POS, vPos);
 
+		m_pTransform->SetUp_Scaled(fScale.x, fScale.y, fScale.z);
+
 	}
 	PopItemWidth();
 
-	if (SliderFloat("Rotation", &m_fValue, -3.5f, 3.5f))
+	if (SliderFloat("Rotation", &m_fValue, -180.f, 180.f))
 	{
 		//m_pTransform->Rotation(m_vAixs, XMConvertToRadians(m_fValue));
 
-		_vector vResult = XMQuaternionRotationRollPitchYaw(fRotation.x, fRotation.y, fRotation.z);
+
+		_vector vResult = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(fRotation.x), XMConvertToRadians(fRotation.y), XMConvertToRadians(fRotation.z));
 
 		_vector vPos = m_pTransform->Get_State(CTransform::STATE_POS);
 		_float4x4 fMatrix {};
-
 
 		XMStoreFloat4x4(&fMatrix, XMMatrixRotationQuaternion(vResult));
 		m_pTransform->Set_Matrix(&fMatrix);
@@ -358,6 +442,12 @@ void CImGui_Map::Render_TransformRotation()
 		}
 
 		m_pTransform->Set_State(CTransform::STATE_POS, vPos);
+
+		// ½ºÄÉÀÏ Á¶Á¤ ºý¼À
+		/*_float4 fScale{};
+		XMStoreFloat4(&fScale, m_pTransform->Get_Scale());
+
+		m_pTransform->SetUp_Scaled(fScale.x, fScale.y, fScale.z);*/
 	}
 }
 

@@ -19,7 +19,7 @@ HRESULT CMap_Object::Initialize(void* pArg)
 
     m_pDesc = *static_cast<MAPOBJ_DESC*>(pArg);
     
-    //wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(pDesc->iObjectIndex);
+    wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(m_pDesc.iObjectIndex);
 
     lstrcpy(Desc->szGameObjectTag, TEXT("Game_MapObject"));
  
@@ -29,40 +29,22 @@ HRESULT CMap_Object::Initialize(void* pArg)
     if (FAILED(Ready_Components(m_pDesc.strModelTag)))
         return E_FAIL;
 
-    //_uint i = 1;
-    //m_pContext->RSGetViewpor  ts(&i, &m_pViewPort);
-    //
-    //m_matProj  = XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ));
-    //m_matView  = XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW));
-    //m_matWorld = XMLoadFloat4x4(Get_Transform()->Get_WorldMatrix_Ptr());
+    //if(nullptr != &m_pDesc.matWorld)
+    //{
+    //    m_pTransformCom->Set_Matrix(&m_pDesc.matWorld);
+    //}
 
-    //XMStoreFloat4x4(&m_matProj, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_PROJ)));
-    //XMStoreFloat4x4(&m_matView, XMLoadFloat4x4(m_pGameInstance->Get_Transform_Float4x4(CPipeLine::D3DTS_VIEW)));
-    //XMStoreFloat4x4(&m_matWorld, XMLoadFloat4x4(Get_Transform()->Get_WorldMatrix_Ptr()));
-
+ 
     return S_OK;
 }
 
 void CMap_Object::Priority_Update(_float fTimeDelta)
 {
-    //_uint i = 1;
-    //m_pContext->RSGetViewports(&i, &m_pViewPort);
-    //
-    //
-    //ImGuiIO& io = ImGui::GetIO();
-    //
-    //ImGuizmo::SetDrawlist();
-    //ImGuizmo::SetRect(0,0, io.DisplaySize.x, io.DisplaySize.x);
+    if (m_pGameInstance->Key_Down(DIK_F2))
+    {
+        m_bRender = !m_bRender;
+    }
 
-    
-    //bool bTest = ImGuizmo::Manipulate((float*)&m_matView,
-    //                (float*)&m_matProj,
-    //                eGizmoType,
-    //                ImGuizmo::WORLD,
-    //                (float*)&m_matWorld);
-
-
-    int a = 10;
 }
 
 void CMap_Object::Update(_float fTimeDelta)
@@ -72,41 +54,35 @@ void CMap_Object::Update(_float fTimeDelta)
 
 void CMap_Object::Late_Update(_float fTimeDelta)
 {
-    //if (ImGuizmo::IsOver())
-    //{
-    //    int a = 10;
-    //}
-    //
-    //if (ImGuizmo::IsUsing())
-    //{
-    //    int a = 10;
-    //}
-
 
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
 HRESULT CMap_Object::Render()
 {
-    if (FAILED(Bind_SR()))
-        return E_FAIL;
 
-    _uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
-    
-    for (size_t i = 0; i < iNumMeshes; i++)
+    if(m_bRender)
     {
-        if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture",
-            aiTextureType_DIFFUSE, i, 0)))
+        if (FAILED(Bind_SR()))
             return E_FAIL;
-    
-        if (FAILED(m_pShaderCom->Begin(0)))
-            return E_FAIL;
-    
-        if (FAILED(m_pModelCom->Render(i)))
-            return E_FAIL;
+
+        _uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
+
+        for (size_t i = 0; i < iNumMeshes; i++)
+        {
+            if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture",
+                aiTextureType_DIFFUSE, i, 0)))
+                return E_FAIL;
+
+            if (FAILED(m_pShaderCom->Begin(0)))
+                return E_FAIL;
+
+            if (FAILED(m_pModelCom->Render(i)))
+                return E_FAIL;
+        }
     }
 
-    m_pColliderCom->Render();
+    //m_pColliderCom->Render();
 
     return S_OK;
 }

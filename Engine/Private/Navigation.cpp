@@ -52,6 +52,7 @@ HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationDataFilePath)
     m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"), 
         VTXPOS::ElementDesc, VTXPOS::iNumElements);
 #endif
+    CloseHandle(hFile);
 
 	return S_OK;
 }

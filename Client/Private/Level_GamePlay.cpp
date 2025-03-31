@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Camera_Free.h"
 #include "TP_Camera.h"
+#include "Map_Object.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel { pDevice , pContext }
@@ -22,10 +23,13 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 	
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Object(TEXT("Layer_Objcet"))))
 		return E_FAIL;
 
     return S_OK;
@@ -43,9 +47,9 @@ HRESULT CLevel_GamePlay::Render()
 
 HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
-		LEVEL_GAMEPLAY, pLayerTag)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
+	//	LEVEL_GAMEPLAY, pLayerTag)))
+	//	return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_SKY,
 		LEVEL_GAMEPLAY, pLayerTag)))
 		return E_FAIL;
@@ -55,39 +59,39 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 {
-	CCamera_Free::CAMERA_FREE_DESC   FreeCam_Desc{};
-	
-	FreeCam_Desc.vEye = _float3(0.f, 20.f, -20.f);
-	FreeCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	FreeCam_Desc.fFov = XMConvertToRadians(60.f);
-	FreeCam_Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	FreeCam_Desc.fNear = 0.1f;
-	FreeCam_Desc.fFar = 300.f;
-	FreeCam_Desc.fMouseSensor = 0.05f;
-	lstrcpy(FreeCam_Desc.szGameObjectTag, TEXT("GameObject_Camera_Free"));
-	FreeCam_Desc.fSpeedPerSec = 10.f;
-	FreeCam_Desc.fRotationPerSec = XMConvertToRadians(90.f);
-	
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_CAM_FREE,
-		LEVEL_GAMEPLAY, pLayerTag, &FreeCam_Desc)))
-		return E_FAIL;
-
-	//CTP_Camera::TP_CAMERA_DESC   TPCam_Desc{};
+	//CCamera_Free::CAMERA_FREE_DESC   FreeCam_Desc{};
 	//
-	//TPCam_Desc.vEye = _float3(0.f, 10.f, -10.f);
-	//TPCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	//TPCam_Desc.fFov = XMConvertToRadians(65.f);
-	//TPCam_Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	//TPCam_Desc.fNear = 0.1f;
-	//TPCam_Desc.fFar = 300.f;
-	//TPCam_Desc.fMouseSensor = 0.05f;
-	//lstrcpy(TPCam_Desc.szGameObjectTag, TEXT("GameObject_TP_Camera"));
-	//TPCam_Desc.fSpeedPerSec = 10.f;
-	//TPCam_Desc.fRotationPerSec = XMConvertToRadians(90.f);
+	//FreeCam_Desc.vEye = _float3(0.f, 20.f, -20.f);
+	//FreeCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
+	//FreeCam_Desc.fFov = XMConvertToRadians(60.f);
+	//FreeCam_Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	//FreeCam_Desc.fNear = 0.1f;
+	//FreeCam_Desc.fFar = 300.f;
+	//FreeCam_Desc.fMouseSensor = 0.05f;
+	//lstrcpy(FreeCam_Desc.szGameObjectTag, TEXT("GameObject_Camera_Free"));
+	//FreeCam_Desc.fSpeedPerSec = 10.f;
+	//FreeCam_Desc.fRotationPerSec = XMConvertToRadians(90.f);
 	//
-	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_CAM_3RD,
-	//	LEVEL_GAMEPLAY, pLayerTag, &TPCam_Desc)))
+	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_CAM_FREE,
+	//	LEVEL_GAMEPLAY, pLayerTag, &FreeCam_Desc)))
 	//	return E_FAIL;
+
+	CTP_Camera::TP_CAMERA_DESC   TPCam_Desc{};
+	
+	TPCam_Desc.vEye = _float3(0.f, 10.f, -10.f);
+	TPCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
+	TPCam_Desc.fFov = XMConvertToRadians(65.f);
+	TPCam_Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	TPCam_Desc.fNear = 0.1f;
+	TPCam_Desc.fFar = 300.f;
+	TPCam_Desc.fMouseSensor = 0.05f;
+	lstrcpy(TPCam_Desc.szGameObjectTag, TEXT("GameObject_TP_Camera"));
+	TPCam_Desc.fSpeedPerSec = 10.f;
+	TPCam_Desc.fRotationPerSec = XMConvertToRadians(90.f);
+	
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_CAM_3RD,
+		LEVEL_GAMEPLAY, pLayerTag, &TPCam_Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -124,6 +128,61 @@ HRESULT CLevel_GamePlay::Ready_Layer_Effect(const _tchar* pLayerTag)
 		return E_FAIL;
 	return S_OK;
 
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Object(const _tchar* pLayerTag)
+{
+	_ulong          dwByte = {};
+	CMap_Object::MAPOBJ_DESC Desc{};
+	HANDLE          hFile = CreateFile(TEXT("../../Client/Bin/DataFiles/MapObjectData.dat"), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	if (0 == hFile)
+		return E_FAIL;
+
+	_uint iMapObjCount;
+	ReadFile(hFile, &iMapObjCount, sizeof(_uint), &dwByte, nullptr);
+
+	for (size_t i = 0; i < iMapObjCount; i++)
+	{
+		// 모델 타입
+		MODELTYPE eModelType;
+		ReadFile(hFile, &eModelType, sizeof(eModelType), &dwByte, nullptr);
+
+		// 모델 이름
+		size_t  iModelTagLen;
+		ReadFile(hFile, &iModelTagLen, sizeof(iModelTagLen), &dwByte, nullptr);
+
+		wstring strModelTag(iModelTagLen, L'\0');
+		ReadFile(hFile, &strModelTag[0], iModelTagLen * sizeof(wchar_t), &dwByte, nullptr);
+
+		// 오브젝트 이름
+		size_t  iObjectTagLen;
+		ReadFile(hFile, &iObjectTagLen, sizeof(iObjectTagLen), &dwByte, nullptr);
+
+		wstring strObjectTag(iObjectTagLen, L'\0');
+		ReadFile(hFile, &strObjectTag[0], iObjectTagLen * sizeof(wchar_t), &dwByte, nullptr);
+
+		// 회전 밸류
+		_float3 fRotValue;
+		ReadFile(hFile, &fRotValue, sizeof(_float3), &dwByte, nullptr);
+
+		_float4x4 matWorld;
+		ReadFile(hFile, &matWorld, sizeof(matWorld), &dwByte, nullptr);
+
+		int a = 10;
+
+		Desc.eType = eModelType;
+		Desc.strModelTag = strModelTag;
+		Desc.strObjectTag = strObjectTag;
+		Desc.fRotValue = fRotValue;
+		Desc.matWorld = matWorld;
+
+		m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, Desc.strObjectTag, LEVEL_GAMEPLAY, TEXT("Layer_Objcet"), &Desc);
+	}
+
+	CloseHandle(hFile);
+
+
+	return S_OK;
 }
 
 HRESULT CLevel_GamePlay::Ready_Lights()

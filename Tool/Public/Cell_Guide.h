@@ -43,6 +43,11 @@ public:
 		return m_bIsModify;
 	}
 
+	_bool Is_Null()
+	{
+		return (nullptr == m_pVIBufferCom ? true : false);
+	}
+
 	_bool Is_Empty()
 	{
 		return (m_vecBufferComs.empty() ? true : false);
@@ -67,6 +72,7 @@ public:
 	HRESULT							Ready_Component();
 
 	HRESULT							Clone_VIBuffer();
+	HRESULT							Delete_VIBuffer();
 	// 야 이거 상속 게임 오브젝트로 하는게 맞다
 	// 그래야 트랜스 폼으로 Add_Renderer랑 Bind시킨다
 

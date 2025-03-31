@@ -91,6 +91,7 @@ public:
 
 public:
 	_bool								CheckRayColl_Mesh(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord, _vector vScale, _vector vRotation, _vector vTranslation);
+	_bool								DotPoint_InMesh(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord, _vector vScale, _vector vRotation, _vector vTranslation);
 
 private:
 	const aiScene*						m_pAIScene = { nullptr };

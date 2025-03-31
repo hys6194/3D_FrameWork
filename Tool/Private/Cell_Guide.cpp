@@ -53,8 +53,8 @@ void CCell_Guide::Update(_float fTimeDelta, _vector vCoord)
     Correct_CellPoint(vCoord);
 
     // 가이드 Cell 조정
-    
-    m_pVIBufferCom->Modify_VertexPoint(m_iIndex, m_vPoint[m_iIndex]);
+    if(nullptr != m_pVIBufferCom)
+        m_pVIBufferCom->Modify_VertexPoint(m_iIndex, m_vPoint[m_iIndex]);
 
     // 클릭하면 인덱스 증가
     // 좌표 값을 저장해야 함
@@ -87,8 +87,12 @@ void CCell_Guide::Late_Update(_float fTimeDelta)
     if (m_pGameInstance->Key_Down(DIK_MINUS) && m_iIndex > 0)
         m_iIndex--;
 
-    if (m_pGameInstance->Key_Down(DIK_DELETE) && m_vecBufferComs.empty())
+    if (m_pGameInstance->Key_Down(DIK_DELETE) && !m_vecBufferComs.empty())
+    {
         m_vecBufferComs.pop_back();
+        m_vecCellPos.pop_back();
+    }
+
 
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
@@ -109,12 +113,13 @@ HRESULT CCell_Guide::Render()
             iter->Render();
         }
 
+    }
+
+    if(nullptr != m_pVIBufferCom)
+    {
         m_pVIBufferCom->Bind_Input_Assembler();
         m_pVIBufferCom->Render();
-
     }
-    //else
-    
 
 	return S_OK;
 }
@@ -146,10 +151,20 @@ HRESULT CCell_Guide::Clone_VIBuffer()
 
     // 여기 수정해야 함
     // 처음 생성했을 때에만
-    if(m_vecBufferComs.empty())
-        m_vecBufferComs.push_back(m_pVIBufferCom);
+    //if(m_vecBufferComs.empty())
+    //    m_vecBufferComs.push_back(m_pVIBufferCom);
 
     m_bIsModify = true;
+
+    return S_OK;
+}
+
+HRESULT CCell_Guide::Delete_VIBuffer()
+{
+    if(nullptr != m_pVIBufferCom)
+    {
+        Safe_Release(m_pVIBufferCom);
+    }
 
     return S_OK;
 }
@@ -213,7 +228,7 @@ void CCell_Guide::Save_Data()
 {
     _ulong			dwByte = {};
     HANDLE			hFile = CreateFile(TEXT("../../Client/Bin/DataFiles/Navigation.dat"), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
-    //"../../Client/Bin/DataFiles/Navigation.dat"
+
     if (0 == hFile)
         return;
     //벡터에 담긴 데이터들을 기반으로 Navigation.dat 생성하자
@@ -226,21 +241,6 @@ void CCell_Guide::Save_Data()
         XMStoreFloat3(&vPoint[2], iter.v2);
 
         WriteFile(hFile, vPoint, sizeof(_float3) * 3, &dwByte, nullptr);
-
-        //vPoints[0] = _float3(0.f, 0.f, 10.f);
-        //vPoints[1] = _float3(10.f, 0.f, 10.f);
-        //vPoints[2] = _float3(10.f, 0.f, 0.f);
-        //WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
-        //
-        //vPoints[0] = _float3(0.f, 0.f, 20.f);
-        //vPoints[1] = _float3(10.f, 0.f, 10.f);
-        //vPoints[2] = _float3(0.f, 0.f, 10.f);
-        //WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
-        //
-        //vPoints[0] = _float3(10.f, 0.f, 10.f);
-        //vPoints[1] = _float3(20.f, 0.f, 0.f);
-        //vPoints[2] = _float3(10.f, 0.f, 0.f);
-        //WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
     }
     CloseHandle(hFile);
 }
@@ -248,12 +248,8 @@ void CCell_Guide::Save_Data()
 void CCell_Guide::Load_Data()
 {
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_NAVI,
-        CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Navigation.dat")))))
+        CNavigation::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/DataFiles/Navigation.dat")))))
         return;
-
-    int a = 1;
-
-
 }
 
 void CCell_Guide::Check_Cell_Translation()

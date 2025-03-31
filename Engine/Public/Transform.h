@@ -21,6 +21,14 @@ public:
 
 public:
 
+	_vector Get_Scale()
+	{
+		return XMVectorSet(m_f4WorldMatrix._11,
+			m_f4WorldMatrix._22,
+			m_f4WorldMatrix._33,
+			m_f4WorldMatrix._44);
+	}
+
 	_vector Get_State(STATE eState)
 	{
 		// 행렬의 각 정보를 의미함

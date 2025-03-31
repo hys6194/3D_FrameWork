@@ -70,7 +70,12 @@ void CTool_FreeCam::Priority_Update(_float fTimeDelta)
 
 void CTool_FreeCam::Update(_float fTimeDelta)
 {
-	
+	//if (m_pGameInstance->Mouse_Down(DIM_RB))
+	//{
+	//	CTransform::TRANSFORM_DESC Desc{};
+	//
+	//	Desc.fRotationPerSec = 
+	//}
 
 }
 

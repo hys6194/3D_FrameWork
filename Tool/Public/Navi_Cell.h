@@ -32,13 +32,10 @@ public:
 	void						Modify_VertexPoint(_uint iVertexIndex, _vector vCoord);
 
 private:
-	// 어떻게 삼각형을 동적으로 그려야 하는 것일까?
-	// 우선 그리기 위해서는 뭐가 필요할까
-	// 그 전에 Tool에서 
-	// 
-	// 스트라이드 필요하고 
-	// 구조체를 만들 것인가?
+	VTXPOS						m_pVertices0;
+	VTXPOS						m_pVertices1;
 
+	_bool						m_bSwap = {};
 
 public:
 	static  CNavi_Cell*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -52,7 +52,11 @@ void Tool_Manager::Update(_float fTimeDelta)
 			m_pCell->Update(fTimeDelta, m_vCellCoord);
 		}
 		else
+		{
 			Picking_Objects();
+			m_pCell->Delete_VIBuffer();
+		}
+			
 	}
 
 	
@@ -61,8 +65,9 @@ void Tool_Manager::Update(_float fTimeDelta)
 
 void Tool_Manager::Late_Update(_float fTimeDelta)
 {
-	if (!m_pCell->Is_Empty())
-		m_pCell->Late_Update(1.f);
+	m_pCell->Late_Update(1.f);
+	/*if (m_pCell->Is_Empty() || 
+		m_pCell->Is_Null())*/
 
 	//세이브를 여기서 처리
 	if (m_pMap->Is_Save() == true)
@@ -125,14 +130,9 @@ void Tool_Manager::Picking_Objects()
 			{
 				m_pMap->Set_Select(true);
 				m_pMap->Set_TransformInfo(pObject);
-
-				//Move_CamPos(pObject);
+			
 			}
-			//else
-			//{
-			//	//m_pMap->Set_Select(false);
-			//	return;
-			//}
+
 
 		}
 	}
@@ -154,7 +154,8 @@ void Tool_Manager::Create_NaviCells()
 	_float fDistance{};
 
 	// 정점 보정 끝나면
-	if (!m_pCell->Get_Modify())
+	if (!m_pCell->Get_Modify() || 
+		m_pCell->Is_Null())
 	{
 		// 그리기용 삼각형 생성
 		m_pCell->Clone_VIBuffer();
@@ -166,27 +167,44 @@ void Tool_Manager::Create_NaviCells()
 	{
 		// 해당 메쉬의 월드 정점
 		_float4 fCoord;
+		_bool bColl;
 
 		_matrix matWorld = XMLoadFloat4x4(iter->Get_Transform()->Get_WorldMatrix_Ptr());
 
 		_vector vScale, vRotation, vTranslation;
 		XMMatrixDecompose(&vScale, &vRotation, &vTranslation, matWorld);
 
-		_bool bColl = iter->Get_ModelCom()->CheckRayColl_Mesh(vRayOrigin, vRayDir, &fDistance, &fCoord, vScale, vRotation, vTranslation);
-
-		if (bColl)
+		// 어떤 오브젝트의 한 면에 충돌하게 되었다면
+		// True 반환하면서 모든 메시 충돌 찾는것을 
+		if(nullptr == m_pMapObject)
 		{
-			if (!m_bColl)
+			bColl = iter->Get_ModelCom()->CheckRayColl_Mesh(vRayOrigin, vRayDir, &fDistance, &fCoord, vScale, vRotation, vTranslation);
+
+			if (bColl)
+				m_pMapObject = iter;
+		}
+
+		if(nullptr != m_pMapObject)
+		{
+			m_pMapObject = iter;
+
+			// 해당 오브젝트를 순회해서 점을 찾는다
+			_bool bTest = m_pMapObject->Get_ModelCom()->
+				DotPoint_InMesh(vRayOrigin, vRayDir, &fDistance, &fCoord, vScale, vRotation, vTranslation);
+
+			if (bTest)
 			{
-				m_fDistance = fDistance;
-				m_vCellCoord = vRayOrigin + vRayDir * m_fDistance;
-				m_bColl = true;
+				//최소 거리를 가져와서 좌표 가져오기
+				m_vCellCoord = vRayOrigin + vRayDir * fDistance;
+
+				return;
 			}
-			else if(m_bColl && fDistance < m_fDistance)
-			{ 
-				m_fDistance = fDistance;
-				m_vCellCoord = vRayOrigin + vRayDir * m_fDistance;
+			else
+			{
+				// 다시 오브젝트를 찾게함
+				m_pMapObject = nullptr;
 			}
+
 		}
 
 	}

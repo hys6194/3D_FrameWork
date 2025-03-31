@@ -440,6 +440,18 @@ _bool CModel::CheckRayColl_Mesh(_vector vPos, _vector vDir, _float* _fDistance, 
     
     for (size_t i = 0; i < m_vecMesh.size(); i++)
     {
+        bResult = m_vecMesh[i]->Check_Coll_Meshes(vPos, vDir, vScale, vRotation, vTranslation);
+    }
+
+    return bResult;
+}
+
+_bool CModel::DotPoint_InMesh(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord, _vector vScale, _vector vRotation, _vector vTranslation)
+{
+    _bool bResult = false;
+
+    for (size_t i = 0; i < m_vecMesh.size(); i++)
+    {
         bResult = m_vecMesh[i]->Search_Picked_Face(vPos, vDir, _fDistance, _fCoord, vScale, vRotation, vTranslation);
     }
 

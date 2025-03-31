@@ -56,7 +56,7 @@ protected:
 	_float						m_fScale					{};
 
 	_vector						m_vAixs						= AXIS_X;
-	_float 						m_fValue;
+	_float 						m_fValue = {0.f};
 
 
 public:

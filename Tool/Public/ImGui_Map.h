@@ -64,6 +64,7 @@ public:
 
 public:
 	void								Save_MapObjects();
+	void								Load_MapObjects();
 	void								Set_TransformInfo(class CMap_Object* pObject);
 
 	void								Render_TransformScale();

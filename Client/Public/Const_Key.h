@@ -69,11 +69,11 @@ static const std::wstring PRO_SHADER_ANIM		= TEXT("Prototype_Component_Shader_Vt
 /* GameObject */
 static const std::wstring PRO_OBJ_SKY			= TEXT("Prototype_GameObject_Sky");
 static const std::wstring PRO_OBJ_BULLET		= TEXT("Prototype_GameObject_Bullet"); 
-static const std::wstring PRO_OBJ_FLOOR1		= TEXT("Prototype_GameObject_Floor 1");
-static const std::wstring PRO_OBJ_FLOOR2		= TEXT("Prototype_GameObject_Floor 2");
-static const std::wstring PRO_OBJ_FLOOR3		= TEXT("Prototype_GameObject_Floor 3");
 static const std::wstring PRO_OBJ_PLAYER		= TEXT("Prototype_GameObject_Player");
 static const std::wstring PRO_OBJ_WEAPON		= TEXT("Prototype_GameObject_Weapon");
+static const std::wstring PRO_OBJ_FLOOR1		= TEXT("Prototype_GameObject_Floor 1");
+static const std::wstring PRO_OBJ_STAIR1		= TEXT("Prototype_GameObject_Stair 1");
+static const std::wstring PRO_OBJ_STAIR2		= TEXT("Prototype_GameObject_Stair 2");
 static const std::wstring PRO_OBJ_MONSTER		= TEXT("Prototype_GameObject_Monster");
 static const std::wstring PRO_OBJ_TERRAIN		= TEXT("Prototype_GameObject_Terrain");
 static const std::wstring PRO_OBJ_L_GUN			= TEXT("Prototype_GameObject_Gun Left");
