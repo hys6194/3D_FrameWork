@@ -36,6 +36,9 @@ protected:
 	void						Get_PrototypeList(const wstring _strDest, const wstring _strSour);
 
 protected:
+	void						Button_Info(_float4 _fValue);
+
+protected:
 	ID3D11Device*				m_pDevice					= { nullptr };
 	ID3D11DeviceContext*		m_pContext					= { nullptr };
 	CGameInstance*				m_pGameInstance				= { nullptr };
@@ -45,6 +48,20 @@ protected:
 
 	wstring						m_strModelName;
 	wstring						m_strObjectName;
+
+	_bool						m_bEvent1					= { false };
+	_bool						m_bEvent2					= { false };
+	_bool						m_bEvent3					= { false };
+
+	_float						m_fScale					{};
+
+	_vector						m_vScale					{};
+	_vector						m_vRotation					{};
+	_vector						m_vTranslation				{};
+
+	_vector						m_vAixs						= AXIS_X;
+	_float 						m_fValue = {0.f};
+
 
 public:
 	virtual void				Free() override;

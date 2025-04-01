@@ -36,6 +36,11 @@ private:
 	class CImGui_Map*					m_pMap = { nullptr };
 	D3D11_VIEWPORT						m_pViewPort;
 
+
+	class Tool_Manager*					m_pTool = { nullptr };
+
+	
+
 private:
 	void								Release_ImGui();
 

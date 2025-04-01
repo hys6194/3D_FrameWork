@@ -39,6 +39,7 @@ void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSo
 
 	if(TreeNode("Prototype_List"))
 	{
+		ImGui::BeginChild("ScrollingRegion", ImVec2(0, 450), true, ImGuiWindowFlags_HorizontalScrollbar);
 		// 모든 리스트를 찾기
 		// 이니셜라이즈 때 해버리면 읽지 못하는 순서여서 여기에 선언
 		m_pGameInstance->Collect_ProtoTag(LEVEL_TOOL);
@@ -69,7 +70,7 @@ void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSo
 
 			if (m_vecProtoTag[i].find(_strDest) != std::string::npos)
 			{
-				// 여기까지는 문제가 없음
+				
 				if (ImGui::Button(cstr))
 				{
 					// 모델 이름 저장하기
@@ -97,7 +98,65 @@ void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSo
 			}
 		}
 
+
+		ImGui::EndChild(); // 스크롤 영역 종료
 		ImGui::TreePop();
+	}
+
+}
+
+void CImGui_Base::Button_Info(_float4 _fValue)
+{
+	// 걍 공유 합시다
+	// 귀찮아요
+	char cInfoX[MAX_PATH]{};
+	sprintf_s(cInfoX, sizeof(cInfoX), "x : %.2f", _fValue.x);
+
+	char cInfoY[MAX_PATH]{};
+	sprintf_s(cInfoY, sizeof(cInfoY), "y : %.2f", _fValue.y);
+
+	char cInfoZ[MAX_PATH]{};
+	sprintf_s(cInfoZ, sizeof(cInfoZ), "z : %.2f", _fValue.z);
+
+	if (Button(cInfoX))
+	{
+		//m_fScale = _fValue.x;
+		//
+		m_vAixs = AXIS_X;
+		//m_fValue = &_fValue.x;
+
+		m_bEvent1 = true;
+		m_bEvent2 = false;
+		m_bEvent3 = false;
+
+	}
+
+	SameLine();
+
+	if (Button(cInfoY))
+	{
+		//m_fScale = _fValue.y;
+		//
+		m_vAixs = AXIS_Y;
+		//m_fValue = &_fValue.y;
+
+		m_bEvent1 = false;
+		m_bEvent2 = true;
+		m_bEvent3 = false;
+	}
+
+	SameLine();
+
+	if (Button(cInfoZ))
+	{
+		//m_fScale = _fValue.z;
+		//
+		m_vAixs = AXIS_Z;
+		//m_fValue = &_fValue.z;
+
+		m_bEvent1 = false;
+		m_bEvent2 = false;
+		m_bEvent3 = true;
 	}
 
 }

@@ -29,10 +29,12 @@ HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationDataFilePath)
     HANDLE          hFile = CreateFile(pNavigationDataFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
     if (0 == hFile)
         return E_FAIL;
+    _uint iVecSize;
+    WriteFile(hFile, &iVecSize, sizeof(_uint), &dwByte, nullptr);
 
     _float3     vPoints[3] = {};
 
-    while (true)
+    for (size_t i = 0; i < iVecSize; i++)
     {
         ReadFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
         if (0 == dwByte)
@@ -52,6 +54,7 @@ HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationDataFilePath)
     m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"), 
         VTXPOS::ElementDesc, VTXPOS::iNumElements);
 #endif
+    CloseHandle(hFile);
 
 	return S_OK;
 }
@@ -140,7 +143,7 @@ HRESULT CNavigation::Render()
     if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShader, CPipeLine::D3DTS_PROJ)))
         return E_FAIL;
 
-    m_pShader->Begin(0);
+    m_pShader->Begin(1);
 
     for (auto& pCell : m_Cells)
         pCell->Render();

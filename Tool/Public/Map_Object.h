@@ -13,19 +13,18 @@ BEGIN(Tool)
 
 class CMap_Object final : public CGameObject
 {
+
+
 public:
 	typedef struct tagMapObjectDesc : public GAMEOBJECT_DESC
 	{
-		// 클라이언트에서 좌표의 위치를 받기 위해서 대충 만듦
-		// 행렬을 던지는게 나아보임
-		// 해당 맵 오브젝트들의 좌표를 받기위해 만든 구조체 
-		//_float4* fScale;
-		//_float4* fRotation;
-		//_float4* fTraslation;
-		//_float4* fPosition;
-
-		wstring strModelTag;
-		_uint   iObjectIndex;
+		_wstring	strModelTag;
+		_wstring	strObjectTag;
+		_float3		fRotValue;
+		_uint		iObjectIndex;
+		_float4x4	matWorld{};
+		MODELTYPE	eType;
+		_bool	    m_bIsLoad = { false };
 
 	}MAPOBJ_DESC;
 
@@ -43,10 +42,24 @@ public:
 
 
 public:
-	CModel* Get_ModelCom()
+	CModel*								Get_ModelCom()
 	{
-		return m_pModelCom;
+										return m_pModelCom;
 	}
+
+	MAPOBJ_DESC&						Get_MapObjDesc()
+	{
+										return m_pDesc;
+	}
+
+public:
+	void								Set_DescValue(_float3 fValue)
+	{
+										m_pDesc.fRotValue.x = fValue.x;
+										m_pDesc.fRotValue.y = fValue.y;
+										m_pDesc.fRotValue.z = fValue.z;
+	}
+
 
 private:
 	HRESULT								Ready_Components(const wstring _strModelTag);
@@ -57,13 +70,16 @@ private:
 	CModel*								m_pModelCom		= { nullptr };
 	CCollider*							m_pColliderCom	= { nullptr };
 
-	//_float4x4							m_matProj		= {};
-	//_float4x4							m_matView		= {};
-	//_float4x4							m_matWorld		= {};
+	_float4x4							m_matProj		= {};
+	_float4x4							m_matView		= {};
+	_float4x4							m_matWorld		= {};
 
-	_uint								m_iID = {};
+	MAPOBJ_DESC							m_pDesc;
 
 	D3D11_VIEWPORT						m_pViewPort;
+
+	_bool								m_bRender = { true };
+
 
 public:
 	static CMap_Object*					Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

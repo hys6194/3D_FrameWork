@@ -209,6 +209,10 @@ void CGameInstance::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pCon
 {
 	m_pImGui_Manager->SetUp_ImGui(pDevice, pContext, hWnd);
 }
+vector<float*> CGameInstance::Draw_Gizmo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _matrix& matWorld)
+{
+	return m_pImGui_Manager->Draw_Gizmo(pDevice, pContext, hWnd, matWorld);
+}
 void CGameInstance::Set_EndMsg()
 {
 	m_pImGui_Manager->Set_EndMsg();

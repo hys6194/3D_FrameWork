@@ -17,25 +17,33 @@ HRESULT CMap_Object::Initialize(void* pArg)
 {
     GAMEOBJECT_DESC* Desc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
-    MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(pArg);
-    m_iID = pDesc->iObjectIndex;
+    m_pDesc = *static_cast<MAPOBJ_DESC*>(pArg);
     
-    //wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(pDesc->iObjectIndex);
+    //wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(m_pDesc.iObjectIndex);
 
     lstrcpy(Desc->szGameObjectTag, TEXT("Game_MapObject"));
  
     if (FAILED(__super::Initialize(Desc)))
         return E_FAIL;
 
-    if (FAILED(Ready_Components(pDesc->strModelTag)))
+    if (FAILED(Ready_Components(m_pDesc.strModelTag)))
         return E_FAIL;
+
+    if (m_pDesc.m_bIsLoad)
+    {
+        m_pTransformCom->Set_Matrix(&m_pDesc.matWorld);
+    }
 
     return S_OK;
 }
 
 void CMap_Object::Priority_Update(_float fTimeDelta)
 {
-  
+    if (m_pGameInstance->Key_Down(DIK_F2))
+    {
+        m_bRender = !m_bRender;
+    }
+
 }
 
 void CMap_Object::Update(_float fTimeDelta)
@@ -45,36 +53,41 @@ void CMap_Object::Update(_float fTimeDelta)
 
 void CMap_Object::Late_Update(_float fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_BLEND, this);
 }
 
 HRESULT CMap_Object::Render()
 {
-    if (FAILED(Bind_SR()))
-        return E_FAIL;
 
-    _uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
-    
-    for (size_t i = 0; i < iNumMeshes; i++)
+    if(m_bRender)
     {
-        if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture",
-            aiTextureType_DIFFUSE, i, 0)))
+        if (FAILED(Bind_SR()))
             return E_FAIL;
-    
-        if (FAILED(m_pShaderCom->Begin(0)))
-            return E_FAIL;
-    
-        if (FAILED(m_pModelCom->Render(i)))
-            return E_FAIL;
+
+        _uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
+
+        for (size_t i = 0; i < iNumMeshes; i++)
+        {
+            if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture",
+                aiTextureType_DIFFUSE, i, 0)))
+                return E_FAIL;
+
+            if (FAILED(m_pShaderCom->Begin(0)))
+                return E_FAIL;
+
+            if (FAILED(m_pModelCom->Render(i)))
+                return E_FAIL;
+        }
     }
 
-    m_pColliderCom->Render();
+    //m_pColliderCom->Render();
 
     return S_OK;
 }
 
 HRESULT CMap_Object::Ready_Components(const wstring _strModelTag)
 {
+
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_SHADER_MESH,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 

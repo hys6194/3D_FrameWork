@@ -153,6 +153,7 @@ namespace Engine
 
 		};
 	}INST_VTXPOSTEX;
+
 	typedef struct tagLightDesc
 	{
 		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };

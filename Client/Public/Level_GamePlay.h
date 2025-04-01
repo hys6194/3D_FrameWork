@@ -22,6 +22,7 @@ public:
 	HRESULT								Ready_Layer_Monster(const _tchar* pLayerTag);
 	HRESULT								Ready_Layer_Player(const _tchar* pLayerTag);
 	HRESULT								Ready_Layer_Effect(const _tchar* pLayerTag);
+	HRESULT								Ready_Layer_Object(const _tchar* pLayerTag);
 	HRESULT								Ready_Lights();
 
 public:

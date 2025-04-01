@@ -52,7 +52,7 @@ void CTool_FreeCam::Priority_Update(_float fTimeDelta)
 
 	_long		MouseMove{};
 
-	if(GetAsyncKeyState(VK_SHIFT))
+	if(m_pGameInstance->Mouse_Drag(DIM_RB) || m_pGameInstance->Key_Pressing(DIK_LSHIFT))
 	{
 		if (MouseMove = m_pGameInstance->Get_DIMouseMove(MOUSEMOVESTATE::DIMS_X))
 		{
@@ -70,6 +70,13 @@ void CTool_FreeCam::Priority_Update(_float fTimeDelta)
 
 void CTool_FreeCam::Update(_float fTimeDelta)
 {
+	//if (m_pGameInstance->Mouse_Down(DIM_RB))
+	//{
+	//	CTransform::TRANSFORM_DESC Desc{};
+	//
+	//	Desc.fRotationPerSec = 
+	//}
+
 }
 
 void CTool_FreeCam::Late_Update(_float fTimeDelta)

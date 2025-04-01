@@ -30,8 +30,8 @@ public:
 	HRESULT								Bind_BoneMatrix(class CShader* pShader, const _char* pContantName, const vector<class CBone*>& Bones);
 
 public:
-	_bool								Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord);
-
+	_bool								Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord, _vector vScale, _vector vRotation, _vector vTranslation);
+	_bool								Check_Coll_Meshes(_vector vPos, _vector vDir, _vector vScale, _vector vRotation, _vector vTranslation);
 private:
 	HRESULT								Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);
 	HRESULT								Ready_VertexBuffer_ForNonAnim_Save(const aiMesh* _pAIMesh, _fmatrix PreTransformMatrix, ofstream& _OutStream);
@@ -43,8 +43,10 @@ private:
 
 private:
 	_char								m_szName[MAX_PATH] = {};
+	_bool								m_bColl = {};
 	_uint								m_iMaterialIndex = {};
 	_uint								m_iNumBones = {};
+	_float								m_fPreDistance = {};
 	vector<_float4x4>					m_OffsetMatrix;
 	vector<_int>						m_vecBone;
 	_float4x4							m_matBone[512] = {};

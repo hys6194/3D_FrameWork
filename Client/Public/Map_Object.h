@@ -6,20 +6,24 @@
 BEGIN(Engine)
 class CShader;
 class CModel;
+class CCollider;
 END
 
 BEGIN(Client)
 
 class CMap_Object final : public CGameObject
 {
+
+
 public:
 	typedef struct tagMapObjectDesc : public GAMEOBJECT_DESC
 	{
-		//해당 맵 오브젝트들의 좌표를 받기위해 만든 구조체 
-		//_float4* fScale;
-		//_float4* fRotation;
-		//_float4* fTraslation;
-		//_float4* fPosition;
+		_wstring	strModelTag;
+		_wstring	strObjectTag;
+		_float3		fRotValue;
+		_uint		iObjectIndex;
+		_float4x4	matWorld;
+		MODELTYPE	eType;
 
 	}MAPOBJ_DESC;
 
@@ -35,13 +39,45 @@ public:
 	virtual void						Late_Update(_float fTimeDelta)		override;
 	virtual HRESULT						Render()							override;
 
+
+public:
+	class CModel*						Get_ModelCom()
+		{
+			return m_pModelCom;
+	}
+
+	MAPOBJ_DESC&						Get_MapObjDesc()
+	{
+		return m_pDesc;
+	}
+
+public:
+	void								Set_DescValue(_float3 fValue)
+	{
+		m_pDesc.fRotValue.x = fValue.x;
+		m_pDesc.fRotValue.y = fValue.y;
+		m_pDesc.fRotValue.z = fValue.z;
+	}
+
+
 private:
-	HRESULT								Ready_Components();
+	HRESULT								Ready_Components(const wstring _strModelTag);
 	HRESULT								Bind_SR();
 
 private:
-	CShader*							m_pShaderCom = { nullptr };
-	CModel*								m_pModelCom = { nullptr };
+	class CShader*						m_pShaderCom = { nullptr };
+	class CModel*						m_pModelCom = { nullptr };
+	class CCollider*					m_pColliderCom = { nullptr };
+
+	_float4x4							m_matProj = {};
+	_float4x4							m_matView = {};
+	_float4x4							m_matWorld = {};
+
+	MAPOBJ_DESC							m_pDesc;
+
+	D3D11_VIEWPORT						m_pViewPort;
+
+	_bool								m_bRender = { true };
 
 public:
 	static CMap_Object*					Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

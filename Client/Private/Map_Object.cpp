@@ -1,5 +1,6 @@
 #include "Map_Object.h"
 
+
 #include "GameInstance.h"
 
 CMap_Object::CMap_Object(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -14,13 +15,22 @@ HRESULT CMap_Object::Initialize_Prototype()
 
 HRESULT CMap_Object::Initialize(void* pArg)
 {
-    MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(pArg);
+    GAMEOBJECT_DESC* Desc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
-    if (FAILED(__super::Initialize(&pDesc)))
+    m_pDesc = *static_cast<MAPOBJ_DESC*>(pArg);
+
+    lstrcpy(Desc->szGameObjectTag, TEXT("Game_MapObject"));
+
+    if (FAILED(__super::Initialize(Desc)))
         return E_FAIL;
 
-    if (FAILED(Ready_Components()))
+    if (FAILED(Ready_Components(m_pDesc.strModelTag)))
         return E_FAIL;
+
+    if (nullptr != &m_pDesc.matWorld)
+    {
+        m_pTransformCom->Set_Matrix(&m_pDesc.matWorld);
+    }
 
 
     return S_OK;
@@ -28,12 +38,12 @@ HRESULT CMap_Object::Initialize(void* pArg)
 
 void CMap_Object::Priority_Update(_float fTimeDelta)
 {
-    
 
 }
 
 void CMap_Object::Update(_float fTimeDelta)
 {
+
 }
 
 void CMap_Object::Late_Update(_float fTimeDelta)
@@ -43,6 +53,7 @@ void CMap_Object::Late_Update(_float fTimeDelta)
 
 HRESULT CMap_Object::Render()
 {
+
     if (FAILED(Bind_SR()))
         return E_FAIL;
 
@@ -60,19 +71,19 @@ HRESULT CMap_Object::Render()
         if (FAILED(m_pModelCom->Render(i)))
             return E_FAIL;
     }
+
     return S_OK;
 }
 
-HRESULT CMap_Object::Ready_Components()
+HRESULT CMap_Object::Ready_Components(const wstring _strModelTag)
 {
+
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
-    //FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_ROCK1,
-    //    reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
-    //
-    //FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_ROCK2,
-    //    reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, _strModelTag,
+        reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+
 
     return S_OK;
 }

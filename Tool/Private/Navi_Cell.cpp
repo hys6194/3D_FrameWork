@@ -1,5 +1,7 @@
 #include "Navi_Cell.h"
 
+#include "GameInstance.h"
+
 CNavi_Cell::CNavi_Cell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CVIBuffer{ pDevice, pContext }
 {
@@ -25,6 +27,8 @@ HRESULT CNavi_Cell::Initialize(void* pArg)
     m_iNumVertexBuffers = 1;
     m_eIndexFormat = DXGI_FORMAT_R16_UINT;
     m_eTopology = D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
+    //D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+    //D3D_PRIMITIVE_TOPOLOGY_LINESTRIP
 
 #pragma region VTX
 
@@ -108,8 +112,51 @@ void CNavi_Cell::Modify_VertexPoint(_uint iVertexIndex, _vector vCoord)
     
     XMStoreFloat4(&fTest, vCoord);
 
-    pVertices[iVertexIndex].vPosition = _float3(fTest.x, fTest.y + 0.4f, fTest.z);
+    if (0 == iVertexIndex)
+    {
+        pVertices[iVertexIndex].vPosition = _float3(fTest.x, fTest.y + 0.3f, fTest.z);
+        pVertices[iVertexIndex + 1].vPosition = _float3(fTest.x, fTest.y + 0.3f, fTest.z + 1);
+        pVertices[iVertexIndex + 2].vPosition = _float3(fTest.x + 1, fTest.y + 0.3f, fTest.z );
 
+        m_pVertices0.vPosition = pVertices[iVertexIndex].vPosition;
+
+        m_eTopology = D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
+    }
+
+    else
+    {
+        for (size_t i = iVertexIndex; i < 3; i++)
+        {
+            pVertices[i].vPosition = _float3(fTest.x, fTest.y + 0.3f, fTest.z);
+
+            if (i == 1)
+                m_pVertices1.vPosition = pVertices[i].vPosition;
+        }
+
+        if (iVertexIndex == 2)
+        {
+
+            m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+            //_float3 fTest = pVertices[iVertexIndex].vPosition;
+            //
+            //_vector v1 = XMVector3Normalize(XMVectorSubtract(XMLoadFloat3(&m_pVertices1.vPosition), XMLoadFloat3(&m_pVertices0.vPosition)));
+            //_vector v2 = XMVector3Normalize(XMVectorSubtract(XMLoadFloat3(&fTest), XMLoadFloat3(&m_pVertices1.vPosition)));
+            //
+            //_vector vNor = { 0.f,0.f,0.f,0.f };
+            //vNor = XMVector3Cross(v1, v2);
+            //
+            //if (vNor.m128_f32[1] < 0)
+            //{
+            //    pVertices[2].vPosition = m_pVertices1.vPosition;
+            //    pVertices[1].vPosition = _float3(fTest.x, fTest.y, fTest.z);
+            //}
+
+        }
+
+        else
+            m_eTopology = D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
+    }
 
     m_pContext->Unmap(m_pVB, 0);
 }
@@ -130,7 +177,6 @@ HRESULT CNavi_Cell::Bind_Input_Assembler()
     _uint Offsets[] =
     {
         0,
-    
     };
 
     m_pContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pBuffer, iStrides, Offsets);

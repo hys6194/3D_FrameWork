@@ -1,0 +1,20 @@
+﻿  Cell_Guide.cpp
+  DataMgr.cpp
+  ImGui_Base.cpp
+  ImGui_Map.cpp
+  ImGui_UI.cpp
+  Level_Loading.cpp
+  Loader.cpp
+  MainApp.cpp
+  Map_Object.cpp
+  Navi_Cell.cpp
+  Terrain.cpp
+  Tool_FreeCam.cpp
+  Tool_Level.cpp
+  Tool_Manager.cpp
+  Util.cpp
+  Tool.cpp
+Cell_Guide.obj : error LNK2001: 확인할 수 없는 외부 기호 __imp__CrtDbgReport
+Cell_Guide.obj : error LNK2001: 확인할 수 없는 외부 기호 __imp__invalid_parameter
+Tool.obj : error LNK2001: 확인할 수 없는 외부 기호 __imp__CrtSetDbgFlag
+..\Bin\Tool.exe : fatal error LNK1120: 3개의 확인할 수 없는 외부 참조입니다.

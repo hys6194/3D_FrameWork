@@ -23,20 +23,29 @@ BEGIN(Tool)
 
 class CCell_Guide : public CGameObject
 {
+
+public:
+	typedef struct tagCellPoint {
+
+		_vector v0;
+		_vector v1;
+		_vector v2;
+	}CELL_POS;
 private:
 	CCell_Guide(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCell_Guide(const CCell_Guide& Prototype);
 	virtual ~CCell_Guide() = default;
 
 public:
-	void Toggle_Modify()
-	{
-		m_bIsModify = !m_bIsModify;
-	}
 
 	_bool Get_Modify()
 	{
 		return m_bIsModify;
+	}
+
+	_bool Is_Null()
+	{
+		return (nullptr == m_pVIBufferCom ? true : false);
 	}
 
 	_bool Is_Empty()
@@ -63,28 +72,32 @@ public:
 	HRESULT							Ready_Component();
 
 	HRESULT							Clone_VIBuffer();
+	HRESULT							Delete_VIBuffer();
 	// 야 이거 상속 게임 오브젝트로 하는게 맞다
-	// 그래야 트랜스 폼으로 값을 저장할 수 있겠음 또한 값 수정까지 편할듯 해
+	// 그래야 트랜스 폼으로 Add_Renderer랑 Bind시킨다
 
 private:
 	CShader*						m_pShaderCom	 = { nullptr };
 	class CNavi_Cell*				m_pVIBufferCom	 = { nullptr };
-	//class CGameInstance*			m_pGameInstance;
 
-	//ID3D11Device*					m_pDevice;
-	//ID3D11DeviceContext*			m_pContext;
-
-	vector<_float3>					m_vecCellPos;
 	vector<class CNavi_Cell*>		m_vecBufferComs;
 	
 
 	_bool							m_bIsModify = { false };
-	_bool							m_bIsClicked = { false };
-
 	_uint							m_iIndex = { 0 };
-	_float4x4						m_matWorld = {};
+
+	_vector							m_vPoint[3];
+
+	//어떻게 해야 0,1,2의 정보가 담겨있는 배열을 저장할 수 있을까
+	vector<CELL_POS>				m_vecCellPos;
 private:
 	void							Check_Cell_Translation();
+	void							Correct_CellPoint(_vector vCoord);
+	void							Calculate_CellNorvec();
+
+public:
+	void							Save_Data();
+	void							Load_Data();
 
 public:
 	static CCell_Guide*				Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

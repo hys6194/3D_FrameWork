@@ -5,7 +5,6 @@
 #include "ImGui/ImGuizmo.h"
 
 
-
 CImGui_Manager::CImGui_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice{ pDevice }
 	, m_pContext{ pContext }
@@ -48,12 +47,11 @@ void CImGui_Manager::SetUp_ImGui(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 	ImGui_ImplWin32_Init(hWnd);
 	ImGui_ImplDX11_Init(pDevice, pContext);
 
-
-	
 }
 
 void CImGui_Manager::Update_ImGui_Windows(_float fTimeDelta)
 {
+
 }
 
 void CImGui_Manager::Late_Update_ImGui_Windows(_float fTimeDelta)
@@ -75,6 +73,26 @@ void CImGui_Manager::SetUp_Render_ImGui()
 	ImGuizmo::BeginFrame();
 	
 	// Update를 돌게 하는 함수를 넣어야 함
+
+	//_uint i = 1;
+	//m_pContext->RSGetViewports(&i, &m_pViewPort);
+	//
+	//
+	//ImGuiIO& io = ImGui::GetIO();
+	//
+	//ImGuizmo::SetDrawlist();
+	//ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.x);
+	//ImGuizmo::SetOrthographic(false);
+	//ImGuizmo::SetDrawlist();
+	//ImGuizmo::SetRect(0, 0, m_pViewPort.Width, m_pViewPort.Height);
+
+
+	//ImGuizmo::Manipulate(
+	//	(float*)&m_matView,
+	//	(float*)&m_matProj,
+	//	eGizmoType,
+	//	ImGuizmo::WORLD,
+	//	(float*)&m_matWorld);
 
 	Create_DockingSpace();
 }
@@ -103,6 +121,7 @@ void CImGui_Manager::EndRender_ImGui()
 
 vector<float*> CImGui_Manager::Draw_Gizmo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _matrix& matWorld)
 {
+
 	return vector<float*>();
 }
 

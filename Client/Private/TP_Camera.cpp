@@ -41,7 +41,7 @@ void CTP_Camera::Priority_Update(_float fTimeDelta)
 	_vector vPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
 
 	//_vector vPlayerPos = XMVectorSet(vPos)
-	m_vCamEye = { 0.f, 15.f ,-12.5f };
+	m_vCamEye = { 0.f, 30.f ,-30.f };
 	_vector vEye = XMVectorSetW(XMLoadFloat3(&m_vCamEye), 0.f) + vPos;
 	_vector vLook = vPos - vEye;
 

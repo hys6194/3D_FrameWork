@@ -15,44 +15,44 @@ private:
 	virtual ~CModel() = default;
 
 public:
-	_uint Get_NumMeshes() const {
+	_uint								Get_NumMeshes() const {
 		return m_iNumMeshes;
 	}
 
-	vector<class CMesh*> Get_Meshes()
+	vector<class CMesh*>				Get_Meshes()
 	{
 		return m_vecMesh;
 	}
 
-	const _uint Get_PreAnimIndex() { return m_iPreAnimationIndex; };
+	const _uint							Get_PreAnimIndex() { return m_iPreAnimationIndex; };
 
-	const _float4x4* Get_BoneMatrix(const _char* pBoneName);
+	const _float4x4*					Get_BoneMatrix(const _char* pBoneName);
 
-	const _bool Get_Interpolate() {
+	const _bool							Get_Interpolate() {
 		return m_bIsInter;
 	}
 
-	const vector<_float4> Get_DeltaVector()
+	const vector<_float4>				Get_DeltaVector()
 	{
 		return m_vecBone[2]->Get_DeltaVector();
 	}
 
-	const _float4 Get_Delta()
+	const _float4						Get_Delta()
 	{
 		return m_vecBone[2]->Get_Delta();
 	}
 
-	const void Reset_Delta()
+	const void							Reset_Delta()
 	{
 		m_vecBone[2]->Reset_Delta();
 	}
 
-	const _float Get_CurAnimationDuration()
+	const _float						Get_CurAnimationDuration()
 	{
 		return m_Animations[m_iCurrentAnimationIndex]->Get_Duration();
 	}
 
-	const _float Get_CurAnimationTrackPosition()
+	const _float						Get_CurAnimationTrackPosition()
 	{
 		return m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
 	}
@@ -76,8 +76,8 @@ public:
 	virtual HRESULT						Render(_uint iMeshIndex);
 
 public:
-	static CModel* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, MODELTYPE _eType, const _char* _pModelFilePath, const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix = XMMatrixIdentity());
-	static CModel* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix = XMMatrixIdentity());
+	static CModel*						Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, MODELTYPE _eType, const _char* _pModelFilePath, const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix = XMMatrixIdentity());
+	static CModel*						Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _pBinaryFilePath, _fmatrix _PreTransformMatrix = XMMatrixIdentity());
 
 public:
 	_bool								Play_Animation(_float fTimeDelta, CGameObject* pObject = nullptr);
@@ -85,13 +85,13 @@ public:
 public:
 	void								Reset_PreAnimation();
 
-
 public:
 	HRESULT								Bind_Material(class CShader* pShader, const _char* pConstantName, aiTextureType eMaterialType, _uint iMeshIndex, _uint iTextureIndex);
 	HRESULT								Bind_BoneMatrix(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
 
 public:
-	_bool								CheckRayColl_Mesh(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord);
+	_bool								CheckRayColl_Mesh(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord, _vector vScale, _vector vRotation, _vector vTranslation);
+	_bool								DotPoint_InMesh(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord, _vector vScale, _vector vRotation, _vector vTranslation);
 
 private:
 	const aiScene*						m_pAIScene = { nullptr };

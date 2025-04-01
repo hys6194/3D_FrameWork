@@ -99,10 +99,10 @@ HRESULT CMesh::Bind_BoneMatrix(CShader* pShader, const _char* pContantName, cons
 	return S_OK;
 }
 
-_bool CMesh::Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord)
+_bool CMesh::Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord, _vector vScale, _vector vRotation, _vector vTranslation)
 {
-	// 여기에서 TriangleTest를 하자
-	// 만약 True라면 피킹해서 나온 값을 인자로 받은 값에 전달하여 내보내는 것으로 하자
+	
+	// 모든 메시 전부 순회해서 Distance 짧은거 찾자
 	_bool bTest{};
 	float fDistance = 0.f;
 
@@ -111,36 +111,70 @@ _bool CMesh::Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, 
 		_vector v1 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3]].vPosition), 1.f)		;
 		_vector v2 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 1]].vPosition), 1.f)	;
 		_vector v3 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 2]].vPosition), 1.f)	;
+
+		_vector vWorld1 = XMVectorAdd(XMVector3Rotate(XMVectorMultiply(v1, vScale), vRotation), vTranslation);
+		_vector vWorld2 = XMVectorAdd(XMVector3Rotate(XMVectorMultiply(v2, vScale), vRotation), vTranslation);
+		_vector vWorld3 = XMVectorAdd(XMVector3Rotate(XMVectorMultiply(v3, vScale), vRotation), vTranslation);
+
 		bTest = DirectX::TriangleTests::Intersects(
 					vPos,
 					vDir,
-					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3]].vPosition), 1.f),
-					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 1]].vPosition), 1.f),
-					XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 2]].vPosition), 1.f),
+					vWorld1,
+					vWorld2,
+					vWorld3,
 					*_fDistance);
 		
 		if (bTest)
 		{		
-			// 디버깅
-			XMStoreFloat4(_fCoord, (vPos + (*_fDistance) * vDir));
+			if (fDistance <= 0 || fDistance > *_fDistance)
+				fDistance = *_fDistance;
+		}
 
-			TCHAR debugMessage1[256];
-			_stprintf_s(debugMessage1, _T("fCoord: x = %.6f, y = %.6f, z = %.6f\n"),
-				_fCoord->x, _fCoord->y, _fCoord->z);
-			OutputDebugString(debugMessage1);
-			 
+		
+		if (i == (m_vecIndicesIndex.size() / 3) - 1 &&
+			fDistance != 0.f)
+		{
+			*_fDistance = fDistance;
 
- 			return bTest;
+			return true;
+		}
+	}
+
+	return bTest;
+}
+
+// 이녀석은 매 프레임마다 돌리는 녀석으로 쓰자
+_bool CMesh::Check_Coll_Meshes(_vector vPos, _vector vDir, _vector vScale, _vector vRotation, _vector vTranslation)
+{
+	_bool bTest{};
+	float fDistance = 0.f;
+
+	for (size_t i = 0; i < m_vecIndicesIndex.size() / 3; ++i)
+	{
+		_vector v1 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3]].vPosition), 1.f);
+		_vector v2 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 1]].vPosition), 1.f);
+		_vector v3 = XMVectorSetW(XMLoadFloat3(&m_vecVertices[m_vecIndicesIndex[i * 3 + 2]].vPosition), 1.f);
+
+		_vector vWorld1 = XMVectorAdd(XMVector3Rotate(XMVectorMultiply(v1, vScale), vRotation), vTranslation);
+		_vector vWorld2 = XMVectorAdd(XMVector3Rotate(XMVectorMultiply(v2, vScale), vRotation), vTranslation);
+		_vector vWorld3 = XMVectorAdd(XMVector3Rotate(XMVectorMultiply(v3, vScale), vRotation), vTranslation);
+
+		bTest = DirectX::TriangleTests::Intersects(
+			vPos,
+			vDir,
+			vWorld1,
+			vWorld2,
+			vWorld3,
+			fDistance);
+
+		if (bTest)
+		{
+			return true;
 		}
 	}
 
 
-	TCHAR debugMessage[256];
-	_stprintf_s(debugMessage, _T("저런.. 바깥을 찍었어요\n")
-	);
-	OutputDebugString(debugMessage);
-
-	return bTest;
+	return false;
 }
 
 HRESULT CMesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
