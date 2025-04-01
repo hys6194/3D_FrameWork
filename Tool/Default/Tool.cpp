@@ -167,7 +167,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
-   MoveWindow(hWnd, 793, 370, g_iWinSizeX, g_iWinSizeY, true);
+   MoveWindow(hWnd, 620, 140, g_iWinSizeX, g_iWinSizeY, true);
 
    g_hWnd = hWnd;
 

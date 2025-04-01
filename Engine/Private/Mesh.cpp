@@ -126,17 +126,8 @@ _bool CMesh::Search_Picked_Face(_vector vPos, _vector vDir, _float* _fDistance, 
 		
 		if (bTest)
 		{		
-			if (fDistance <= 0)
+			if (fDistance <= 0 || fDistance > *_fDistance)
 				fDistance = *_fDistance;
-
-			if(fDistance > *_fDistance)
-				fDistance = *_fDistance;
-
-			TCHAR debugMessage1[256];
-			_stprintf_s(debugMessage1, _T("fDistance: %.6f\n"),
-				fDistance);
-			OutputDebugString(debugMessage1);
-			 
 		}
 
 		

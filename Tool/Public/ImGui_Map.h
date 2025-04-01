@@ -76,6 +76,7 @@ private:
 	_bool								m_bNavi		= { false };
 	_int								m_iObjCnt	= { 0 };		
 	_bool								m_bSelect	= { false };
+	_bool								m_bAll		= { false };
 
 	_bool								m_bSave = { false };
 	_bool								m_bLoad = { false };

@@ -54,7 +54,6 @@ void Tool_Manager::Update(_float fTimeDelta)
 		else
 		{
 			Picking_Objects();
-			m_pCell->Delete_VIBuffer();
 		}
 			
 	}
@@ -141,6 +140,13 @@ void Tool_Manager::Picking_Objects()
 void Tool_Manager::Create_NaviCells()
 {
 	// GameObjectTag에 해당하는 Object를 모은 list
+	if (!m_pCell->Get_Modify() || 
+		m_pCell->Is_Null())
+	{
+		// 그리기용 삼각형 생성
+		m_pCell->Clone_VIBuffer();
+	}
+
 	list<CGameObject*>* pList = m_pMap->Get_ObjectList();
 
 	// 리스트가 생성되지 않았으면 return
@@ -154,12 +160,6 @@ void Tool_Manager::Create_NaviCells()
 	_float fDistance{};
 
 	// 정점 보정 끝나면
-	if (!m_pCell->Get_Modify() || 
-		m_pCell->Is_Null())
-	{
-		// 그리기용 삼각형 생성
-		m_pCell->Clone_VIBuffer();
-	}
 
 	list<CMap_Object*> listObjects = *reinterpret_cast<list<CMap_Object*>*>(pList);
 
@@ -221,15 +221,22 @@ void Tool_Manager::Move_CamPos(CMap_Object* pObject)
 
 	XMStoreFloat4(&fPos, vPos);
 
-	fPos.x = fPos.x * pObject->Get_Transform()->Update_Scale().x;
-	fPos.y = (fPos.y + 30) * pObject->Get_Transform()->Update_Scale().x;
-	fPos.z = (fPos.z - 30) * pObject->Get_Transform()->Update_Scale().x;
+	m_pGameInstance->Find_GameObject(
+		LEVEL_TOOL,
+		TEXT("Layer_Camera"),
+		TEXT("GameObject_Camera_Free"))->
+		Get_Transform()->LookAt(XMLoadFloat4(&fPos));
+
+	fPos.x = fPos.x ;
+	fPos.y = (fPos.y + 30);
+	fPos.z = (fPos.z - 30);
 
 	m_pGameInstance->Find_GameObject(
 		LEVEL_TOOL,
 		TEXT("Layer_Camera"),
 		TEXT("GameObject_Camera_Free"))->
 		Get_Transform()->Set_State(CTransform::STATE_POS, XMLoadFloat4(&fPos));
+
 
 }
 

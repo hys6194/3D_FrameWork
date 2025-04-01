@@ -48,7 +48,6 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
-
 struct PS_IN
 {
     float4 vPosition : SV_POSITION;
@@ -61,8 +60,6 @@ struct PS_OUT
 {
     float4 vColor : SV_TARGET0;
 };
-
-
 
 PS_OUT PS_MAIN(PS_IN In)
 {
@@ -92,7 +89,7 @@ technique11 DefaultTechnique
     pass DefaultPass
     {
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_None, 0);
+        SetDepthStencilState(DSS_Default, 0);
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
 

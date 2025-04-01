@@ -55,6 +55,10 @@ protected:
 
 	_float						m_fScale					{};
 
+	_vector						m_vScale					{};
+	_vector						m_vRotation					{};
+	_vector						m_vTranslation				{};
+
 	_vector						m_vAixs						= AXIS_X;
 	_float 						m_fValue = {0.f};
 

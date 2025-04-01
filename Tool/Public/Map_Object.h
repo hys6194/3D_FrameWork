@@ -22,8 +22,9 @@ public:
 		_wstring	strObjectTag;
 		_float3		fRotValue;
 		_uint		iObjectIndex;
-		_float4x4	matWorld;	
+		_float4x4	matWorld{};
 		MODELTYPE	eType;
+		_bool	    m_bIsLoad = { false };
 
 	}MAPOBJ_DESC;
 
@@ -78,6 +79,7 @@ private:
 	D3D11_VIEWPORT						m_pViewPort;
 
 	_bool								m_bRender = { true };
+
 
 public:
 	static CMap_Object*					Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

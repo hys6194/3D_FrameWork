@@ -74,7 +74,7 @@ HRESULT Tool_Level::Ready_Layer_Camera(const _tchar* pLayerTag)
 	FreeCam_Desc.fFar = 300.f;
 	FreeCam_Desc.fMouseSensor = 0.1f;
 	lstrcpy(FreeCam_Desc.szGameObjectTag, TEXT("GameObject_Camera_Free"));
-	FreeCam_Desc.fSpeedPerSec = 20.f;
+	FreeCam_Desc.fSpeedPerSec = 40.f;
 	FreeCam_Desc.fRotationPerSec = XMConvertToRadians(90.f);
 	
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_TOOL, PRO_OBJ_CAM_FREE,

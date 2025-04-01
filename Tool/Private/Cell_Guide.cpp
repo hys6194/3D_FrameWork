@@ -62,6 +62,16 @@ void CCell_Guide::Update(_float fTimeDelta, _vector vCoord)
     {
         //m_bIsClicked = true;
 
+        _float4 fTest;
+        XMStoreFloat4(&fTest, vCoord);
+
+        TCHAR debugMessage[256];
+        _stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f\n"),
+            fTest.x, fTest.y, fTest.z);
+        OutputDebugString(debugMessage);
+
+
+
         if (2 <= m_iIndex)
         {
             Calculate_CellNorvec();
@@ -91,6 +101,12 @@ void CCell_Guide::Late_Update(_float fTimeDelta)
     {
         m_vecBufferComs.pop_back();
         m_vecCellPos.pop_back();
+    }
+
+    if (m_pGameInstance->Key_Down(DIK_F6))
+    {
+        m_vecBufferComs.clear();
+        m_vecCellPos.clear();
     }
 
 
@@ -161,10 +177,6 @@ HRESULT CCell_Guide::Clone_VIBuffer()
 
 HRESULT CCell_Guide::Delete_VIBuffer()
 {
-    if(nullptr != m_pVIBufferCom)
-    {
-        Safe_Release(m_pVIBufferCom);
-    }
 
     return S_OK;
 }
@@ -214,10 +226,10 @@ void CCell_Guide::Calculate_CellNorvec()
 
     _vector v1 = XMVector4Normalize(XMVectorSubtract(m_vPoint[1], m_vPoint[0]));
     _vector v2 = XMVector4Normalize(XMVectorSubtract(m_vPoint[2], m_vPoint[1]));
-
+    
     _vector vNor = {0.f,0.f,0.f,0.f};
     vNor = XMVector3Cross(v1, v2);
-
+    
     if (vNor.m128_f32[1] < 0)
         swap(pDesc.v1, pDesc.v2);
 
@@ -232,24 +244,67 @@ void CCell_Guide::Save_Data()
     if (0 == hFile)
         return;
     //벡터에 담긴 데이터들을 기반으로 Navigation.dat 생성하자
+
     for (auto& iter : m_vecCellPos)
     {
-        _float3 vPoint[3];
+        _float3 vPoints[3] = {};
 
-        XMStoreFloat3(&vPoint[0], iter.v0);
-        XMStoreFloat3(&vPoint[1], iter.v1);
-        XMStoreFloat3(&vPoint[2], iter.v2);
+        XMStoreFloat3(&vPoints[0], iter.v0);
+        XMStoreFloat3(&vPoints[1], iter.v1);
+        XMStoreFloat3(&vPoints[2], iter.v2);
 
-        WriteFile(hFile, vPoint, sizeof(_float3) * 3, &dwByte, nullptr);
+        WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+
     }
+
+
+
     CloseHandle(hFile);
 }
 
 void CCell_Guide::Load_Data()
 {
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_NAVI,
-        CNavigation::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/DataFiles/Navigation.dat")))))
-        return;
+
+    _ulong          dwByte = {};
+    HANDLE          hFile = CreateFile(TEXT("../../Client/Bin/DataFiles/Navigation.dat"), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+    if (0 == hFile)
+        return ;
+
+    //_uint iVecSize;
+    //ReadFile(hFile, &iVecSize, sizeof(_uint), &dwByte, nullptr);
+
+    _float3     vPoints[3] = {};
+
+    while(true)
+    { 
+        ReadFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+        if (0 == dwByte)
+            break;
+
+        CELL_POS Desc{};
+
+        Desc.v0 = XMVectorSet(vPoints[0].x, vPoints[0].y, vPoints[0].z, 1.f);
+        Desc.v1 = XMVectorSet(vPoints[1].x, vPoints[1].y, vPoints[1].z, 1.f);
+        Desc.v2 = XMVectorSet(vPoints[2].x, vPoints[2].y, vPoints[2].z, 1.f);
+
+        m_vecCellPos.push_back(Desc);
+
+        m_pVIBufferCom =
+            dynamic_cast<CNavi_Cell*>(m_pGameInstance->
+                Clone_Prototype(PROTOTYPE::TYPE_COMPONENT,
+                    LEVEL_TOOL, PRO_COM_VI_GUIDE));
+
+
+        m_pVIBufferCom->Modify_VertexPoint(0,  Desc.v0);
+        m_pVIBufferCom->Modify_VertexPoint(1,  Desc.v1);
+        m_pVIBufferCom->Modify_VertexPoint(2,  Desc.v2);
+
+        m_vecBufferComs.push_back(m_pVIBufferCom);
+
+    }
+
+    CloseHandle(hFile);
+
 }
 
 void CCell_Guide::Check_Cell_Translation()

@@ -52,7 +52,7 @@ void CTool_FreeCam::Priority_Update(_float fTimeDelta)
 
 	_long		MouseMove{};
 
-	if(GetAsyncKeyState(VK_SHIFT))
+	if(m_pGameInstance->Mouse_Drag(DIM_RB) || m_pGameInstance->Key_Pressing(DIK_LSHIFT))
 	{
 		if (MouseMove = m_pGameInstance->Get_DIMouseMove(MOUSEMOVESTATE::DIMS_X))
 		{

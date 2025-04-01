@@ -31,6 +31,8 @@ private:
 	CTexture*							m_pTextureCom[TYPE_END]		= { nullptr };
 	CVIBuffer_Flat_Terrain*				m_pVIBufferCom				= { nullptr };
 
+	_bool								m_bRender = { true };
+
 private:
 	HRESULT								Ready_Components();
 	HRESULT								Bind_SR();

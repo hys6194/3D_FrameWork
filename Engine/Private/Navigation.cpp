@@ -29,10 +29,12 @@ HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationDataFilePath)
     HANDLE          hFile = CreateFile(pNavigationDataFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
     if (0 == hFile)
         return E_FAIL;
+    _uint iVecSize;
+    WriteFile(hFile, &iVecSize, sizeof(_uint), &dwByte, nullptr);
 
     _float3     vPoints[3] = {};
 
-    while (true)
+    for (size_t i = 0; i < iVecSize; i++)
     {
         ReadFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
         if (0 == dwByte)

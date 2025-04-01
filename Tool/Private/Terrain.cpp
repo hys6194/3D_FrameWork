@@ -36,6 +36,11 @@ HRESULT Terrain::Initialize(void* pArg)
 
 void Terrain::Priority_Update(_float fTimeDelta)
 {
+	if (m_pGameInstance->Key_Down(DIK_F1))
+	{
+		m_bRender = !m_bRender;
+	}
+
 }
 
 void Terrain::Update(_float fTimeDelta)
@@ -58,8 +63,13 @@ HRESULT Terrain::Render()
 	if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))
 		return E_FAIL;
 
-	//if (FAILED(m_pVIBufferCom->Render()))
-	//	return E_FAIL;
+
+	if(m_bRender)
+	{
+		if (FAILED(m_pVIBufferCom->Render()))
+			return E_FAIL;
+	}
+
 
 
 	return S_OK;

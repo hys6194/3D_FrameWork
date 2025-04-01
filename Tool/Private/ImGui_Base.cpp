@@ -39,6 +39,7 @@ void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSo
 
 	if(TreeNode("Prototype_List"))
 	{
+		ImGui::BeginChild("ScrollingRegion", ImVec2(0, 450), true, ImGuiWindowFlags_HorizontalScrollbar);
 		// 모든 리스트를 찾기
 		// 이니셜라이즈 때 해버리면 읽지 못하는 순서여서 여기에 선언
 		m_pGameInstance->Collect_ProtoTag(LEVEL_TOOL);
@@ -97,6 +98,8 @@ void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSo
 			}
 		}
 
+
+		ImGui::EndChild(); // 스크롤 영역 종료
 		ImGui::TreePop();
 	}
 

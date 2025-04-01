@@ -138,30 +138,25 @@ void CNavi_Cell::Modify_VertexPoint(_uint iVertexIndex, _vector vCoord)
 
             m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-            _float3 fTest = pVertices[iVertexIndex].vPosition;
-
-            _vector v1 = XMVector3Normalize(XMVectorSubtract(XMLoadFloat3(&m_pVertices1.vPosition), XMLoadFloat3(&m_pVertices0.vPosition)));
-            _vector v2 = XMVector3Normalize(XMVectorSubtract(XMLoadFloat3(&fTest), XMLoadFloat3(&m_pVertices1.vPosition)));
-
-            _vector vNor = { 0.f,0.f,0.f,0.f };
-            vNor = XMVector3Cross(v1, v2);
-
-            if (vNor.m128_f32[1] < 0)
-            {
-                pVertices[2].vPosition = m_pVertices1.vPosition;
-                pVertices[1].vPosition = _float3(fTest.x, fTest.y, fTest.z);
-            }
+            //_float3 fTest = pVertices[iVertexIndex].vPosition;
+            //
+            //_vector v1 = XMVector3Normalize(XMVectorSubtract(XMLoadFloat3(&m_pVertices1.vPosition), XMLoadFloat3(&m_pVertices0.vPosition)));
+            //_vector v2 = XMVector3Normalize(XMVectorSubtract(XMLoadFloat3(&fTest), XMLoadFloat3(&m_pVertices1.vPosition)));
+            //
+            //_vector vNor = { 0.f,0.f,0.f,0.f };
+            //vNor = XMVector3Cross(v1, v2);
+            //
+            //if (vNor.m128_f32[1] < 0)
+            //{
+            //    pVertices[2].vPosition = m_pVertices1.vPosition;
+            //    pVertices[1].vPosition = _float3(fTest.x, fTest.y, fTest.z);
+            //}
 
         }
 
         else
             m_eTopology = D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
     }
-
-
-
-
-
 
     m_pContext->Unmap(m_pVB, 0);
 }

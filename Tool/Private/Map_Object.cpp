@@ -19,7 +19,7 @@ HRESULT CMap_Object::Initialize(void* pArg)
 
     m_pDesc = *static_cast<MAPOBJ_DESC*>(pArg);
     
-    wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(m_pDesc.iObjectIndex);
+    //wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(m_pDesc.iObjectIndex);
 
     lstrcpy(Desc->szGameObjectTag, TEXT("Game_MapObject"));
  
@@ -29,12 +29,11 @@ HRESULT CMap_Object::Initialize(void* pArg)
     if (FAILED(Ready_Components(m_pDesc.strModelTag)))
         return E_FAIL;
 
-    //if(nullptr != &m_pDesc.matWorld)
-    //{
-    //    m_pTransformCom->Set_Matrix(&m_pDesc.matWorld);
-    //}
+    if (m_pDesc.m_bIsLoad)
+    {
+        m_pTransformCom->Set_Matrix(&m_pDesc.matWorld);
+    }
 
- 
     return S_OK;
 }
 
@@ -54,8 +53,7 @@ void CMap_Object::Update(_float fTimeDelta)
 
 void CMap_Object::Late_Update(_float fTimeDelta)
 {
-
-    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_BLEND, this);
 }
 
 HRESULT CMap_Object::Render()

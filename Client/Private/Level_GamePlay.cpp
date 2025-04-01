@@ -47,9 +47,9 @@ HRESULT CLevel_GamePlay::Render()
 
 HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
-	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
-	//	LEVEL_GAMEPLAY, pLayerTag)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
+		LEVEL_GAMEPLAY, pLayerTag)))
+		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_SKY,
 		LEVEL_GAMEPLAY, pLayerTag)))
 		return E_FAIL;
@@ -80,10 +80,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 	
 	TPCam_Desc.vEye = _float3(0.f, 10.f, -10.f);
 	TPCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	TPCam_Desc.fFov = XMConvertToRadians(65.f);
+	TPCam_Desc.fFov = XMConvertToRadians(60.f);
 	TPCam_Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	TPCam_Desc.fNear = 0.1f;
-	TPCam_Desc.fFar = 300.f;
+	TPCam_Desc.fFar = 1000.f;
 	TPCam_Desc.fMouseSensor = 0.05f;
 	lstrcpy(TPCam_Desc.szGameObjectTag, TEXT("GameObject_TP_Camera"));
 	TPCam_Desc.fSpeedPerSec = 10.f;
@@ -161,10 +161,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Object(const _tchar* pLayerTag)
 		wstring strObjectTag(iObjectTagLen, L'\0');
 		ReadFile(hFile, &strObjectTag[0], iObjectTagLen * sizeof(wchar_t), &dwByte, nullptr);
 
-		// È¸Àü ¹ë·ù
-		_float3 fRotValue;
-		ReadFile(hFile, &fRotValue, sizeof(_float3), &dwByte, nullptr);
-
 		_float4x4 matWorld;
 		ReadFile(hFile, &matWorld, sizeof(matWorld), &dwByte, nullptr);
 
@@ -173,7 +169,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Object(const _tchar* pLayerTag)
 		Desc.eType = eModelType;
 		Desc.strModelTag = strModelTag;
 		Desc.strObjectTag = strObjectTag;
-		Desc.fRotValue = fRotValue;
 		Desc.matWorld = matWorld;
 
 		m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, Desc.strObjectTag, LEVEL_GAMEPLAY, TEXT("Layer_Objcet"), &Desc);
