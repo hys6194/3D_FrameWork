@@ -161,53 +161,114 @@ void Tool_Manager::Create_NaviCells()
 
 	// 정점 보정 끝나면
 
-	list<CMap_Object*> listObjects = *reinterpret_cast<list<CMap_Object*>*>(pList);
+	list<CMap_Object*> listObjects = *reinterpret_cast<list<CMap_Object*>*>(pList);		
 
-	for (auto& iter : listObjects)
+	// 정순과 역순을 이용해서 삼각형 점 쉽게 안찍히는 것을 조정해보려고 함
+
+	//정순
+	if(!m_pMap->Is_Reverse())
 	{
-		// 해당 메쉬의 월드 정점
-		_float4 fCoord;
-		_bool bColl;
-
-		_matrix matWorld = XMLoadFloat4x4(iter->Get_Transform()->Get_WorldMatrix_Ptr());
-
-		_vector vScale, vRotation, vTranslation;
-		XMMatrixDecompose(&vScale, &vRotation, &vTranslation, matWorld);
-
-		// 어떤 오브젝트의 한 면에 충돌하게 되었다면
-		// True 반환하면서 모든 메시 충돌 찾는것을 
-		if(nullptr == m_pMapObject)
+		for (auto& iter : listObjects)
 		{
-			bColl = iter->Get_ModelCom()->CheckRayColl_Mesh(vRayOrigin, vRayDir, &fDistance, &fCoord, vScale, vRotation, vTranslation);
+			// 해당 메쉬의 월드 정점
+			_float4 fCoord;
+			_bool bColl;
 
-			if (bColl)
+			_matrix matWorld = XMLoadFloat4x4(iter->Get_Transform()->Get_WorldMatrix_Ptr());
+
+			_vector vScale, vRotation, vTranslation;
+			XMMatrixDecompose(&vScale, &vRotation, &vTranslation, matWorld);
+
+			// 어떤 오브젝트의 한 면에 충돌하게 되었다면
+			// True 반환하면서 모든 메시 충돌 찾는것을 
+			if (nullptr == m_pMapObject)
+			{
+				//역순으로 돌리면 조금이라도 낫지 않을까
+				bColl = iter->Get_ModelCom()->CheckRayColl_Mesh(vRayOrigin, vRayDir, &fDistance, &fCoord, vScale, vRotation, vTranslation);
+
+				if (bColl)
+					m_pMapObject = iter;
+			}
+
+			if (nullptr != m_pMapObject)
+			{
 				m_pMapObject = iter;
-		}
 
-		if(nullptr != m_pMapObject)
-		{
-			m_pMapObject = iter;
+				// 해당 오브젝트를 순회해서 점을 찾는다
+				_bool bTest = m_pMapObject->Get_ModelCom()->
+					DotPoint_InMesh(vRayOrigin, vRayDir, &fDistance, &fCoord, vScale, vRotation, vTranslation);
 
-			// 해당 오브젝트를 순회해서 점을 찾는다
-			_bool bTest = m_pMapObject->Get_ModelCom()->
-				DotPoint_InMesh(vRayOrigin, vRayDir, &fDistance, &fCoord, vScale, vRotation, vTranslation);
+				if (bTest)
+				{
+					//최소 거리를 가져와서 좌표 가져오기
+					m_vCellCoord = vRayOrigin + vRayDir * fDistance;
 
-			if (bTest)
-			{
-				//최소 거리를 가져와서 좌표 가져오기
-				m_vCellCoord = vRayOrigin + vRayDir * fDistance;
+					return;
+				}
+				else
+				{
+					// 다시 오브젝트를 찾게함
+					m_pMapObject = nullptr;
+				}
 
-				return;
-			}
-			else
-			{
-				// 다시 오브젝트를 찾게함
-				m_pMapObject = nullptr;
 			}
 
 		}
-
 	}
+
+	//역순
+	else
+	{
+		for (auto iter = listObjects.rbegin();
+			iter != listObjects.rend();
+			++iter)
+		{
+			// 해당 메쉬의 월드 정점d
+			_float4 fCoord;
+			_bool bColl;
+
+			_matrix matWorld = XMLoadFloat4x4((*iter)->Get_Transform()->Get_WorldMatrix_Ptr());
+
+			_vector vScale, vRotation, vTranslation;
+			XMMatrixDecompose(&vScale, &vRotation, &vTranslation, matWorld);
+
+			// 어떤 오브젝트의 한 면에 충돌하게 되었다면
+			// True 반환하면서 모든 메시 충돌 찾는것을 
+			if (nullptr == m_pMapObject)
+			{
+				//역순으로 돌리면 조금이라도 낫지 않을까
+				bColl = (*iter)->Get_ModelCom()->CheckRayColl_Mesh(vRayOrigin, vRayDir, &fDistance, &fCoord, vScale, vRotation, vTranslation);
+
+				if (bColl)
+					m_pMapObject = (*iter);
+			}
+
+			if (nullptr != m_pMapObject)
+			{
+				m_pMapObject = (*iter);
+
+				// 해당 오브젝트를 순회해서 점을 찾는다
+				_bool bTest = m_pMapObject->Get_ModelCom()->
+					DotPoint_InMesh(vRayOrigin, vRayDir, &fDistance, &fCoord, vScale, vRotation, vTranslation);
+
+				if (bTest)
+				{
+					//최소 거리를 가져와서 좌표 가져오기
+					m_vCellCoord = vRayOrigin + vRayDir * fDistance;
+
+					return;
+				}
+				else
+				{
+					// 다시 오브젝트를 찾게함
+					m_pMapObject = nullptr;
+				}
+
+			}
+
+		}
+	}
+
 
 	m_bColl = false;
 }

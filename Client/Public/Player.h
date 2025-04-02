@@ -80,8 +80,8 @@ public:
 		m_bCanMove = bMove;
 	}
 
-public:
-	CNavigation*			Get_NavigationCom();
+//public:
+//	CNavigation*			Get_NavigationCom();// ¿Ã∞≈ ø÷ ∏∏µÎ?
 
 public:
 	virtual HRESULT			Initialize_Prototype() override;

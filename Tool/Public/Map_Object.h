@@ -79,6 +79,7 @@ private:
 	D3D11_VIEWPORT						m_pViewPort;
 
 	_bool								m_bRender = { true };
+	_uint								m_iIndex = {};
 
 
 public:

@@ -29,6 +29,11 @@ public:
 		return m_bNavi;
 	}
 
+	_bool								Is_Reverse()
+	{
+		return m_bReverse;
+	}
+
 	_bool								Is_Save()
 	{
 		return m_bSave;
@@ -77,6 +82,7 @@ private:
 	_int								m_iObjCnt	= { 0 };		
 	_bool								m_bSelect	= { false };
 	_bool								m_bAll		= { false };
+	_bool								m_bReverse  = { false };
 
 	_bool								m_bSave = { false };
 	_bool								m_bLoad = { false };

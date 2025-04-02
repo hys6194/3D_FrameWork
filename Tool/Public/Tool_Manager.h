@@ -36,6 +36,7 @@ private:
 private:
 	_bool						m_bRayShoot			= { false };
 	_bool						m_bColl				= { false };
+
 	_float						m_fDistance			  {};
 	_float						m_fPreDistance		  {};
 	_vector						m_vCellCoord		  {};

@@ -126,7 +126,7 @@ HRESULT CCell_Guide::Render()
         for (auto& iter : m_vecBufferComs)
         {
             iter->Bind_Input_Assembler();
-            iter->Render();
+            //iter->Render();
         }
 
     }
@@ -134,7 +134,7 @@ HRESULT CCell_Guide::Render()
     if(nullptr != m_pVIBufferCom)
     {
         m_pVIBufferCom->Bind_Input_Assembler();
-        m_pVIBufferCom->Render();
+        //m_pVIBufferCom->Render();
     }
 
 	return S_OK;

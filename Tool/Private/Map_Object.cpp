@@ -18,6 +18,8 @@ HRESULT CMap_Object::Initialize(void* pArg)
     GAMEOBJECT_DESC* Desc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
     m_pDesc = *static_cast<MAPOBJ_DESC*>(pArg);
+
+    //m_iIndex = m_pDesc.iObjectIndex;
     
     //wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(m_pDesc.iObjectIndex);
 

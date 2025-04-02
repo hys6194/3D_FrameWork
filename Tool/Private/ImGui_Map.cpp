@@ -215,6 +215,11 @@ void CImGui_Map::Button_AddObjects()
 			m_iObjCnt++;
 			m_listObject = m_pGameInstance->Get_GameObjectList(LEVEL_TOOL, TEXT("Layer_Objcet"));
 		}
+		// 생성할 때 마다 해당 오브젝트의 transform을 가져와서 편하게 하자
+
+		auto iter = m_listObject->back();
+		m_pObject = dynamic_cast<CMap_Object*>(iter);
+		m_pTransform = m_pObject->Get_Transform();
 
 		// 여기서 생성할 때마다 list를 업데이트하자 
 		// 어떻게 가져올 것이냐
@@ -240,7 +245,18 @@ void CImGui_Map::Button_NaviCreate()
 
 	if (Checkbox("Navi", &m_bNavi))
 	{
+		int a = 1;
 	}
+
+	if(m_pGameInstance->Key_Down(DIK_R))
+	{
+		m_bReverse = !m_bReverse;
+	}
+
+	char cInfoX[MAX_PATH]{};
+	sprintf_s(cInfoX, sizeof(cInfoX), "x : %s", m_bReverse ? "true" : "false");
+	Text(cInfoX);
+
 }
 
 void CImGui_Map::Button_TransformPosition()

@@ -319,13 +319,13 @@ HRESULT CLoader::Loading_Models()
 		//	return E_FAIL;
 
 		// ForkLift 불러오기
-		 PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+		 PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/ForkLift.bin", PreTransformMatrix))))
 			return E_FAIL;
 		 
 		// Strife 불러오기
-		PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Heroes/Strife.bin", PreTransformMatrix))))
 			return E_FAIL;
@@ -456,7 +456,21 @@ HRESULT CLoader::Loading_Models()
 			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Wooden_Circle_C.bin"))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_PILLAR_ALCOVE,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Pillar_Alcove_A.bin"))))
+			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_PILLAR_DECO_A,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Pillar_Base_Deco_A.bin"))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RUIN_WALL_CNR_B,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Wall_Cnr_B.bin"))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_WALL_TOP,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Wall_Top_A.bin"))))
+			return E_FAIL;
 
 
 	}
@@ -702,6 +716,18 @@ HRESULT CLoader::Loading_Prototype()
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_WODDEN_CIRCLE,
+			CMap_Object::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_PILLAR_ALCOVE,
+			CMap_Object::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_RUIN_WALL_CNR_B,
+			CMap_Object::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_PILLAR_DECO_A,
 			CMap_Object::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 

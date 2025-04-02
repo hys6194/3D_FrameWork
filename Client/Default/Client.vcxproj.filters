@@ -207,6 +207,7 @@
     <ClInclude Include="..\Public\MainApp.h">
       <Filter>00.MainApp</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Body_Monster.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -303,6 +304,7 @@
     <ClCompile Include="..\Private\Snow.cpp">
       <Filter>02.GameObjects\Instancing\Snow</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Body_Monster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">

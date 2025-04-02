@@ -39,8 +39,6 @@ static const std::wstring PRO_COM_COLL_SPHERE				= TEXT("Prototype_Component_Col
 static const std::wstring PRO_MODEL_STRIFE					= TEXT("Prototype_Component_Model_Test");
 static const std::wstring PRO_MODEL_FIONA					= TEXT("Prototype_Component_Model_Fiona");
 static const std::wstring PRO_MODEL_FLOOR1					= TEXT("Prototype_Component_Model_Floor 1");
-//static const std::wstring PRO_MODEL_FLOOR2					= TEXT("Prototype_Component_Model_Floor 2");
-//static const std::wstring PRO_MODEL_FLOOR3					= TEXT("Prototype_Component_Model_Floor 3");
 static const std::wstring PRO_MODEL_STAIR1					= TEXT("Prototype_Component_Model_Stair 1");
 static const std::wstring PRO_MODEL_STAIR2					= TEXT("Prototype_Component_Model_Stair 2");
 static const std::wstring PRO_MODEL_FORK					= TEXT("Prototype_Component_Model_ForkLift");
@@ -61,6 +59,7 @@ static const std::wstring PRO_MODEL_DAM_END_ALCOVE			= TEXT("Prototype_Component
 static const std::wstring PRO_MODEL_DAM_TRIM				= TEXT("Prototype_Component_Model_Dam Trim");
 static const std::wstring PRO_MODEL_GROUND_DECAL			= TEXT("Prototype_Component_Model_GroundDecal Lg A");
 static const std::wstring PRO_MODEL_PILLAR_BASE				= TEXT("Prototype_Component_Model_Pillar Base");
+static const std::wstring PRO_MODEL_PILLAR_ALCOVE			= TEXT("Prototype_Component_Model_Pillar Alcove A");
 static const std::wstring PRO_MODEL_BENT_DARK				= TEXT("Prototype_Component_Model_Bent Dark");
 static const std::wstring PRO_MODEL_BENT_LIGHT				= TEXT("Prototype_Component_Model_Bent Light");
 static const std::wstring PRO_MODEL_RUBBLESTONE				= TEXT("Prototype_Component_Model_Rubble DesertStone");
@@ -117,6 +116,7 @@ static const std::wstring PRO_OBJ_RUIN_FLOOR				= TEXT("Prototype_GameObject_Rui
 static const std::wstring PRO_OBJ_WALL_TOP					= TEXT("Prototype_GameObject_Ruin Wall Top");
 static const std::wstring PRO_OBJ_DAM_TRIM					= TEXT("Prototype_GameObject_Dam Trim");
 static const std::wstring PRO_OBJ_WODDEN_CIRCLE				= TEXT("Prototype_GameObject_Wooden Circle C");
+static const std::wstring PRO_OBJ_PILLAR_ALCOVE				= TEXT("Prototype_GameObject_Pillar Alcove A");
 
 
 
@@ -138,6 +138,19 @@ static const std::wstring SOCKET_HOLSTER_RIGHT				= TEXT("Socket_Strife_Holster 
 /* Layers */
 static const std::wstring LAYER_DESERT_ROCK_1				= TEXT("Layer_Desert_Rock1");
 static const std::wstring LAYER_DESERT_ROCK_2				= TEXT("Layer_Desert_Rock2");
+
+
+/* 여기에 한번에 때려박아 그냥*/
+
+static const std::wstring PRO_MODEL_RUIN_WALL_CNR_B			= TEXT("Prototype_Component_Model_Wall Cnr B");
+static const std::wstring PRO_MODEL_PILLAR_DECO_A			= TEXT("Prototype_Component_Model_Pillar Base Deco A");
+
+static const std::wstring PRO_OBJ_RUIN_WALL_CNR_B			= TEXT("Prototype_GameObject_Wall Cnr B");
+static const std::wstring PRO_OBJ_PILLAR_DECO_A				= TEXT("Prototype_GameObject_Pillar Base Deco A");
+
+
+
+
 
 
 //============================================Clone============================================

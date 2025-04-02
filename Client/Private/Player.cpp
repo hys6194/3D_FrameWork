@@ -88,7 +88,7 @@ HRESULT CPlayer::Render()
 {
 #ifdef _DEBUG
 	m_pColliderCom->Render();
-#endif
+#endif 
 
 	_float4 fPos{};
 	XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
