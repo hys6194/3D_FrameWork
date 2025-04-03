@@ -91,6 +91,7 @@ static const std::wstring PRO_SHADER_ANIM				= TEXT("Prototype_Component_Shader_
 
 /* GameObject */
 static const std::wstring PRO_OBJ_SKY					= TEXT("Prototype_GameObject_Sky");
+static const std::wstring PRO_OBJ_GHOUL					= TEXT("Prototype_GameObject_Ghoul");
 static const std::wstring PRO_OBJ_BULLET				= TEXT("Prototype_GameObject_Bullet"); 
 static const std::wstring PRO_OBJ_PLAYER				= TEXT("Prototype_GameObject_Player");
 static const std::wstring PRO_OBJ_WEAPON				= TEXT("Prototype_GameObject_Weapon");
@@ -105,6 +106,7 @@ static const std::wstring PRO_OBJ_R_GUN					= TEXT("Prototype_GameObject_Gun Rig
 static const std::wstring PRO_OBJ_BACK					= TEXT("Prototype_GameObject_BackGround");
 static const std::wstring PRO_OBJ_CAM_FREE				= TEXT("Prototype_GameObject_Camera Free");
 static const std::wstring PRO_OBJ_BODY					= TEXT("Prototype_GameObject_Player Body");
+static const std::wstring PRO_OBJ_GHOUL_BODY			= TEXT("Prototype_GameObject_Ghoul Body");
 static const std::wstring PRO_OBJ_ROCK1					= TEXT("Prototype_GameObject_Desert Rock1");
 static const std::wstring PRO_OBJ_ROCK2					= TEXT("Prototype_GameObject_Desert Rock2");
 static const std::wstring PRO_OBJ_ROCK_TALL				= TEXT("Prototype_GameObject_Desert RockTall");

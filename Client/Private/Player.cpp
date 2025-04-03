@@ -90,12 +90,12 @@ HRESULT CPlayer::Render()
 	m_pColliderCom->Render();
 #endif 
 
-	_float4 fPos{};
-	XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
-	TCHAR debugMessage[256];
-	_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
-		fPos.x, fPos.y, fPos.z, fPos.w);
-	OutputDebugString(debugMessage);
+	//_float4 fPos{};
+	//XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
+	//TCHAR debugMessage[256];
+	//_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
+	//	fPos.x, fPos.y, fPos.z, fPos.w);
+	//OutputDebugString(debugMessage);
 
 	return S_OK;
 }

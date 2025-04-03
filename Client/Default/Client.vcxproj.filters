@@ -43,9 +43,6 @@
     <Filter Include="02.GameObjects\Monster">
       <UniqueIdentifier>{1cc66d14-3059-4d15-923c-cefd99387098}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster\States">
-      <UniqueIdentifier>{827d9342-792b-4763-8db2-9d36d5a1ad73}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\Menu">
       <UniqueIdentifier>{4bb641bb-efd7-400f-ab05-70b36082e136}</UniqueIdentifier>
     </Filter>
@@ -108,6 +105,24 @@
     </Filter>
     <Filter Include="02.GameObjects\Instancing\Snow">
       <UniqueIdentifier>{5ea669f2-b24c-4d1b-9c36-6c990d23e73d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\00. MonsterList">
+      <UniqueIdentifier>{c7e5f244-25ad-4498-8bc1-012013877883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\00. MonsterList\Ghoul">
+      <UniqueIdentifier>{56530810-5c29-46bc-9034-90f6a71fc1bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States">
+      <UniqueIdentifier>{827d9342-792b-4763-8db2-9d36d5a1ad73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Base">
+      <UniqueIdentifier>{05fd5636-3848-4fab-a561-0f54ce8099f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Idle">
+      <UniqueIdentifier>{e2d96590-e887-4b1c-a0cd-6d8ad36e4221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\00. MonsterList\Ghoul\Body">
+      <UniqueIdentifier>{a846b894-3f41-4280-bc90-b4be269703de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -207,7 +222,18 @@
     <ClInclude Include="..\Public\MainApp.h">
       <Filter>00.MainApp</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Body_Monster.h" />
+    <ClInclude Include="..\Public\MonsterState_Base.h">
+      <Filter>02.GameObjects\Monster\States\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState_Idle.h">
+      <Filter>02.GameObjects\Monster\States\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ghoul.h">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Ghoul.h">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -304,7 +330,18 @@
     <ClCompile Include="..\Private\Snow.cpp">
       <Filter>02.GameObjects\Instancing\Snow</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Body_Monster.cpp" />
+    <ClCompile Include="..\Private\MonsterState_Base.cpp">
+      <Filter>02.GameObjects\Monster\States\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState_Idle.cpp">
+      <Filter>02.GameObjects\Monster\States\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ghoul.cpp">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Ghoul.cpp">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">

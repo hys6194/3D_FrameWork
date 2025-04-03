@@ -148,12 +148,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\BackGround.h" />
-    <ClInclude Include="..\Public\Body_Monster.h" />
+    <ClInclude Include="..\Public\Body_Ghoul.h" />
     <ClInclude Include="..\Public\Body_Player.h" />
     <ClInclude Include="..\Public\Bullet.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Const_Key.h" />
+    <ClInclude Include="..\Public\Ghoul.h" />
     <ClInclude Include="..\Public\Gun_Left.h" />
     <ClInclude Include="..\Public\Gun_Right.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
@@ -164,6 +165,8 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Map_Object.h" />
     <ClInclude Include="..\Public\Monster.h" />
+    <ClInclude Include="..\Public\MonsterState_Base.h" />
+    <ClInclude Include="..\Public\MonsterState_Idle.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\PlayerState_Test.h" />
     <ClInclude Include="..\Public\Player_KeyState.h" />
@@ -183,10 +186,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\BackGround.cpp" />
-    <ClCompile Include="..\Private\Body_Monster.cpp" />
+    <ClCompile Include="..\Private\Body_Ghoul.cpp" />
     <ClCompile Include="..\Private\Body_Player.cpp" />
     <ClCompile Include="..\Private\Bullet.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Ghoul.cpp" />
     <ClCompile Include="..\Private\Gun_Left.cpp" />
     <ClCompile Include="..\Private\Gun_Right.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
@@ -197,6 +201,8 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Map_Object.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
+    <ClCompile Include="..\Private\MonsterState_Base.cpp" />
+    <ClCompile Include="..\Private\MonsterState_Idle.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\PlayerState_Test.cpp" />
     <ClCompile Include="..\Private\Player_KeyState.cpp" />

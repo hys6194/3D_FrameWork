@@ -11,53 +11,87 @@ END
 
 BEGIN(Client)
 
-class CMonster final : public CContainerObject
+class CMonster : public CContainerObject
 {
-public:
-	typedef struct tagMonsterInfo : public CGameObject::GAMEOBJECT_DESC
-	{
-		_bool bWave{};
-		_uint iState{};
-		_uint iHP{};
-
-	}MONSTER_DESC;
-
-private:
+protected:
 	CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CMonster(const CMonster& Prototype);
 	virtual ~CMonster() = default;
 
 public:
-	virtual HRESULT				Initialize_Prototype() override;
-	virtual HRESULT				Initialize(void* pArg) override;
-	virtual void				Priority_Update(_float fTimeDelta) override;
-	virtual void				Update(_float fTimeDelta) override;
-	virtual void				Late_Update(_float fTimeDelta) override;
-	virtual HRESULT				Render() override;
+	typedef struct tagMonsterInfo : public CGameObject::GAMEOBJECT_DESC
+	{
+		_bool bBoss = { false };
+		_bool bWave = { false };
+		_uint iState = { STATE_IDLE };
+		_uint iHP = {};
 
-	virtual HRESULT				Ready_PartObjects();	
-private:
-	CFSM*						m_pFSMCom			= { nullptr };
-	CNavigation*				m_pNavigationCom	= { nullptr };
-	CCollider*					m_pColliderCom		= { nullptr };
+		_float fDetectDistance = { 15.f };
+		_float fNoticeDistance = { 15.f };
+
+	}MONSTER_DESC;
 
 
-private:
+	enum PARTOBJ { PART_BODY, PART_WEAPON, PART_EFFECT, PART_END };
+	//테스트 용
 
-	_bool						m_bIsDead			= { false };
-	_bool						m_bHit				= { false };
-
-	_uint						m_iState			= { STATE_NONE };
-
-private:
-	HRESULT						Ready_Components();
-	HRESULT						Ready_States();
-	HRESULT						Bind_SR();
 
 public:
-	static  CMonster*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject*		Clone(void* pArg);
-	virtual void				Free() override;
+	enum MONSTER_STATE { STATE_IDLE , STATE_TRACE, STATE_HIT, STATE_ATTACK, STATE_AVOID, STATE_DEAD, STATE_NONE };
+
+public:
+	void									Set_Dead	(_bool bDead)					{ m_bIsDead = bDead; }
+	void									Set_Hit		(_bool bHit)					{ m_bHit    = bHit;  }
+
+public:
+	//Getter
+	_bool									Is_Dead()									{ return m_bIsDead; }
+	_bool									Is_Hit ()									{ return m_bHit;    }
+
+	//_float								Get_Distance()								{ return m_fDetectDistance; }
+
+
+public:
+	void									Change_CurrentState(MONSTER_STATE eState)   { m_iState = eState; }
+
+public:
+	virtual HRESULT							Initialize_Prototype() override;
+	virtual HRESULT							Initialize(void* pArg) override;
+	virtual void							Priority_Update(_float fTimeDelta) override;
+	virtual void							Update(_float fTimeDelta) override;
+	virtual void							Late_Update(_float fTimeDelta) override;
+	virtual HRESULT							Render() override;
+
+
+public:
+	virtual HRESULT							Ready_PartObjects() = 0;
+	virtual HRESULT							Ready_Components();
+
+protected:
+	CFSM*									m_pFSMCom									= { nullptr };
+	CNavigation*							m_pNavigationCom							= { nullptr };
+	CCollider*								m_pColliderCom								= { nullptr };
+
+
+protected:
+	_bool									m_bIsDead									= { false };
+	_bool									m_bHit										= { false };
+	_bool									m_bIsBoss									= { false };
+	_bool									m_bWave										= { false };
+
+	_uint									m_iState									= { STATE_NONE };
+	_uint									m_iHP										= {};
+
+	_float									m_fNoticeDistance							= {};
+	
+	_wstring								m_strModelTag								= {};
+
+protected:
+	HRESULT									Bind_SR();
+
+public:
+	virtual CGameObject*					Clone(void* pArg) = 0;
+	virtual void							Free() override;
 
 };
 
