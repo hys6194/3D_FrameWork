@@ -10,11 +10,11 @@ END
 
 BEGIN(Client)
 
-class CMonsterState_Idle : public CMonsterState_Base
+class CMonsterState_Hit : public CMonsterState_Base
 {
 private:
-	CMonsterState_Idle(CGameObject* pOwner, CGameObject* pAnimOwner);
-	virtual ~CMonsterState_Idle() = default;
+	CMonsterState_Hit(CGameObject* pOwner, CGameObject* pAnimOwner);
+	virtual ~CMonsterState_Hit() = default;
 
 
 public:
@@ -36,7 +36,7 @@ private:
 
 public:
 	// 몬스터들이 공용으로 사용할 State라서 애니메이션 인덱스를 인자로 받아 출력하게 한다
-	static CMonsterState_Idle*		Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex);
+	static CMonsterState_Hit*		Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex);
 	virtual void					Free() override;
 };
 

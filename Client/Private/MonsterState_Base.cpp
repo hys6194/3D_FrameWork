@@ -3,8 +3,8 @@
 #include "Monster.h"
 #include "Body_Ghoul.h"
 
-CMonsterState_Base::CMonsterState_Base(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
-	: CState{ pDevice, pContext, pOwner, pAnimOwner, m_pGameInstance }
+CMonsterState_Base::CMonsterState_Base(CGameObject* pOwner, CGameObject* pAnimOwner)
+	: CState{ pOwner, pAnimOwner, m_pGameInstance }
 {
 	// 이래도 되려나	
 	m_pMonster = dynamic_cast<CMonster*>(m_pOwner);
@@ -37,7 +37,7 @@ void CMonsterState_Base::Update_Animation(_float fTimeDelta)
 		&& m_pModelCom->Get_Interpolate())
 		m_pModelCom->Interpolate_Animation(0.2f);
 	else
-		m_pModelCom->Play_Animation(fTimeDelta);
+		m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta);
 }
 
 

@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 
 #include "MonsterState_Idle.h"
+#include "MonsterState_Hit.h"
 #include "Body_Ghoul.h"
 
 CGhoul::CGhoul(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -47,6 +48,13 @@ HRESULT CGhoul::Initialize(void* pArg)
 void CGhoul::Priority_Update(_float fTimeDelta)
 {
     __super::Priority_Update(fTimeDelta);
+
+   if (m_pGameInstance->Key_Down(DIK_1))
+       m_iState = STATE_HIT;
+   
+   //m_pGameInstance;
+
+
 }
 
 void CGhoul::Update(_float fTimeDelta)
@@ -83,8 +91,15 @@ HRESULT CGhoul::Ready_PartObjects()
 
 HRESULT CGhoul::Ready_States()
 {
-    CMonsterState_Idle* pState = CMonsterState_Idle::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY], CGhoul::GHOUL_IDLE);
-    m_pFSMCom->Add_State(STATE_IDLE, pState);
+    // 이 구조 좋다
+    // 차라리 출력해줘야 할 애니메이션을 세팅하는게 훨 낫다
+    CState* pState = nullptr;
+
+    pState = CMonsterState_Idle::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_IDLE);
+    m_pFSMCom->Add_State(STATE_IDLE, pState);   
+
+    pState = CMonsterState_Hit::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_IMPACT_F);
+    m_pFSMCom->Add_State(STATE_HIT, pState);
 
     return S_OK;
 }

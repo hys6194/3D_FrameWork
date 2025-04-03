@@ -24,7 +24,7 @@ BEGIN(Client)
 class CMonsterState_Base : public CState
 {
 protected:
-	CMonsterState_Base(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	CMonsterState_Base(CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual ~CMonsterState_Base() = default;
 
 public:

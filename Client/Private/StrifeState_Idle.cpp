@@ -3,8 +3,8 @@
 #include "Model.h"
 #include "Player.h"
 
-CStrifeState_Idle::CStrifeState_Idle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
-    : CState{ pDevice , pContext, pOwner, pAnimOwner, m_pGameInstance }
+CStrifeState_Idle::CStrifeState_Idle(CGameObject* pOwner, CGameObject* pAnimOwner)
+    : CState{ pOwner, pAnimOwner, m_pGameInstance }
 {
 }
 
@@ -127,9 +127,9 @@ void CStrifeState_Idle::Check_KeyInput()
     }
 }
 
-CStrifeState_Idle* CStrifeState_Idle::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
+CStrifeState_Idle* CStrifeState_Idle::Create(CGameObject* pOwner, CGameObject* pAnimOwner)
 {
-    CStrifeState_Idle* pInstance = new CStrifeState_Idle(pDevice, pContext, pOwner, pAnimOwner);
+    CStrifeState_Idle* pInstance = new CStrifeState_Idle(pOwner, pAnimOwner);
 
     if (nullptr == pOwner)
     {

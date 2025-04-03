@@ -12,7 +12,7 @@ BEGIN(Client)
 class PlayerState_Test : public CState
 {
 private	:
-	PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	PlayerState_Test(CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual ~PlayerState_Test() = default;
 
 public:
@@ -33,7 +33,7 @@ private:
 	_uint				m_iKeyState = { 0 };
 
 public:
-	static PlayerState_Test* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	static PlayerState_Test* Create(CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual void Free();
 
 };

@@ -124,6 +124,9 @@
     <Filter Include="02.GameObjects\Monster\00. MonsterList\Ghoul\Body">
       <UniqueIdentifier>{a846b894-3f41-4280-bc90-b4be269703de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Hit">
+      <UniqueIdentifier>{87b2bce9-12c9-47d9-a8c2-ba5ce741f971}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -234,6 +237,9 @@
     <ClInclude Include="..\Public\Body_Ghoul.h">
       <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MonsterState_Hit.h">
+      <Filter>02.GameObjects\Monster\States\Hit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -341,6 +347,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Body_Ghoul.cpp">
       <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState_Hit.cpp">
+      <Filter>02.GameObjects\Monster\States\Hit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

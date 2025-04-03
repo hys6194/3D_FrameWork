@@ -5,8 +5,8 @@
 
 #include "GameInstance.h"
 
-PlayerState_Test::PlayerState_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
-	:CState{pDevice, pContext, pOwner, pAnimOwner, m_pGameInstance }
+PlayerState_Test::PlayerState_Test( CGameObject* pOwner, CGameObject* pAnimOwner)
+	:CState{ pOwner, pAnimOwner, m_pGameInstance }
 {
 }
 
@@ -61,9 +61,9 @@ void PlayerState_Test::Set_CurAnimation()
 	m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::RUN, true);
 }
 
-PlayerState_Test* PlayerState_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
+PlayerState_Test* PlayerState_Test::Create(CGameObject* pOwner, CGameObject* pAnimOwner)
 {
-	PlayerState_Test* pInstance = new PlayerState_Test(pDevice, pContext, pOwner, pAnimOwner);
+	PlayerState_Test* pInstance = new PlayerState_Test(pOwner, pAnimOwner);
 
 	if (nullptr == pOwner)
 	{

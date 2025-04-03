@@ -1,16 +1,16 @@
-#include "MonsterState_Idle.h"
+#include "MonsterState_Hit.h"
 
 #include "Player.h"
 #include "Monster.h"
 #include "Body_Ghoul.h"
 #include "Ghoul.h"
 
-CMonsterState_Idle::CMonsterState_Idle(CGameObject* pOwner, CGameObject* pAnimOwner)
+CMonsterState_Hit::CMonsterState_Hit(CGameObject* pOwner, CGameObject* pAnimOwner)
     : CMonsterState_Base{ pOwner, pAnimOwner }
 {
 }
 
-HRESULT CMonsterState_Idle::Enter_State()
+HRESULT CMonsterState_Hit::Enter_State()
 { 
     Set_CurAnimation();
 
@@ -19,7 +19,7 @@ HRESULT CMonsterState_Idle::Enter_State()
     return S_OK;
 }
 
-void CMonsterState_Idle::PriorityUpdate_State(_float fTimeDelta)
+void CMonsterState_Hit::PriorityUpdate_State(_float fTimeDelta)
 {
     // 이게 맞나? 차라리 Base에 그냥 함수로 만들어서 호출하는게 훨 나아보이기도 하고
     __super::PriorityUpdate_State(fTimeDelta);
@@ -37,46 +37,53 @@ void CMonsterState_Idle::PriorityUpdate_State(_float fTimeDelta)
     _float fDistanace = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
 
 
+    if (m_bAnimEnd)
+    {
+        m_bAnimEnd = false;
+        m_pMonster->Change_CurrentState(CMonster::STATE_IDLE);
+    }
+
+
 }
 
 
-void CMonsterState_Idle::Update_State(_float fTimeDelta)
+void CMonsterState_Hit::Update_State(_float fTimeDelta)
 {
     Update_Animation(fTimeDelta);
 }
 
-void CMonsterState_Idle::LateUpdate_State(_float fTimeDelta)
+void CMonsterState_Hit::LateUpdate_State(_float fTimeDelta)
 {
 }
 
-HRESULT CMonsterState_Idle::Exit_State()
+HRESULT CMonsterState_Hit::Exit_State()
 {
     Set_PreAnimation();
 
     return S_OK;
 }
 
-void CMonsterState_Idle::Set_PreAnimation()
+void CMonsterState_Hit::Set_PreAnimation()
 {
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
 }
 
-void CMonsterState_Idle::Update_Animation(_float fTimeDelta)
+void CMonsterState_Hit::Update_Animation(_float fTimeDelta)
 {
     __super::Update_Animation(fTimeDelta);
 }
 
-void CMonsterState_Idle::Set_CurAnimation()
+void CMonsterState_Hit::Set_CurAnimation()
 {
     m_pModelCom = m_pBody->Get_Model();
 
-    m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
+    m_pModelCom->Set_AnimationIndex(m_iAnimIndex);
 }
 
-CMonsterState_Idle* CMonsterState_Idle::Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex)
+CMonsterState_Hit* CMonsterState_Hit::Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex)
 {
-    CMonsterState_Idle* pInstance = new CMonsterState_Idle(pOwner, pAnimOwner);
+    CMonsterState_Hit* pInstance = new CMonsterState_Hit(pOwner, pAnimOwner);
 
     pInstance->m_iAnimIndex = AnimIndex;
 
@@ -86,7 +93,7 @@ CMonsterState_Idle* CMonsterState_Idle::Create(CGameObject* pOwner, CGameObject*
     return pInstance; 
 }
 
-void CMonsterState_Idle::Free()
+void CMonsterState_Hit::Free()
 {
     __super::Free();
 }

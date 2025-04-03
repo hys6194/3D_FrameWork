@@ -170,16 +170,16 @@ HRESULT CPlayer::Ready_States()
 {
 	CState* pState;
 
-	pState = CStrifeState_Idle::Create(m_pDevice, m_pContext,this ,m_vecParts[PART_BODY]);
+	pState = CStrifeState_Idle::Create(this ,m_vecParts[PART_BODY]);
 	m_pFSMCom->Add_State(CPlayer::STATE_IDLE, pState);
 
-	pState = CStrifeState_Run::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	pState = CStrifeState_Run::Create(this, m_vecParts[PART_BODY]);
 	m_pFSMCom->Add_State(CPlayer::STATE_RUN, pState);
 
-	pState = CStrifeState_Dash::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	pState = CStrifeState_Dash::Create(this, m_vecParts[PART_BODY]);
 	m_pFSMCom->Add_State(CPlayer::STATE_DASH, pState);
 
-	pState = CStrifeState_Shoot::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	pState = CStrifeState_Shoot::Create(this, m_vecParts[PART_BODY]);
 	m_pFSMCom->Add_State(CPlayer::STATE_SHOOT, pState);
 
 	return S_OK;

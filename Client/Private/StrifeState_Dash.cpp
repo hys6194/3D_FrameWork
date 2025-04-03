@@ -4,8 +4,8 @@
 #include "Model.h"	
 #include "Animation.h"
 
-CStrifeState_Dash::CStrifeState_Dash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
-	:CState{pDevice, pContext, pOwner, pAnimOwner, m_pGameInstance }
+CStrifeState_Dash::CStrifeState_Dash(CGameObject* pOwner, CGameObject* pAnimOwner)
+	:CState{ pOwner, pAnimOwner, m_pGameInstance }
 {
 }
 
@@ -166,9 +166,9 @@ void CStrifeState_Dash::Set_Player_Direction()
 	}
 }
 
-CStrifeState_Dash* CStrifeState_Dash::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
+CStrifeState_Dash* CStrifeState_Dash::Create(CGameObject* pOwner, CGameObject* pAnimOwner)
 {
-	CStrifeState_Dash* pInstance = new CStrifeState_Dash( pDevice, pContext, pOwner, pAnimOwner);
+	CStrifeState_Dash* pInstance = new CStrifeState_Dash(pOwner, pAnimOwner);
 
 	if (nullptr == pOwner)
 	{

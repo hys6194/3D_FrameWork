@@ -13,7 +13,7 @@ BEGIN(Client)
 class CStrifeState_Idle : public CState
 {
 private:
-	CStrifeState_Idle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	CStrifeState_Idle(CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual ~CStrifeState_Idle() = default;
 public:
 	virtual HRESULT Enter_State();
@@ -35,7 +35,7 @@ private:
 	void		 Check_KeyInput();
 
 public:
-	static CStrifeState_Idle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	static CStrifeState_Idle* Create(CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual void Free() override;
 
 

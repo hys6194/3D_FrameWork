@@ -166,6 +166,7 @@
     <ClInclude Include="..\Public\Map_Object.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\MonsterState_Base.h" />
+    <ClInclude Include="..\Public\MonsterState_Hit.h" />
     <ClInclude Include="..\Public\MonsterState_Idle.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\PlayerState_Test.h" />
@@ -202,6 +203,7 @@
     <ClCompile Include="..\Private\Map_Object.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\MonsterState_Base.cpp" />
+    <ClCompile Include="..\Private\MonsterState_Hit.cpp" />
     <ClCompile Include="..\Private\MonsterState_Idle.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\PlayerState_Test.cpp" />

@@ -5,8 +5,8 @@
 
 #include "GameInstance.h"
 
-CStrifeState_Shoot::CStrifeState_Shoot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
-	:CState{pDevice, pContext, pOwner, pAnimOwner, m_pGameInstance }
+CStrifeState_Shoot::CStrifeState_Shoot(CGameObject* pOwner, CGameObject* pAnimOwner)
+	:CState{ pOwner, pAnimOwner, m_pGameInstance }
 {
 }
 
@@ -123,29 +123,36 @@ void CStrifeState_Shoot::Player_ShootMove(_float fTimeDelta)
 
 void CStrifeState_Shoot::Player_LookSet(_float fTimeDelta)
 {
-	_vector vOffset = XMVectorSet(0.f, 2.f, 0.f, 0.f);
+	//_vector vOffset = XMVectorSet(0.f, 2.f, 0.f, 0.f);
+	//
+	_vector vPos = m_pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
 
-	_vector vPos = m_pOwner->Get_Transform()->Get_State(CTransform::STATE_POS) + vOffset;
+	_float4 fPlayerPos{};
+	XMStoreFloat4(&fPlayerPos, vPos);
+
 	_vector vWin = *m_pGameInstance->Get_PlayerViewPortPos();
-
+	//Get_RayDirCoords
+	
+	
 	_vector vzero{ 0.f,1.f,0.f,0.f };
 	_vector vMouse = XMVector4Normalize(vWin);
-
+	
 	_vector vResult = XMVector4Dot(vWin, vzero);
-
+	
 	_float fDot = XMVectorGetW(vResult);
-
+	
 	_float fX = XMVectorGetX(vWin);
-
+	
 	_float lengthA = XMVectorGetX(XMVector3Length(vWin));
 	_float lengthB = XMVectorGetX(XMVector3Length(vzero));
-
+	
 	_float cosTheta = fDot / (lengthA * lengthB);
-
+	
 	if (fX >= 0)
 		m_pOwner->Get_Transform()->Rotation(AXIS_Y, acosf(cosTheta));
 	else
 		m_pOwner->Get_Transform()->Rotation(AXIS_Y, -acosf(cosTheta));
+
 
 }
 
@@ -158,18 +165,9 @@ void CStrifeState_Shoot::Apply_ShootAnimation()
 		m_pModelCom->Set_AnimationIndex(PLAYER_ANIMLIST::AIM_IDLE, true, false);
 }
 
-CStrifeState_Shoot* CStrifeState_Shoot::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
+CStrifeState_Shoot* CStrifeState_Shoot::Create(CGameObject* pOwner, CGameObject* pAnimOwner)
 {
-	//CStrifeState_Shoot* pInstance = new CStrifeState_Shoot(pDevice, pContext, pOwner, pAnimOwner);
-	//
-	//if (nullptr == pOwner)
-	//{
-	//	MSG_BOX("Failed To Created : StrifeState_Shoot");
-	//	Safe_Release(pInstance);
-	//	return nullptr;
-	//}
-
-	return new CStrifeState_Shoot(pDevice, pContext, pOwner, pAnimOwner);
+	return new CStrifeState_Shoot(pOwner, pAnimOwner);
 }
 
 void CStrifeState_Shoot::Free()
