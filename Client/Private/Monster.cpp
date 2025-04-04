@@ -39,8 +39,8 @@ HRESULT CMonster::Initialize(void* pArg)
 
 void CMonster::Priority_Update(_float fTimeDelta)
 {
-	m_pFSMCom->Change_State(m_iState);
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
+	m_pFSMCom->Change_State(m_iState);
 
 	m_pColliderCom->Reset();
 

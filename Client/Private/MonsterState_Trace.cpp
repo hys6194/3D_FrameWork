@@ -1,16 +1,16 @@
-#include "MonsterState_Hit.h"
+#include "MonsterState_Trace.h"
 
 #include "Player.h"
 #include "Monster.h"
 #include "Body_Ghoul.h"
 #include "Ghoul.h"
 
-CMonsterState_Hit::CMonsterState_Hit(CGameObject* pOwner, CGameObject* pAnimOwner)
+CMonsterState_Trace::CMonsterState_Trace(CGameObject* pOwner, CGameObject* pAnimOwner)
     : CMonsterState_Base{ pOwner, pAnimOwner }
 {
 }
 
-HRESULT CMonsterState_Hit::Enter_State()
+HRESULT CMonsterState_Trace::Enter_State()
 { 
     Set_CurAnimation();
 
@@ -19,7 +19,7 @@ HRESULT CMonsterState_Hit::Enter_State()
     return S_OK;
 }
 
-void CMonsterState_Hit::PriorityUpdate_State(_float fTimeDelta)
+void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
 {
     // 이게 맞나? 차라리 Base에 그냥 함수로 만들어서 호출하는게 훨 나아보이기도 하고
     __super::PriorityUpdate_State(fTimeDelta);
@@ -46,43 +46,43 @@ void CMonsterState_Hit::PriorityUpdate_State(_float fTimeDelta)
 }
 
 
-void CMonsterState_Hit::Update_State(_float fTimeDelta)
+void CMonsterState_Trace::Update_State(_float fTimeDelta)
 {
     Update_Animation(fTimeDelta);
 }
 
-void CMonsterState_Hit::LateUpdate_State(_float fTimeDelta)
+void CMonsterState_Trace::LateUpdate_State(_float fTimeDelta)
 {
 }
 
-HRESULT CMonsterState_Hit::Exit_State()
+HRESULT CMonsterState_Trace::Exit_State()
 {
     Set_PreAnimation();
 
     return S_OK;
 }
 
-void CMonsterState_Hit::Set_PreAnimation()
+void CMonsterState_Trace::Set_PreAnimation()
 {
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
 }
 
-void CMonsterState_Hit::Update_Animation(_float fTimeDelta)
+void CMonsterState_Trace::Update_Animation(_float fTimeDelta)
 {
     __super::Update_Animation(fTimeDelta);
 }
 
-void CMonsterState_Hit::Set_CurAnimation()
+void CMonsterState_Trace::Set_CurAnimation()
 {
     m_pModelCom = m_pBody->Get_Model();
 
     m_pModelCom->Set_AnimationIndex(m_iAnimIndex);
 }
 
-CMonsterState_Hit* CMonsterState_Hit::Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex)
+CMonsterState_Trace* CMonsterState_Trace::Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex)
 {
-    CMonsterState_Hit* pInstance = new CMonsterState_Hit(pOwner, pAnimOwner);
+    CMonsterState_Trace* pInstance = new CMonsterState_Trace(pOwner, pAnimOwner);
 
     pInstance->m_iAnimIndex = AnimIndex;
 
@@ -92,7 +92,7 @@ CMonsterState_Hit* CMonsterState_Hit::Create(CGameObject* pOwner, CGameObject* p
     return pInstance; 
 }
 
-void CMonsterState_Hit::Free()
+void CMonsterState_Trace::Free()
 {
     __super::Free();
 }

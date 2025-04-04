@@ -127,6 +127,18 @@
     <Filter Include="02.GameObjects\Monster\States\Hit">
       <UniqueIdentifier>{87b2bce9-12c9-47d9-a8c2-ba5ce741f971}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Avoid">
+      <UniqueIdentifier>{3f9e2f2f-3d3a-4fec-820d-1804bc486037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack">
+      <UniqueIdentifier>{616d3b55-0984-4efc-9e17-7789c7a3c0cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Dead">
+      <UniqueIdentifier>{b99d31af-7a5e-41a3-aef1-49bcc0f7574e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Search">
+      <UniqueIdentifier>{87dad47b-6209-4d1e-8e51-ea1586fdbe56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -240,6 +252,18 @@
     <ClInclude Include="..\Public\MonsterState_Hit.h">
       <Filter>02.GameObjects\Monster\States\Hit</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MonsterState_Avoid.h">
+      <Filter>02.GameObjects\Monster\States\Avoid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState_Attack.h">
+      <Filter>02.GameObjects\Monster\States\Attrack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState_Dead.h">
+      <Filter>02.GameObjects\Monster\States\Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState_Search.h">
+      <Filter>02.GameObjects\Monster\States\Search</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -350,6 +374,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterState_Hit.cpp">
       <Filter>02.GameObjects\Monster\States\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState_Avoid.cpp">
+      <Filter>02.GameObjects\Monster\States\Avoid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState_Attack.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState_Dead.cpp">
+      <Filter>02.GameObjects\Monster\States\Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState_Search.cpp">
+      <Filter>02.GameObjects\Monster\States\Search</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

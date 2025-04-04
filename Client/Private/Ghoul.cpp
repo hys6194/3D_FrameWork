@@ -52,8 +52,17 @@ void CGhoul::Priority_Update(_float fTimeDelta)
    if (m_pGameInstance->Key_Down(DIK_1))
        m_iState = STATE_HIT;
    
-   //m_pGameInstance;
+   if (m_pGameInstance->Key_Down(DIK_2))
+	   m_iState = STATE_IDLE;
 
+   if (m_pGameInstance->Key_Down(DIK_3))
+	   m_iState = STATE_DEAD;
+
+   if (m_pGameInstance->Key_Down(DIK_4))
+       m_iState = STATE_SEARCH;  
+
+   if (m_pGameInstance->Key_Down(DIK_5))
+       m_iState = STATE_AVOID;
 
 }
 

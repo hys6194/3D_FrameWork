@@ -165,9 +165,13 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Map_Object.h" />
     <ClInclude Include="..\Public\Monster.h" />
+    <ClInclude Include="..\Public\MonsterState_Attack.h" />
+    <ClInclude Include="..\Public\MonsterState_Avoid.h" />
     <ClInclude Include="..\Public\MonsterState_Base.h" />
+    <ClInclude Include="..\Public\MonsterState_Dead.h" />
     <ClInclude Include="..\Public\MonsterState_Hit.h" />
     <ClInclude Include="..\Public\MonsterState_Idle.h" />
+    <ClInclude Include="..\Public\MonsterState_Search.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\PlayerState_Test.h" />
     <ClInclude Include="..\Public\Player_KeyState.h" />
@@ -202,9 +206,13 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Map_Object.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
+    <ClCompile Include="..\Private\MonsterState_Attack.cpp" />
+    <ClCompile Include="..\Private\MonsterState_Avoid.cpp" />
     <ClCompile Include="..\Private\MonsterState_Base.cpp" />
+    <ClCompile Include="..\Private\MonsterState_Dead.cpp" />
     <ClCompile Include="..\Private\MonsterState_Hit.cpp" />
     <ClCompile Include="..\Private\MonsterState_Idle.cpp" />
+    <ClCompile Include="..\Private\MonsterState_Search.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\PlayerState_Test.cpp" />
     <ClCompile Include="..\Private\Player_KeyState.cpp" />

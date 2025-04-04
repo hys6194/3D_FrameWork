@@ -53,8 +53,12 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 {
 	Input_Keys();
 
-	m_pFSMCom->Change_State(m_iState);
+	// 왜 이렇게 했지? 이유가 있었는데
+	//m_pFSMCom->Change_State(m_iState);
+	//m_pFSMCom->PriUpdate_State(fTimeDelta);
+
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
+	m_pFSMCom->Change_State(m_iState);
 
 	m_pColliderCom->Reset();
 
