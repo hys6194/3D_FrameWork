@@ -14,7 +14,7 @@ BEGIN(Client)
 class CPlayer_KeyState : public CState
 {
 protected:
-	CPlayer_KeyState(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner, CGameInstance* pGameInstance);
+	CPlayer_KeyState(CGameObject* pOwner, CGameObject* pAnimOwner, CGameInstance* pGameInstance);
 	virtual ~CPlayer_KeyState() = default;
 
 public:

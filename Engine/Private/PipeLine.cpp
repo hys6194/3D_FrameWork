@@ -64,7 +64,7 @@ _vector* CPipeLine::Get_PlayerViewPortPos()
 
 	// 원래 0.5가 뷰 포트 상 제일 중앙이 되는 좌표임 
 	// 플레이어의 팔 위치로 중점을 옮긴거 밖에 안됨
-	fTest.y = pt.y / -(ViewPort.Height * 0.33f) + 1.f;
+	fTest.y = pt.y / -(ViewPort.Height * 0.4f) + 1.f;
 
 	vTest = XMVectorSet(fTest.x, fTest.y, 0.f, 1.f);
 
@@ -78,36 +78,36 @@ _float4* CPipeLine::Get_RayDirCoords()
 
 	_float3 fFar{ 0.f, 0.f, 0.f };
 
+	// 뷰 포트 가져오기
 	_uint i = 1;
 	D3D11_VIEWPORT ViewPort;
 	m_pContext->RSGetViewports(&i, &ViewPort);
-	
+
+	// 원래 식 = 2 * pt.x / widtth - 1
 	fFar.x = pt.x / (ViewPort.Width * 0.5f) - 1.f;
 	fFar.y = pt.y / -(ViewPort.Height * 0.5f) + 1.f;
-	
-	_float4x4 fProj = m_TransformInverseMatrices[D3DTS_PROJ];
-	
+
+	_vector vPos = { fFar.x, fFar.y, 0.f, 1.f };
+	_vector vDir = { fFar.x, fFar.y, 1.f, 1.f };
+
 	// 투영의 역행렬
-	_vector vRayPos = { 0.f,0.f,0.f,0.f };
-	vRayPos = XMVector3TransformCoord(XMLoadFloat3(&fFar), XMLoadFloat4x4(&fProj));
-	
-	_vector vPos = { 0.f,0.f,0.f,1.f };
-	_vector vDir = { 0.f,0.f,0.f,0.f };
-	
-	_vector vRayDir;
-	vDir = XMVector4Normalize(vRayPos - vPos);
-	vRayDir = XMVector4Normalize(vDir);
-	
-	// 뷰의 역행렬
+	_float4x4 fProj = m_TransformInverseMatrices[D3DTS_PROJ];
+
+	vPos = XMVector3TransformCoord(vPos, XMLoadFloat4x4(&fProj));
+	vDir = XMVector3TransformCoord(vDir, XMLoadFloat4x4(&fProj));
+
 	_float4x4 fView = m_TransformInverseMatrices[D3DTS_VIEW];
-	vRayPos = XMVector3TransformCoord(vPos, XMLoadFloat4x4(&fView));
-	
-	
+
+	// 뷰의 역행렬
+	_vector vRayPos = XMVector3TransformCoord(vPos, XMLoadFloat4x4(&fView));
+	_vector vRayDir = XMVector3TransformCoord(vDir, XMLoadFloat4x4(&fView));
+
+	_vector vTest = vRayDir - vRayPos;
+
 	_float4 fRayPos, fRayDir;
-	//vRayDir = vDir;
-	
+
 	XMStoreFloat4(&fRayPos, vRayPos);
-	XMStoreFloat4(&fRayDir, vDir);
+	XMStoreFloat4(&fRayDir, XMVector4Normalize(vTest));
 	
 	//XMVectorSetW(XMLoadFloat4(&fRayDir), 0.f);	
 

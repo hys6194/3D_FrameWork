@@ -166,7 +166,7 @@ HRESULT CTransform::Dash(_float4 fDelta, CNavigation* pNavigation)
 
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
-    _matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fTimeDelta/*m_fRotationPerSec * fTimeDelta*/);
+    _matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fTimeDelta * m_fRotationPerSec);
 
     _vector		vRight = Get_State(STATE_RIGHT);
     _vector		vUp = Get_State(STATE_UP);
@@ -175,6 +175,34 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
     Set_State(STATE_RIGHT, XMVector4Transform(vRight, RotationMatrix));
     Set_State(STATE_UP, XMVector4Transform(vUp, RotationMatrix));
     Set_State(STATE_LOOK, XMVector4Transform(vLook, RotationMatrix));
+}
+
+_bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir)
+{
+    _vector		vRight         = Get_State(STATE_RIGHT);
+    _vector		vUp            = Get_State(STATE_UP);
+    _vector		vLook          = Get_State(STATE_LOOK);
+
+    _vector vAxisBase = vAxis;
+
+    _float      fY = XMVectorGetY(XMVector3Cross(vLook, vTargetToDir));
+    _float      fDot = acosf(XMVectorGetX(XMVector3Dot(vLook, vTargetToDir)));
+
+    if (0 > fY)
+        vAxisBase = XMVectorSetY(vAxis, -1.f);
+
+    _matrix		RotationMatrix = XMMatrixRotationAxis(vAxisBase, fTimeDelta * m_fRotationPerSec);
+                           
+    Set_State(STATE_RIGHT,     XMVector4Transform(vRight,   RotationMatrix));
+    Set_State(STATE_UP,        XMVector4Transform(vUp,      RotationMatrix));
+    Set_State(STATE_LOOK,      XMVector4Transform(vLook,    RotationMatrix));
+
+
+    // 방향과 타겟으로 향한 벡터와 비슷하다면 종료하게 끔
+    if (XMVector4NearEqual(vLook, vTargetToDir, XMVectorSet(0.01f, 0.f, 0.01f, 0.f)))
+        return true;
+    else
+        return false;
 }
 
 void CTransform::Rotation(_fvector vAxis, _float fRadian)

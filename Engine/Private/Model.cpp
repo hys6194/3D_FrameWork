@@ -806,3 +806,23 @@ void CModel::Free()
 
     m_Importer.FreeScene();
 }
+/*
+Ghoul_DeadPose" m_fDuration=...}
+Ghoul_Death" m_fDuration=40.0000000 ...}
+Ghoul_Eat" m_fDuration=68.0000000 ...}
+Ghoul_Evade_Left" m_fDuration=...}
+Ghoul_Evade_Right" m_fDuration=...}
+Ghoul_IA_Death_Strife" m_fDuration=...}
+Ghoul_Idle" m_fDuration=60.0000000 ...}
+Ghoul_Impact_F" m_fDuration=...}
+Ghoul_Impact_L" m_fDuration=...}
+Ghoul_Run_F" m_fDuration=70.0000000 ...}
+Ghoul_Spawn_Climb" m_fDuration=...}
+Ghoul_Taunt_A" m_fDuration=...}
+Ghoul_Turn90_L" m_fDuration=...}
+Ghoul_Turn90_R" m_fDuration=...}
+Ghoul_Walk_B" m_fDuration=72.0000000 ...}
+Ghoul_Walk_F" m_fDuration=72.0000000 ...}
+Ghoul_Walk_L" m_fDuration=72.0000000 ...}
+Ghoul_Walk_R" m_fDuration=72.0000000 ...}
+*/

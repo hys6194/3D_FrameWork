@@ -53,8 +53,13 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 {
 	Input_Keys();
 
+	// 왜 이렇게 했지? 이유가 있었는데
+	// 대쉬 초기화 때문에
 	m_pFSMCom->Change_State(m_iState);
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
+
+	//m_pFSMCom->PriUpdate_State(fTimeDelta);
+	//m_pFSMCom->Change_State(m_iState);
 
 	m_pColliderCom->Reset();
 
@@ -88,14 +93,14 @@ HRESULT CPlayer::Render()
 {
 #ifdef _DEBUG
 	m_pColliderCom->Render();
-#endif
+#endif 
 
-	_float4 fPos{};
-	XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
-	TCHAR debugMessage[256];
-	_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
-		fPos.x, fPos.y, fPos.z, fPos.w);
-	OutputDebugString(debugMessage);
+	//_float4 fPos{};
+	//XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
+	//TCHAR debugMessage[256];
+	//_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
+	//	fPos.x, fPos.y, fPos.z, fPos.w);
+	//OutputDebugString(debugMessage);
 
 	return S_OK;
 }
@@ -170,16 +175,16 @@ HRESULT CPlayer::Ready_States()
 {
 	CState* pState;
 
-	pState = CStrifeState_Idle::Create(m_pDevice, m_pContext,this ,m_vecParts[PART_BODY]);
+	pState = CStrifeState_Idle::Create(this ,m_vecParts[PART_BODY]);
 	m_pFSMCom->Add_State(CPlayer::STATE_IDLE, pState);
 
-	pState = CStrifeState_Run::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	pState = CStrifeState_Run::Create(this, m_vecParts[PART_BODY]);
 	m_pFSMCom->Add_State(CPlayer::STATE_RUN, pState);
 
-	pState = CStrifeState_Dash::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	pState = CStrifeState_Dash::Create(this, m_vecParts[PART_BODY]);
 	m_pFSMCom->Add_State(CPlayer::STATE_DASH, pState);
 
-	pState = CStrifeState_Shoot::Create(m_pDevice, m_pContext, this, m_vecParts[PART_BODY]);
+	pState = CStrifeState_Shoot::Create(this, m_vecParts[PART_BODY]);
 	m_pFSMCom->Add_State(CPlayer::STATE_SHOOT, pState);
 
 	return S_OK;

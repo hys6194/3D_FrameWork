@@ -142,19 +142,13 @@ HRESULT Loader::Loading_Models()
 	PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 
 	//// 저장용
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_SPIKE_E,
-	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-	//		"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Spikes/FortressSpike_E.fbx",
-	//		"../../Client/Bin/DataFiles/Nonanim/FortressSpike_E.bin", PreTransformMatrix))))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_SPIKE_A,
-	//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-	//		"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Spikes/FortressSpike_A.fbx",
-	//		"../../Client/Bin/DataFiles/Nonanim/FortressSpike_A.bin", PreTransformMatrix))))
-	//	return E_FAIL;
 
 
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_WALL_TOP,
+	// 	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+	// 		"../../Client/Bin/Resources/Models/NonAnimModel/MapObject/Ruins/Wall_Top_A.fbx",
+	// 		"../../Client/Bin/DataFiles/Nonanim/Wall_Top_A.bin", PreTransformMatrix))))
+	// 	return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK1,
 		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/DestRock1.bin"))))
@@ -171,7 +165,7 @@ HRESULT Loader::Loading_Models()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR1,
 		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Stair1.bin"))))
 		return E_FAIL;
-	
+	 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_STAIR2,
 		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Stair2.bin"))))
 		return E_FAIL;
@@ -179,10 +173,6 @@ HRESULT Loader::Loading_Models()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_ROCK_TALL,
 		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/DestRock_Tall.bin"))))
 		return E_FAIL;
-
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_SPIKE_E,
-	//	CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/FortressSpike_E.bin"))))
-	//	return E_FAIL;
 
 	// 불러오기 용
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_FENCE,
@@ -263,6 +253,22 @@ HRESULT Loader::Loading_Models()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_SPIKE_E,
 		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/FortressSpike_E.bin"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_PILLAR_ALCOVE,
+		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Pillar_Alcove_A.bin"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_PILLAR_DECO_A,
+		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Pillar_Base_Deco_A.bin"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_RUIN_WALL_CNR_B,
+		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Wall_Cnr_B.bin"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_MODEL_WALL_TOP,
+		CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Wall_Top_A.bin"))))
 		return E_FAIL;
 
 
@@ -439,6 +445,17 @@ HRESULT Loader::Loading_Prototype()
 		CMap_Object::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_PILLAR_ALCOVE,
+		CMap_Object::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_RUIN_WALL_CNR_B,
+		CMap_Object::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_OBJ_PILLAR_DECO_A,
+		CMap_Object::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	return S_OK;
 }

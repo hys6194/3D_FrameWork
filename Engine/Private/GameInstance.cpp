@@ -122,6 +122,28 @@ _float CGameInstance::Random(_float fMin, _float fMax)
 	return fMin + Random_Normalize() * (fMax - fMin);
 }
 
+_bool CGameInstance::Random_Persent(_uint iSuccessProb)
+{
+	if (0 > iSuccessProb)
+		iSuccessProb = 0;
+
+	random_device rand;
+	mt19937 gen1(rand());
+
+	_uint iLow, iHigh;
+	iLow = 1;
+	iHigh = 100;
+
+	uniform_real_distribution<> Probability(iLow, iHigh);
+
+	_uint iPersent = (_uint)Probability(gen1);
+
+	if (iPersent <= iSuccessProb)
+		return true;
+	else
+		return false;
+}
+
 #pragma region GRAPHIC_DEVICE
 
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)

@@ -38,6 +38,7 @@ using namespace DirectX;
 #include <io.h>
 #include <iostream>
 #include <fstream>
+#include <random>
 using namespace std;
 
 #include "tchar.h"

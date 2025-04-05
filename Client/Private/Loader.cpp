@@ -1,6 +1,7 @@
 #include "Loader.h"
 #include "GameInstance.h"
 
+#include "Body_Ghoul.h"
 #include "Body_Player.h"
 #include "Camera_Free.h"
 #include "Map_Object.h"
@@ -9,10 +10,10 @@
 #include "Gun_Right.h"
 #include "Gun_Left.h"
 #include "Terrain.h"
-#include "Monster.h"
 #include "Bullet.h"
 #include "Player.h"
 #include "Weapon.h"
+#include "Ghoul.h"
 #include "Snow.h"
 #include "Sky.h"
 
@@ -291,7 +292,7 @@ HRESULT CLoader::Loading_Models()
 		//		PreTransformMatrix))))
 		//	return E_FAIL;
 		//
-		//// Ghoul 저장용
+		// Ghoul 저장용
 		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
 		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
 		//		"../Bin/Resources/Models/AnimModel/Ghoul/Ghoul.fbx",
@@ -313,25 +314,26 @@ HRESULT CLoader::Loading_Models()
 		//// Gun2 저장용
 		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
 		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-		//		"../Bin/Resources/Models/AnimModel/Strife/Gun2.fbx",
-		//		"../Bin/DataFiles/Nonanim/PartObject/Gun2.bin",
+				//		"../Bin/Resources/Models/AnimModel/Strife/Gun2.fbx",
+				//		"../Bin/DataFiles/Nonanim/PartObject/Gun2.bin",
 		//		PreTransformMatrix))))
 		//	return E_FAIL;
 
 		// ForkLift 불러오기
-		 PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+		 PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/ForkLift.bin", PreTransformMatrix))))
 			return E_FAIL;
 		 
 		// Strife 불러오기
-		PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Heroes/Strife.bin", PreTransformMatrix))))
 			return E_FAIL;
-		
+			
 		
 		// Ghoul 불러오기
+		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/Ghoul.bin", PreTransformMatrix))))
 			return E_FAIL;
@@ -352,111 +354,125 @@ HRESULT CLoader::Loading_Models()
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_ROCK1,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/DestRock1.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/DestRock1.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_ROCK2,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/DestRock2.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/DestRock2.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FLOOR1,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/TileFloor1.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/TileFloor1.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STAIR1,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Stair1.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Stair1.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STAIR2,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Stair2.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Stair2.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_ROCK_TALL,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/DestRock_Tall.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/DestRock_Tall.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_SPIKE_A,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/FortressSpike_A.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/FortressSpike_A.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_SPIKE_E,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/FortressSpike_E.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/FortressSpike_E.bin"))))
 			return E_FAIL;
 
 		// 불러오기 용
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FENCE,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Fence_Lg_A.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Fence_Lg_A.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_DAM_END,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Dam_EndCap_A.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Dam_EndCap_A.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_DAM_END_ALT,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Dam_EndCap_A_Alt.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Dam_EndCap_A_Alt.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_DAM_END_ALCOVE,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Dam_MasterAlcove_G.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Dam_MasterAlcove_G.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_DAM_TRIM,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Dam_Trims_A.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Dam_Trims_A.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GROUND_DECAL,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Ground_Decal_LG_A.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Ground_Decal_LG_A.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_PILLAR_BASE,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Pillar_Base_A.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Pillar_Base_A.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_BENT_DARK,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Pillar_Bent_Dark.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Pillar_Bent_Dark.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_BENT_LIGHT,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Pillar_Bent_Light.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Pillar_Bent_Light.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RUBBLESTONE,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Rubble_DesertStone.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Rubble_DesertStone.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORTRESS_WALL,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Fortress_Wall_01_A.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Fortress_Wall_01_A.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_PILLER_A_DARK,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Pillar_A_Dark.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Pillar_A_Dark.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_PILLER_A_LIGHT,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Pillar_A_Light.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Pillar_A_Light.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_PILLER_B_DARK,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Pillar_B_Dark.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Pillar_B_Dark.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_PILLER_B_LIGHT,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Pillar_B_Light.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Pillar_B_Light.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RUIN_CNR_A,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Ruins_CNR_A.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Ruins_CNR_A.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RUIN_FLOOR,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/RuinsFloor_A.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/RuinsFloor_A.bin"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_WODDEN_CIRCLE,
-			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/Wooden_Circle_C.bin"))))
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Wooden_Circle_C.bin"))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_PILLAR_ALCOVE,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Pillar_Alcove_A.bin"))))
+			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_PILLAR_DECO_A,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Pillar_Base_Deco_A.bin"))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RUIN_WALL_CNR_B,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Wall_Cnr_B.bin"))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_WALL_TOP,
+			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Wall_Top_A.bin"))))
+			return E_FAIL;
 
 
 	}
@@ -557,7 +573,11 @@ HRESULT CLoader::Loading_Prototype()
 
 		/* Prototype_GameObject_Monster */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MONSTER,
-			CMonster::Create(m_pDevice, m_pContext))))
+			CGhoul::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL_BODY,
+			CBody_Ghoul::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_PLAYER,
@@ -702,6 +722,18 @@ HRESULT CLoader::Loading_Prototype()
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_WODDEN_CIRCLE,
+			CMap_Object::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_PILLAR_ALCOVE,
+			CMap_Object::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_RUIN_WALL_CNR_B,
+			CMap_Object::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_PILLAR_DECO_A,
 			CMap_Object::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 

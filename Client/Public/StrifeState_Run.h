@@ -13,7 +13,7 @@ BEGIN(Client)
 class CStrifeState_Run : public CState
 {
 private:
-								CStrifeState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+								CStrifeState_Run(CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual						~CStrifeState_Run() = default;
 public:
 	virtual HRESULT				Enter_State();
@@ -38,7 +38,7 @@ private:
 	void						PlayerMove(_float fTimeDelta);
 
 public:
-	static CStrifeState_Run*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner,CGameObject* pAnimOwner);
+	static CStrifeState_Run*	Create(CGameObject* pOwner,CGameObject* pAnimOwner);
 	virtual void				Free() override;
 
 

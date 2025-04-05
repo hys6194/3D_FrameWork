@@ -5,8 +5,8 @@
 
 #include "GameInstance.h"
 
-CStrifeState_Run::CStrifeState_Run(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
-    : CState{ pDevice , pContext, pOwner, pAnimOwner, m_pGameInstance }
+CStrifeState_Run::CStrifeState_Run(CGameObject* pOwner, CGameObject* pAnimOwner)
+    : CState{ pOwner, pAnimOwner, m_pGameInstance }
 {
 }
 
@@ -79,6 +79,7 @@ void CStrifeState_Run::Set_PreAnimation()
 
 void CStrifeState_Run::PlayerMove(_float fTimeDelta)
 {
+    // 나중에 시간 나면 수정하자 머리 아프다
     switch (m_iKeyState)
     {
 
@@ -128,9 +129,9 @@ void CStrifeState_Run::PlayerMove(_float fTimeDelta)
     }
 }
 
-CStrifeState_Run* CStrifeState_Run::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner)
+CStrifeState_Run* CStrifeState_Run::Create(CGameObject* pOwner, CGameObject* pAnimOwner)
 {
-    CStrifeState_Run* pInstance = new CStrifeState_Run(pDevice, pContext, pOwner, pAnimOwner);
+    CStrifeState_Run* pInstance = new CStrifeState_Run(pOwner, pAnimOwner);
 
     if (nullptr == pOwner)
     {

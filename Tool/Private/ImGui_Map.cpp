@@ -215,6 +215,11 @@ void CImGui_Map::Button_AddObjects()
 			m_iObjCnt++;
 			m_listObject = m_pGameInstance->Get_GameObjectList(LEVEL_TOOL, TEXT("Layer_Objcet"));
 		}
+		// 생성할 때 마다 해당 오브젝트의 transform을 가져와서 편하게 하자
+
+		auto iter = m_listObject->back();
+		m_pObject = dynamic_cast<CMap_Object*>(iter);
+		m_pTransform = m_pObject->Get_Transform();
 
 		// 여기서 생성할 때마다 list를 업데이트하자 
 		// 어떻게 가져올 것이냐
@@ -240,7 +245,18 @@ void CImGui_Map::Button_NaviCreate()
 
 	if (Checkbox("Navi", &m_bNavi))
 	{
+		int a = 1;
 	}
+
+	if(m_pGameInstance->Key_Down(DIK_R))
+	{
+		m_bReverse = !m_bReverse;
+	}
+
+	char cInfoX[MAX_PATH]{};
+	sprintf_s(cInfoX, sizeof(cInfoX), "x : %s", m_bReverse ? "true" : "false");
+	Text(cInfoX);
+
 }
 
 void CImGui_Map::Button_TransformPosition()
@@ -354,45 +370,6 @@ void CImGui_Map::Render_TransformScale()
 			m_pTransform->SetUp_Scaled(fScale.x, m_fScale, fScale.z);
 		else if (m_bEvent3)
 			m_pTransform->SetUp_Scaled(fScale.x, fScale.y, m_fScale);
-
-
-		//if (m_bEvent1)
-		//	m_pTransform->Set_State(CTransform::STATE_POS,
-		//		XMVectorSet(m_fValue, fValueY, fValueZ, 1.f));
-		//else if (m_bEvent2)
-		//	m_pTransform->Set_State(CTransform::STATE_POS,
-		//		XMVectorSet(fValueX, m_fValue, fValueZ, 1.f));
-		//else if (m_bEvent3)
-		//	m_pTransform->Set_State(CTransform::STATE_POS,
-		//		XMVectorSet(fValueX, fValueY, m_fValue, 1.f));
-		//if (m_bEvent1)
-		//	fScale.x = m_fScale;
-		//else if (m_bEvent2)
-		//	fScale.y = m_fScale;
-		//else if (m_bEvent3)
-		//	fScale.z = m_fScale;
-		//_float4x4 matScale{};
-		//XMStoreFloat4x4(&matScale, XMMatrixScaling(fScale.x, fScale.y, fScale.z));
-		//
-		//_vector vScale, vRotation, vPosition;
-		//
-		//HRESULT hr = XMMatrixDecompose(&vScale, &vRotation, &vPosition, XMLoadFloat4x4(m_pTransform->Get_WorldMatrix_Ptr()));
-		//
-		//if (hr != E_FAIL)
-		//{
-		//	_float4x4 matRot{};
-		//
-		//	XMStoreFloat4x4(&matRot, XMMatrixRotationQuaternion(vRotation));
-		//
-		//	m_pTransform->Set_Matrix(&matScale);
-		//	m_pTransform->Set_Matrix(&matRot);
-		//
-		//	int a = 10;
-		//}
-
-		//_float4x4 matRot{};
-		//XMStoreFloat4x4(&matRot, ())
-
 	}
 
 }

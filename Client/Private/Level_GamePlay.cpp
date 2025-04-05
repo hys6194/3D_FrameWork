@@ -23,8 +23,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 	
-	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
 		return E_FAIL;
@@ -80,10 +80,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 	
 	TPCam_Desc.vEye = _float3(0.f, 10.f, -10.f);
 	TPCam_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	TPCam_Desc.fFov = XMConvertToRadians(60.f);
+	TPCam_Desc.fFov = XMConvertToRadians(35.f);
 	TPCam_Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	TPCam_Desc.fNear = 0.1f;
-	TPCam_Desc.fFar = 1000.f;
+	TPCam_Desc.fFar = 300.f;
 	TPCam_Desc.fMouseSensor = 0.05f;
 	lstrcpy(TPCam_Desc.szGameObjectTag, TEXT("GameObject_TP_Camera"));
 	TPCam_Desc.fSpeedPerSec = 10.f;

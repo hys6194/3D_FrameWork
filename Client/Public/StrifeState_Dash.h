@@ -12,7 +12,7 @@ BEGIN(Client)
 class CStrifeState_Dash : public CState
 {
 private	:
-	CStrifeState_Dash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	CStrifeState_Dash(CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual ~CStrifeState_Dash() = default;
 
 public:
@@ -42,7 +42,7 @@ private:
 
 
 public:
-	static CStrifeState_Dash* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	static CStrifeState_Dash* Create(CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual void Free();
 };
 

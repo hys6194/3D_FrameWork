@@ -28,7 +28,7 @@ HRESULT CCollider::Initialize_Prototype(TYPE eColliderType)
 
 #ifdef _DEBUG
 
-    m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
+    m_pBatch  = new PrimitiveBatch<VertexPositionColor>(m_pContext);
     m_pEffect = new BasicEffect(m_pDevice);
 
     m_pEffect->SetVertexColorEnabled(true);
@@ -39,8 +39,6 @@ HRESULT CCollider::Initialize_Prototype(TYPE eColliderType)
     m_pEffect->GetVertexShaderBytecode(&pShaderByteCode, &iLength);
 
     m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCode, iLength, &m_pInputLayout);
-
-
 
 #endif
 

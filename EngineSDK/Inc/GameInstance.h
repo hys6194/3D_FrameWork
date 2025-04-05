@@ -31,6 +31,8 @@ public:
 	_float							Random_Normalize();
 	_float							Random(_float fMin, _float fMax);
 
+	_bool 							Random_Persent(_uint iSuccessProb);
+
 
 #pragma region GRAPHIC_DEVICE
 	HRESULT							Clear_BackBuffer_View(_float4 vClearColor);	

@@ -187,6 +187,9 @@
     <Filter Include="01.Utility\04. Component\VIBuffer\Instancing\Particle\Rect">
       <UniqueIdentifier>{16f4119b-5a5b-44b5-b921-04ee34bc6be8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04. Component\Collider\Manager">
+      <UniqueIdentifier>{a748c825-c7e5-4e43-8c30-58fd0ffab5ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -417,6 +420,9 @@
     <ClInclude Include="..\public\VIBuffer_Rect_Instancing.h">
       <Filter>01.Utility\04. Component\VIBuffer\Instancing\Particle\Rect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CollisionManager.h">
+      <Filter>01.Utility\04. Component\Collider\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -619,6 +625,9 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Rect_Instancing.cpp">
       <Filter>01.Utility\04. Component\VIBuffer\Instancing\Particle\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CollisionManager.cpp">
+      <Filter>01.Utility\04. Component\Collider\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

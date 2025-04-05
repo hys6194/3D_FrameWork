@@ -52,6 +52,11 @@ public:
 		XMStoreFloat4(reinterpret_cast<_float4*>(&m_f4WorldMatrix.m[eState][0]), vState);
 	}
 
+	void Set_RotationSpeed(_float fRadian)
+	{
+		m_fRotationPerSec = fRadian;
+	}
+
 private:
 	CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTransform(const CTransform& Prototype);
@@ -71,6 +76,7 @@ public:
 	HRESULT						LookAt(_vector vAt);
 	HRESULT						Dash(_float4 fTimeDelta, class CNavigation* pNavigation = nullptr);
 	void						Turn(_fvector vAxis, _float fTimeDelta);
+	_bool						Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir);
 	void						Rotation(_fvector vAxis, _float fRadian);
 
 public:

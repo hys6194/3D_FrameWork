@@ -12,7 +12,7 @@ BEGIN(Client)
 class CStrifeState_Shoot : public CState
 {
 private	:
-	CStrifeState_Shoot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	CStrifeState_Shoot(CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual ~CStrifeState_Shoot() = default;
 
 public:
@@ -38,7 +38,7 @@ private:
 	void					Apply_ShootAnimation();
 
 public:
-	static CStrifeState_Shoot* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CGameObject* pOwner, CGameObject* pAnimOwner);
+	static CStrifeState_Shoot* Create(CGameObject* pOwner, CGameObject* pAnimOwner);
 	virtual void Free();
 
 	//static CStrifeState_Shoot* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iState, GameObject* pOwner);

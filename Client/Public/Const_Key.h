@@ -9,8 +9,18 @@
 #define AXIS_Z									XMVectorSet(0.f, 0.f, 1.f, 0.f)
 #define AXIS_W									XMVectorSet(0.f, 0.f, 0.f, 1.f)
 
+////float4 µð¹ö±ë
+//_float4 fDebug{};
+//XMStoreFloat4(&fDebug, µð¹ö±ëÇÒº¤ÅÍ´ëÀÔ);
 //TCHAR debugMessage[256];
-//_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), vDelta.x, vDelta.y, vDelta.z, vDelta.w);
+//_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
+//	fDebug.x, fDebug.y, fDebug.z, fDebug.w);
+//OutputDebugString(debugMessage);
+
+//// float µð¹ö±ë
+//TCHAR debugMessage[256];
+//_stprintf_s(debugMessage, _T("Debug_Value: %.6f\n"), 
+// /* µð¹ö±ë_º¯¼ö_³Ö±â*/);
 //OutputDebugString(debugMessage);
 
 
@@ -79,6 +89,7 @@ static const std::wstring PRO_MODEL_WALL_TOP			= TEXT("Prototype_Component_Model
 static const std::wstring PRO_MODEL_WODDEN_CIRCLE		= TEXT("Prototype_Component_Model_Wooden Circle C");
 static const std::wstring PRO_MODEL_SPIKE_E				= TEXT("Prototype_Component_Model_FortressSpike E");
 static const std::wstring PRO_MODEL_SPIKE_A				= TEXT("Prototype_Component_Model_FortressSpike A");
+static const std::wstring PRO_MODEL_PILLAR_ALCOVE		= TEXT("Prototype_Component_Model_Pillar Alcove A");
 
 /* Shader */
 static const std::wstring PRO_SHADER_CELL				= TEXT("Prototype_Component_Shader_VtxCell");
@@ -90,6 +101,7 @@ static const std::wstring PRO_SHADER_ANIM				= TEXT("Prototype_Component_Shader_
 
 /* GameObject */
 static const std::wstring PRO_OBJ_SKY					= TEXT("Prototype_GameObject_Sky");
+static const std::wstring PRO_OBJ_GHOUL					= TEXT("Prototype_GameObject_Ghoul");
 static const std::wstring PRO_OBJ_BULLET				= TEXT("Prototype_GameObject_Bullet"); 
 static const std::wstring PRO_OBJ_PLAYER				= TEXT("Prototype_GameObject_Player");
 static const std::wstring PRO_OBJ_WEAPON				= TEXT("Prototype_GameObject_Weapon");
@@ -104,6 +116,7 @@ static const std::wstring PRO_OBJ_R_GUN					= TEXT("Prototype_GameObject_Gun Rig
 static const std::wstring PRO_OBJ_BACK					= TEXT("Prototype_GameObject_BackGround");
 static const std::wstring PRO_OBJ_CAM_FREE				= TEXT("Prototype_GameObject_Camera Free");
 static const std::wstring PRO_OBJ_BODY					= TEXT("Prototype_GameObject_Player Body");
+static const std::wstring PRO_OBJ_GHOUL_BODY			= TEXT("Prototype_GameObject_Ghoul Body");
 static const std::wstring PRO_OBJ_ROCK1					= TEXT("Prototype_GameObject_Desert Rock1");
 static const std::wstring PRO_OBJ_ROCK2					= TEXT("Prototype_GameObject_Desert Rock2");
 static const std::wstring PRO_OBJ_ROCK_TALL				= TEXT("Prototype_GameObject_Desert RockTall");
@@ -129,6 +142,8 @@ static const std::wstring PRO_OBJ_RUIN_FLOOR			= TEXT("Prototype_GameObject_Ruin
 static const std::wstring PRO_OBJ_WALL_TOP				= TEXT("Prototype_GameObject_Ruin Wall Top");
 static const std::wstring PRO_OBJ_DAM_TRIM				= TEXT("Prototype_GameObject_Dam Trim");
 static const std::wstring PRO_OBJ_WODDEN_CIRCLE			= TEXT("Prototype_GameObject_Wooden Circle C");
+static const std::wstring PRO_OBJ_PILLAR_ALCOVE			= TEXT("Prototype_GameObject_Pillar Alcove A");
+
 
 /* Sockets */
 static const std::wstring SOCKET_LEFT_HAND				= TEXT("Socket_Strife_Hand L");
@@ -145,18 +160,27 @@ static const std::wstring LAYER_DESERT_ROCK_2			= TEXT("Layer_Desert_Rock2");
 
 
 /* Component */
-static const std::wstring COM_FSM				= TEXT("Component_FSM");
-static const std::wstring COM_NAVI				= TEXT("Component_Navigation");
-static const std::wstring COM_VI_CELL			= TEXT("Component_VIBuffer_Cell");
-static const std::wstring COM_VI_CUBE			= TEXT("Component_VIBuffer_Cube");
-static const std::wstring COM_VI_RECT			= TEXT("Component_VIBuffer_Rect");
-static const std::wstring COM_VI_GUIDE			= TEXT("Component_VIBuffer_Guide");
-static const std::wstring COM_VI_TERRAIN		= TEXT("Component_VIBuffer_Terrain");
+static const std::wstring COM_FSM						= TEXT("Component_FSM");
+static const std::wstring COM_NAVI						= TEXT("Component_Navigation");
+static const std::wstring COM_VI_CELL					= TEXT("Component_VIBuffer_Cell");
+static const std::wstring COM_VI_CUBE					= TEXT("Component_VIBuffer_Cube");
+static const std::wstring COM_VI_RECT					= TEXT("Component_VIBuffer_Rect");
+static const std::wstring COM_VI_GUIDE					= TEXT("Component_VIBuffer_Guide");
+static const std::wstring COM_VI_TERRAIN				= TEXT("Component_VIBuffer_Terrain");
 
 /* Collider */
-static const std::wstring COM_COLL_OBB			= TEXT("Component_Collider_OBB");
-static const std::wstring COM_COLL_AABB			= TEXT("Component_Collider_AABB");
-static const std::wstring COM_COLL_SPHERE		= TEXT("Component_Collider_Sphere");
+static const std::wstring COM_COLL_OBB					= TEXT("Component_Collider_OBB");
+static const std::wstring COM_COLL_AABB					= TEXT("Component_Collider_AABB");
+static const std::wstring COM_COLL_SPHERE				= TEXT("Component_Collider_Sphere");
+
+
+
+static const std::wstring PRO_MODEL_RUIN_WALL_CNR_B		= TEXT("Prototype_Component_Model_Wall Cnr B");
+static const std::wstring PRO_MODEL_PILLAR_DECO_A		= TEXT("Prototype_Component_Model_Pillar Base Deco A");
+
+static const std::wstring PRO_OBJ_RUIN_WALL_CNR_B		= TEXT("Prototype_GameObject_Wall Cnr B");
+static const std::wstring PRO_OBJ_PILLAR_DECO_A			= TEXT("Prototype_GameObject_Pillar Base Deco A");
+
 
 
 
