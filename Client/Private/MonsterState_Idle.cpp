@@ -14,45 +14,42 @@ HRESULT CMonsterState_Idle::Enter_State()
 { 
     Set_CurAnimation();
 
-    m_pPlayer = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
+    Setting_PlayerInfo();
 
     return S_OK;
 }
 
 void CMonsterState_Idle::PriorityUpdate_State(_float fTimeDelta)
 {
-    // 이게 맞나? 차라리 Base에 그냥 함수로 만들어서 호출하는게 훨 나아보이기도 하고
-    __super::PriorityUpdate_State(fTimeDelta);
+    if (FAILED(Check_Dead(fTimeDelta)))
+        return;
 
-    // 이 탐지거리라는게 플레이어와 몬스터의 위치 벡터를 구하고 그 거리내에 있어야 탐지거리가 되는 것인데 
-    // 이는 어떻게 할 것이며 다른 몬스터의 상태에 접근하여 주변 몬스터에게 상태 변화를 어떻게 줄 것이냐
-    // 또한 그 거리는 어떻게 에서 사용설정할 것인가?
-    // 탐지거리는 어차피 Idle하고 다시는 안사용할 것 같으니 Idle에서 직접 쓰는 것으로 하자 
-    // 몬스터마다 탐지거리는 달리 할 것인가?
-    // 그것은 생각을 해봐야 함 
-    // 어차피 탐지할 몬스터들은 보스를 제외한 나머지 간단한 몹들이므로 통일시켜 하자
+    if (FAILED(Check_Hit(fTimeDelta)))
+        return;
+
     _vector vPos = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS);
     _vector vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
-
     _vector vPlayerPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
 
-    _float fDistance = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
-
-
-    //if (fDistance > 25.f)
-    //    m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
-
-    // 몬스터의 Collider 와 총알의 Collider의 충돌로 인한 피격 판정
-    //else if(fDistance < 25.f  
-    // /*&&  히트 되었을 때 해당 객체의 Coll 충돌 판단*/)
-    //    m_pMonster->Change_CurrentState(CMonster::STATE_HIT);
     _vector vTargetPos = XMVector4Normalize(Calculate_MonsterDir(vPlayerPos));
 
     _float fDegree = XMConvertToDegrees(acosf(XMVectorGetX(XMVector4Dot(vLook, vTargetPos))));
 
+    if (m_pMonster->Is_Hit())
+    {
+        if (fDegree > 60.f)
+            m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
+        else
+            m_pMonster->Change_CurrentState(CMonster::STATE_TRACE);
+
+        return;
+    }
+
+    _float fDistance = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
+
     if(fDistance < m_fDistance)
     {
-        if (fDegree > 70.f)
+        if (fDegree > 60.f)
             m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
         else
             m_pMonster->Change_CurrentState(CMonster::STATE_TRACE);
@@ -80,6 +77,7 @@ void CMonsterState_Idle::Set_PreAnimation()
 {
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
+    m_iPreState = CMonster::STATE_IDLE;
 }
 
 void CMonsterState_Idle::Update_Animation(_float fTimeDelta)

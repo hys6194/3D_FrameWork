@@ -30,9 +30,10 @@ public:
 	void							Set_CurAnimation() override;
 
 private:
-	_float							m_fDistance = { 15.f };
+	_float							m_fDistance = { 15.f }; // 임시로 설정
 
 	class CGameObject*				m_pPlayer = { nullptr };
+	_float							m_fUpdateTime = {};
 
 public:
 	// 몬스터들이 공용으로 사용할 State라서 애니메이션 인덱스를 인자로 받아 출력하게 한다

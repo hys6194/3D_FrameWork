@@ -173,7 +173,6 @@ _bool CMesh::Check_Coll_Meshes(_vector vPos, _vector vDir, _vector vScale, _vect
 		}
 	}
 
-
 	return false;
 }
 

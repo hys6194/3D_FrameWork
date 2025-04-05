@@ -370,45 +370,6 @@ void CImGui_Map::Render_TransformScale()
 			m_pTransform->SetUp_Scaled(fScale.x, m_fScale, fScale.z);
 		else if (m_bEvent3)
 			m_pTransform->SetUp_Scaled(fScale.x, fScale.y, m_fScale);
-
-
-		//if (m_bEvent1)
-		//	m_pTransform->Set_State(CTransform::STATE_POS,
-		//		XMVectorSet(m_fValue, fValueY, fValueZ, 1.f));
-		//else if (m_bEvent2)
-		//	m_pTransform->Set_State(CTransform::STATE_POS,
-		//		XMVectorSet(fValueX, m_fValue, fValueZ, 1.f));
-		//else if (m_bEvent3)
-		//	m_pTransform->Set_State(CTransform::STATE_POS,
-		//		XMVectorSet(fValueX, fValueY, m_fValue, 1.f));
-		//if (m_bEvent1)
-		//	fScale.x = m_fScale;
-		//else if (m_bEvent2)
-		//	fScale.y = m_fScale;
-		//else if (m_bEvent3)
-		//	fScale.z = m_fScale;
-		//_float4x4 matScale{};
-		//XMStoreFloat4x4(&matScale, XMMatrixScaling(fScale.x, fScale.y, fScale.z));
-		//
-		//_vector vScale, vRotation, vPosition;
-		//
-		//HRESULT hr = XMMatrixDecompose(&vScale, &vRotation, &vPosition, XMLoadFloat4x4(m_pTransform->Get_WorldMatrix_Ptr()));
-		//
-		//if (hr != E_FAIL)
-		//{
-		//	_float4x4 matRot{};
-		//
-		//	XMStoreFloat4x4(&matRot, XMMatrixRotationQuaternion(vRotation));
-		//
-		//	m_pTransform->Set_Matrix(&matScale);
-		//	m_pTransform->Set_Matrix(&matRot);
-		//
-		//	int a = 10;
-		//}
-
-		//_float4x4 matRot{};
-		//XMStoreFloat4x4(&matRot, ())
-
 	}
 
 }

@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "State.h"
 
+
 BEGIN(Engine)
 class CState;
 class CModel;
@@ -33,11 +34,11 @@ public:
 	// 상태 관련 가상함수
 public:
 	// CState을(를) 통해 상속됨
-	HRESULT									Enter_State()							= 0;
-	void									PriorityUpdate_State(_float fTimeDelta) override;
-	void									Update_State(_float fTimeDelta)			= 0;
-	void									LateUpdate_State(_float fTimeDelta)		= 0;
-	HRESULT									Exit_State()							= 0;
+	virtual HRESULT							Enter_State()							= 0;
+	virtual void							PriorityUpdate_State(_float fTimeDelta);
+	virtual	void							Update_State(_float fTimeDelta)			= 0;
+	virtual	void							LateUpdate_State(_float fTimeDelta)		= 0;
+	virtual	HRESULT							Exit_State()							= 0;
 
 	// 애니메이션 관리 순수 가상 함수
 public:
@@ -47,8 +48,14 @@ public:
 
 protected:
 	_vector									Calculate_MonsterDir(_vector vTargetPos);
+	_bool									Update_MonsterLook(_float fTimeDelta);
+	void									Update_MonsterTurnSpeed();
+	void									Setting_PlayerInfo();
 
-	
+	HRESULT									Check_Dead(_float fTimeDelta);
+	HRESULT									Check_Hit(_float fTimeDelta);
+
+
 protected:	
 	class CModel*							m_pModelCom								= { nullptr };
 
@@ -57,10 +64,12 @@ protected:
 	_bool									m_bAnimEnd								= { false };
 
 	_uint									m_iAnimIndex							= {};
+	_uint									m_iPreState								= {};
 
 protected:
 	class CMonster*							m_pMonster								= { nullptr };	
 	class CBody_Ghoul*						m_pBody									= { nullptr };
+	class CGameObject*						m_pPlayer 								= { nullptr };
 
 public:
 	virtual void							Free()									override;

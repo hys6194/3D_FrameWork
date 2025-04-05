@@ -15,7 +15,7 @@ HRESULT CMonsterState_Dead::Enter_State()
 { 
     Set_CurAnimation();
 
-    m_pPlayer = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
+    Setting_PlayerInfo();
 
     return S_OK;
 }
@@ -23,7 +23,6 @@ HRESULT CMonsterState_Dead::Enter_State()
 void CMonsterState_Dead::PriorityUpdate_State(_float fTimeDelta)
 {
     // 이게 맞나? 차라리 Base에 그냥 함수로 만들어서 호출하는게 훨 나아보이기도 하고
-    __super::PriorityUpdate_State(fTimeDelta);
 
     // 이 탐지거리라는게 플레이어와 몬스터의 위치 벡터를 구하고 그 거리내에 있어야 탐지거리가 되는 것인데 
     // 이는 어떻게 할 것이며 다른 몬스터의 상태에 접근하여 주변 몬스터에게 상태 변화를 어떻게 줄 것이냐

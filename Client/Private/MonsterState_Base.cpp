@@ -18,16 +18,7 @@ HRESULT CMonsterState_Base::Enter_State()
 
 void CMonsterState_Base::PriorityUpdate_State(_float fTimeDelta)
 {
-	// 몬스터가 죽었는지 안 죽었는지 알아야 함
-	_bool bDead = m_pMonster->Is_Dead();
-
-	if (bDead)
-	{
-		m_pMonster->Change_CurrentState(CMonster::STATE_DEAD);
-		return;
-	}
-
-	// 피격 판정 어케해야하지 진짜
+	//구조가 바뀌었다
 }
 
 void CMonsterState_Base::Update_Animation(_float fTimeDelta)
@@ -44,6 +35,61 @@ _vector CMonsterState_Base::Calculate_MonsterDir(_vector vTargetPos)
 {
 	// 상속시켜서 다른 함수에서도 사용하게 하자 쓰기 편하게
 	return XMVector4Normalize(XMVectorSetY(XMVectorSubtract(vTargetPos, m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS)), 0.f));
+}
+
+_bool CMonsterState_Base::Update_MonsterLook(_float fTimeDelta)
+{
+	_vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
+
+	return m_pMonster->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, vTargetPos);
+}
+
+void CMonsterState_Base::Update_MonsterTurnSpeed()
+{
+	_vector vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+	_vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
+
+	_float fDot = acosf(XMVectorGetX(XMVector4Dot(vLook, vTargetPos)));
+
+	// 진입했을 때 각도에 따른 속도 설정
+	m_pMonster->Get_Transform()->Set_RotationSpeed(fDot);
+}
+
+void CMonsterState_Base::Setting_PlayerInfo()
+{
+	m_pPlayer = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
+}
+
+HRESULT CMonsterState_Base::Check_Dead(_float fTimeDelta)
+{
+	_bool bDead = m_pMonster->Is_Dead();
+
+	if (bDead)
+	{
+		m_pMonster->Change_CurrentState(CMonster::STATE_DEAD);
+		return E_ABORT;
+	}
+	
+	return S_OK;
+}
+
+HRESULT CMonsterState_Base::Check_Hit(_float fTimeDelta)
+{
+	_bool bHit = m_pMonster->Is_Hit();
+
+	if (bHit && (m_iPreState != CMonster::STATE_ATTACK))
+	{
+		// 해당 몬스터의 Shader처리
+
+		// 일정 확률로 이동하게 해야함 
+		if (m_pGameInstance->Random_Persent(20))
+		{
+			m_pMonster->Change_CurrentState(CMonster::STATE_HIT);
+			return E_ABORT;
+		}
+	}
+
+	return S_OK;
 }
 
 

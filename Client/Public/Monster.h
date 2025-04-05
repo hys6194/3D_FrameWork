@@ -40,15 +40,14 @@ public:
 	enum MONSTER_STATE { STATE_IDLE, STATE_SEARCH, STATE_TRACE, STATE_HIT, STATE_ATTACK, STATE_AVOID, STATE_DEAD, STATE_NONE };
 
 public:
-	void									Set_Dead	(_bool bDead)					{ m_bIsDead = bDead; }
-	void									Set_Hit		(_bool bHit)					{ m_bHit    = bHit;  }
+	void									Set_Dead			(_bool bDead)			{ m_bIsDead = bDead; }
+	void									Set_Hit				(_bool bHit)			{ m_bHit    = bHit;  }
+	void									Set_Critical		(_bool bCri)			{ m_bCri	= bCri;  }
 public:
 	//Getter
 	_bool									Is_Dead()									{ return m_bIsDead; }
 	_bool									Is_Hit ()									{ return m_bHit;    }
-
-	//_float								Get_Distance()								{ return m_fDetectDistance; }
-
+	_bool									Is_Critical()								{ return m_bCri;    }
 
 public:
 	void									Change_CurrentState(MONSTER_STATE eState)   { m_iState = eState; }
@@ -75,6 +74,7 @@ protected:
 protected:
 	_bool									m_bIsDead									= { false };
 	_bool									m_bHit										= { false };
+	_bool									m_bCri										= { false };
 	_bool									m_bIsBoss									= { false };
 	_bool									m_bWave										= { false };
 

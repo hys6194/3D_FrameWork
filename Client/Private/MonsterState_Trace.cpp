@@ -13,8 +13,8 @@ CMonsterState_Trace::CMonsterState_Trace(CGameObject* pOwner, CGameObject* pAnim
 HRESULT CMonsterState_Trace::Enter_State()
 { 
     Set_CurAnimation();
+    Setting_PlayerInfo();
 
-    m_pPlayer = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
 
     return S_OK;
 }
@@ -22,26 +22,34 @@ HRESULT CMonsterState_Trace::Enter_State()
 void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
 {
     // 이게 맞나? 차라리 Base에 그냥 함수로 만들어서 호출하는게 훨 나아보이기도 하고
-    __super::PriorityUpdate_State(fTimeDelta);
+    if (FAILED(Check_Dead(fTimeDelta)))
+        return;
 
-    _vector vPos = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS);
-    _vector vPlayerPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
+    if (FAILED(Check_Hit(fTimeDelta)))
+        return;
 
-    _float fDistanace = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
+    m_fUpdateTime += m_pGameInstance->Get_TimeDelta(TIME60);
 
+    // 1초마다 몬스터의 방향 설정
+    // 인데 찌그러지네 시발?
+    if (1.f < m_fUpdateTime)
+    {
+        m_fUpdateTime = 0.f;
+        Update_MonsterTurnSpeed();
+    }
 
-    //if (m_bAnimEnd)
-    //{
-    //    m_pMonster->Change_CurrentState(CMonster::STATE_IDLE);
-    //}
+    _bool bTurn = Update_MonsterLook(fTimeDelta);
 
-
+    m_pMonster->Get_Transform()->Go_Straight(fTimeDelta, 
+        dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
 }
 
 
 void CMonsterState_Trace::Update_State(_float fTimeDelta)
 {
     Update_Animation(fTimeDelta);
+
+
 }
 
 void CMonsterState_Trace::LateUpdate_State(_float fTimeDelta)
@@ -59,6 +67,7 @@ void CMonsterState_Trace::Set_PreAnimation()
 {
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
+    m_iPreState = CMonster::STATE_TRACE;
 }
 
 void CMonsterState_Trace::Update_Animation(_float fTimeDelta)

@@ -79,6 +79,7 @@ void CStrifeState_Run::Set_PreAnimation()
 
 void CStrifeState_Run::PlayerMove(_float fTimeDelta)
 {
+    // 나중에 시간 나면 수정하자 머리 아프다
     switch (m_iKeyState)
     {
 

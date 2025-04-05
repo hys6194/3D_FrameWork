@@ -13,17 +13,11 @@ CMonsterState_Search::CMonsterState_Search(CGameObject* pOwner, CGameObject* pAn
 
 HRESULT CMonsterState_Search::Enter_State()
 { 
+    Setting_PlayerInfo();
+
     Set_CurAnimation();
-
-    m_pPlayer = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
-
-    _vector vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
-    _vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
-
-    _float fDot = acosf(XMVectorGetX(XMVector4Dot(vLook, vTargetPos)));
-
-    // 진입했을 때 각도에 따른 속도 설정
-    m_pMonster->Get_Transform()->Set_RotationSpeed(fDot);
+    // 진입했을 때 플레이어와 몬스터의 각도로 회전 속도 설정
+    Update_MonsterTurnSpeed();
 
     return S_OK;
 }
@@ -31,7 +25,8 @@ HRESULT CMonsterState_Search::Enter_State()
 void CMonsterState_Search::PriorityUpdate_State(_float fTimeDelta)
 {
     // 이게 맞나? 차라리 Base에 그냥 함수로 만들어서 호출하는게 훨 나아보이기도 하고
-    __super::PriorityUpdate_State(fTimeDelta);
+    if (FAILED(Check_Dead(fTimeDelta)))
+        return;
 
     _vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
 
@@ -63,18 +58,15 @@ void CMonsterState_Search::Set_PreAnimation()
 {
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
+    m_iPreState = CMonster::STATE_SEARCH;
     m_bAnimEnd = false;
-    //m_pModelCom->Set_PreAnimation(m_iAnimIndex+1);
 }
 
 void CMonsterState_Search::Update_Animation(_float fTimeDelta)
 {
-    if (0 != m_pModelCom->Get_PreAnimIndex()
-        && m_pModelCom->Get_Interpolate())
-        m_pModelCom->Interpolate_Animation(0.2f);
-    else
-        m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
-    /*__super::Update_Animation(fTimeDelta);*/
+    //__super::Update_Animation(fTimeDelta);
+    m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
+
 }
 
 void CMonsterState_Search::Set_CurAnimation()
