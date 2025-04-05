@@ -64,7 +64,7 @@ _vector* CPipeLine::Get_PlayerViewPortPos()
 
 	// 원래 0.5가 뷰 포트 상 제일 중앙이 되는 좌표임 
 	// 플레이어의 팔 위치로 중점을 옮긴거 밖에 안됨
-	fTest.y = pt.y / -(ViewPort.Height * 0.33f) + 1.f;
+	fTest.y = pt.y / -(ViewPort.Height * 0.4f) + 1.f;
 
 	vTest = XMVectorSet(fTest.x, fTest.y, 0.f, 1.f);
 

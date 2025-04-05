@@ -32,13 +32,33 @@ void CMonsterState_Idle::PriorityUpdate_State(_float fTimeDelta)
     // 그것은 생각을 해봐야 함 
     // 어차피 탐지할 몬스터들은 보스를 제외한 나머지 간단한 몹들이므로 통일시켜 하자
     _vector vPos = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS);
+    _vector vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+
     _vector vPlayerPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
 
-    _float fDistanace = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
+    _float fDistance = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
 
+
+    //if (fDistance > 25.f)
+    //    m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
+
+    // 몬스터의 Collider 와 총알의 Collider의 충돌로 인한 피격 판정
+    //else if(fDistance < 25.f  
+    // /*&&  히트 되었을 때 해당 객체의 Coll 충돌 판단*/)
+    //    m_pMonster->Change_CurrentState(CMonster::STATE_HIT);
+    _vector vTargetPos = XMVector4Normalize(Calculate_MonsterDir(vPlayerPos));
+
+    _float fDegree = XMConvertToDegrees(acosf(XMVectorGetX(XMVector4Dot(vLook, vTargetPos))));
+
+    if(fDistance < m_fDistance)
+    {
+        if (fDegree > 70.f)
+            m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
+        else
+            m_pMonster->Change_CurrentState(CMonster::STATE_TRACE);
+    }
 
 }
-
 
 void CMonsterState_Idle::Update_State(_float fTimeDelta)
 {

@@ -1,11 +1,16 @@
 #include "Ghoul.h"
 #include "Monster.h"
 
+#include "Body_Ghoul.h"
 #include "GameInstance.h"
 
+#include "MonsterState_Attack.h"
+#include "MonsterState_Search.h"
+#include "MonsterState_Trace.h"
+#include "MonsterState_Avoid.h"
 #include "MonsterState_Idle.h"
+#include "MonsterState_Dead.h"
 #include "MonsterState_Hit.h"
-#include "Body_Ghoul.h"
 
 CGhoul::CGhoul(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CMonster { pDevice ,pContext }
@@ -64,6 +69,15 @@ void CGhoul::Priority_Update(_float fTimeDelta)
    if (m_pGameInstance->Key_Down(DIK_5))
        m_iState = STATE_AVOID;
 
+   if (m_pGameInstance->Key_Down(DIK_6))
+       m_iState = STATE_ATTACK;
+
+   if (m_pGameInstance->Key_Down(DIK_7))
+       m_iState = STATE_TRACE;
+
+
+   //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(1.61f, 2.96f, 34.18f, 1.00f));
+
 }
 
 void CGhoul::Update(_float fTimeDelta)
@@ -105,10 +119,25 @@ HRESULT CGhoul::Ready_States()
     CState* pState = nullptr;
 
     pState = CMonsterState_Idle::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_IDLE);
-    m_pFSMCom->Add_State(STATE_IDLE, pState);   
+    m_pFSMCom->Add_State(CMonster::STATE_IDLE, pState);
 
     pState = CMonsterState_Hit::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_IMPACT_F);
-    m_pFSMCom->Add_State(STATE_HIT, pState);
+    m_pFSMCom->Add_State(CMonster::STATE_HIT, pState);
+
+    pState = CMonsterState_Search::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_TURN90_L);
+    m_pFSMCom->Add_State(CMonster::STATE_SEARCH, pState);
+
+    pState = CMonsterState_Dead::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_DEATH);
+    m_pFSMCom->Add_State(CMonster::STATE_DEAD, pState);
+
+    pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_FLURRY);
+    m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
+
+    pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_EVADE_LEFT);
+    m_pFSMCom->Add_State(CMonster::STATE_AVOID, pState);
+
+    pState = CMonsterState_Trace::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_RUN_F);
+    m_pFSMCom->Add_State(CMonster::STATE_TRACE, pState);
 
     return S_OK;
 }
@@ -117,12 +146,13 @@ HRESULT CGhoul::Ready_Components()
 {
     __super::Ready_Components();
 
-    CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
+    CBounding_OBB::BOUNDING_OBB_DESC		ColliderDesc{};
     ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
     ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
+    ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
     
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
-    	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_AABB, &ColliderDesc), E_FAIL);
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
+    	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_OBB, &ColliderDesc), E_FAIL);
     
     
     return S_OK;

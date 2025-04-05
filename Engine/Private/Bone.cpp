@@ -42,18 +42,22 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
             XMLoadFloat4x4(&m_matTransform) *
             XMLoadFloat4x4(pPreTransformMatrix));
 
+
+    // 원래 이렇게 하면 안됨
+    // 다음에는 함수 만들 때 루트 본의 이름을 받아오고 이름을 확인한 후 그 뼈의 매트릭스에 접근하는 것으로 하자
     else if (1 == m_iParentBoneIndex)
     {
         _float4x4 matPreTransform;
         _float4 vPreTrans, vDelta, vNonTrans {0.f,0.f,0.f,1.f};
     
+        // 루트 본의 매트릭스를 제일 부모의 매트릭스에 곱하기 전의 로컬(?) 매트릭스 꺼내오기
         XMStoreFloat4x4(&matPreTransform,
             XMLoadFloat4x4(&m_matTransform) * XMLoadFloat4x4(&Bones[m_iParentBoneIndex]->m_matCombinedTransform));
 
         memcpy(&vPreTrans, &matPreTransform.m[3][0], sizeof(_float4));
     
         // 현재 매트릭스 값에 이동량을 초기화
-        memcpy(&matPreTransform.m[3][0], &vNonTrans, sizeof(_float4));
+        memcpy(&matPreTransform.m[3][0], &vNonTrans, sizeof(_float4));  
     
         // 이동량 계산
         XMStoreFloat4(&vDelta, XMVectorSetW(XMLoadFloat4(&vPreTrans) - XMLoadFloat4(&m_vPreDelta), 1.f));
@@ -65,27 +69,21 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
         // 이전 값을 저장
         m_vPreDelta = vPreTrans;
 
-        // 이동량을 제거한 매트릭스를 컴바인드 행렬에 대입함으로서 애니메이션의 로컬 이동량 제거
         XMStoreFloat4x4(&m_matCombinedTransform,
             XMLoadFloat4x4(&matPreTransform));
 
-        // 플레이어의 위치에 그대로 입력
-        // 방향은 고려되지 않았음
-        // pObject->Get_Transform()->Set_State(CTransform::STATE_POS,
-        //    pObject->Get_Transform()->Get_State(CTransform::STATE_POS) +
-        //    XMVectorSetW(XMLoadFloat4(&m_vCurDelta), 0.f));
-    
-        // pObject->Get_Transform()->Dash(m_vCurDelta);
 
+        //_float4 fDebug{};
+        //XMStoreFloat4(&fDebug, vAngle);
         //TCHAR debugMessage[256];
-        //_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), vDelta.x, vDelta.y, vDelta.z, vDelta.w);
+        //_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
+        //    fDebug.x, fDebug.y, fDebug.z, fDebug.w);
         //OutputDebugString(debugMessage);
 
-
-        //TCHAR debugMessage[256];
-        //_stprintf_s(debugMessage, _T("Player_Look: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
-        //    vDelta.x, vDelta.y, vDelta.z, vDelta.w);
-        //OutputDebugString(debugMessage);
+//        //TCHAR debugMessage1[256];
+        //_stprintf_s(debugMessage1, _T("Debug_Value: x = %.6f\n"),
+        //    fAngle);
+        //OutputDebugString(debugMessage1);
     
     }
 

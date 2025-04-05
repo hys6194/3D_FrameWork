@@ -54,11 +54,12 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 	Input_Keys();
 
 	// 왜 이렇게 했지? 이유가 있었는데
-	//m_pFSMCom->Change_State(m_iState);
-	//m_pFSMCom->PriUpdate_State(fTimeDelta);
-
-	m_pFSMCom->PriUpdate_State(fTimeDelta);
+	// 대쉬 초기화 때문에
 	m_pFSMCom->Change_State(m_iState);
+	m_pFSMCom->PriUpdate_State(fTimeDelta);
+
+	//m_pFSMCom->PriUpdate_State(fTimeDelta);
+	//m_pFSMCom->Change_State(m_iState);
 
 	m_pColliderCom->Reset();
 

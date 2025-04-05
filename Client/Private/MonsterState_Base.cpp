@@ -40,6 +40,12 @@ void CMonsterState_Base::Update_Animation(_float fTimeDelta)
 		m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta);
 }
 
+_vector CMonsterState_Base::Calculate_MonsterDir(_vector vTargetPos)
+{
+	// 상속시켜서 다른 함수에서도 사용하게 하자 쓰기 편하게
+	return XMVector4Normalize(XMVectorSetY(XMVectorSubtract(vTargetPos, m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS)), 0.f));
+}
+
 
 void CMonsterState_Base::Free()
 {

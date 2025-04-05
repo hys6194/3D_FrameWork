@@ -83,9 +83,6 @@ HRESULT CFSM::Change_State(const _uint& iState)
     m_pCurrentState->Enter_State();
 
 
-    // 여기에 뼈 던지기
-
-
     return S_OK;
 }
 

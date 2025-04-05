@@ -9,8 +9,18 @@
 #define AXIS_Z									XMVectorSet(0.f, 0.f, 1.f, 0.f)
 #define AXIS_W									XMVectorSet(0.f, 0.f, 0.f, 1.f)
 
+////float4 µð¹ö±ë
+//_float4 fDebug{};
+//XMStoreFloat4(&fDebug, µð¹ö±ëÇÒº¤ÅÍ´ëÀÔ);
 //TCHAR debugMessage[256];
-//_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), vDelta.x, vDelta.y, vDelta.z, vDelta.w);
+//_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
+//	fDebug.x, fDebug.y, fDebug.z, fDebug.w);
+//OutputDebugString(debugMessage);
+
+//// float µð¹ö±ë
+//TCHAR debugMessage[256];
+//_stprintf_s(debugMessage, _T("Debug_Value: %.6f\n"), 
+// /* µð¹ö±ë_º¯¼ö_³Ö±â*/);
 //OutputDebugString(debugMessage);
 
 

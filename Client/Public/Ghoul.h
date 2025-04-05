@@ -13,26 +13,29 @@ private:
 	virtual ~CGhoul() = default;
 
 public:
-	enum GHOUL_ANIMLIST
-	{
-		GHOUL_DEAD_POSE = 0,
-		GHOUL_DEATH,
-		GHOUL_EAT, 
-		GHOUL_EVADE_LEFT,
-		GHOUL_EVADE_RIGHT,
-		GHOUL_EXCUTION,
-		GHOUL_IDLE,
-		GHOUL_IMPACT_F, // Hit
-		GHOUL_IMPACT_L,
-		GHOUL_SPAWN,
-		GHOUL_TAUNT,
-		GHOUL_RUN,
-		GHOUL_TURN_LEFT,
-		GHOUL_TURN_RIGHT,
-		GHOUL_WALK_B,
-		GHOUL_WALK_F,
-		GHOUL_WALK_L,
-	};
+    enum GHOUL_ANIMLIST {
+        GHOUL_ATK_FLURRY,
+        GHOUL_ATK_LEAP,
+        GHOUL_DEADPOSE,
+        GHOUL_DEATH,
+        GHOUL_EAT,
+        GHOUL_EVADE_LEFT,
+        GHOUL_EVADE_RIGHT,
+        GHOUL_IA_DEATH_STRIFE,
+        GHOUL_IDLE,
+        GHOUL_IMPACT_F,
+        GHOUL_IMPACT_L,
+        GHOUL_RUN_F,
+        GHOUL_SPAWN_CLIMB,
+        GHOUL_TAUNT_A,
+        GHOUL_TURN90_L,
+        GHOUL_TURN90_R,
+        GHOUL_WALK_B,
+        GHOUL_WALK_F,
+        GHOUL_WALK_L,
+        GHOUL_WALK_R
+    };
+
 
 public:
 	virtual HRESULT							Initialize_Prototype() override;

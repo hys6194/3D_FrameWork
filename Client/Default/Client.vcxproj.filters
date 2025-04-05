@@ -139,6 +139,9 @@
     <Filter Include="02.GameObjects\Monster\States\Search">
       <UniqueIdentifier>{87dad47b-6209-4d1e-8e51-ea1586fdbe56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\States\MonsterState_Trace">
+      <UniqueIdentifier>{c4bfcfaf-e7b0-4561-a8c3-07a26bb09830}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -264,6 +267,9 @@
     <ClInclude Include="..\Public\MonsterState_Search.h">
       <Filter>02.GameObjects\Monster\States\Search</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MonsterState_Trace.h">
+      <Filter>02.GameObjects\Monster\States\MonsterState_Trace</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -386,6 +392,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterState_Search.cpp">
       <Filter>02.GameObjects\Monster\States\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState_Trace.cpp">
+      <Filter>02.GameObjects\Monster\States\MonsterState_Trace</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

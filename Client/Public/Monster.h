@@ -42,7 +42,6 @@ public:
 public:
 	void									Set_Dead	(_bool bDead)					{ m_bIsDead = bDead; }
 	void									Set_Hit		(_bool bHit)					{ m_bHit    = bHit;  }
-
 public:
 	//Getter
 	_bool									Is_Dead()									{ return m_bIsDead; }

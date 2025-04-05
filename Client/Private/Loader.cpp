@@ -292,7 +292,7 @@ HRESULT CLoader::Loading_Models()
 		//		PreTransformMatrix))))
 		//	return E_FAIL;
 		//
-		//// Ghoul 저장용
+		// Ghoul 저장용
 		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
 		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
 		//		"../Bin/Resources/Models/AnimModel/Ghoul/Ghoul.fbx",
@@ -330,9 +330,10 @@ HRESULT CLoader::Loading_Models()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Heroes/Strife.bin", PreTransformMatrix))))
 			return E_FAIL;
-		
+			
 		
 		// Ghoul 불러오기
+		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/Ghoul.bin", PreTransformMatrix))))
 			return E_FAIL;

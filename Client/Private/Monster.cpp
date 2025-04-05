@@ -27,13 +27,6 @@ HRESULT CMonster::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-
-	// 자식에서 각자 세팅해야 함
-	//m_bWave			= pDesc->bWave;
-	//m_bIsBoss			= pDesc->bBoss;
-	//m_iState			= pDesc->iState;
-	//m_iHP				= pDesc->iHP;
-
 	return S_OK;
 }
 

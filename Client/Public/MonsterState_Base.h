@@ -45,6 +45,9 @@ public:
 	void									Update_Animation(_float fTimeDelta)		override;
 	void									Set_CurAnimation()						= 0;
 
+protected:
+	_vector									Calculate_MonsterDir(_vector vTargetPos);
+
 	
 protected:	
 	class CModel*							m_pModelCom								= { nullptr };
@@ -53,7 +56,7 @@ protected:
 	_bool									m_bIsDesd								= { false };
 	_bool									m_bAnimEnd								= { false };
 
-	_uint								m_iAnimIndex							= {};
+	_uint									m_iAnimIndex							= {};
 
 protected:
 	class CMonster*							m_pMonster								= { nullptr };	
