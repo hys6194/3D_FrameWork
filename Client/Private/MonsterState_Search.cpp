@@ -37,7 +37,6 @@ void CMonsterState_Search::PriorityUpdate_State(_float fTimeDelta)
 
 }
 
-
 void CMonsterState_Search::Update_State(_float fTimeDelta)
 {
     Update_Animation(fTimeDelta);
