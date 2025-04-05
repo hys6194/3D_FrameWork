@@ -13,9 +13,9 @@ CMonsterState_Attack::CMonsterState_Attack(CGameObject* pOwner, CGameObject* pAn
 
 HRESULT CMonsterState_Attack::Enter_State()
 { 
+    Setting_PlayerInfo();
     Set_CurAnimation();
 
-    Setting_PlayerInfo();
     return S_OK;
 }
 
@@ -60,7 +60,7 @@ void CMonsterState_Attack::Set_PreAnimation()
 {
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
-    m_iPreState = CMonster::STATE_ATTACK;
+    m_pMonster->Set_PreState(CMonster::STATE_ATTACK);
 
     m_bAnimEnd = false;
 }

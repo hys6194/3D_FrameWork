@@ -12,9 +12,11 @@ CMonsterState_Idle::CMonsterState_Idle(CGameObject* pOwner, CGameObject* pAnimOw
 
 HRESULT CMonsterState_Idle::Enter_State()
 { 
+    Setting_PlayerInfo();
+
     Set_CurAnimation();
 
-    Setting_PlayerInfo();
+    m_iPreState = m_pMonster->Get_PreState();
 
     return S_OK;
 }
@@ -35,7 +37,7 @@ void CMonsterState_Idle::PriorityUpdate_State(_float fTimeDelta)
 
     _float fDegree = XMConvertToDegrees(acosf(XMVectorGetX(XMVector4Dot(vLook, vTargetPos))));
 
-    if (m_pMonster->Is_Hit())
+    if (m_pMonster->Is_Rec())
     {
         if (fDegree > 60.f)
             m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
@@ -77,7 +79,8 @@ void CMonsterState_Idle::Set_PreAnimation()
 {
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
-    m_iPreState = CMonster::STATE_IDLE;
+    m_pMonster->Set_PreState(CMonster::STATE_IDLE);
+
 }
 
 void CMonsterState_Idle::Update_Animation(_float fTimeDelta)

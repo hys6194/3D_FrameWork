@@ -7,8 +7,9 @@ CMonsterState_Base::CMonsterState_Base(CGameObject* pOwner, CGameObject* pAnimOw
 	: CState{ pOwner, pAnimOwner, m_pGameInstance }
 {
 	// 이래도 되려나	
-	m_pMonster = dynamic_cast<CMonster*>(m_pOwner);
-	m_pBody    = dynamic_cast<CBody_Ghoul*>(m_pAnimOwner);
+	m_pMonster  = dynamic_cast<CMonster*>(m_pOwner);
+	m_pBody     = dynamic_cast<CBody_Ghoul*>(m_pAnimOwner);
+	m_pModelCom = m_pBody->Get_Model();
 }
 
 HRESULT CMonsterState_Base::Enter_State()
@@ -44,15 +45,18 @@ _bool CMonsterState_Base::Update_MonsterLook(_float fTimeDelta)
 	return m_pMonster->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, vTargetPos);
 }
 
-void CMonsterState_Base::Update_MonsterTurnSpeed()
+_float CMonsterState_Base::Update_MonsterTurnSpeed()
 {
 	_vector vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
 	_vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
 
 	_float fDot = acosf(XMVectorGetX(XMVector4Dot(vLook, vTargetPos)));
 
+	_float fDegree = XMConvertToRadians(fDot);
 	// 진입했을 때 각도에 따른 속도 설정
 	m_pMonster->Get_Transform()->Set_RotationSpeed(fDot);
+	
+	return fDegree;
 }
 
 void CMonsterState_Base::Setting_PlayerInfo()

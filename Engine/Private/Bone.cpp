@@ -77,7 +77,7 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
         //XMStoreFloat4(&fDebug, vAngle);
         //TCHAR debugMessage[256];
         //_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
-        //    fDebug.x, fDebug.y, fDebug.z, fDebug.w);
+        //    vDelta.x, vDelta.y, vDelta.z, vDelta.w);
         //OutputDebugString(debugMessage);
 
 //        //TCHAR debugMessage1[256];
