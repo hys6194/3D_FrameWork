@@ -13,9 +13,9 @@ CMonsterState_Dead::CMonsterState_Dead(CGameObject* pOwner, CGameObject* pAnimOw
 
 HRESULT CMonsterState_Dead::Enter_State()
 { 
-    Set_CurAnimation();
 
     Setting_PlayerInfo();
+    Set_CurAnimation();
 
     return S_OK;
 }

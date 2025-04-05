@@ -15,6 +15,7 @@ HRESULT CMonsterState_Trace::Enter_State()
     Set_CurAnimation();
     Setting_PlayerInfo();
 
+    m_iPreState = m_pMonster->Get_PreState();
 
     return S_OK;
 }
@@ -67,7 +68,8 @@ void CMonsterState_Trace::Set_PreAnimation()
 {
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
-    m_iPreState = CMonster::STATE_TRACE;
+    m_pMonster->Set_PreState(CMonster::STATE_TRACE);
+
 }
 
 void CMonsterState_Trace::Update_Animation(_float fTimeDelta)

@@ -164,6 +164,21 @@ HRESULT CTransform::Dash(_float4 fDelta, CNavigation* pNavigation)
     return S_OK;
 }
 
+HRESULT CTransform::Avoid(_float4 fDelta, CNavigation* pNavigation)
+{
+    _vector vPos = Get_State(STATE_POS);
+    _vector vRight = Get_State(STATE_RIGHT);
+    _vector vDelta = XMVectorSet(fDelta.x * 2, 0.f, fDelta.x * 2, 0.f);
+
+    vPos += XMVector4Normalize(vRight) * vDelta;
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
+
+    return S_OK;
+}
+
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
     _matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fTimeDelta * m_fRotationPerSec);

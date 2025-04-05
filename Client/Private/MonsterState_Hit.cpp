@@ -57,7 +57,7 @@ void CMonsterState_Hit::Set_PreAnimation()
 {
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
-    m_iPreState = CMonster::STATE_HIT;
+    m_pMonster->Set_PreState(CMonster::STATE_HIT);
     m_bAnimEnd = false;
 
 }

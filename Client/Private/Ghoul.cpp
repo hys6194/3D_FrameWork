@@ -76,7 +76,10 @@ void CGhoul::Priority_Update(_float fTimeDelta)
        m_iState = STATE_TRACE;
 
    if (m_pGameInstance->Key_Down(DIK_8))
+   {
        m_bHit = true;
+       m_bRec = true;
+   }
    else
        m_bHit = false;
 
