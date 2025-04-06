@@ -35,7 +35,6 @@ public:
 	enum PARTOBJ { PART_BODY, PART_LEFT, PART_RIGHT, PART_EFFECT, PART_END };
 	//테스트 용
 
-
 public:
 	enum MONSTER_STATE { STATE_IDLE, STATE_SEARCH, STATE_TRACE, STATE_HIT, STATE_ATTACK, STATE_AVOID, STATE_DEAD, STATE_NONE };
 
@@ -87,6 +86,7 @@ protected:
 	_uint									m_iPreState									= { STATE_NONE};
 	_uint									m_iState									= { STATE_NONE };
 	_uint									m_iHP										= {};
+	_uint									m_iIndex									= { 0 };
 
 	_float									m_fNoticeDistance							= {};
 	

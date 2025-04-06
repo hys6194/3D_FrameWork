@@ -62,6 +62,12 @@ HRESULT CCollider::Initialize(void* pArg)
         break;
     }
 
+
+
+    if (true == pDesc->bColls)
+        m_pGameInstance->Regist_Collider(pDesc->strCollTag);
+
+
 	return S_OK;
 }
 

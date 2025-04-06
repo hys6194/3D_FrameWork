@@ -420,6 +420,11 @@ HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _wstring& str
 	return m_pFont_Manager->Render(strFontTag, strText, vPosition, vColor, fRadian, vOrigin, fScale);
 }
 
+HRESULT CGameInstance::Regist_Collider(const _wstring& strCollTag)
+{
+	return m_pCollision_Manager->Regist_Collision(strCollTag);
+}
+
 #pragma endregion
 void CGameInstance::Release_Engine()
 {

@@ -84,6 +84,10 @@ HRESULT CFist_Left::Ready_Components()
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
     SphereDesc.fRadius = 0.5f;
     SphereDesc.vCenter = _float3(0.f, SphereDesc.fRadius, 0.f);
+    SphereDesc.bColls = true;
+
+    // 시발 ㅈㄴ 신박하네
+    SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Left 1");
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_SPHERE, &SphereDesc), E_FAIL);

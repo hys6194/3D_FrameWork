@@ -42,12 +42,17 @@ public:
 
 	CComponent* Get_Component(const _wstring& strComponentTag);
 
+	_tchar Get_Name()
+	{
+		return m_szGameObjectTag[MAX_PATH];
+	}
+
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
-	class CGameInstance*			m_pGameInstance = { nullptr };	
+	class CGameInstance*		m_pGameInstance = { nullptr };	
 	CTransform*					m_pTransformCom = { nullptr };
 	_tchar						m_szGameObjectTag[MAX_PATH] = {};
 

@@ -5,8 +5,11 @@ CCollision_Manager::CCollision_Manager()
 {
 }
 
-HRESULT CCollision_Manager::Regist_Collision()
+HRESULT CCollision_Manager::Regist_Collision(const wstring& strColliderTag)
 {
+
+
+
 	return S_OK;
 }
 

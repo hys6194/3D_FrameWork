@@ -123,6 +123,11 @@ public:
 	HRESULT							Draw_Text(const _wstring& strFontTag, const _wstring& strText, const _float2& vPosition = _float2(0.f, 0.f), _fvector vColor = XMVectorSet(1.f, 1.f, 1.f, 1.f), _float fRadian = 0.f, const _float2& vOrigin = _float2(0.f, 0.f), _float fScale = 1.f);
 #pragma endregion
 
+#pragma region Collision_Manager
+	HRESULT							Regist_Collider(const _wstring& strCollTag);
+#pragma endregion
+
+
 private:
 	class CGraphic_Device*			m_pGraphic_Device			= { nullptr };
 	class CInput_Device*			m_pInput_Device				= { nullptr };

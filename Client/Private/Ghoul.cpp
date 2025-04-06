@@ -41,6 +41,9 @@ HRESULT CGhoul::Initialize(void* pArg)
     Desc.fRotationPerSec = XMConvertToRadians(90.f);
     Desc.iState = STATE_IDLE;
     m_iState = Desc.iState;
+    
+    // 해당 객체를 생성할 때마다 인덱스를 증가하는 방식으로
+    m_iIndex = m_iIndex + 1;
 
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
@@ -88,6 +91,21 @@ void CGhoul::Priority_Update(_float fTimeDelta)
 
    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(1.61f, 2.96f, 34.18f, 1.00f));
 
+
+   _float4 fTest{};
+   
+   XMStoreFloat4(&fTest, m_pTransformCom->Get_State(CTransform::STATE_POS));
+
+   
+   if (_isnan(fTest.x) ||
+       _isnan(fTest.y) ||
+       _isnan(fTest.z) ||
+       _isnan(fTest.w)) 
+   {
+       int a = 10;
+   }
+
+
 }
 
 void CGhoul::Update(_float fTimeDelta)
@@ -110,7 +128,6 @@ HRESULT CGhoul::Render()
 
 HRESULT CGhoul::Ready_PartObjects()
 {
-    // 손에 어떻게 충돌체를 어떻게 부착해야 함?
 
     CBody_Ghoul::BODY_MONSTER_DESC		BodyDesc{};
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
@@ -135,6 +152,7 @@ HRESULT CGhoul::Ready_PartObjects()
     FDesc2.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     FDesc2.pTargetState = &m_iState;
     FDesc2.pOwner = this;
+
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_R_FIST, PART_RIGHT, &FDesc2), E_FAIL);
 
 
