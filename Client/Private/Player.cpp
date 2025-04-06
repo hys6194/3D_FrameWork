@@ -120,7 +120,6 @@ HRESULT CPlayer::Ready_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
 		reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_AABB, &ColliderDesc), E_FAIL);
 
-
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
 		reinterpret_cast<CComponent**>(&m_pFSMCom), COM_FSM), E_FAIL);
 
@@ -252,10 +251,10 @@ void CPlayer::Input_Keys()
 		m_iKey &= ~KEY_LB;
 	}
 	
-	if (GetKeyState('0') & 0x8000)
-	{
-		Get_Transform()->Set_State(CTransform::STATE_POS, XMVectorSet(0.f,0.f,0.f,1.f));
-	}
+	//if (GetKeyState('0') & 0x8000)
+	//{
+	//	Get_Transform()->Set_State(CTransform::STATE_POS, XMVectorSet(0.f,0.f,0.f,1.f));
+	//}
 
 }
 

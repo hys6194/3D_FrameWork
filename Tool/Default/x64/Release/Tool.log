@@ -1,5 +1,4 @@
 ﻿  Cell_Guide.cpp
-  DataMgr.cpp
   ImGui_Base.cpp
   ImGui_Map.cpp
   ImGui_UI.cpp

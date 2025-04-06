@@ -142,6 +142,18 @@
     <Filter Include="02.GameObjects\Monster\States\MonsterState_Trace">
       <UniqueIdentifier>{c4bfcfaf-e7b0-4561-a8c3-07a26bb09830}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Part">
+      <UniqueIdentifier>{fe046612-f5bf-4a14-82f1-1f7cc9cbc3a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Part\Fist">
+      <UniqueIdentifier>{94b9fdb6-71bf-4717-95c9-3be827b3153c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Part\Fist\FIst_Left">
+      <UniqueIdentifier>{c7d0e2e2-fac3-435f-9899-78caf7f728cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Part\Fist\Fist_Right.h">
+      <UniqueIdentifier>{aa45a8d4-9f2e-45ef-bcb4-2dce82ea7177}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -270,6 +282,12 @@
     <ClInclude Include="..\Public\MonsterState_Trace.h">
       <Filter>02.GameObjects\Monster\States\MonsterState_Trace</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Fist_Left.h">
+      <Filter>02.GameObjects\Monster\Part\Fist\FIst_Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Fist_Right.h">
+      <Filter>02.GameObjects\Monster\Part\Fist\Fist_Right.h</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -395,6 +413,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterState_Trace.cpp">
       <Filter>02.GameObjects\Monster\States\MonsterState_Trace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Fist_Right.cpp">
+      <Filter>02.GameObjects\Monster\Part\Fist\Fist_Right.h</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Fist_Left.cpp">
+      <Filter>02.GameObjects\Monster\Part\Fist\FIst_Left</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

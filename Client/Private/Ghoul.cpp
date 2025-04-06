@@ -1,6 +1,9 @@
 #include "Ghoul.h"
 #include "Monster.h"
 
+
+#include "Fist_Left.h"
+#include "Fist_Right.h"
 #include "Body_Ghoul.h"
 #include "GameInstance.h"
 
@@ -114,6 +117,26 @@ HRESULT CGhoul::Ready_PartObjects()
     BodyDesc.pTargetState = &m_iState;
     
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL_BODY, PART_BODY, &BodyDesc), E_FAIL);
+
+    CFist_Left::FIST_LEFT_DESC  FDesc1{};
+    // WDesc.pSocketMatrix = 바디플레이어에 있는 특정 뼈(손)의 매트릭스를 가져와야 함 -> 바디 플레이어에서 특정 뼈를 가져오는 작업을 해야함
+    //FDesc1.pSocketMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_LEFT);
+    FDesc1.pHandMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_GHOUL_LEFT_HAND);
+    FDesc1.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+    FDesc1.pTargetState = &m_iState;
+    FDesc1.pOwner = this;
+
+    FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_L_FIST, PART_LEFT, &FDesc1), E_FAIL);
+
+    CFist_Right::FIST_RIGHT_DESC  FDesc2{};
+    // WDesc.pSocketMatrix = 바디플레이어에 있는 특정 뼈(손)의 매트릭스를 가져와야 함 -> 바디 플레이어에서 특정 뼈를 가져오는 작업을 해야함
+    //FDesc2.pSocketMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_RIGHT);
+    FDesc2.pHandMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_GHOUL_RIGHT_HAND);
+    FDesc2.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+    FDesc2.pTargetState = &m_iState;
+    FDesc2.pOwner = this;
+    FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_R_FIST, PART_RIGHT, &FDesc2), E_FAIL);
+
 
 
     return S_OK;

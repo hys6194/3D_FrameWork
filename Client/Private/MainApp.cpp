@@ -25,8 +25,8 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Fonts()))
-		return E_FAIL;
+	//if (FAILED(Ready_Fonts()))
+	//	return E_FAIL;
 
 	//if (FAILED(Ready_Gara()))
 	//	return E_FAIL;
@@ -77,7 +77,7 @@ HRESULT CMainApp::Render()
 	
 #endif
 
-	if(LEVEL_GAMEPLAY !=m_iCurLevel)
+	if(LEVEL_GAMEPLAY != m_iCurLevel)
 		m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 0.f));
 	else
 		m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
@@ -88,8 +88,8 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Draw_Engine();
 
-	if (FAILED(m_pGameInstance->Draw_Text(TEXT("Font_Default"), TEXT("¹è\n ºÎ¸£´Ù"))))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Draw_Text(TEXT("Font_Default"), TEXT("¹è\n ºÎ¸£´Ù"))))
+	//	return E_FAIL;
 
 	m_pGameInstance->Present();
 
@@ -109,8 +109,8 @@ HRESULT CMainApp::Ready_Fonts()
 {
 	/*MakeSpriteFont "³Ø½¼lv1°íµñ Bold" /FontSize:16 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 148ex.spritefont */
 
-	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_Default"), TEXT("../Bin/Resources/Fonts/149ex.spritefont"))))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_Default"), TEXT("../Bin/Resources/Fonts/149ex.spritefont"))))
+	//	return E_FAIL;
 
 	return S_OK;
 }

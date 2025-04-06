@@ -31,15 +31,22 @@ void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
 
     m_fUpdateTime += m_pGameInstance->Get_TimeDelta(TIME60);
 
-    // 1초마다 몬스터의 방향 설정
-    // 인데 찌그러지네 시발?
+    // 1초마다 몬스터의 방향 설정 하려했는데 어색함
     if (1.f < m_fUpdateTime)
     {
         m_fUpdateTime = 0.f;
-        Update_MonsterTurnSpeed();
+        Update_MonsterTurnSpeed(2.f);
+        m_bTurned = false;
     }
 
-    _bool bTurn = Update_MonsterLook(fTimeDelta);
+    // 만약 일직선이 아닐 경우
+    if(!m_bTurned)
+    {
+        _bool bTurn = Update_MonsterLook(fTimeDelta);
+
+        if (bTurn)
+            m_bTurned = bTurn;
+    }
 
     m_pMonster->Get_Transform()->Go_Straight(fTimeDelta, 
         dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));

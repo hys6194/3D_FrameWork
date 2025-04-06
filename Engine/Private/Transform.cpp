@@ -204,7 +204,7 @@ _bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTarg
     _float      fDot = acosf(XMVectorGetX(XMVector3Dot(vLook, vTargetToDir)));
 
     if (0 > fY)
-        vAxisBase = XMVectorSetY(vAxis, -1.f);
+            vAxisBase = XMVectorSetY(vAxis, -1.f);
 
     _matrix		RotationMatrix = XMMatrixRotationAxis(vAxisBase, fTimeDelta * m_fRotationPerSec);
                            
@@ -214,7 +214,7 @@ _bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTarg
 
 
     // 방향과 타겟으로 향한 벡터와 비슷하다면 종료하게 끔
-    if (XMVector4NearEqual(vLook, vTargetToDir, XMVectorSet(0.01f, 0.f, 0.01f, 0.f)))
+    if (XMVector4NearEqual(vLook, vTargetToDir, XMVectorSet(0.05f, 0.f, 0.05f, 0.f)))
         return true;
     else
         return false;

@@ -59,10 +59,7 @@ _bool CBounding_AABB::Intersect(CCollider::TYPE eType, CBounding* pTargetBound)
 #ifdef _DEBUG
 HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
-    
-
     DX::Draw(pBatch, *m_pDesc, vColor);
-
 
     return S_OK;
 }

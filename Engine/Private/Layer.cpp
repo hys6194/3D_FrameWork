@@ -54,6 +54,11 @@ HRESULT CLayer::Delete_LastObject()
 	return S_OK;
 }
 
+HRESULT CLayer::Delete_Object()
+{
+	return S_OK;
+}
+
 CComponent* CLayer::Find_Component(const _wstring& strComponentTag, _uint iIndex)
 {
 	auto	iter = m_GameObjects.begin();

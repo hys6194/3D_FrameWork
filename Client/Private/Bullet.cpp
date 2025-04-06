@@ -37,13 +37,13 @@ HRESULT CBullet::Initialize(void* pArg)
 
 void CBullet::Priority_Update(_float fTimeDelta)
 {
+    m_pColliderCom->Reset();
 
 }
 
 void CBullet::Update(_float fTimeDelta)
 {
     m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
-
 
     _vector vTest = m_pTransformCom->Get_State(CTransform::STATE_POS);
     vTest += XMLoadFloat4(&m_fLook) * m_fSpeed;
@@ -59,7 +59,11 @@ void CBullet::Update(_float fTimeDelta)
         // 
         // 아니 근데 몬스터도 어떻게 사라지게 해야하냐? 
         //
+        // 
+
+        //m_pGameInstance->Delete_LastObject();
     }
+    m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
 }
 
@@ -88,6 +92,10 @@ HRESULT CBullet::Render()
             return E_FAIL;
     }
 
+#ifdef _DEBUG
+    m_pColliderCom->Render();
+#endif 
+
     return S_OK;
 }
 
@@ -98,7 +106,16 @@ HRESULT CBullet::Ready_Component()
         reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
-        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL)
+        ;
+    CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
+    SphereDesc.fRadius = 0.2f;
+    SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
+
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_Sphere"),
+        reinterpret_cast<CComponent**>(&m_pColliderCom), TEXT("Com_Collider_Sphere"), &SphereDesc)))
+        return E_FAIL;
+
 
     return S_OK;
 }
@@ -152,4 +169,5 @@ void CBullet::Free()
 
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pModelCom);
+    Safe_Release(m_pColliderCom);
 }

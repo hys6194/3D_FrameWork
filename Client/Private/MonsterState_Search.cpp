@@ -29,17 +29,20 @@ void CMonsterState_Search::PriorityUpdate_State(_float fTimeDelta)
     if (FAILED(Check_Dead(fTimeDelta)))
         return;
 
-    if(m_iPreState == CMonster::STATE_AVOID)
+    // 만약 이전 State가 Avoid였다면
+    if(m_iPreState == CMonster::STATE_AVOID && !m_bCheck)
     {
+        m_bCheck = true;
+
         _float fDegree = Update_MonsterTurnSpeed();
-
-        if (fDegree)
+    
+        // 해당 각도가 50안에 들어와있었다면 인데 
+        if (50 > fDegree)
         {
-
+            m_pMonster->Change_CurrentState(CMonster::STATE_TRACE);
+            return;
         }
-
-        m_pMonster->Change_CurrentState(CMonster::STATE_TRACE);
-        return;
+    
     }
 
     _vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
@@ -73,6 +76,7 @@ void CMonsterState_Search::Set_PreAnimation()
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
     m_pMonster->Set_PreState(CMonster::STATE_SEARCH);
     m_bAnimEnd = false;
+    m_bCheck = false;
 }
 
 void CMonsterState_Search::Update_Animation(_float fTimeDelta)
