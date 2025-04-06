@@ -1,10 +1,7 @@
 ﻿  Cell_Guide.cpp
   ImGui_Base.cpp
   ImGui_Map.cpp
-  ImGui_UI.cpp
   Level_Loading.cpp
-  Loader.cpp
-  MainApp.cpp
   Map_Object.cpp
   Navi_Cell.cpp
   Terrain.cpp

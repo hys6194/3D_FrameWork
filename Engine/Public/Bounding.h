@@ -11,6 +11,7 @@ class CBounding abstract : public CBase
 public:
 	typedef struct tagBoudingDesc
 	{
+		_uint		iOption;			// 근데 이거 CollOption을 클라에게 어떻게 알게 하지?
 		_wstring strCollTag = {};
 		_float3		vCenter;
 		_bool		bColls = { false }; // 기본값으로 false를 주고 false 인 녀석들은 충돌매니저에서 제외

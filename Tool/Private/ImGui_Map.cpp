@@ -33,8 +33,8 @@ void CImGui_Map::Update(_float fTimeDelta)
 
 	Default_SetButtons(fTimeDelta);
 
+	// 문자열에서 걸러낼 문자 기준
 	Get_PrototypeList(TEXT("Model"), TEXT("GameObject"));
-
 
 	// 키 누르면 마지막 오브젝트로의 카메라 이동
 	if (m_pGameInstance->Key_Pressing(DIK_GRAVE))

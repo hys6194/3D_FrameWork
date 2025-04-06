@@ -53,6 +53,7 @@ public:
 	_bool									Is_Critical()								{ return m_bCri;    }
 
 	_uint									Get_PreState()								{ return m_iPreState;}
+	_uint									Get_Index()									{ return m_iIndex;}
 public:
 	void									Change_CurrentState(MONSTER_STATE eState)   { m_iState = eState; }
 

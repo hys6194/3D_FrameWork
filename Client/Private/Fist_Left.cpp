@@ -45,7 +45,6 @@ void CFist_Left::Priority_Update(_float fTimeDelta)
     m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
 
     m_pColliderCom->Reset();
-
 }
 
 void CFist_Left::Update(_float fTimeDelta)
@@ -85,9 +84,9 @@ HRESULT CFist_Left::Ready_Components()
     SphereDesc.fRadius = 0.5f;
     SphereDesc.vCenter = _float3(0.f, SphereDesc.fRadius, 0.f);
     SphereDesc.bColls = true;
-
-    // 시발 ㅈㄴ 신박하네
-    SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Left 1");
+    SphereDesc.iOption = CCollision_Manager::OP_HIT;
+    
+    SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Left ") + std::to_wstring(m_pOwner->Get_Index());
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_SPHERE, &SphereDesc), E_FAIL);

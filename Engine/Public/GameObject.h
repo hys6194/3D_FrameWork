@@ -42,9 +42,9 @@ public:
 
 	CComponent* Get_Component(const _wstring& strComponentTag);
 
-	_tchar Get_Name()
+	wstring  Get_Name()
 	{
-		return m_szGameObjectTag[MAX_PATH];
+		return wstring(m_szGameObjectTag);
 	}
 
 

@@ -43,6 +43,7 @@ HRESULT CGhoul::Initialize(void* pArg)
     m_iState = Desc.iState;
     
     // 해당 객체를 생성할 때마다 인덱스를 증가하는 방식으로
+    // 충돌체에서 사용할 거임
     m_iIndex = m_iIndex + 1;
 
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);

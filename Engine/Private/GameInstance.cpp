@@ -77,6 +77,8 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pObject_Manager->Late_Update(fTimeDelta);
 
+	// 여기에서 콜리젼 매니져의 Check_Collisions 호출해야 함
+
 	m_pLevel_Manager->Update(fTimeDelta);
 
 
@@ -420,9 +422,9 @@ HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _wstring& str
 	return m_pFont_Manager->Render(strFontTag, strText, vPosition, vColor, fRadian, vOrigin, fScale);
 }
 
-HRESULT CGameInstance::Regist_Collider(const _wstring& strCollTag)
+HRESULT CGameInstance::Regist_Collider(const _uint iCollOption, const _wstring& strCollTag, class CBounding* pInstance)
 {
-	return m_pCollision_Manager->Regist_Collision(strCollTag);
+	return m_pCollision_Manager->Regist_Collision(iCollOption, strCollTag, pInstance);
 }
 
 #pragma endregion
@@ -438,8 +440,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFont_Manager);
-	Safe_Release(m_pImGui_Manager);
 	Safe_Release(m_pCollision_Manager);
+	Safe_Release(m_pImGui_Manager);
 
 	CGameInstance::DestroyInstance();
 }

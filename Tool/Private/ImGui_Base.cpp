@@ -70,13 +70,14 @@ void CImGui_Base::Get_PrototypeList(const wstring _strDest, const wstring _strSo
 
 			if (m_vecProtoTag[i].find(_strDest) != std::string::npos)
 			{
-				
 				if (ImGui::Button(cstr))
 				{
 					// 모델 이름 저장하기
 					m_strModelName = m_vecProtoTag[i];
 
 					size_t iDestLast = m_vecProtoTag[i].rfind(TEXT("_"));
+
+					// ProtoTag의 어떤 객체에서 만들었는지 확인 + _다음 문자열부터 문자열 받기
 					wstring strDest = m_vecProtoTag[i].substr(iDestLast + 1);
 
 					// 여기에서 문자열 찾기

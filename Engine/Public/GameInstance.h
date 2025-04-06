@@ -3,6 +3,8 @@
 #include "Renderer.h"
 #include "PipeLine.h"
 #include "Prototype.h"
+#include "CollisionManager.h"
+
 
 
 /* GameInstance */
@@ -124,7 +126,7 @@ public:
 #pragma endregion
 
 #pragma region Collision_Manager
-	HRESULT							Regist_Collider(const _wstring& strCollTag);
+	HRESULT							Regist_Collider(const _uint iCollOption, const _wstring& strCollTag, class CBounding* pInstance);
 #pragma endregion
 
 
