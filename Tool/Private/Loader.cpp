@@ -273,18 +273,8 @@ HRESULT Loader::Loading_Models()
 
 
 	/* Colliders */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_COLL_AABB,
-		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Collider_OBB */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_COLL_OBB,
-		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_OBB))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Collider_Sphere */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_COLL_SPHERE,
-		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_COLL,
+		CCollider::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 
@@ -293,7 +283,7 @@ HRESULT Loader::Loading_Models()
 
 HRESULT Loader::Loading_Shaders()
 {
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, PRO_SHADER_POS,
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_SHADER_POS,
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
 		return E_FAIL;
 

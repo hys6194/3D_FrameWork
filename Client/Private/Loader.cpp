@@ -769,18 +769,8 @@ HRESULT CLoader::Loading_Collider()
 	{
 
 	case LEVEL_GAMEPLAY:
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
-			CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
-			return E_FAIL;
-
-		/* For.Prototype_Component_Collider_OBB */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
-			CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_OBB))))
-			return E_FAIL;
-
-		/* For.Prototype_Component_Collider_Sphere */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
-			CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_COLL,
+			CCollider::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 

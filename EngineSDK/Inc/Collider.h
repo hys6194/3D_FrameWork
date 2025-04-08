@@ -14,13 +14,13 @@ private:
 	virtual ~CCollider() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(TYPE eColliderType);
-	virtual HRESULT Initialize(void* pArg) override;
+	virtual HRESULT							Initialize_Prototype();
+	virtual HRESULT							Initialize(void* pArg) override;
 
 public:
-	void Update(_fmatrix WorldMatrix);
-	_bool Intersect(CCollider* pTargetCollider);
-	void Reset() {
+	void									Update(_fmatrix WorldMatrix);
+	_bool									Intersect(CCollider* pTargetCollider);
+	void									Reset() {
 		m_isColl = false;
 	}
 
@@ -43,9 +43,9 @@ private:
 #endif
 
 public:
-	static CCollider* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eColliderType);
-	virtual CComponent* Clone(void* pArg) override;
-	virtual void Free() override;
+	static CCollider*						Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CComponent*						Clone(void* pArg) override;
+	virtual void							Free() override;
 };
 
 END

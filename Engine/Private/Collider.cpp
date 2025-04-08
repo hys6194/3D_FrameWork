@@ -22,9 +22,8 @@ CCollider::CCollider(const CCollider& Prototype)
 #endif
 }
 
-HRESULT CCollider::Initialize_Prototype(TYPE eColliderType)
+HRESULT CCollider::Initialize_Prototype()
 {
-    m_eColliderType = eColliderType;
 
 #ifdef _DEBUG
 
@@ -48,6 +47,8 @@ HRESULT CCollider::Initialize_Prototype(TYPE eColliderType)
 HRESULT CCollider::Initialize(void* pArg)
 {
     const CBounding::BOUNDING_DESC* pDesc = static_cast<const CBounding::BOUNDING_DESC*>(pArg);
+    
+    m_eColliderType = pDesc->eType;
 
     switch (m_eColliderType)
     {
@@ -108,11 +109,11 @@ HRESULT CCollider::Render()
 
 #endif
 
-CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eColliderType)
+CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     CCollider* pInstance = new CCollider(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize_Prototype(eColliderType)))
+    if (FAILED(pInstance->Initialize_Prototype()))
     {
         MSG_BOX("Failed To Created : CCollider");
         Safe_Release(pInstance);

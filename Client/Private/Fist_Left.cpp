@@ -88,8 +88,8 @@ HRESULT CFist_Left::Ready_Components()
     SphereDesc.eType = CCollider::TYPE_SPHERE;
     SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Left ") + std::to_wstring(m_pOwner->Get_Index());
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
-        reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_SPHERE, &SphereDesc), E_FAIL);
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
+        reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc), E_FAIL);
 
     return S_OK;
 }

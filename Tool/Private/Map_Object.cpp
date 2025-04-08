@@ -101,9 +101,10 @@ HRESULT CMap_Object::Ready_Components(const wstring _strModelTag)
     OBBDesc.vRotation = _float3(0.f, 0.f, 0.f);
     OBBDesc.vExtents = _float3(5.f, 1.f, 5.f);
     OBBDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    OBBDesc.eType = CCollider::TYPE_OBB;
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_COM_COLL_OBB,
-        reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_OBB, &OBBDesc), E_FAIL);
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_COM_COLL,
+        reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &OBBDesc), E_FAIL);
 
     return S_OK;
 }

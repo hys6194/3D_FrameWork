@@ -14,7 +14,7 @@ private:
 	virtual ~CCollider() = default;
 
 public:
-	virtual HRESULT							Initialize_Prototype(TYPE eColliderType);
+	virtual HRESULT							Initialize_Prototype();
 	virtual HRESULT							Initialize(void* pArg) override;
 
 public:
@@ -43,7 +43,7 @@ private:
 #endif
 
 public:
-	static CCollider*						Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eColliderType);
+	static CCollider*						Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent*						Clone(void* pArg) override;
 	virtual void							Free() override;
 };

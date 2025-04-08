@@ -121,8 +121,8 @@ HRESULT CPlayer::Ready_Components()
 	ColliderDesc.iOption = CCollision_Manager::OP_TARGET;
 	ColliderDesc.eType = CCollider::TYPE_AABB;
 
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
-		reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_AABB, &ColliderDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
+		reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
 		reinterpret_cast<CComponent**>(&m_pFSMCom), COM_FSM), E_FAIL);

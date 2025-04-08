@@ -117,8 +117,8 @@ HRESULT CBullet::Ready_Component()
     SphereDesc.eType = CCollider::TYPE_SPHERE;
 
 
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_Sphere"),
-        reinterpret_cast<CComponent**>(&m_pColliderCom), TEXT("Com_Collider_Sphere"), &SphereDesc)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
+        reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc)))
         return E_FAIL;
 
 
