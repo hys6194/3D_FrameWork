@@ -19,7 +19,7 @@ public:
 	HRESULT											Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
 
 	// 충돌체 등록
-	HRESULT											Regist_Collision(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
+	HRESULT											Regist_Update(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
 	HRESULT											Secede_Update(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
 
 	list<class CBounding*>*							Find_List(const _uint iCollOption, const wstring& strColliderTag);

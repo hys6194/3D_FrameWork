@@ -101,6 +101,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MONSTER,
 	//	LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
 
+	// 나중에 여기에서 Index를 추가하는 방식으로 구분을 하던가 해
 	for (size_t i = 0; i < 4; i++)
 	{
 		FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MONSTER,
