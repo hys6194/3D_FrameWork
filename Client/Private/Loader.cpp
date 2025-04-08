@@ -627,6 +627,7 @@ HRESULT CLoader::Loading_Prototype()
 			CBullet::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		// 이건 진짜 잘못된 방향인 거 같기도 하다
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_ROCK1,
 			CMap_Object::Create(m_pDevice, m_pContext))))
 			return E_FAIL;

@@ -21,24 +21,36 @@ protected:
 	CContainerObject(const CContainerObject& Prototype);
 	virtual ~CContainerObject() = default;
 
-public:
-	virtual HRESULT Initialize_Prototype();
-	virtual HRESULT Initialize(void* pArg);
-	virtual void	Priority_Update(_float fTimeDelta);
-	virtual void	Update(_float fTimeDelta);
-	virtual void	Late_Update(_float fTimeDelta);
-	virtual HRESULT Render();
 
 public:
-	HRESULT			Add_PartObject(_uint iPrototypeLevel, const wstring& strPrototypeTag, _uint iPartIndex, void * pArg = nullptr);
+	class CPartObject*				Get_PartObject			(_uint iPartIndex)
+	{
+		// 해당 파츠가 없을 수도 있잖아? 여기서 예외처리 해주자
+		if (nullptr == m_vecParts[iPartIndex])
+			return nullptr;
+
+		return m_vecParts[iPartIndex];
+	}
+
+
+public:
+	virtual HRESULT					Initialize_Prototype	();
+	virtual HRESULT					Initialize				(void* pArg);
+	virtual void					Priority_Update			(_float fTimeDelta);
+	virtual void					Update					(_float fTimeDelta);
+	virtual void					Late_Update				(_float fTimeDelta);
+	virtual HRESULT					Render					();
+
+public:
+	HRESULT							Add_PartObject			(_uint iPrototypeLevel, const wstring& strPrototypeTag, _uint iPartIndex, void * pArg = nullptr);
 
 protected:
-	_uint						m_iNumPartObjects = {};
-	vector<class CPartObject*>	m_vecParts;
+	_uint							m_iNumPartObjects		= {};
+	vector<class CPartObject*>		m_vecParts;
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
-	virtual void Free() override;
+	virtual CGameObject*			Clone(void* pArg)		= 0;
+	virtual void					Free() override;
 };
 
 END

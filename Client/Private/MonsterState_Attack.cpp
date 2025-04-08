@@ -30,10 +30,22 @@ void CMonsterState_Attack::PriorityUpdate_State(_float fTimeDelta)
 
     _float fDistanace = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
 
+
+    // 애니메이션 중간에 m_pGameInstance->Regist_Update로 충돌원의 Update에 등록
+    if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() / 2.5f)
+    {
+        // 해당 객체의 Part 객체를 가져와서 해당 객체의 Part오브젝트의 Collision을 가져와야 한다
+        // 그러면 어떻게 해야 가져올 수 있을까?
+        // 그러면 Get_Part를 하고 함수 구조를 
+        //m_pGameInstance->Regist_Update()
+        //m_pMonster->Get_PartObject(CMonster::PART_LEFT)->Get_Component()
+    }
+
+
+
     // 플레이어 몸 충돌체와 자신의 몸 충돌체 체크를 통해서
     // 곂쳐있다면 뒤로 빠지거나 Avoid로
     // 안 곂쳐있다면 바로 Search
-
 
     if (m_bAnimEnd)
         m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);

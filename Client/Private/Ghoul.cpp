@@ -43,6 +43,8 @@ HRESULT CGhoul::Initialize(void* pArg)
     
     // 해당 객체를 생성할 때마다 인덱스를 증가하는 방식으로
     // 충돌체에서 사용할 거임
+    // 근데 이거 1로만 증가하게됨 안 쓰는게 나아 보일지도
+    // 다른 방법을 생각해보자
     m_iIndex = m_iIndex + 1;
 
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
@@ -50,6 +52,9 @@ HRESULT CGhoul::Initialize(void* pArg)
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
 
+    // 잠깐 랜덤 생성시키기
+    m_pTransformCom->Set_State(CTransform::STATE_POS,
+        XMVectorSet(m_pGameInstance->Random(0.f, 10.f), 2.f, m_pGameInstance->Random(0.f, 10.f), 1.f));
 
     m_pFSMCom->Change_State(m_iState);
 
@@ -117,7 +122,6 @@ HRESULT CGhoul::Render()
 
 HRESULT CGhoul::Ready_PartObjects()
 {
-
     CBody_Ghoul::BODY_MONSTER_DESC		BodyDesc{};
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     BodyDesc.pTargetState = &m_iState;
@@ -125,8 +129,6 @@ HRESULT CGhoul::Ready_PartObjects()
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL_BODY, PART_BODY, &BodyDesc), E_FAIL);
 
     CFist_Left::FIST_LEFT_DESC  FDesc1{};
-    // WDesc.pSocketMatrix = 바디플레이어에 있는 특정 뼈(손)의 매트릭스를 가져와야 함 -> 바디 플레이어에서 특정 뼈를 가져오는 작업을 해야함
-    //FDesc1.pSocketMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_LEFT);
     FDesc1.pHandMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_GHOUL_LEFT_HAND);
     FDesc1.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     FDesc1.pTargetState = &m_iState;
@@ -135,8 +137,6 @@ HRESULT CGhoul::Ready_PartObjects()
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_L_FIST, PART_LEFT, &FDesc1), E_FAIL);
 
     CFist_Right::FIST_RIGHT_DESC  FDesc2{};
-    // WDesc.pSocketMatrix = 바디플레이어에 있는 특정 뼈(손)의 매트릭스를 가져와야 함 -> 바디 플레이어에서 특정 뼈를 가져오는 작업을 해야함
-    //FDesc2.pSocketMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_RIGHT);
     FDesc2.pHandMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_GHOUL_RIGHT_HAND);
     FDesc2.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     FDesc2.pTargetState = &m_iState;
@@ -195,10 +195,6 @@ HRESULT CGhoul::Ready_Components()
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
     	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_OBB, &ColliderDesc), E_FAIL);
     
-
-
-    m_pTransformCom->Set_State(CTransform::STATE_POS,
-        XMVectorSet(m_pGameInstance->Random(0.f, 10.f), 2.f, m_pGameInstance->Random(0.f, 10.f), 1.f));
     
     return S_OK;
 }
