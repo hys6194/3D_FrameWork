@@ -62,6 +62,9 @@ HRESULT CCollider::Initialize(void* pArg)
         break;
     }
 
+    if (true == pDesc->bColls)
+        m_pGameInstance->Add_Collistionlist(pDesc->iOption ,pDesc->strCollTag, m_pBounding);
+
 	return S_OK;
 }
 
@@ -72,7 +75,6 @@ void CCollider::Update(_fmatrix WorldMatrix)
 
 _bool CCollider::Intersect(CCollider* pTargetCollider)
 {
-
     m_isColl = m_pBounding->Intersect(pTargetCollider->m_eColliderType, pTargetCollider->m_pBounding);       
 
     if (false == pTargetCollider->m_isColl && true == m_isColl)

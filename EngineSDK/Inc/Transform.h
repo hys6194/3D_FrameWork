@@ -102,6 +102,8 @@ private:
 	_float						m_fSpeedPerSec = {};
 	_float						m_fRotationPerSec = {};
 
+	_bool						m_bTurn = { false };
+
 public:
 	static CTransform*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent*			Clone(void* pArg) override;

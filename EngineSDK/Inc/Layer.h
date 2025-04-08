@@ -23,6 +23,7 @@ public:
 public:
 	class CGameObject*					Find_Object(const _tchar* strObjectTag);
 	HRESULT								Delete_LastObject();
+	HRESULT								Delete_Object();
 	class CComponent*					Find_Component(const _wstring& strComponentTag, _uint iIndex = 0);
 	list<class CGameObject*>*			Get_GameObjectList()
 	{

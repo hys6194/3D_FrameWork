@@ -12,6 +12,7 @@
 #include "Light_Manager.h"
 #include "Font_Manager.h"
 #include "ImGui_Manager.h"
+#include "CollisionManager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -55,14 +56,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	m_pImGui_Manager = CImGui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pImGui_Manager, E_FAIL);
+
+	m_pCollision_Manager = CCollision_Manager::Create();
+	NULL_CHECK_RETURN(m_pCollision_Manager, E_FAIL);
 	
-
-	//FAILED_CHECK_RETURN 사용 못함 : 주소가 짤리는 듯함
-
-	//FAILED_CHECK_RETURN(m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWidth_VP, EngineDesc.iHeight_VP, ppDevice, ppContext), E_FAIL);
-	//FAILED_CHECK_RETURN(m_pLevel_Manager = CLevel_Manager::Create(), E_FAIL);
-	//FAILED_CHECK_RETURN(m_pObject_Manager = CObject_Manager::Create(EngineDesc.iNumLevels), E_FAIL);
-
 	return S_OK;
 }
 
@@ -72,15 +69,19 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pInput_Device->Update();
 
+	// 여기에서 콜리젼 매니져를 통해 삭제처리가 되어야 하는 애들을 삭제 처리
+	// 혹은 렌더링 기능을 끄게 설정
+
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pPipeLine->Update();
 	m_pObject_Manager->Update(fTimeDelta);
 
-	// 여기에서 ImGui Late_Update?
-
 	m_pImGui_Manager->Update_ImGui_Windows(fTimeDelta);
 
 	m_pObject_Manager->Late_Update(fTimeDelta);
+
+	// 여기에서 콜리젼 매니져의 Check_Collisions 호출해야 함
+	m_pCollision_Manager->OnCollision_Enter();
 
 	m_pLevel_Manager->Update(fTimeDelta);
 
@@ -91,7 +92,7 @@ void CGameInstance::Draw_Engine()
 {
 	if (nullptr == m_pRenderer)
 		return;
-
+		
 	m_pRenderer->Draw();
 
 	m_pImGui_Manager->EndRender_ImGui();
@@ -425,6 +426,16 @@ HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _wstring& str
 	return m_pFont_Manager->Render(strFontTag, strText, vPosition, vColor, fRadian, vOrigin, fScale);
 }
 
+HRESULT CGameInstance::Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, CBounding* pInstance)
+{
+	return m_pCollision_Manager->Add_Collistionlist(iCollOption, strColliderTag, pInstance);
+}
+
+HRESULT CGameInstance::Regist_Collider(const _uint iCollOption, const _wstring& strCollTag, class CBounding* pInstance)
+{
+	return m_pCollision_Manager->Regist_Collision(iCollOption, strCollTag, pInstance);
+}
+
 #pragma endregion
 void CGameInstance::Release_Engine()
 {
@@ -438,6 +449,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFont_Manager);
+	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pImGui_Manager);
 
 	CGameInstance::DestroyInstance();

@@ -1,6 +1,9 @@
 #include "Ghoul.h"
 #include "Monster.h"
 
+
+#include "Fist_Left.h"
+#include "Fist_Right.h"
 #include "Body_Ghoul.h"
 #include "GameInstance.h"
 
@@ -31,13 +34,16 @@ HRESULT CGhoul::Initialize(void* pArg)
 {
     MONSTER_DESC Desc{};
 
-    lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Ghoul"));
     Desc.bBoss = false;
     Desc.bWave = false;
     Desc.fSpeedPerSec = 10.f;
     Desc.fRotationPerSec = XMConvertToRadians(90.f);
     Desc.iState = STATE_IDLE;
     m_iState = Desc.iState;
+    
+    // 해당 객체를 생성할 때마다 인덱스를 증가하는 방식으로
+    // 충돌체에서 사용할 거임
+    m_iIndex = m_iIndex + 1;
 
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
@@ -85,6 +91,10 @@ void CGhoul::Priority_Update(_float fTimeDelta)
 
    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(1.61f, 2.96f, 34.18f, 1.00f));
 
+
+
+
+
 }
 
 void CGhoul::Update(_float fTimeDelta)
@@ -107,13 +117,33 @@ HRESULT CGhoul::Render()
 
 HRESULT CGhoul::Ready_PartObjects()
 {
-    // 손에 어떻게 충돌체를 어떻게 부착해야 함?
 
     CBody_Ghoul::BODY_MONSTER_DESC		BodyDesc{};
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     BodyDesc.pTargetState = &m_iState;
     
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL_BODY, PART_BODY, &BodyDesc), E_FAIL);
+
+    CFist_Left::FIST_LEFT_DESC  FDesc1{};
+    // WDesc.pSocketMatrix = 바디플레이어에 있는 특정 뼈(손)의 매트릭스를 가져와야 함 -> 바디 플레이어에서 특정 뼈를 가져오는 작업을 해야함
+    //FDesc1.pSocketMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_LEFT);
+    FDesc1.pHandMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_GHOUL_LEFT_HAND);
+    FDesc1.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+    FDesc1.pTargetState = &m_iState;
+    FDesc1.pOwner = this;
+
+    FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_L_FIST, PART_LEFT, &FDesc1), E_FAIL);
+
+    CFist_Right::FIST_RIGHT_DESC  FDesc2{};
+    // WDesc.pSocketMatrix = 바디플레이어에 있는 특정 뼈(손)의 매트릭스를 가져와야 함 -> 바디 플레이어에서 특정 뼈를 가져오는 작업을 해야함
+    //FDesc2.pSocketMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_HOLSTER_RIGHT);
+    FDesc2.pHandMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_GHOUL_RIGHT_HAND);
+    FDesc2.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+    FDesc2.pTargetState = &m_iState;
+    FDesc2.pOwner = this;
+
+    FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_R_FIST, PART_RIGHT, &FDesc2), E_FAIL);
+
 
 
     return S_OK;
@@ -157,10 +187,18 @@ HRESULT CGhoul::Ready_Components()
     ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
     ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
     ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
+    ColliderDesc.bColls = true;
+    ColliderDesc.strCollTag = Get_Name() + TEXT("_Body ") + std::to_wstring(m_iIndex);
+    ColliderDesc.iOption = CCollision_Manager::OP_TARGET;
+    ColliderDesc.eType = CCollider::TYPE_OBB;
     
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
     	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_OBB, &ColliderDesc), E_FAIL);
     
+
+
+    m_pTransformCom->Set_State(CTransform::STATE_POS,
+        XMVectorSet(m_pGameInstance->Random(0.f, 10.f), 2.f, m_pGameInstance->Random(0.f, 10.f), 1.f));
     
     return S_OK;
 }

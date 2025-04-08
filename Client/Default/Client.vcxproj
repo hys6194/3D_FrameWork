@@ -154,6 +154,8 @@
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Const_Key.h" />
+    <ClInclude Include="..\Public\Fist_Left.h" />
+    <ClInclude Include="..\Public\Fist_Right.h" />
     <ClInclude Include="..\Public\Ghoul.h" />
     <ClInclude Include="..\Public\Gun_Left.h" />
     <ClInclude Include="..\Public\Gun_Right.h" />
@@ -196,6 +198,8 @@
     <ClCompile Include="..\Private\Body_Player.cpp" />
     <ClCompile Include="..\Private\Bullet.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Fist_Left.cpp" />
+    <ClCompile Include="..\Private\Fist_Right.cpp" />
     <ClCompile Include="..\Private\Ghoul.cpp" />
     <ClCompile Include="..\Private\Gun_Left.cpp" />
     <ClCompile Include="..\Private\Gun_Right.cpp" />

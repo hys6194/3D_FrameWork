@@ -1,6 +1,8 @@
 #ifndef Engine_Macro_h__
 #define Engine_Macro_h__
 
+#define			ClassName(name) TEXT(#name)
+
 #ifndef			MSG_BOX
 #define			MSG_BOX(_message)			MessageBox(NULL, TEXT(_message), L"System Message", MB_OK)
 #endif

@@ -71,6 +71,7 @@ void CGun_Left::Update(_float fTimeDelta)
     
     // 파츠들의 매트릭스를 부모 매트릭스에 곱하여 고정시킨다
     // 그와 동시에, Socket 매트릭스를 같이 곱하여 월드 매트릭스 상에 binding 한다
+
     XMStoreFloat4x4(&m_CombinedWorldMatrix,
         XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * 
         matSocket *
@@ -123,30 +124,17 @@ HRESULT CGun_Left::Ready_Components()
 
 HRESULT CGun_Left::Create_Bullet()
 {
-    //_matrix matLocal = XMLoadFloat4x4(m_pHandMatrix);
-    //
-    //_float4 fTest =
-    //{
-    //        m_pHandMatrix->m[3][0],
-    //        m_pHandMatrix->m[3][1],
-    //        m_pHandMatrix->m[3][2] + 1.f,
-    //        m_pHandMatrix->m[3][3],
-    //};
-    //
-    //_float4x4 f5test;
-    //XMStoreFloat4x4(&f5test,  XMLoadFloat4x4(m_pHandMatrix));
-    //
-    //XMStoreFloat4(f5test.m[3], fTest);
-
     _matrix matHand = XMMatrixMultiply(XMLoadFloat4x4(m_pHandMatrix), XMLoadFloat4x4(m_pParentMatrix));
     CBullet::BULLET_DESC Desc{};
     Desc.fSpeedPerSec = 0.5f;
+    lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Player_Bullet "));
+
 
     XMStoreFloat4(&Desc.fLook, m_pOwner->Get_Transform()->Get_State(CTransform::STATE_LOOK));
     XMStoreFloat4x4(&Desc.f4Hand, matHand);
 
     FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_BULLET,
-        LEVEL_GAMEPLAY, TEXT("GameObject_Bullet"), &Desc), E_FAIL);
+        LEVEL_GAMEPLAY, Desc.szGameObjectTag, &Desc), E_FAIL);
 
     return S_OK;
 }

@@ -30,10 +30,13 @@ void CMonsterState_Attack::PriorityUpdate_State(_float fTimeDelta)
 
     _float fDistanace = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
 
+    // 플레이어 몸 충돌체와 자신의 몸 충돌체 체크를 통해서
+    // 곂쳐있다면 뒤로 빠지거나 Avoid로
+    // 안 곂쳐있다면 바로 Search
+
+
     if (m_bAnimEnd)
         m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
-
-
 }
 
 

@@ -6,6 +6,7 @@
 BEGIN(Engine)
 class CShader;
 class CModel;
+class CCollider;
 END
 
 
@@ -41,7 +42,7 @@ public:
 private:
 	CShader*					m_pShaderCom = { nullptr };
 	CModel*						m_pModelCom = { nullptr };
-
+	CCollider*					m_pColliderCom = { nullptr };
 
 	_float4x4					m_matHand;
 
@@ -50,6 +51,8 @@ private:
 	_float						m_fSpeed;
 	_float						m_fTotalTime = { 0.f };
 
+	_uint						m_iIndex	= { 0 };
+	
 public:
 	static CBullet*				Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject*		Clone(void* pArg)override;

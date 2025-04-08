@@ -17,6 +17,8 @@ HRESULT CBounding_OBB::Initialize(const CBounding::BOUNDING_DESC* pDesc)
 
     m_pLocalDesc = new BoundingOrientedBox(pBoundDesc->vCenter, pBoundDesc->vExtents, vQuaternion);
     m_pDesc = new BoundingOrientedBox(*m_pLocalDesc);
+    m_eType = pBoundDesc->eType;
+
 
     return S_OK;
 }

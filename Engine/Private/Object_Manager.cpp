@@ -109,6 +109,18 @@ HRESULT CObject_Manager::Delete_LastLayer(_uint iLevelIndex, const _wstring& str
     return S_OK;
 }
 
+HRESULT CObject_Manager::Delete_ThisLayer(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+    auto iter = m_pLayers[iLevelIndex].find(strLayerTag);
+
+    if (iter == m_pLayers[iLevelIndex].end())
+        return E_FAIL;
+
+    iter->second->Delete_LastObject();
+
+    return S_OK;
+}
+
 CGameObject* CObject_Manager::Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, const _tchar* strObjectTag)
 {
     CGameObject* pGameObeject = Find_Layer(iLevelIndex, strLayerTag)->Find_Object(strObjectTag);

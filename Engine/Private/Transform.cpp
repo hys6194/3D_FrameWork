@@ -54,12 +54,37 @@ HRESULT CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
 
     // Look 벡터의 방향으로 fSpeedPerSec의 값만큼 fTimeDelta 초 만큼 이동한다
     vPos += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
+    
+    _float4 fTest1{};
+    XMStoreFloat4(&fTest1, Get_State(CTransform::STATE_POS));
+
+    // 사라지기만 해봐 십련아 ㅋㅋ 디버깅 걸면 그만이야~
+    if (_isnan(fTest1.x) ||
+        _isnan(fTest1.y) ||
+        _isnan(fTest1.z) ||
+        _isnan(fTest1.w))
+    {
+        int a = 10;
+    }
 
     // 계산한 Vector를 position에 대입한다
 
     if (nullptr == pNavigation ||
         true == pNavigation->isMove(vPos))
         Set_State(STATE_POS, vPos);
+
+
+    _float4 fTest{};
+    XMStoreFloat4(&fTest, Get_State(CTransform::STATE_POS));
+
+    // 사라지기만 해봐 십련아 ㅋㅋ 디버깅 걸면 그만이야~
+    if (_isnan(fTest.x) ||
+        _isnan(fTest.y) ||
+        _isnan(fTest.z) ||
+        _isnan(fTest.w))
+    {
+        int a = 10;
+    }
 
     return S_OK;
 }
@@ -204,7 +229,7 @@ _bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTarg
     _float      fDot = acosf(XMVectorGetX(XMVector3Dot(vLook, vTargetToDir)));
 
     if (0 > fY)
-        vAxisBase = XMVectorSetY(vAxis, -1.f);
+            vAxisBase = XMVectorSetY(vAxis, -1.f);
 
     _matrix		RotationMatrix = XMMatrixRotationAxis(vAxisBase, fTimeDelta * m_fRotationPerSec);
                            
@@ -214,7 +239,7 @@ _bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTarg
 
 
     // 방향과 타겟으로 향한 벡터와 비슷하다면 종료하게 끔
-    if (XMVector4NearEqual(vLook, vTargetToDir, XMVectorSet(0.01f, 0.f, 0.01f, 0.f)))
+    if (XMVector4NearEqual(vLook, vTargetToDir, XMVectorSet(0.05f, 0.f, 0.05f, 0.f)))
         return true;
     else
         return false;

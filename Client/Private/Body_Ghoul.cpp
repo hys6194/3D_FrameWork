@@ -12,6 +12,15 @@ CBody_Ghoul::CBody_Ghoul(const CBody_Ghoul& Prototype)
 {
 }
 
+const _float4x4* CBody_Ghoul::Get_f4SocketMatrix(const _wstring& strSocketName)
+{
+	auto iter = m_mapSocketmat.find(strSocketName);
+	if (iter == m_mapSocketmat.end())
+		return nullptr;
+
+	return iter->second;
+}
+
 HRESULT CBody_Ghoul::Initialize_Prototype()
 {
 	return S_OK;
@@ -39,7 +48,6 @@ void CBody_Ghoul::Update(_float fTimeDelta)
 {
 	XMStoreFloat4x4(&m_CombinedWorldMatrix,
 		XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentMatrix));
-
 }
 
 void CBody_Ghoul::Late_Update(_float fTimeDelta)
@@ -87,6 +95,13 @@ HRESULT CBody_Ghoul::Ready_Component()
 HRESULT CBody_Ghoul::Ready_SocketMatrices()
 {
 	// 이건 Monster를 상속받는 녀석들에게 선언을 하고 실행하자
+	// Bone_SW_Hand_L
+	// Bone_SW_Hand_R
+	// Bone_SW_Finger_Middle1_R
+	// Bone_SW_Finger_Middle1_L
+
+	m_mapSocketmat.emplace(SOCKET_GHOUL_LEFT_HAND,  m_pModelCom->Get_BoneMatrix("Bone_SW_Finger_Middle1_L"));
+	m_mapSocketmat.emplace(SOCKET_GHOUL_RIGHT_HAND, m_pModelCom->Get_BoneMatrix("Bone_SW_Finger_Middle1_R"));
 
 	return S_OK;
 }

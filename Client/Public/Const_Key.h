@@ -111,6 +111,8 @@ static const std::wstring PRO_OBJ_STAIR2				= TEXT("Prototype_GameObject_Stair 2
 static const std::wstring PRO_OBJ_MONSTER				= TEXT("Prototype_GameObject_Monster");
 static const std::wstring PRO_OBJ_TERRAIN				= TEXT("Prototype_GameObject_Terrain");
 static const std::wstring PRO_OBJ_L_GUN					= TEXT("Prototype_GameObject_Gun Left");
+static const std::wstring PRO_OBJ_L_FIST				= TEXT("Prototype_GameObject_Fist Left");
+static const std::wstring PRO_OBJ_R_FIST				= TEXT("Prototype_GameObject_Fist Right");
 static const std::wstring PRO_OBJ_CAM_3RD				= TEXT("Prototype_GameObject_TP Camera");
 static const std::wstring PRO_OBJ_R_GUN					= TEXT("Prototype_GameObject_Gun Right");
 static const std::wstring PRO_OBJ_BACK					= TEXT("Prototype_GameObject_BackGround");
@@ -150,6 +152,9 @@ static const std::wstring SOCKET_LEFT_HAND				= TEXT("Socket_Strife_Hand L");
 static const std::wstring SOCKET_RIGHT_HAND				= TEXT("Socket_Strife_Hand R");
 static const std::wstring SOCKET_HOLSTER_LEFT			= TEXT("Socket_Strife_Holster L");
 static const std::wstring SOCKET_HOLSTER_RIGHT			= TEXT("Socket_Strife_Holster R");
+
+static const std::wstring SOCKET_GHOUL_LEFT_HAND		= TEXT("Socket_Ghoul_Hand L");
+static const std::wstring SOCKET_GHOUL_RIGHT_HAND		= TEXT("Socket_Ghoul_Hand R");
 
 /* Layers */
 static const std::wstring LAYER_DESERT_ROCK_1			= TEXT("Layer_Desert_Rock1");

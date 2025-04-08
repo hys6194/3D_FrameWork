@@ -1,11 +1,13 @@
 #include "Loader.h"
 #include "GameInstance.h"
 
-#include "Body_Ghoul.h"
 #include "Body_Player.h"
 #include "Camera_Free.h"
-#include "Map_Object.h"
 #include "BackGround.h"
+#include "Map_Object.h"
+#include "Body_Ghoul.h"
+#include "Fist_Right.h"
+#include "Fist_Left.h"
 #include "TP_Camera.h"
 #include "Gun_Right.h"
 #include "Gun_Left.h"
@@ -611,6 +613,14 @@ HRESULT CLoader::Loading_Prototype()
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_R_GUN,
 			CGun_Right::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_L_FIST,
+			CFist_Left::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_R_FIST,
+			CFist_Right::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_BULLET,

@@ -49,7 +49,7 @@ public:
 protected:
 	_vector									Calculate_MonsterDir(_vector vTargetPos);
 	_bool									Update_MonsterLook(_float fTimeDelta);
-	_float									Update_MonsterTurnSpeed();
+	_float									Update_MonsterTurnSpeed(_float fSpeed = 1.f);
 	void									Setting_PlayerInfo();
 
 	HRESULT									Check_Dead(_float fTimeDelta);

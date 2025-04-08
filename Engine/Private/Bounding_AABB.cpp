@@ -12,6 +12,7 @@ HRESULT CBounding_AABB::Initialize(const CBounding::BOUNDING_DESC* pDesc)
 
     m_pLocalDesc = new BoundingBox(pBoundDesc->vCenter, pBoundDesc->vExtents);
     m_pDesc = new BoundingBox(*m_pLocalDesc);
+    m_eType = pBoundDesc->eType;
 
     return S_OK;
 }
@@ -59,10 +60,7 @@ _bool CBounding_AABB::Intersect(CCollider::TYPE eType, CBounding* pTargetBound)
 #ifdef _DEBUG
 HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
-    
-
     DX::Draw(pBatch, *m_pDesc, vColor);
-
 
     return S_OK;
 }

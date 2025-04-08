@@ -26,32 +26,38 @@ private:
 	virtual ~CBody_Ghoul() = default;
 
 public:
-	class CModel*				Get_Model()				{ return m_pModelCom; }
+	const _float4x4*							Get_f4SocketMatrix(const _wstring& strSocketName);
+
 
 public:
-	virtual HRESULT				Initialize_Prototype() override;
-	virtual HRESULT				Initialize(void* pArg) override;
-	virtual void				Priority_Update(_float fTimeDelta) override;
-	virtual void				Update(_float fTimeDelta) override;
-	virtual void				Late_Update(_float fTimeDelta) override;
-	virtual HRESULT				Render() override;
+	class CModel*								Get_Model()				{ return m_pModelCom; }
+
+public:
+	virtual HRESULT								Initialize_Prototype() override;
+	virtual HRESULT								Initialize(void* pArg) override;
+	virtual void								Priority_Update(_float fTimeDelta) override;
+	virtual void								Update(_float fTimeDelta) override;
+	virtual void								Late_Update(_float fTimeDelta) override;
+	virtual HRESULT								Render() override;
 
 private:
-	HRESULT						Ready_Component();
-	HRESULT						Ready_SocketMatrices();
-	HRESULT						Bind_SR();
+	HRESULT										Ready_Component();
+	HRESULT										Ready_SocketMatrices();
+	HRESULT										Bind_SR();
 
 private:
-	_uint						m_pTargetState{};
+	_uint										m_pTargetState{};
 
-	class CShader*				m_pShaderCom			= { nullptr };
-	class CModel*				m_pModelCom				= { nullptr };
+	class CShader*								m_pShaderCom			= { nullptr };
+	class CModel*								m_pModelCom				= { nullptr };
+
+	map<const _wstring, const _float4x4*>		m_mapSocketmat;   // 특정 뼈들의 매트릭스를 가지고 있는 map
 
 public:
 	// CPartObject을(를) 통해 상속됨
-	static CBody_Ghoul*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject*		Clone(void* pArg);
-	virtual void				Free() override;
+	static CBody_Ghoul*							Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject*						Clone(void* pArg);
+	virtual void								Free() override;
 };
 
 END

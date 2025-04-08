@@ -12,6 +12,7 @@ HRESULT CBounding_Sphere::Initialize(const CBounding::BOUNDING_DESC* pDesc)
 
     m_pLocalDesc = new BoundingSphere(pBoundDesc->vCenter, pBoundDesc->fRadius);
     m_pDesc = new BoundingSphere(*m_pLocalDesc);
+    m_eType = pBoundDesc->eType;
 
     return S_OK;
 }
