@@ -10,6 +10,7 @@ CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CMonster::CMonster(const CMonster& Prototype)
 	: CContainerObject{ Prototype }
+	, m_iIndex { Prototype.m_iIndex }
 {
 }
 
@@ -23,6 +24,7 @@ HRESULT CMonster::Initialize(void* pArg)
 	CONTAINEROBJ_DESC* pDesc = static_cast<CONTAINEROBJ_DESC*>(pArg);
 
 	pDesc->iNumPartObjects = PART_END;
+	lstrcpy(pDesc->szGameObjectTag, TEXT("GameObject_Monster"));
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;

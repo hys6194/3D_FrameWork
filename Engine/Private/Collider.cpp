@@ -63,7 +63,7 @@ HRESULT CCollider::Initialize(void* pArg)
     }
 
     if (true == pDesc->bColls)
-        m_pGameInstance->Regist_Collider(pDesc->iOption ,pDesc->strCollTag, m_pBounding);
+        m_pGameInstance->Add_Collistionlist(pDesc->iOption ,pDesc->strCollTag, m_pBounding);
 
 	return S_OK;
 }

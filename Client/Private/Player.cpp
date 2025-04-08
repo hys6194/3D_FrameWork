@@ -116,6 +116,10 @@ HRESULT CPlayer::Ready_Components()
 	CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
 	ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
 	ColliderDesc.vCenter  = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
+	ColliderDesc.bColls = true;
+	ColliderDesc.strCollTag = Get_Name() + TEXT("_Body") + std::to_wstring(1);
+	ColliderDesc.iOption = CCollision_Manager::OP_TARGET;
+	ColliderDesc.eType = CCollider::TYPE_AABB;
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
 		reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_AABB, &ColliderDesc), E_FAIL);
@@ -250,11 +254,6 @@ void CPlayer::Input_Keys()
 	{
 		m_iKey &= ~KEY_LB;
 	}
-	
-	//if (GetKeyState('0') & 0x8000)
-	//{
-	//	Get_Transform()->Set_State(CTransform::STATE_POS, XMVectorSet(0.f,0.f,0.f,1.f));
-	//}
 
 }
 

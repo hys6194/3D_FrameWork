@@ -144,12 +144,13 @@ HRESULT CGun_Right::Create_Bullet()
     _matrix matHand = XMMatrixMultiply(XMLoadFloat4x4(m_pHandMatrix), XMLoadFloat4x4(m_pParentMatrix));
     CBullet::BULLET_DESC Desc{};
     Desc.fSpeedPerSec = 0.5f;
+    lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Player_Bullet "));
 
     XMStoreFloat4(&Desc.fLook, m_pOwner->Get_Transform()->Get_State(CTransform::STATE_LOOK));
     XMStoreFloat4x4(&Desc.f4Hand, matHand);
 
     FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_BULLET,
-        LEVEL_GAMEPLAY, TEXT("GameObject_Bullet"), &Desc), E_FAIL);
+        LEVEL_GAMEPLAY, Desc.szGameObjectTag, &Desc), E_FAIL);
 
     return S_OK;
 }

@@ -25,7 +25,7 @@ HRESULT CBullet::Initialize(void* pArg)
     m_fBulletPos = pDesc->fBulletPos;
     m_fSpeed = pDesc->fSpeedPerSec;
     m_fLook = pDesc->fLook;
-
+    m_iIndex = m_iIndex + 1;
     FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Component(), E_FAIL)
 
@@ -111,6 +111,11 @@ HRESULT CBullet::Ready_Component()
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
     SphereDesc.fRadius = 0.2f;
     SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    SphereDesc.bColls = true;
+    SphereDesc.strCollTag = Get_Name() + std::to_wstring(m_iIndex);
+    SphereDesc.iOption = CCollision_Manager::OP_IMPACT;
+    SphereDesc.eType = CCollider::TYPE_SPHERE;
+
 
     if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_Sphere"),
         reinterpret_cast<CComponent**>(&m_pColliderCom), TEXT("Com_Collider_Sphere"), &SphereDesc)))

@@ -71,7 +71,7 @@ void CMonsterState_Dead::Set_CurAnimation()
 {
     m_pModelCom = m_pBody->Get_Model();
 
-    m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
+    m_pModelCom->Set_AnimationIndex(m_iAnimIndex);
 }
 
 CMonsterState_Dead* CMonsterState_Dead::Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex)

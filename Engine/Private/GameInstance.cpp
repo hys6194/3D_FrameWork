@@ -69,6 +69,9 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pInput_Device->Update();
 
+	// 여기에서 콜리젼 매니져를 통해 삭제처리가 되어야 하는 애들을 삭제 처리
+	// 혹은 렌더링 기능을 끄게 설정
+
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pPipeLine->Update();
 	m_pObject_Manager->Update(fTimeDelta);
@@ -78,6 +81,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Update(fTimeDelta);
 
 	// 여기에서 콜리젼 매니져의 Check_Collisions 호출해야 함
+	m_pCollision_Manager->OnCollision_Enter();
 
 	m_pLevel_Manager->Update(fTimeDelta);
 
@@ -420,6 +424,11 @@ HRESULT CGameInstance::Add_Font(const _wstring& strFontTag, const _tchar* pFontF
 HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _wstring& strText, const _float2& vPosition, _fvector vColor, _float fRadian, const _float2& vOrigin, _float fScale)
 {
 	return m_pFont_Manager->Render(strFontTag, strText, vPosition, vColor, fRadian, vOrigin, fScale);
+}
+
+HRESULT CGameInstance::Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, CBounding* pInstance)
+{
+	return m_pCollision_Manager->Add_Collistionlist(iCollOption, strColliderTag, pInstance);
 }
 
 HRESULT CGameInstance::Regist_Collider(const _uint iCollOption, const _wstring& strCollTag, class CBounding* pInstance)

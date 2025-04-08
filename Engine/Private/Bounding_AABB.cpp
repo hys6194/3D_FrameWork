@@ -12,6 +12,7 @@ HRESULT CBounding_AABB::Initialize(const CBounding::BOUNDING_DESC* pDesc)
 
     m_pLocalDesc = new BoundingBox(pBoundDesc->vCenter, pBoundDesc->vExtents);
     m_pDesc = new BoundingBox(*m_pLocalDesc);
+    m_eType = pBoundDesc->eType;
 
     return S_OK;
 }
