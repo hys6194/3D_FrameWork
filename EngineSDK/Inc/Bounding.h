@@ -9,29 +9,38 @@ BEGIN(Engine)
 class CBounding abstract : public CBase
 {
 public:
-	typedef struct tagBoudingDesc
+	typedef struct tagBoudingDescㄴ
 	{
-		CCollider::TYPE        eType;
-		_uint				   iOption;			// 근데 이거 CollOption을 클라에게 어떻게 알게 하지?
-		_wstring			   strCollTag = {};
 		_float3				   vCenter;
-		_bool				   bColls = { false }; // 기본값으로 false를 주고 false 인 녀석들은 충돌매니저에서 제외
+
+		// 바깥에서 받아와서 사용하기 위해 선언
+		// 근데 이 데이터가 그대로 남아서 효율 개박살
+		COLL_TYPE			   eType;
+		_uint				   iOption;				
+		_wstring			   strCollTag = {};
+		_bool				   bColls = { false };  
 	}BOUNDING_DESC;
+
+
+	typedef struct tagBoundingDescInfo
+	{
+		COLL_TYPE			   eType;
+		_uint				   iOption;			
+		_wstring			   strCollTag = {};
+		_bool				   bColls = { false }; 
+	}BOUNDING_INFO;
 
 protected:
 	CBounding(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CBounding() = default;
 
 public:
-	virtual void* Get_Desc() = 0;
-	virtual CCollider::TYPE       Get_Type()
-	{
-		return m_eType;
-	}
+	virtual void*			Get_Desc() = 0;
+	virtual BOUNDING_INFO	Get_Infos() { return m_tInfo; }
 
 public:
 	virtual void Update(_fmatrix WorldMatrix) = 0;
-	virtual _bool Intersect(CCollider::TYPE eType, CBounding* pTargetBound) = 0;
+	virtual _bool Intersect(COLL_TYPE eType, CBounding* pTargetBound) = 0;
 
 #ifdef _DEBUG
 public:
@@ -42,7 +51,7 @@ protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
-	CCollider::TYPE				m_eType = { CCollider::TYPE_END };
+	BOUNDING_INFO				m_tInfo = {};
 public:	
 	virtual void Free() override;
 };

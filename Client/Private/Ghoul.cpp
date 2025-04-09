@@ -40,6 +40,7 @@ HRESULT CGhoul::Initialize(void* pArg)
     Desc.fRotationPerSec = XMConvertToRadians(90.f);
     Desc.iState = STATE_IDLE;
     m_iState = Desc.iState;
+    m_fDetectDistance = Desc.fDetectDistance = 4.f;
     
     // 해당 객체를 생성할 때마다 인덱스를 증가하는 방식으로
     // 충돌체에서 사용할 거임
@@ -96,10 +97,6 @@ void CGhoul::Priority_Update(_float fTimeDelta)
 
    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(1.61f, 2.96f, 34.18f, 1.00f));
 
-
-
-
-
 }
 
 void CGhoul::Update(_float fTimeDelta)
@@ -145,14 +142,11 @@ HRESULT CGhoul::Ready_PartObjects()
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_R_FIST, PART_RIGHT, &FDesc2), E_FAIL);
 
 
-
     return S_OK;
 }
 
 HRESULT CGhoul::Ready_States()
 {
-    // 이 구조 좋다
-    // 차라리 출력해줘야 할 애니메이션을 세팅하는게 훨 낫다
     CState* pState = nullptr;
 
     pState = CMonsterState_Idle::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_IDLE);
@@ -190,7 +184,7 @@ HRESULT CGhoul::Ready_Components()
     ColliderDesc.bColls = true;
     ColliderDesc.strCollTag = Get_Name() + TEXT("_Body ") + std::to_wstring(m_iIndex);
     ColliderDesc.iOption = CCollision_Manager::OP_TARGET;
-    ColliderDesc.eType = CCollider::TYPE_OBB;
+    ColliderDesc.eType = TYPE_OBB;
     
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
     	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);

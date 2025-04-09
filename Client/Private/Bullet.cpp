@@ -114,7 +114,7 @@ HRESULT CBullet::Ready_Component()
     SphereDesc.bColls = true;
     SphereDesc.strCollTag = Get_Name() + std::to_wstring(m_iIndex);
     SphereDesc.iOption = CCollision_Manager::OP_IMPACT;
-    SphereDesc.eType = CCollider::TYPE_SPHERE;
+    SphereDesc.eType = TYPE_SPHERE;
 
 
     if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,

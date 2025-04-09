@@ -7,5 +7,6 @@ namespace Engine
 	enum class MODELTYPE { TYPE_NONANIM, TYPE_ANIM };
 	enum  MOUSEKEYSTATE { DIM_LB, DIM_RB, DIM_MB };
 	enum class MOUSEMOVESTATE { DIMS_X, DIMS_Y, DIMS_Z };
+	enum COLL_TYPE { TYPE_SPHERE, TYPE_AABB, TYPE_OBB, TYPE_END };
 }
 #endif // Engine_Enum_h__

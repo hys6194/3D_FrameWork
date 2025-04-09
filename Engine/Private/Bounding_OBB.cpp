@@ -17,7 +17,12 @@ HRESULT CBounding_OBB::Initialize(const CBounding::BOUNDING_DESC* pDesc)
 
     m_pLocalDesc = new BoundingOrientedBox(pBoundDesc->vCenter, pBoundDesc->vExtents, vQuaternion);
     m_pDesc = new BoundingOrientedBox(*m_pLocalDesc);
-    m_eType = pBoundDesc->eType;
+
+    m_tInfo.strCollTag = pBoundDesc->strCollTag;
+    m_tInfo.eType = pBoundDesc->eType;
+    m_tInfo.iOption = pBoundDesc->iOption;
+    m_tInfo.bColls = pBoundDesc->bColls;
+
 
 
     return S_OK;
@@ -28,7 +33,7 @@ void CBounding_OBB::Update(_fmatrix WorldMatrix)
     m_pLocalDesc->Transform(*m_pDesc, WorldMatrix);
 }
 
-_bool CBounding_OBB::Intersect(CCollider::TYPE eType, CBounding* pTargetBound)
+_bool CBounding_OBB::Intersect(COLL_TYPE eType, CBounding* pTargetBound)
 {
     void* pDesc = pTargetBound->Get_Desc();
 
@@ -36,14 +41,14 @@ _bool CBounding_OBB::Intersect(CCollider::TYPE eType, CBounding* pTargetBound)
 
     switch (eType)
     {
-    case CCollider::TYPE_AABB:
+    case TYPE_AABB:
         isColl = m_pDesc->Intersects(*static_cast<BoundingBox*>(pDesc));
         break;
-    case CCollider::TYPE_OBB:
+    case TYPE_OBB:
         //isColl = Intersect_OBB(static_cast<CBounding_OBB*>(pTargetBound));
         isColl = m_pDesc->Intersects(*static_cast<BoundingOrientedBox*>(pDesc));
         break;
-    case CCollider::TYPE_SPHERE:
+    case TYPE_SPHERE:
         isColl = m_pDesc->Intersects(*static_cast<BoundingSphere*>(pDesc));
         break;
     }

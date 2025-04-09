@@ -36,8 +36,8 @@ void CMonsterState_Search::PriorityUpdate_State(_float fTimeDelta)
 
         _float fDegree = Update_MonsterTurnSpeed();
     
-        // 해당 각도가 50안에 들어와있었다면 인데 
-        if (50 > fDegree)
+        // 해당 각도가 50안에 들어와있었다면
+        if (50.f > fDegree)
         {
             m_pMonster->Change_CurrentState(CMonster::STATE_TRACE);
             return;

@@ -85,7 +85,7 @@ HRESULT CFist_Left::Ready_Components()
     SphereDesc.vCenter = _float3(0.f, SphereDesc.fRadius, 0.f);
     SphereDesc.bColls = true;
     SphereDesc.iOption = CCollision_Manager::OP_IMPACT;
-    SphereDesc.eType = CCollider::TYPE_SPHERE;
+    SphereDesc.eType = TYPE_SPHERE;
     SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Left ") + std::to_wstring(m_pOwner->Get_Index());
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,

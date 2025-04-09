@@ -32,7 +32,6 @@ public:
 private:
 	_float							m_fDistance = { 15.f }; // 임시로 설정
 
-	class CGameObject*				m_pPlayer = { nullptr };
 	_float							m_fUpdateTime = {};
 
 	_bool							m_bTurned = { false };

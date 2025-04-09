@@ -19,8 +19,8 @@ public:
 	HRESULT											Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
 
 	// 충돌체 등록
-	HRESULT											Regist_Update(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
-	HRESULT											Secede_Update(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
+	HRESULT											Regist_Update(class CComponent* pCollCom1, class CComponent* pCollCom2);
+	HRESULT											Secede_Update(class CComponent* pCollCom1, class CComponent* pCollCom2);
 
 	list<class CBounding*>*							Find_List(const _uint iCollOption, const wstring& strColliderTag);
 
@@ -28,8 +28,7 @@ public:
 	HRESULT											OnCollision_Update();		// 충돌처리 확인
 	HRESULT											OnCollision_Exit();			// 업데이트에서 탈출
 
-	// 해당 충돌체의 삭제????
-	// 시발 어떻게 삭제하나요?
+
 
 private:
 	HRESULT											Update_Impactor();

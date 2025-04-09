@@ -119,7 +119,7 @@ HRESULT CPlayer::Ready_Components()
 	ColliderDesc.bColls = true;
 	ColliderDesc.strCollTag = Get_Name() + TEXT("_Body") + std::to_wstring(1);
 	ColliderDesc.iOption = CCollision_Manager::OP_TARGET;
-	ColliderDesc.eType = CCollider::TYPE_AABB;
+	ColliderDesc.eType = TYPE_AABB;
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
 		reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);

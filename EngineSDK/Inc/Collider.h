@@ -6,12 +6,17 @@ BEGIN(Engine)
 
 class ENGINE_DLL CCollider final : public CComponent
 {
-public:
-	enum TYPE { TYPE_SPHERE, TYPE_AABB, TYPE_OBB, TYPE_END };
 private:
 	CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCollider(const CCollider& Prototype);
 	virtual ~CCollider() = default;
+
+public:
+	class CBounding* Get_Collider()
+	{
+		return m_pBounding;
+	};
+
 
 public:
 	virtual HRESULT							Initialize_Prototype();
@@ -29,7 +34,7 @@ public:
 #endif
 
 private:
-	TYPE									m_eColliderType = { TYPE_END };
+	COLL_TYPE								m_eColliderType = { TYPE_END };
 	class CBounding*						m_pBounding = { nullptr };
 
 	_bool									m_isColl = { false };

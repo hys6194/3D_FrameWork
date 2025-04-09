@@ -12,8 +12,9 @@ CMonsterState_Trace::CMonsterState_Trace(CGameObject* pOwner, CGameObject* pAnim
 
 HRESULT CMonsterState_Trace::Enter_State()
 { 
-    Set_CurAnimation();
     Setting_PlayerInfo();
+
+    Set_CurAnimation();
 
     m_iPreState = m_pMonster->Get_PreState();
 
@@ -31,20 +32,19 @@ void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
     if (FAILED(Check_Hit(fTimeDelta)))
         return;
 
-    m_fUpdateTime += m_pGameInstance->Get_TimeDelta(TIME60);
+    _vector vPos = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS);
+    _vector vPlayerPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
 
-    _float4 fTest11{};
+    _float fDistanace = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
 
-    XMStoreFloat4(&fTest11, m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS));
-
-    // 사라지기만 해봐 십련아 ㅋㅋ 디버깅 걸면 그만이야~
-    if (_isnan(fTest11.x) ||
-        _isnan(fTest11.y) ||
-        _isnan(fTest11.z) ||
-        _isnan(fTest11.w))
+    // 사정거리 내라면 공격
+    if (m_pMonster->Get_AttackDistance() > fDistanace)
     {
-        int a = 10;
+        m_pMonster->Change_CurrentState(CMonster::STATE_ATTACK);
+        return;
     }
+    
+    m_fUpdateTime += m_pGameInstance->Get_TimeDelta(TIME60);
 
     // 1초마다 몬스터의 방향 설정 하려했는데 어색함
     if (1.f < m_fUpdateTime)
@@ -52,74 +52,21 @@ void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
         m_fUpdateTime = 0.f;
         Update_MonsterTurnSpeed(2.f);
         m_bTurned = false;
-
-        _float4 fTest11{};
-
-        XMStoreFloat4(&fTest11, m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS));
-
-        // 사라지기만 해봐 십련아 ㅋㅋ 디버깅 걸면 그만이야~
-        if (_isnan(fTest11.x) ||
-            _isnan(fTest11.y) ||
-            _isnan(fTest11.z) ||
-            _isnan(fTest11.w))
-        {
-            int a = 10;
-        }
     }
-
 
 
     // 만약 일직선이 아닐 경우
     if(!m_bTurned)
     {
-
         _bool bTurn = Update_MonsterLook(fTimeDelta);
-
-        _float4 fTest11{};
-
-        XMStoreFloat4(&fTest11, m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS));
-
-        // 사라지기만 해봐 십련아 ㅋㅋ 디버깅 걸면 그만이야~
-        if (_isnan(fTest11.x) ||
-            _isnan(fTest11.y) ||
-            _isnan(fTest11.z) ||
-            _isnan(fTest11.w))
-        {
-            int a = 10;
-        }
 
         if (bTurn)
             m_bTurned = bTurn;
     }
 
-    _float4 fTest{};
-
-    XMStoreFloat4(&fTest, m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS));
-
-    // 사라지기만 해봐 십련아 ㅋㅋ 디버깅 걸면 그만이야~
-    if (_isnan(fTest.x) ||
-        _isnan(fTest.y) ||
-        _isnan(fTest.z) ||
-        _isnan(fTest.w))
-    {
-        int a = 10;
-    }
-
     m_pMonster->Get_Transform()->Go_Straight(fTimeDelta, 
         dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
 
-    _float4 fTest1{};
-
-    XMStoreFloat4(&fTest1, m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS));
-
-    // 사라지기만 해봐 십련아 ㅋㅋ 디버깅 걸면 그만이야~
-    if (_isnan(fTest1.x) ||
-        _isnan(fTest1.y) ||
-        _isnan(fTest1.z) ||
-        _isnan(fTest1.w))
-    {
-        int a = 10;
-    }
 }
 
 

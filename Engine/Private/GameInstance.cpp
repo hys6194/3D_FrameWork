@@ -431,14 +431,14 @@ HRESULT CGameInstance::Add_Collistionlist(const _uint iCollOption, const wstring
 	return m_pCollision_Manager->Add_Collistionlist(iCollOption, strColliderTag, pInstance);
 }
 
-HRESULT CGameInstance::Regist_Update(const _uint iCollOption, const _wstring& strCollTag, class CBounding* pInstance)
+HRESULT CGameInstance::Regist_Update(CComponent* pCollCom1, CComponent* pCollCom2)
 {
-	return m_pCollision_Manager->Regist_Update(iCollOption, strCollTag, pInstance);
+	return m_pCollision_Manager->Regist_Update(pCollCom1, pCollCom2);
 }
 
-HRESULT CGameInstance::Secede_Update(const _uint iCollOption, const _wstring& strCollTag, class CBounding* pInstance)
+HRESULT CGameInstance::Secede_Update(CComponent* pCollCom1, CComponent* pCollCom2)
 {
-	return m_pCollision_Manager->Secede_Update(iCollOption, strCollTag, pInstance);
+	return m_pCollision_Manager->Secede_Update(pCollCom1, pCollCom2);
 }
 
 #pragma endregion

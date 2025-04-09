@@ -133,7 +133,6 @@ void CStrifeState_Shoot::Player_LookSet(_float fTimeDelta)
 	_vector vWin = *m_pGameInstance->Get_PlayerViewPortPos();
 	//Get_RayDirCoords
 	
-	
 	_vector vzero{ 0.f,1.f,0.f,0.f };
 	_vector vMouse = XMVector4Normalize(vWin);
 	

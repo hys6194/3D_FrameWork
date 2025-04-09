@@ -53,6 +53,8 @@ public:
 
 	_uint									Get_PreState()								{ return m_iPreState;}
 	_uint									Get_Index()									{ return m_iIndex;}
+	
+	_float									Get_AttackDistance()						{ return m_fDetectDistance; }
 public:
 	void									Change_CurrentState (MONSTER_STATE eState)  { m_iState = eState; }
 
@@ -89,6 +91,7 @@ protected:
 	_uint									m_iIndex									= { };
 
 	_float									m_fNoticeDistance							= {};
+	_float									m_fDetectDistance							= {};
 	
 	_wstring								m_strModelTag								= {};
 

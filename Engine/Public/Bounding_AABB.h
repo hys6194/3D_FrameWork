@@ -26,7 +26,7 @@ public:
 	virtual void Update(_fmatrix WorldMatrix) override;
 
 public:
-	virtual _bool Intersect(CCollider::TYPE eType, CBounding* pTargetBound) override;
+	virtual _bool Intersect(COLL_TYPE eType, CBounding* pTargetBound) override;
 
 #ifdef _DEBUG
 public:
