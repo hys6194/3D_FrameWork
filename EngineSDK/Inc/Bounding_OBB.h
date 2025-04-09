@@ -33,7 +33,7 @@ public:
 	HRESULT Initialize(const CBounding::BOUNDING_DESC* pDesc);
 	virtual void Update(_fmatrix WorldMatrix) override;
 public:
-	virtual _bool Intersect(COLL_TYPE eType, CBounding* pTargetBound) override;
+	virtual _bool Intersect(CCollider::TYPE eType, CBounding* pTargetBound) override;
 
 #ifdef _DEBUG
 public:
@@ -41,13 +41,13 @@ public:
 #endif
 
 private:
-	BoundingOrientedBox*				m_pLocalDesc = { nullptr };
-	BoundingOrientedBox*				m_pDesc = { nullptr };
+	BoundingOrientedBox* m_pLocalDesc = { nullptr };
+	BoundingOrientedBox* m_pDesc = { nullptr };
 
 private:
 	_bool Intersect_OBB(CBounding_OBB* pTargetBound);
 	OBB_DESC Compute_OBBDesc();
-	
+
 
 public:
 	static CBounding_OBB* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc);

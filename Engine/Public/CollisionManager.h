@@ -28,8 +28,6 @@ public:
 	HRESULT											OnCollision_Update();		// 충돌처리 확인
 	HRESULT											OnCollision_Exit();			// 업데이트에서 탈출
 
-
-
 private:
 	HRESULT											Update_Impactor();
 	HRESULT											Update_TargetBody();

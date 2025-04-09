@@ -2,7 +2,7 @@
 #include "DebugDraw.h"
 
 CBounding_AABB::CBounding_AABB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CBounding { pDevice, pContext }
+    : CBounding{ pDevice, pContext }
 {
 }
 
@@ -12,11 +12,6 @@ HRESULT CBounding_AABB::Initialize(const CBounding::BOUNDING_DESC* pDesc)
 
     m_pLocalDesc = new BoundingBox(pBoundDesc->vCenter, pBoundDesc->vExtents);
     m_pDesc = new BoundingBox(*m_pLocalDesc);
-
-    m_tInfo.strCollTag = pBoundDesc->strCollTag;
-    m_tInfo.eType = pBoundDesc->eType;
-    m_tInfo.iOption = pBoundDesc->iOption;
-    m_tInfo.bColls = pBoundDesc->bColls;
 
     return S_OK;
 }
@@ -32,29 +27,25 @@ void CBounding_AABB::Update(_fmatrix WorldMatrix)
     m_pLocalDesc->Transform(*m_pDesc, TransformMatrix);
 }
 
-_bool CBounding_AABB::Intersect(COLL_TYPE eType, CBounding* pTargetBound)
+_bool CBounding_AABB::Intersect(CCollider::TYPE eType, CBounding* pTargetBound)
 {
-    void*     pDesc = pTargetBound->Get_Desc();
+    void* pDesc = pTargetBound->Get_Desc();
 
     _bool     isColl = { false };
     switch (eType)
     {
-    case TYPE_AABB:
+    case CCollider::TYPE_AABB:
     {
-        //oundingBox* pTmp = static_cast<BoundingBox*>(pDesc);
-        //sColl = m_pDesc->Intersects(*pTmp);
-        //isColl = Intersect_AABB(static_cast<CBounding_AABB*>(pTargetBound));
-        isColl = m_pDesc->Intersects(*static_cast<BoundingBox*>(pDesc));
-        break;
-
-    case TYPE_OBB:
+        /*BoundingBox* pTmp = static_cast<BoundingBox*>(pDesc);        isColl = m_pDesc->Intersects(*pTmp);*/
+        isColl = Intersect_AABB(static_cast<CBounding_AABB*>(pTargetBound));
+    }
+    break;
+    case CCollider::TYPE_OBB:
         isColl = m_pDesc->Intersects(*static_cast<BoundingOrientedBox*>(pDesc));
         break;
-
-    case TYPE_SPHERE:
+    case CCollider::TYPE_SPHERE:
         isColl = m_pDesc->Intersects(*static_cast<BoundingSphere*>(pDesc));
         break;
-    }
     }
 
     return isColl;
@@ -63,7 +54,10 @@ _bool CBounding_AABB::Intersect(COLL_TYPE eType, CBounding* pTargetBound)
 #ifdef _DEBUG
 HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
+
+
     DX::Draw(pBatch, *m_pDesc, vColor);
+
 
     return S_OK;
 }
@@ -91,7 +85,6 @@ _bool CBounding_AABB::Intersect_AABB(CBounding_AABB* pTargetBound)
     return true;
 }
 
-// aabb 박스끼리의 충돌에서 충돌 비교 방식풀이
 _float3 CBounding_AABB::Compute_Min()
 {
     return _float3(m_pDesc->Center.x - m_pDesc->Extents.x, m_pDesc->Center.y - m_pDesc->Extents.y, m_pDesc->Center.z - m_pDesc->Extents.z);

@@ -40,13 +40,6 @@ HRESULT CGhoul::Initialize(void* pArg)
     Desc.fRotationPerSec = XMConvertToRadians(90.f);
     Desc.iState = STATE_IDLE;
     m_iState = Desc.iState;
-    m_fDetectDistance = Desc.fDetectDistance = 4.f;
-    
-    // 해당 객체를 생성할 때마다 인덱스를 증가하는 방식으로
-    // 충돌체에서 사용할 거임
-    // 근데 이거 1로만 증가하게됨 안 쓰는게 나아 보일지도
-    // 다른 방법을 생각해보자
-    m_iIndex = m_iIndex + 1;
 
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
@@ -119,6 +112,8 @@ HRESULT CGhoul::Render()
 
 HRESULT CGhoul::Ready_PartObjects()
 {
+    // 손에 어떻게 충돌체를 어떻게 부착해야 함?
+
     CBody_Ghoul::BODY_MONSTER_DESC		BodyDesc{};
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     BodyDesc.pTargetState = &m_iState;
@@ -138,7 +133,6 @@ HRESULT CGhoul::Ready_PartObjects()
     FDesc2.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     FDesc2.pTargetState = &m_iState;
     FDesc2.pOwner = this;
-
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_R_FIST, PART_RIGHT, &FDesc2), E_FAIL);
 
 

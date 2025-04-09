@@ -4,17 +4,17 @@
 #include "Bounding_AABB.h"
 
 CCollider::CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CComponent  { pDevice, pContext }
+    : CComponent{ pDevice, pContext }
 {
 }
 
 CCollider::CCollider(const CCollider& Prototype)
-	: CComponent { Prototype } 
-    , m_eColliderType { Prototype.m_eColliderType }
+    : CComponent{ Prototype }
+    , m_eColliderType{ Prototype.m_eColliderType }
 #ifdef _DEBUG
-    , m_pBatch { Prototype.m_pBatch }
-    , m_pEffect { Prototype.m_pEffect }
-    , m_pInputLayout { Prototype.m_pInputLayout }
+    , m_pBatch{ Prototype.m_pBatch }
+    , m_pEffect{ Prototype.m_pEffect }
+    , m_pInputLayout{ Prototype.m_pInputLayout }
 #endif
 {
 #ifdef _DEBUG
@@ -22,12 +22,13 @@ CCollider::CCollider(const CCollider& Prototype)
 #endif
 }
 
-HRESULT CCollider::Initialize_Prototype()
+HRESULT CCollider::Initialize_Prototype(TYPE eColliderType)
 {
+    m_eColliderType = eColliderType;
 
 #ifdef _DEBUG
 
-    m_pBatch  = new PrimitiveBatch<VertexPositionColor>(m_pContext);
+    m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
     m_pEffect = new BasicEffect(m_pDevice);
 
     m_pEffect->SetVertexColorEnabled(true);
@@ -39,16 +40,16 @@ HRESULT CCollider::Initialize_Prototype()
 
     m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCode, iLength, &m_pInputLayout);
 
+
+
 #endif
 
-	return S_OK;
+    return S_OK;
 }
 
 HRESULT CCollider::Initialize(void* pArg)
 {
     const CBounding::BOUNDING_DESC* pDesc = static_cast<const CBounding::BOUNDING_DESC*>(pArg);
-    
-    m_eColliderType = pDesc->eType;
 
     switch (m_eColliderType)
     {
@@ -63,10 +64,7 @@ HRESULT CCollider::Initialize(void* pArg)
         break;
     }
 
-    if (true == pDesc->bColls)
-        m_pGameInstance->Add_Collistionlist(pDesc->iOption ,pDesc->strCollTag, m_pBounding);
-
-	return S_OK;
+    return S_OK;
 }
 
 void CCollider::Update(_fmatrix WorldMatrix)
@@ -76,7 +74,8 @@ void CCollider::Update(_fmatrix WorldMatrix)
 
 _bool CCollider::Intersect(CCollider* pTargetCollider)
 {
-    m_isColl = m_pBounding->Intersect(pTargetCollider->m_eColliderType, pTargetCollider->m_pBounding);       
+
+    m_isColl = m_pBounding->Intersect(pTargetCollider->m_eColliderType, pTargetCollider->m_pBounding);
 
     if (false == pTargetCollider->m_isColl && true == m_isColl)
     {
@@ -84,12 +83,16 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
     }
 
     return m_isColl;
+
+
 }
 
 #ifdef _DEBUG
 
 HRESULT CCollider::Render()
 {
+    m_pContext->GSSetShader(nullptr, nullptr, 0);
+
     m_pContext->IASetInputLayout(m_pInputLayout);
 
     m_pEffect->SetWorld(XMMatrixIdentity());
@@ -109,11 +112,11 @@ HRESULT CCollider::Render()
 
 #endif
 
-CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eColliderType)
 {
     CCollider* pInstance = new CCollider(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize_Prototype()))
+    if (FAILED(pInstance->Initialize_Prototype(eColliderType)))
     {
         MSG_BOX("Failed To Created : CCollider");
         Safe_Release(pInstance);
@@ -136,7 +139,7 @@ CComponent* CCollider::Clone(void* pArg)
 }
 void CCollider::Free()
 {
-	__super::Free();
+    __super::Free();
 
     Safe_Release(m_pBounding);
 
@@ -149,7 +152,7 @@ void CCollider::Free()
     }
 
     Safe_Release(m_pInputLayout);
-    
+
 #endif
 
 

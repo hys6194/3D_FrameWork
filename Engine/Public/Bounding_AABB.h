@@ -26,7 +26,7 @@ public:
 	virtual void Update(_fmatrix WorldMatrix) override;
 
 public:
-	virtual _bool Intersect(COLL_TYPE eType, CBounding* pTargetBound) override;
+	virtual _bool Intersect(CCollider::TYPE eType, CBounding* pTargetBound) override;
 
 #ifdef _DEBUG
 public:
@@ -34,16 +34,16 @@ public:
 #endif
 
 private:
-	BoundingBox*				m_pLocalDesc = { nullptr };
-	BoundingBox*				m_pDesc = { nullptr };
+	BoundingBox* m_pLocalDesc = { nullptr };
+	BoundingBox* m_pDesc = { nullptr };
 
 private:
 	_bool Intersect_AABB(CBounding_AABB* pTargetBound);
 	_float3 Compute_Min();
 	_float3 Compute_Max();
 
-	
-	
+
+
 
 public:
 	static CBounding_AABB* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc);

@@ -7,65 +7,24 @@ CCollision_Manager::CCollision_Manager()
 
 HRESULT CCollision_Manager::Initialize()
 {
-	// 옵션 만큼 생성
-	for (size_t i = 0; i < OP_END; i++)
-	{
-		m_mapColliders[i] = new map< const wstring, list<CBounding*>*>();
-	}
-
 	return S_OK;
 }
 
 HRESULT CCollision_Manager::Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, CBounding* pInstance)
 {
-	if (iCollOption >= OP_END ||
-		nullptr == pInstance)
-		return E_FAIL;
-
-	size_t iKeySize = strColliderTag.find(TEXT(" "));
-
-	// 인자로 받은 문자열의 인덱스만 제거해서 키로 사용
-	wstring strKey = strColliderTag.substr(0, iKeySize);
-
-	// 충돌하는 타입에 맞는 map컨테이너에 오브젝트의 타입을 키값으로 저장
-	auto iter = m_mapColliders[iCollOption]->find(strKey);
-
-	// 리스트가 존재하지 않는다면 리스트 생성
-	if (iter == m_mapColliders[iCollOption]->end())
-	{
-		auto Pair = new list<CBounding*>();
-
-		m_mapColliders[iCollOption]->emplace(strKey, Pair);
-	}
-
-	// 최종적으로 몬스터의 부위별로 충돌체를 list에 받아온 것
-
 	return S_OK;
 }
 
 HRESULT CCollision_Manager::Regist_Update(CComponent* pCollCom1, CComponent* pCollCom2)
 {
-	// 인자로 받아온 콜라이더를 Update 리스트에 추가하여 돌게한다
-	CBounding* pBounding1{ nullptr }; CBounding* pBounding2{ nullptr };
-	if (nullptr != pCollCom1)
-		pBounding1 = dynamic_cast<CCollider*>(pCollCom1)->Get_Collider();
-
-	if (nullptr != pCollCom2)
-		pBounding2 = dynamic_cast<CCollider*>(pCollCom2)->Get_Collider();
-
-	// 이런 식으로 해당 맵 컨테이너에 키값이 Player인 list를 들고오는데 이때 Pair를 가져오게 하는 것이 좋아보이긴 함
-	list<CBounding*>* pList = Find_List(OP_IMPACT, TEXT("Monster"));
-
 	return S_OK;
 }
-
 
 HRESULT CCollision_Manager::Secede_Update(CComponent* pCollCom1, CComponent* pCollCom2)
 {
-	// 인자로 받아온 콜라이더를 Update 리스트에 제외한다
-
 	return S_OK;
 }
+
 
 list<class CBounding*>* CCollision_Manager::Find_List(const _uint iCollOption, const wstring& strColliderTag)
 {

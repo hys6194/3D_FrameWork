@@ -25,7 +25,7 @@ public:
 	HRESULT Initialize(const CBounding::BOUNDING_DESC* pDesc);
 	virtual void Update(_fmatrix WorldMatrix) override;
 public:
-	virtual _bool Intersect(COLL_TYPE eType, CBounding* pTargetBound) override;
+	virtual _bool Intersect(CCollider::TYPE eType, CBounding* pTargetBound) override;
 
 #ifdef _DEBUG
 public:
@@ -33,9 +33,9 @@ public:
 #endif
 
 private:
-	BoundingSphere*				m_pLocalDesc = { nullptr };
-	BoundingSphere*				m_pDesc = { nullptr };
-	
+	BoundingSphere* m_pLocalDesc = { nullptr };
+	BoundingSphere* m_pDesc = { nullptr };
+
 
 public:
 	static CBounding_Sphere* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc);

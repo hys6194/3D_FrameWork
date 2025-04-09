@@ -2,7 +2,7 @@
 #include "DebugDraw.h"
 
 CBounding_OBB::CBounding_OBB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CBounding { pDevice, pContext }
+    : CBounding{ pDevice, pContext }
 {
 
 }
@@ -12,28 +12,22 @@ HRESULT CBounding_OBB::Initialize(const CBounding::BOUNDING_DESC* pDesc)
     const BOUNDING_OBB_DESC* pBoundDesc = static_cast<const BOUNDING_OBB_DESC*>(pDesc);
 
     _float4 vQuaternion = {};
-    
+
     XMStoreFloat4(&vQuaternion, XMQuaternionRotationRollPitchYaw(pBoundDesc->vRotation.x, pBoundDesc->vRotation.y, pBoundDesc->vRotation.z));
 
     m_pLocalDesc = new BoundingOrientedBox(pBoundDesc->vCenter, pBoundDesc->vExtents, vQuaternion);
     m_pDesc = new BoundingOrientedBox(*m_pLocalDesc);
-
-    m_tInfo.strCollTag = pBoundDesc->strCollTag;
-    m_tInfo.eType = pBoundDesc->eType;
-    m_tInfo.iOption = pBoundDesc->iOption;
-    m_tInfo.bColls = pBoundDesc->bColls;
-
-
 
     return S_OK;
 }
 
 void CBounding_OBB::Update(_fmatrix WorldMatrix)
 {
+
     m_pLocalDesc->Transform(*m_pDesc, WorldMatrix);
 }
 
-_bool CBounding_OBB::Intersect(COLL_TYPE eType, CBounding* pTargetBound)
+_bool CBounding_OBB::Intersect(CCollider::TYPE eType, CBounding* pTargetBound)
 {
     void* pDesc = pTargetBound->Get_Desc();
 
@@ -41,14 +35,14 @@ _bool CBounding_OBB::Intersect(COLL_TYPE eType, CBounding* pTargetBound)
 
     switch (eType)
     {
-    case TYPE_AABB:
+    case CCollider::TYPE_AABB:
         isColl = m_pDesc->Intersects(*static_cast<BoundingBox*>(pDesc));
         break;
-    case TYPE_OBB:
-        //isColl = Intersect_OBB(static_cast<CBounding_OBB*>(pTargetBound));
-        isColl = m_pDesc->Intersects(*static_cast<BoundingOrientedBox*>(pDesc));
+    case CCollider::TYPE_OBB:
+        isColl = Intersect_OBB(static_cast<CBounding_OBB*>(pTargetBound));
+        // isColl = m_pDesc->Intersects(*static_cast<BoundingOrientedBox*>(pDesc));
         break;
-    case TYPE_SPHERE:
+    case CCollider::TYPE_SPHERE:
         isColl = m_pDesc->Intersects(*static_cast<BoundingSphere*>(pDesc));
         break;
     }
@@ -59,6 +53,7 @@ _bool CBounding_OBB::Intersect(COLL_TYPE eType, CBounding* pTargetBound)
 #ifdef _DEBUG
 HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
+
     DX::Draw(pBatch, *m_pDesc, vColor);
 
     return S_OK;
@@ -94,7 +89,6 @@ _bool CBounding_OBB::Intersect_OBB(CBounding_OBB* pTargetBound)
         }
 
     }
-
     return true;
 }
 

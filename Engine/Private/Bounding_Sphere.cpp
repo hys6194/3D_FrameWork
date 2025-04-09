@@ -2,7 +2,7 @@
 #include "DebugDraw.h"
 
 CBounding_Sphere::CBounding_Sphere(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CBounding { pDevice, pContext }
+    : CBounding{ pDevice, pContext }
 {
 }
 
@@ -13,34 +13,28 @@ HRESULT CBounding_Sphere::Initialize(const CBounding::BOUNDING_DESC* pDesc)
     m_pLocalDesc = new BoundingSphere(pBoundDesc->vCenter, pBoundDesc->fRadius);
     m_pDesc = new BoundingSphere(*m_pLocalDesc);
 
-    m_tInfo.strCollTag = pBoundDesc->strCollTag;
-    m_tInfo.eType = pBoundDesc->eType;
-    m_tInfo.iOption = pBoundDesc->iOption;
-    m_tInfo.bColls = pBoundDesc->bColls;
-
-
     return S_OK;
 }
 
 void CBounding_Sphere::Update(_fmatrix WorldMatrix)
-{   
+{
     m_pLocalDesc->Transform(*m_pDesc, WorldMatrix);
 }
 
-_bool CBounding_Sphere::Intersect(COLL_TYPE eType, CBounding* pTargetBound)
+_bool CBounding_Sphere::Intersect(CCollider::TYPE eType, CBounding* pTargetBound)
 {
     void* pDesc = pTargetBound->Get_Desc();
 
     _bool     isColl = { false };
     switch (eType)
     {
-    case TYPE_AABB:
+    case CCollider::TYPE_AABB:
         isColl = m_pDesc->Intersects(*static_cast<BoundingBox*>(pDesc));
         break;
-    case TYPE_OBB:
+    case CCollider::TYPE_OBB:
         isColl = m_pDesc->Intersects(*static_cast<BoundingOrientedBox*>(pDesc));
         break;
-    case TYPE_SPHERE:
+    case CCollider::TYPE_SPHERE:
         isColl = m_pDesc->Intersects(*static_cast<BoundingSphere*>(pDesc));
         break;
     }
@@ -51,6 +45,7 @@ _bool CBounding_Sphere::Intersect(COLL_TYPE eType, CBounding* pTargetBound)
 #ifdef _DEBUG
 HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
+
     DX::Draw(pBatch, *m_pDesc, vColor);
 
 
