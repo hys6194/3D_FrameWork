@@ -68,6 +68,8 @@ protected:
 
 protected:
 	class CMonster*							m_pMonster								= { nullptr };	
+	
+	// 이 부분도 문제가 될 듯한데?
 	class CBody_Ghoul*						m_pBody									= { nullptr };
 	class CGameObject*						m_pPlayer 								= { nullptr };
 

@@ -6,17 +6,26 @@ BEGIN(Engine)
 
 class ENGINE_DLL CCollider final : public CComponent
 {
-public:
-	enum TYPE { TYPE_SPHERE, TYPE_AABB, TYPE_OBB, TYPE_END };
 private:
 	CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCollider(const CCollider& Prototype);
 	virtual ~CCollider() = default;
 
 public:
-	virtual HRESULT							Initialize_Prototype(TYPE eColliderType);
+	virtual HRESULT							Initialize_Prototype();
+	virtual HRESULT							Initialize_Prototype(TYPE eType);
 	virtual HRESULT							Initialize(void* pArg) override;
 
+public:
+	class CBounding*						Get_Bounder()
+	{
+		return m_pBounding;
+	}
+
+public:
+	void									Set_Coll(_bool bToogle)	{ m_isColl = bToogle; }
+
+// 이 함수들은 매니저로 옮겨야 할 수도 있다
 public:
 	void									Update(_fmatrix WorldMatrix);
 	_bool									Intersect(CCollider* pTargetCollider);
@@ -25,7 +34,7 @@ public:
 	}
 
 #ifdef _DEBUG
-	HRESULT Render();
+	virtual HRESULT							Render();
 #endif
 
 private:
@@ -43,7 +52,8 @@ private:
 #endif
 
 public:
-	static CCollider*						Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eColliderType);
+	static CCollider*						Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CCollider*						Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType);
 	virtual CComponent*						Clone(void* pArg) override;
 	virtual void							Free() override;
 };

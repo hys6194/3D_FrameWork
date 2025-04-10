@@ -1,7 +1,9 @@
 #include "Collider.h"
 
-#include "GameInstance.h"
 #include "Bounding_AABB.h"
+#include "Bounding_OBB.h"
+#include "Bounding_Sphere.h"
+#include "GameInstance.h"
 
 CCollider::CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent  { pDevice, pContext }
@@ -22,13 +24,12 @@ CCollider::CCollider(const CCollider& Prototype)
 #endif
 }
 
-HRESULT CCollider::Initialize_Prototype(TYPE eColliderType)
+HRESULT CCollider::Initialize_Prototype()
 {
-    m_eColliderType = eColliderType;
 
 #ifdef _DEBUG
 
-    m_pBatch  = new PrimitiveBatch<VertexPositionColor>(m_pContext);
+    m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
     m_pEffect = new BasicEffect(m_pDevice);
 
     m_pEffect->SetVertexColorEnabled(true);
@@ -45,25 +46,54 @@ HRESULT CCollider::Initialize_Prototype(TYPE eColliderType)
 	return S_OK;
 }
 
+HRESULT CCollider::Initialize_Prototype(TYPE eType)
+{
+    m_eColliderType = eType;
+
+#ifdef _DEBUG
+
+    m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
+    m_pEffect = new BasicEffect(m_pDevice);
+
+    m_pEffect->SetVertexColorEnabled(true);
+
+    const void* pShaderByteCode = { nullptr };
+    size_t      iLength = {};
+
+    m_pEffect->GetVertexShaderBytecode(&pShaderByteCode, &iLength);
+
+    m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCode, iLength, &m_pInputLayout);
+
+#endif
+
+    return S_OK;
+}
+
 HRESULT CCollider::Initialize(void* pArg)
 {
-    const CBounding::BOUNDING_DESC* pDesc = static_cast<const CBounding::BOUNDING_DESC*>(pArg);
 
     switch (m_eColliderType)
     {
-    case TYPE_AABB:
-        m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pDesc);
-        break;
-    case TYPE_OBB:
-        m_pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pDesc);
-        break;
-    case TYPE_SPHERE:
-        m_pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pDesc);
-        break;
+        case TYPE_AABB:
+        {
+            const CBounding_AABB::BOUNDING_AABB_DESC* pDesc = static_cast<const CBounding_AABB::BOUNDING_AABB_DESC*>(pArg);
+            //pDesc.
+            m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pDesc, this);
+            break;
+        }
+        case TYPE_OBB:
+        {
+            const CBounding_OBB::BOUNDING_OBB_DESC* pDesc1 = static_cast<const CBounding_OBB::BOUNDING_OBB_DESC*>(pArg);
+            m_pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pDesc1, this);
+            break;
+        }
+        case TYPE_SPHERE:
+        {
+            const CBounding_Sphere::BOUNDING_SPHERE_DESC* pDesc2 = static_cast<const CBounding_Sphere::BOUNDING_SPHERE_DESC*>(pArg);
+            m_pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pDesc2, this);
+            break;
+        }
     }
-
-    if (true == pDesc->bColls)
-        m_pGameInstance->Add_Collistionlist(pDesc->iOption ,pDesc->strCollTag, m_pBounding);
 
 	return S_OK;
 }
@@ -83,12 +113,16 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
     }
 
     return m_isColl;
+
+    
 }
 
 #ifdef _DEBUG
 
 HRESULT CCollider::Render()
 {
+    m_pContext->GSSetShader(nullptr, nullptr, 0);
+
     m_pContext->IASetInputLayout(m_pInputLayout);
 
     m_pEffect->SetWorld(XMMatrixIdentity());
@@ -108,11 +142,24 @@ HRESULT CCollider::Render()
 
 #endif
 
-CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eColliderType)
+CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     CCollider* pInstance = new CCollider(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize_Prototype(eColliderType)))
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed To Created : CCollider");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
+CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType)
+{
+    CCollider* pInstance = new CCollider(pDevice, pContext);
+
+    if (FAILED(pInstance->Initialize_Prototype(eType)))
     {
         MSG_BOX("Failed To Created : CCollider");
         Safe_Release(pInstance);

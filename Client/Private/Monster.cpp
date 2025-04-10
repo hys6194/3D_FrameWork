@@ -11,6 +11,11 @@ CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 CMonster::CMonster(const CMonster& Prototype)
 	: CContainerObject{ Prototype }
 	, m_iIndex { Prototype.m_iIndex }
+	, m_iState { Prototype.m_iState }
+	, m_iPreState { Prototype.m_iPreState }
+	, m_pFSMCom{ Prototype.m_pFSMCom }
+	, m_pNavigationCom { Prototype.m_pNavigationCom }
+	, m_pColliderCom { Prototype.m_pColliderCom }
 {
 }
 

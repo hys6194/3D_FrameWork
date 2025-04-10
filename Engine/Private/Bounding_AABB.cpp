@@ -1,18 +1,28 @@
 #include "Bounding_AABB.h"
+#include "Bounding_OBB.h"
+#include "Bounding_Sphere.h"
 #include "DebugDraw.h"
+#include "GameInstance.h"
 
 CBounding_AABB::CBounding_AABB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CBounding { pDevice, pContext }
 {
 }
 
-HRESULT CBounding_AABB::Initialize(const CBounding::BOUNDING_DESC* pDesc)
+HRESULT CBounding_AABB::Initialize(const CBounding_AABB::BOUNDING_AABB_DESC* pDesc, class CCollider* pOwner)
 {
     const BOUNDING_AABB_DESC* pBoundDesc = static_cast<const BOUNDING_AABB_DESC*>(pDesc);
 
+    m_pOwner = pOwner;
+
     m_pLocalDesc = new BoundingBox(pBoundDesc->vCenter, pBoundDesc->vExtents);
     m_pDesc = new BoundingBox(*m_pLocalDesc);
+
+    m_tInfo.iOption = pBoundDesc->iOption;
+    m_tInfo.strCollTag = pBoundDesc->strCollTag;
     m_eType = pBoundDesc->eType;
+
+    m_pGameInstance->Add_Collistionlist(pBoundDesc->iOption, pBoundDesc->strCollTag, this);
 
     return S_OK;
 }
@@ -28,30 +38,29 @@ void CBounding_AABB::Update(_fmatrix WorldMatrix)
     m_pLocalDesc->Transform(*m_pDesc, TransformMatrix);
 }
 
-_bool CBounding_AABB::Intersect(CCollider::TYPE eType, CBounding* pTargetBound)
+_bool CBounding_AABB::Intersect(TYPE eType, CBounding* pTargetBound)
 {
-    void*     pDesc = pTargetBound->Get_Desc();
-
     _bool     isColl = { false };
     switch (eType)
     {
-    case CCollider::TYPE_AABB:
-    {
-        //oundingBox* pTmp = static_cast<BoundingBox*>(pDesc);
-        //sColl = m_pDesc->Intersects(*pTmp);
-        //isColl = Intersect_AABB(static_cast<CBounding_AABB*>(pTargetBound));
-        isColl = m_pDesc->Intersects(*static_cast<BoundingBox*>(pDesc));
-
-        break;
-
-    case CCollider::TYPE_OBB:
-        isColl = m_pDesc->Intersects(*static_cast<BoundingOrientedBox*>(pDesc));
-        break;
-
-    case CCollider::TYPE_SPHERE:
-        isColl = m_pDesc->Intersects(*static_cast<BoundingSphere*>(pDesc));
-        break;
-    }
+        case TYPE_AABB:
+        {
+            BoundingBox* pDesc = static_cast<CBounding_AABB*>(pTargetBound)->Get_Desc();
+            isColl = m_pDesc->Intersects(*pDesc);
+            break;
+        }
+        case TYPE_OBB:
+        {
+            BoundingOrientedBox* pDesc1 = static_cast<CBounding_OBB*>(pTargetBound)->Get_Desc();
+            isColl = m_pDesc->Intersects(*pDesc1);
+            break;
+        }
+        case TYPE_SPHERE:
+        {
+            BoundingSphere* pDesc2 = static_cast<CBounding_Sphere*>(pTargetBound)->Get_Desc();
+            isColl = m_pDesc->Intersects(*pDesc2);
+            break;
+        }
     }
 
     return isColl;
@@ -61,6 +70,7 @@ _bool CBounding_AABB::Intersect(CCollider::TYPE eType, CBounding* pTargetBound)
 HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
     DX::Draw(pBatch, *m_pDesc, vColor);
+
 
     return S_OK;
 }
@@ -88,7 +98,6 @@ _bool CBounding_AABB::Intersect_AABB(CBounding_AABB* pTargetBound)
     return true;
 }
 
-// aabb 박스끼리의 충돌에서 충돌 비교 방식풀이
 _float3 CBounding_AABB::Compute_Min()
 {
     return _float3(m_pDesc->Center.x - m_pDesc->Extents.x, m_pDesc->Center.y - m_pDesc->Extents.y, m_pDesc->Center.z - m_pDesc->Extents.z);
@@ -99,11 +108,11 @@ _float3 CBounding_AABB::Compute_Max()
     return _float3(m_pDesc->Center.x + m_pDesc->Extents.x, m_pDesc->Center.y + m_pDesc->Extents.y, m_pDesc->Center.z + m_pDesc->Extents.z);
 }
 
-CBounding_AABB* CBounding_AABB::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc)
+CBounding_AABB* CBounding_AABB::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding_AABB::BOUNDING_AABB_DESC* pDesc, class CCollider* pOwner)
 {
     CBounding_AABB* pInstance = new CBounding_AABB(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize(pDesc)))
+    if (FAILED(pInstance->Initialize(pDesc, pOwner)))
     {
         MSG_BOX("Failed To Created : CBounding_AABB");
         Safe_Release(pInstance);

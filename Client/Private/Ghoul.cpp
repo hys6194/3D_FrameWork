@@ -40,12 +40,8 @@ HRESULT CGhoul::Initialize(void* pArg)
     Desc.fRotationPerSec = XMConvertToRadians(90.f);
     Desc.iState = STATE_IDLE;
     m_iState = Desc.iState;
-    
-    // 해당 객체를 생성할 때마다 인덱스를 증가하는 방식으로
-    // 충돌체에서 사용할 거임
-    // 근데 이거 1로만 증가하게됨 안 쓰는게 나아 보일지도
-    // 다른 방법을 생각해보자
-    m_iIndex = m_iIndex + 1;
+
+    m_fDetectDistance = 4.f;
 
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
@@ -89,16 +85,14 @@ void CGhoul::Priority_Update(_float fTimeDelta)
    if (m_pGameInstance->Key_Down(DIK_8))
    {
        m_bHit = true;
-       m_bRec = true;
+       //m_bRec = true;
    }
    else
        m_bHit = false;
 
+
+
    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(1.61f, 2.96f, 34.18f, 1.00f));
-
-
-
-
 
 }
 
@@ -122,6 +116,8 @@ HRESULT CGhoul::Render()
 
 HRESULT CGhoul::Ready_PartObjects()
 {
+    // 손에 어떻게 충돌체를 어떻게 부착해야 함?
+
     CBody_Ghoul::BODY_MONSTER_DESC		BodyDesc{};
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     BodyDesc.pTargetState = &m_iState;
@@ -141,9 +137,7 @@ HRESULT CGhoul::Ready_PartObjects()
     FDesc2.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     FDesc2.pTargetState = &m_iState;
     FDesc2.pOwner = this;
-
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_R_FIST, PART_RIGHT, &FDesc2), E_FAIL);
-
 
 
     return S_OK;
@@ -151,8 +145,6 @@ HRESULT CGhoul::Ready_PartObjects()
 
 HRESULT CGhoul::Ready_States()
 {
-    // 이 구조 좋다
-    // 차라리 출력해줘야 할 애니메이션을 세팅하는게 훨 낫다
     CState* pState = nullptr;
 
     pState = CMonsterState_Idle::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_IDLE);
@@ -187,14 +179,15 @@ HRESULT CGhoul::Ready_Components()
     ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
     ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
     ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
-    ColliderDesc.bColls = true;
-    ColliderDesc.strCollTag = Get_Name() + TEXT("_Body ") + std::to_wstring(m_iIndex);
-    ColliderDesc.iOption = CCollision_Manager::OP_TARGET;
-    ColliderDesc.eType = CCollider::TYPE_OBB;
+    //ColliderDesc.strCollTag = Get_Name() + TEXT("_Body ") + std::to_wstring(m_iIndex);
+    ColliderDesc.eType = TYPE_OBB;
+    ColliderDesc.strCollTag = Get_Name() + TEXT("_Body");
+    ColliderDesc.iOption = COLL_OPT::OP_TARGET;
     
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
-    	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_OBB, &ColliderDesc), E_FAIL);
+    	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
     
+    m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
     
     return S_OK;
 }

@@ -154,6 +154,9 @@
     <Filter Include="02.GameObjects\Monster\Part\Fist\Fist_Right.h">
       <UniqueIdentifier>{aa45a8d4-9f2e-45ef-bcb4-2dce82ea7177}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Ghoul">
+      <UniqueIdentifier>{82af4ca7-447c-459a-9e3f-720612e0e913}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -261,9 +264,6 @@
     <ClInclude Include="..\Public\Ghoul.h">
       <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Body_Ghoul.h">
-      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\MonsterState_Hit.h">
       <Filter>02.GameObjects\Monster\States\Hit</Filter>
     </ClInclude>
@@ -287,6 +287,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Fist_Right.h">
       <Filter>02.GameObjects\Monster\Part\Fist\Fist_Right.h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Ghoul.h">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Ghoul</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Monster.h">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -393,9 +399,6 @@
     <ClCompile Include="..\Private\Ghoul.cpp">
       <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Body_Ghoul.cpp">
-      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\MonsterState_Hit.cpp">
       <Filter>02.GameObjects\Monster\States\Hit</Filter>
     </ClCompile>
@@ -419,6 +422,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Fist_Left.cpp">
       <Filter>02.GameObjects\Monster\Part\Fist\FIst_Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Ghoul.cpp">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Ghoul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Monster.cpp">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

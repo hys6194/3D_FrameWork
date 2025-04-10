@@ -114,15 +114,19 @@ HRESULT CPlayer::Ready_Components()
 		reinterpret_cast<CComponent**>(&m_pNavigationCom), COM_NAVI, &NaviDesc),E_FAIL);
 
 	CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
-	ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
-	ColliderDesc.vCenter  = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
-	ColliderDesc.bColls = true;
-	ColliderDesc.strCollTag = Get_Name() + TEXT("_Body") + std::to_wstring(1);
-	ColliderDesc.iOption = CCollision_Manager::OP_TARGET;
-	ColliderDesc.eType = CCollider::TYPE_AABB;
+	ColliderDesc.vExtents		= _float3(1.f, 2.f, 1.f);
+	ColliderDesc.vCenter		= _float3(0.f, ColliderDesc.vExtents.y, 0.f);
+	//ColliderDesc.strCollTag	= Get_Name() + TEXT("_Body") + std::to_wstring(1);
+	// bool 타입이 필요하려나 원래 필요 용도에 따라서 충돌할지 안할지를 정하려고 한건데
+	// 솔직히 의미 없어 보이기도 하고
+	ColliderDesc.strCollTag		= Get_Name() + TEXT("_Body");
+	ColliderDesc.iOption		= COLL_OPT::OP_TARGET;
+	ColliderDesc.eType			= TYPE::TYPE_AABB;
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
-		reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_AABB, &ColliderDesc), E_FAIL);
+		reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
+
+	m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
 		reinterpret_cast<CComponent**>(&m_pFSMCom), COM_FSM), E_FAIL);

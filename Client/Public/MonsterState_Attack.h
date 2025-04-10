@@ -29,10 +29,15 @@ public:
 	void							Update_Animation(_float fTimeDelta) override;
 	void							Set_CurAnimation() override;
 
+private:
+	_bool							m_bRegisted = { false };
+
+	_float							m_fDistance		= {};
+	_float							m_fTotalTime	= {};
 
 public:
 	// 몬스터들이 공용으로 사용할 State라서 애니메이션 인덱스를 인자로 받아 출력하게 한다
-	static CMonsterState_Attack*		Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex);
+	static CMonsterState_Attack*	Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex);
 	virtual void					Free() override;
 };
 
