@@ -80,8 +80,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pObject_Manager->Late_Update(fTimeDelta);
 
-	// 여기에서 콜리젼 매니져의 Check_Collisions 호출해야 함
-	m_pCollision_Manager->OnCollision_Enter();
+	m_pCollision_Manager->Update_Collisions();
 
 	m_pLevel_Manager->Update(fTimeDelta);
 
@@ -426,17 +425,22 @@ HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _wstring& str
 	return m_pFont_Manager->Render(strFontTag, strText, vPosition, vColor, fRadian, vOrigin, fScale);
 }
 
+#pragma endregion
+
+#pragma region Collision_Manager
+
+
 HRESULT CGameInstance::Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, CBounding* pInstance)
 {
 	return m_pCollision_Manager->Add_Collistionlist(iCollOption, strColliderTag, pInstance);
 }
 
-HRESULT CGameInstance::Regist_Update(CComponent* pCollCom1, CComponent* pCollCom2)
+HRESULT CGameInstance::Regist_Update(class CBounding* pCollCom1, class CBounding* pCollCom2)
 {
 	return m_pCollision_Manager->Regist_Update(pCollCom1, pCollCom2);
 }
 
-HRESULT CGameInstance::Secede_Update(CComponent* pCollCom1, CComponent* pCollCom2)
+HRESULT CGameInstance::Secede_Update(class CBounding* pCollCom1, class CBounding* pCollCom2)
 {
 	return m_pCollision_Manager->Secede_Update(pCollCom1, pCollCom2);
 }

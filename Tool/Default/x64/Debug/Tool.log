@@ -1,8 +1,6 @@
 ﻿  Cell_Guide.cpp
-  ImGui_Base.cpp
-  ImGui_Map.cpp
-  ImGui_UI.cpp
   Level_Loading.cpp
+  Loader.cpp
   MainApp.cpp
   Map_Object.cpp
   Terrain.cpp
@@ -11,5 +9,4 @@
   Tool_Manager.cpp
   Tool.cpp
   코드를 생성하고 있습니다...
-  LINK : ..\Bin\Tool.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
   Tool.vcxproj -> E:\GitHub\3D_FrameWork\Tool\Bin\Tool.exe

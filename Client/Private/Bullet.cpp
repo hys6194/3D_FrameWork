@@ -109,18 +109,18 @@ HRESULT CBullet::Ready_Component()
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL)
         ;
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
-    SphereDesc.fRadius = 0.2f;
-    SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
-    SphereDesc.bColls = true;
-    SphereDesc.strCollTag = Get_Name() + std::to_wstring(m_iIndex);
-    SphereDesc.iOption = CCollision_Manager::OP_IMPACT;
-    SphereDesc.eType = TYPE_SPHERE;
+    SphereDesc.fRadius      = 0.2f;
+    SphereDesc.vCenter      = _float3(0.f, 0.f, 0.f);
+    //SphereDesc.strCollTag   = Get_Name() + std::to_wstring(m_iIndex);
+    SphereDesc.strCollTag   = Get_Name();
+    SphereDesc.iOption      = COLL_OPT::OP_IMPACT;
+    SphereDesc.eType =      TYPE::TYPE_SPHERE;
 
-
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc)))
         return E_FAIL;
 
+    m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
 
     return S_OK;
 }

@@ -1,51 +1,68 @@
+#include "Bounding_AABB.h"
 #include "Bounding_OBB.h"
+#include "Bounding_Sphere.h"
 #include "DebugDraw.h"
+#include "GameInstance.h"
 
 CBounding_OBB::CBounding_OBB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CBounding{ pDevice, pContext }
+    : CBounding { pDevice, pContext }
 {
 
 }
 
-HRESULT CBounding_OBB::Initialize(const CBounding::BOUNDING_DESC* pDesc)
+HRESULT CBounding_OBB::Initialize(const CBounding_OBB::BOUNDING_OBB_DESC* pDesc, class CCollider* pOwner)
 {
     const BOUNDING_OBB_DESC* pBoundDesc = static_cast<const BOUNDING_OBB_DESC*>(pDesc);
 
-    _float4 vQuaternion = {};
+    m_pOwner = pOwner;
 
+    _float4 vQuaternion = {};
+    
     XMStoreFloat4(&vQuaternion, XMQuaternionRotationRollPitchYaw(pBoundDesc->vRotation.x, pBoundDesc->vRotation.y, pBoundDesc->vRotation.z));
 
     m_pLocalDesc = new BoundingOrientedBox(pBoundDesc->vCenter, pBoundDesc->vExtents, vQuaternion);
     m_pDesc = new BoundingOrientedBox(*m_pLocalDesc);
+
+    m_eType = pBoundDesc->eType;
+    m_tInfo.iOption = pBoundDesc->iOption;
+    m_tInfo.strCollTag = pBoundDesc->strCollTag;
+
+    m_pGameInstance->Add_Collistionlist(pBoundDesc->iOption, pBoundDesc->strCollTag, this);
 
     return S_OK;
 }
 
 void CBounding_OBB::Update(_fmatrix WorldMatrix)
 {
-
+  
     m_pLocalDesc->Transform(*m_pDesc, WorldMatrix);
 }
 
-_bool CBounding_OBB::Intersect(CCollider::TYPE eType, CBounding* pTargetBound)
+_bool CBounding_OBB::Intersect(TYPE eType, CBounding* pTargetBound)
 {
-    void* pDesc = pTargetBound->Get_Desc();
+     _bool     isColl = { false };
 
-    _bool     isColl = { false };
-
-    switch (eType)
-    {
-    case CCollider::TYPE_AABB:
-        isColl = m_pDesc->Intersects(*static_cast<BoundingBox*>(pDesc));
-        break;
-    case CCollider::TYPE_OBB:
-        isColl = Intersect_OBB(static_cast<CBounding_OBB*>(pTargetBound));
-        // isColl = m_pDesc->Intersects(*static_cast<BoundingOrientedBox*>(pDesc));
-        break;
-    case CCollider::TYPE_SPHERE:
-        isColl = m_pDesc->Intersects(*static_cast<BoundingSphere*>(pDesc));
-        break;
-    }
+     switch (eType)
+     {
+         case TYPE_AABB:
+         {
+             BoundingBox* pDesc = static_cast<CBounding_AABB*>(pTargetBound)->Get_Desc();
+             isColl = m_pDesc->Intersects(*pDesc);
+             break;
+         }
+         case TYPE_OBB:
+         {
+             BoundingOrientedBox* pDesc1 = static_cast<CBounding_OBB*>(pTargetBound)->Get_Desc();
+             isColl = m_pDesc->Intersects(*pDesc1);
+             break;
+         }
+         case TYPE_SPHERE:
+         {
+             BoundingSphere* pDesc2 = static_cast<CBounding_Sphere*>(pTargetBound)->Get_Desc();
+             isColl = m_pDesc->Intersects(*pDesc2);
+             break;
+         }
+     }
 
     return isColl;
 }
@@ -88,7 +105,7 @@ _bool CBounding_OBB::Intersect_OBB(CBounding_OBB* pTargetBound)
                 return false;
         }
 
-    }
+    } 
     return true;
 }
 
@@ -112,11 +129,11 @@ CBounding_OBB::OBB_DESC CBounding_OBB::Compute_OBBDesc()
     return OBBDesc;
 }
 
-CBounding_OBB* CBounding_OBB::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc)
+CBounding_OBB* CBounding_OBB::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding_OBB::BOUNDING_OBB_DESC* pDesc, class CCollider* pOwner)
 {
     CBounding_OBB* pInstance = new CBounding_OBB(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize(pDesc)))
+    if (FAILED(pInstance->Initialize(pDesc, pOwner)))
     {
         MSG_BOX("Failed To Created : CBounding_OBB");
         Safe_Release(pInstance);

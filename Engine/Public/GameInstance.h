@@ -127,8 +127,8 @@ public:
 
 #pragma region Collision_Manager
 	HRESULT							Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
-	HRESULT							Regist_Update(CComponent* pCollCom1, CComponent* pCollCom2);
-	HRESULT							Secede_Update(CComponent* pCollCom1, CComponent* pCollCom2);
+	HRESULT							Regist_Update(class CBounding* pCollCom1, class CBounding* pCollCom2 = nullptr);
+	HRESULT							Secede_Update(class CBounding* pCollCom1, class CBounding* pCollCom2 = nullptr);
 #pragma endregion
 
 

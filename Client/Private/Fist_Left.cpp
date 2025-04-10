@@ -35,6 +35,7 @@ HRESULT CFist_Left::Initialize(void* pArg)
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
 
     m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
+ 
 
 
     return S_OK;
@@ -83,9 +84,16 @@ HRESULT CFist_Left::Ready_Components()
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
     SphereDesc.fRadius = 0.5f;
     SphereDesc.vCenter = _float3(0.f, SphereDesc.fRadius, 0.f);
+    SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Left");
+    SphereDesc.iOption = COLL_OPT::OP_IMPACT;
+    SphereDesc.eType = TYPE::TYPE_SPHERE;
 
+
+    // ¿Ã πÊΩƒ¿Ã »Œ ≥¥±‰«œ¥Ÿ
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
-        reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL_SPHERE, &SphereDesc), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc), E_FAIL);
+
+    m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
 
     return S_OK;
 }

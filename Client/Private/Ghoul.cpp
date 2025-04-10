@@ -41,6 +41,8 @@ HRESULT CGhoul::Initialize(void* pArg)
     Desc.iState = STATE_IDLE;
     m_iState = Desc.iState;
 
+    m_fDetectDistance = 4.f;
+
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
@@ -83,10 +85,12 @@ void CGhoul::Priority_Update(_float fTimeDelta)
    if (m_pGameInstance->Key_Down(DIK_8))
    {
        m_bHit = true;
-       m_bRec = true;
+       //m_bRec = true;
    }
    else
        m_bHit = false;
+
+
 
    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(1.61f, 2.96f, 34.18f, 1.00f));
 
@@ -175,14 +179,15 @@ HRESULT CGhoul::Ready_Components()
     ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
     ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
     ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
-    ColliderDesc.bColls = true;
-    ColliderDesc.strCollTag = Get_Name() + TEXT("_Body ") + std::to_wstring(m_iIndex);
-    ColliderDesc.iOption = CCollision_Manager::OP_TARGET;
+    //ColliderDesc.strCollTag = Get_Name() + TEXT("_Body ") + std::to_wstring(m_iIndex);
     ColliderDesc.eType = TYPE_OBB;
+    ColliderDesc.strCollTag = Get_Name() + TEXT("_Body");
+    ColliderDesc.iOption = COLL_OPT::OP_TARGET;
     
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
     	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
     
+    m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
     
     return S_OK;
 }

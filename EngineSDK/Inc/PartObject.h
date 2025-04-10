@@ -18,23 +18,29 @@ public:
 protected:
 	CPartObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPartObject(const CPartObject& Prototype);
-	virtual ~CPartObject() = default;
-
-public:	
-	virtual HRESULT Initialize_Prototype();
-	virtual HRESULT Initialize(void* pArg);
-	virtual void	Priority_Update(_float fTimeDelta);
-	virtual void	Update(_float fTimeDelta);
-	virtual void	Late_Update(_float fTimeDelta);
-	virtual HRESULT Render();
-
-protected:
-	const _float4x4*		m_pParentMatrix = { nullptr };
-	_float4x4				m_CombinedWorldMatrix = {};
+	virtual ~CPartObject() = default; 
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
-	virtual void Free() override;
+	class CCollider*			Get_ColliderCom()						{ return m_pColliderCom; };
+
+public:	
+	virtual HRESULT				Initialize_Prototype();
+	virtual HRESULT				Initialize(void* pArg);
+	virtual void				Priority_Update(_float fTimeDelta);
+	virtual void				Update(_float fTimeDelta);
+	virtual void				Late_Update(_float fTimeDelta);
+	virtual HRESULT				Render();
+
+protected:
+	class CCollider*			m_pColliderCom							= { nullptr };
+
+protected:
+	const _float4x4*			m_pParentMatrix							= { nullptr };
+	_float4x4					m_CombinedWorldMatrix					= {};
+
+public:
+	virtual CGameObject*		Clone(void* pArg) = 0;
+	virtual void				Free() override;
 };
 
 END
