@@ -167,6 +167,7 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Map_Object.h" />
+    <ClInclude Include="..\Public\Moloch.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\MonsterState_Attack.h" />
     <ClInclude Include="..\Public\MonsterState_Avoid.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="..\Public\StrifeState_Run.h" />
     <ClInclude Include="..\Public\StrifeState_Shoot.h" />
     <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\Public\Test_Monster.h" />
     <ClInclude Include="..\Public\TP_Camera.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="Client.h" />
@@ -212,6 +214,7 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Map_Object.cpp" />
+    <ClCompile Include="..\Private\Moloch.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\MonsterState_Attack.cpp" />
     <ClCompile Include="..\Private\MonsterState_Avoid.cpp" />
@@ -231,6 +234,7 @@
     <ClCompile Include="..\Private\StrifeState_Run.cpp" />
     <ClCompile Include="..\Private\StrifeState_Shoot.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
+    <ClCompile Include="..\Private\Test_Monster.cpp" />
     <ClCompile Include="..\Private\TP_Camera.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="Client.cpp" />

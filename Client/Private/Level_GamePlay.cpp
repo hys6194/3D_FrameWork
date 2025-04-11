@@ -104,10 +104,12 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 	// 나중에 여기에서 Index를 추가하는 방식으로 구분을 하던가 해
 	for (size_t i = 0; i < 2; i++)
 	{
-		FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MONSTER,
+		FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
 			LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
 	}
 
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
+	//	LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
 
 	return S_OK;
 }

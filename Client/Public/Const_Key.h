@@ -92,6 +92,8 @@ static const std::wstring PRO_MODEL_SPIKE_E				= TEXT("Prototype_Component_Model
 static const std::wstring PRO_MODEL_SPIKE_A				= TEXT("Prototype_Component_Model_FortressSpike A");
 static const std::wstring PRO_MODEL_PILLAR_ALCOVE		= TEXT("Prototype_Component_Model_Pillar Alcove A");
 
+static const std::wstring PRO_MODEL_MOLOCH				= TEXT("Prototype_Component_Model_Moloch");
+
 /* Shader */
 static const std::wstring PRO_SHADER_CELL				= TEXT("Prototype_Component_Shader_VtxCell");
 static const std::wstring PRO_SHADER_CUBE				= TEXT("Prototype_Component_Shader_VtxCube");
@@ -125,6 +127,7 @@ static const std::wstring PRO_OBJ_ROCK2					= TEXT("Prototype_GameObject_Desert 
 static const std::wstring PRO_OBJ_ROCK_TALL				= TEXT("Prototype_GameObject_Desert RockTall");
 static const std::wstring PRO_OBJ_SPIKE_A				= TEXT("Prototype_GameObject_FortressSpike A");
 static const std::wstring PRO_OBJ_SPIKE_E				= TEXT("Prototype_GameObject_FortressSpike E");
+static const std::wstring PRO_OBJ_MOLOCH				= TEXT("Prototype_GameObject_Moloch");
 
 static const std::wstring PRO_OBJ_GROUND_DECAL			= TEXT("Prototype_GameObject_GroundDecal LG A");
 static const std::wstring PRO_OBJ_DAM_END				= TEXT("Prototype_GameObject_Dam EndCap A");

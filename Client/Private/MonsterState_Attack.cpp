@@ -18,8 +18,6 @@ HRESULT CMonsterState_Attack::Enter_State()
     Setting_PlayerInfo();
     Set_CurAnimation();
 
-
-
     return S_OK;
 }
 
@@ -33,17 +31,17 @@ void CMonsterState_Attack::PriorityUpdate_State(_float fTimeDelta)
 
     if (0.65f < m_fTotalTime && !m_bRegisted)
     {
-
         m_pGameInstance->Regist_Update(m_pMonster->Get_PartObject(CMonster::PART_LEFT)->Get_ColliderCom()->Get_Bounder(),
             m_pMonster->Get_PartObject(CMonster::PART_RIGHT)->Get_ColliderCom()->Get_Bounder());
 
         m_bRegisted = true;
-
     }
     
-    if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() / 1.5f)
+    // 애니메이션의 중간에 이벤트를 발생해서 Update 등록 및 해제를 하고 싶은데 안되나
+    if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() / 1.5f &&
+        !m_bSeceded)
     {
-
+        m_bSeceded = true;
         m_pGameInstance->Secede_Update(m_pMonster->Get_PartObject(CMonster::PART_LEFT)->Get_ColliderCom()->Get_Bounder(),
             m_pMonster->Get_PartObject(CMonster::PART_RIGHT)->Get_ColliderCom()->Get_Bounder());
     }
@@ -56,6 +54,7 @@ void CMonsterState_Attack::PriorityUpdate_State(_float fTimeDelta)
         m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
 
         m_bRegisted = false;
+        m_bSeceded = false;
         m_fTotalTime = 0.f;
     }
 }
@@ -65,12 +64,12 @@ void CMonsterState_Attack::Update_State(_float fTimeDelta)
 {
     Update_Animation(fTimeDelta);
 
-    //m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
-
+    m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
 }
 
 void CMonsterState_Attack::LateUpdate_State(_float fTimeDelta)
 {
+
 }
 
 HRESULT CMonsterState_Attack::Exit_State()

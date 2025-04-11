@@ -37,6 +37,17 @@ HRESULT CCollision_Manager::Add_Collistionlist(const _uint iCollOption, const ws
 		m_mapColliders[iCollOption]->emplace(strColliderTag, iter);
 	}
 
+
+	else
+	{
+		if (iCollOption == OP_TARGET)
+		{
+			Pair->second->push_back(pInstance);
+			Safe_AddRef(pInstance);
+			m_mapColliders[iCollOption]->emplace(strColliderTag, Pair->second);
+		}
+	}
+
 	return S_OK;
 }
 
@@ -50,6 +61,7 @@ HRESULT CCollision_Manager::Regist_Update(CBounding* pBounder1, CBounding* pBoun
 			return E_FAIL;
 
 		pList->push_back(pBounder1);
+		Safe_AddRef(pBounder1);
 
 	}
 	
@@ -61,6 +73,7 @@ HRESULT CCollision_Manager::Regist_Update(CBounding* pBounder1, CBounding* pBoun
 			return E_FAIL;
 	
 		pList->push_back(pBounder2);
+		Safe_AddRef(pBounder2);
 
 	}
 	
@@ -90,7 +103,22 @@ HRESULT CCollision_Manager::Secede_Update(CBounding* pBounder1, CBounding* pBoun
 		if (nullptr == pList)
 			return E_ABORT;
 	
+
+		CBounding* pBouund = Find_Bound(*pBounder1->Get_Type(), pBounder1);
+		if (nullptr != pBouund)
+			Safe_Release(pBounder1);
+			
 		pList->remove(pBounder1);
+
+		// 이 부분을 수정해야 하는게 맞네
+		// 없어도 삭제를 해버려서 문제인거다 이거
+		// attack에서 일정 시간 지났을 때와 
+		// 끝났을 때와 부딪쳤을 때 삭제해버려서
+		// 그래서 Update에서 문제가 되는거
+		// 
+		// 또한 Find에서 키값 자체가 완전히 같다보니까 이름만 같아버리면 바로 삭제하는 것도 문제
+		// 즉, iter->second에서 인자로 받은 녀석과 같은 녀석을 반환시켜야 하는게 핵심
+		//
 	}
 	
 	if (nullptr != pBounder2)
@@ -98,8 +126,14 @@ HRESULT CCollision_Manager::Secede_Update(CBounding* pBounder1, CBounding* pBoun
 		list<CBounding*>* pList = Find_List(*pBounder2->Get_Type(), pBounder2);
 		if (nullptr == pList)
 			return E_ABORT;
-	
+
+		CBounding* pBouund = Find_Bound(*pBounder2->Get_Type(), pBounder2);
+		if (nullptr != pBouund)
+			Safe_Release(pBounder2);
+
 		pList->remove(pBounder2);
+
+		int as = 1;
 	}
 
 	return S_OK;
@@ -119,36 +153,36 @@ list<CBounding*>* CCollision_Manager::Find_List(TYPE eType, CBounding* pBounding
 		{
 			CBounding_Sphere::BOUNDING_SPHERE_INFO tInfo = *static_cast<CBounding_Sphere*>(pBounding)->Get_Info();
 
-			auto iter = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
+			auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
 
-			if (iter == m_mapColliders[tInfo.iOption]->end())
+			if (Pair == m_mapColliders[tInfo.iOption]->end())
 				return nullptr;
 
-			return iter->second;
+			return Pair->second;
 		}
 
 		case TYPE_AABB:
 		{
 			CBounding_AABB::BOUNDING_AABB_INFO tInfo = *static_cast<CBounding_AABB*>(pBounding)->Get_Info();
 
-			auto iter = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
+			auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
 
-			if (iter == m_mapColliders[tInfo.iOption]->end())
+			if (Pair == m_mapColliders[tInfo.iOption]->end())
 				return nullptr;
 
-			return iter->second;
+			return Pair->second;
 		}
 
 		case TYPE_OBB:
 		{
 			CBounding_OBB::BOUNDING_OBB_INFO tInfo = *static_cast<CBounding_OBB*>(pBounding)->Get_Info();
 
-			auto iter = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
+			auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
 
-			if (iter == m_mapColliders[tInfo.iOption]->end())
+			if (Pair == m_mapColliders[tInfo.iOption]->end())
 				return nullptr;
 
-			return iter->second;
+			return Pair->second;
 		}
 
 		default:
@@ -156,6 +190,78 @@ list<CBounding*>* CCollision_Manager::Find_List(TYPE eType, CBounding* pBounding
 	}
 
 	return nullptr;
+}
+
+CBounding* CCollision_Manager::Find_Bound(TYPE eType, CBounding* pBounding)
+{
+	// 이 함수 사용하기가 애매해 보인다
+	if (eType >= TYPE_END ||
+		pBounding == nullptr)
+		return nullptr;
+
+	switch (eType)
+	{
+	case TYPE_SPHERE:
+	{
+		CBounding_Sphere::BOUNDING_SPHERE_INFO tInfo = *static_cast<CBounding_Sphere*>(pBounding)->Get_Info();
+
+		auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
+
+		if (Pair == m_mapColliders[tInfo.iOption]->end())
+			return nullptr;
+
+		for (auto& iter : *Pair->second)
+		{
+			if (iter ==  pBounding)
+			{
+				return iter;
+			}
+		}
+
+	}
+
+	case TYPE_AABB:
+	{
+		CBounding_AABB::BOUNDING_AABB_INFO tInfo = *static_cast<CBounding_AABB*>(pBounding)->Get_Info();
+
+		auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
+
+		if (Pair == m_mapColliders[tInfo.iOption]->end())
+			return nullptr;
+
+		for (auto& iter : *Pair->second)
+		{
+			if (iter == pBounding)
+			{
+				return iter;
+			}
+		}
+	}
+
+	case TYPE_OBB:
+	{
+		CBounding_OBB::BOUNDING_OBB_INFO tInfo = *static_cast<CBounding_OBB*>(pBounding)->Get_Info();
+
+		auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
+
+		if (Pair == m_mapColliders[tInfo.iOption]->end())
+			return nullptr;
+
+		for (auto& iter : *Pair->second)
+		{
+			if (iter == pBounding)
+			{
+				return iter;
+			}
+		}
+	}
+
+	default:
+		break;
+	}
+
+	return nullptr;
+
 }
 
 HRESULT CCollision_Manager::OnCollision_Enter()
@@ -207,8 +313,6 @@ _bool CCollision_Manager::Update_Impactor()
 							{
 								iter->Get_Collider()->Set_Coll(bTest);
 								iter2->Get_Collider()->Set_Coll(bTest);
-
-								//Secede_Update(iter, iter2);
 							}
 						}
 					}
@@ -316,7 +420,7 @@ void CCollision_Manager::Free()
 				iter != Pair.second->end();
 				iter++)
 			{
-				if (nullptr == *iter)
+				if (nullptr == (*iter))
 					return;
 
 				Safe_Release(*iter);
@@ -333,4 +437,5 @@ void CCollision_Manager::Free()
 	}
 
 
+	int a = 10;
 }

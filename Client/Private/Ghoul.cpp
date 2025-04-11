@@ -187,7 +187,6 @@ HRESULT CGhoul::Ready_Components()
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
     	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
     
-    m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
     
     return S_OK;
 }

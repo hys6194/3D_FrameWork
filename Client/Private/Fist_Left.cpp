@@ -93,7 +93,7 @@ HRESULT CFist_Left::Ready_Components()
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc), E_FAIL);
 
-    m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
+    //m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
 
     return S_OK;
 }

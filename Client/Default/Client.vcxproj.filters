@@ -157,6 +157,9 @@
     <Filter Include="02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Ghoul">
       <UniqueIdentifier>{82af4ca7-447c-459a-9e3f-720612e0e913}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\00. MonsterList\Moloch">
+      <UniqueIdentifier>{9aaf2cdd-e8b9-4054-b315-0213c919347d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -294,6 +297,10 @@
     <ClInclude Include="..\Public\Body_Monster.h">
       <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Moloch.h">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Moloch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Test_Monster.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -429,6 +436,10 @@
     <ClCompile Include="..\Private\Body_Monster.cpp">
       <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Moloch.cpp">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Moloch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Test_Monster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">

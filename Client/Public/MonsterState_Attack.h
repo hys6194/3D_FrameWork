@@ -31,6 +31,7 @@ public:
 
 private:
 	_bool							m_bRegisted = { false };
+	_bool							m_bSeceded = { false };
 
 	_float							m_fDistance		= {};
 	_float							m_fTotalTime	= {};
