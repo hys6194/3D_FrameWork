@@ -50,6 +50,7 @@ HRESULT CCollision_Manager::Regist_Update(CBounding* pBounder1, CBounding* pBoun
 			return E_FAIL;
 
 		pList->push_back(pBounder1);
+		Safe_AddRef(pBounder1);
 
 	}
 	
@@ -61,6 +62,7 @@ HRESULT CCollision_Manager::Regist_Update(CBounding* pBounder1, CBounding* pBoun
 			return E_FAIL;
 	
 		pList->push_back(pBounder2);
+		Safe_AddRef(pBounder2);
 
 	}
 	
@@ -91,6 +93,7 @@ HRESULT CCollision_Manager::Secede_Update(CBounding* pBounder1, CBounding* pBoun
 			return E_ABORT;
 	
 		pList->remove(pBounder1);
+		Safe_Release(pBounder1);
 	}
 	
 	if (nullptr != pBounder2)
@@ -99,7 +102,8 @@ HRESULT CCollision_Manager::Secede_Update(CBounding* pBounder1, CBounding* pBoun
 		if (nullptr == pList)
 			return E_ABORT;
 	
-		pList->remove(pBounder2);
+		pList->remove(pBounder2);aaaaa
+		Safe_Release(pBounder2);
 	}
 
 	return S_OK;
@@ -316,7 +320,7 @@ void CCollision_Manager::Free()
 				iter != Pair.second->end();
 				iter++)
 			{
-				if (nullptr == *iter)
+				if (nullptr == (*iter))
 					return;
 
 				Safe_Release(*iter);
