@@ -22,6 +22,11 @@ public:
 		return m_pBounding;
 	}
 
+	_bool									Is_Coll()
+	{
+		return m_isColl;
+	}
+
 public:
 	void									Set_Coll(_bool bToogle)	{ m_isColl = bToogle; }
 

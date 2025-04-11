@@ -22,7 +22,7 @@ HRESULT CCollision_Manager::Add_Collistionlist(const _uint iCollOption, const ws
 {
 	auto Pair = m_mapColliders[iCollOption]->find(strColliderTag);
 	
-	// 리스트가 존재하지 않는다면 리스트 생성
+	// 리스트가 존재하지 않는다면 리스트 생성하고 Target은 자동 등록
 	if (Pair == m_mapColliders[iCollOption]->end())
 	{
 		auto iter = new list<CBounding*>();
@@ -37,7 +37,7 @@ HRESULT CCollision_Manager::Add_Collistionlist(const _uint iCollOption, const ws
 		m_mapColliders[iCollOption]->emplace(strColliderTag, iter);
 	}
 
-
+	// 리스트에 Target 넣기
 	else
 	{
 		if (iCollOption == OP_TARGET)
@@ -98,42 +98,31 @@ HRESULT CCollision_Manager::Secede_Update(CBounding* pBounder1, CBounding* pBoun
 {
 	if (nullptr != pBounder1)
 	{
-	
 		list<CBounding*>* pList = Find_List(*pBounder1->Get_Type(), pBounder1);
 		if (nullptr == pList)
 			return E_ABORT;
 	
 
 		CBounding* pBouund = Find_Bound(*pBounder1->Get_Type(), pBounder1);
+
+		// 레퍼런스 카운터 관리
 		if (nullptr != pBouund)
 			Safe_Release(pBounder1);
 			
 		pList->remove(pBounder1);
-
-		// 이 부분을 수정해야 하는게 맞네
-		// 없어도 삭제를 해버려서 문제인거다 이거
-		// attack에서 일정 시간 지났을 때와 
-		// 끝났을 때와 부딪쳤을 때 삭제해버려서
-		// 그래서 Update에서 문제가 되는거
-		// 
-		// 또한 Find에서 키값 자체가 완전히 같다보니까 이름만 같아버리면 바로 삭제하는 것도 문제
-		// 즉, iter->second에서 인자로 받은 녀석과 같은 녀석을 반환시켜야 하는게 핵심
-		//
 	}
 	
 	if (nullptr != pBounder2)
 	{
-		list<CBounding*>* pList = Find_List(*pBounder2->Get_Type(), pBounder2);
-		if (nullptr == pList)
-			return E_ABORT;
-
 		CBounding* pBouund = Find_Bound(*pBounder2->Get_Type(), pBounder2);
 		if (nullptr != pBouund)
 			Safe_Release(pBounder2);
 
-		pList->remove(pBounder2);
+		list<CBounding*>* pList = Find_List(*pBounder2->Get_Type(), pBounder2);
+		if (nullptr == pList)
+			return E_ABORT;
 
-		int as = 1;
+		pList->remove(pBounder2);
 	}
 
 	return S_OK;
@@ -264,6 +253,22 @@ CBounding* CCollision_Manager::Find_Bound(TYPE eType, CBounding* pBounding)
 
 }
 
+_bool CCollision_Manager::Find_Collision(list<CBounding*>* pList1, list<CBounding*>* pList2)
+{
+	_bool bTest{};
+
+	for (auto* a : *pList1)
+		for (auto* b : *pList2)
+			if (Detect_Collision(a, b))
+			{
+				a->Get_Collider()->Set_Coll(true);
+				b->Get_Collider()->Set_Coll(true);
+				return bTest = true;
+			}
+	return bTest = false;
+
+}
+
 HRESULT CCollision_Manager::OnCollision_Enter()
 {
 
@@ -290,6 +295,10 @@ _bool CCollision_Manager::Update_Impactor()
 	// 피충돌체가 충돌원과 비교해서
 	// 피격했는지 안했는지를 판단한다
 	_bool bTest{};
+
+	// 가독성 별로다 진짜
+	// 아니 진짜 가독성 어떻게 하냐
+	// 업데이트를 최소한 돌리는 생각은 좋은데 가독성은 좋게 짜야지
 
 	for (auto& Pair : *m_mapColliders[OP_TARGET])
 	{
@@ -325,7 +334,25 @@ _bool CCollision_Manager::Update_Impactor()
 		{
 			for (size_t i = 0; i < Pair.second->size(); i++)
 			{
+				for (auto& Pair2 : *m_mapColliders[OP_IMPACT])
+				{
+					if (Pair2.first.find(TEXT("Player")) != string::npos)
+					{
+						for (auto& iter : *Pair.second)
+						{
+							for (auto& iter2 : *Pair2.second)
+							{
+								bTest = Detect_Collision(iter, iter2);
 
+								if (bTest == true)
+								{
+									iter->Get_Collider()->Set_Coll(bTest);
+									iter2->Get_Collider()->Set_Coll(bTest);
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -335,9 +362,58 @@ _bool CCollision_Manager::Update_Impactor()
 
 _bool CCollision_Manager::Update_TargetBody()
 {
-	// 피충돌체가 피충돌체와 충돌 비교하여 
+	// 피충돌체가 피충돌체와 충돌 비교하여 충돌 처리
+	_bool bTest{};
 
-	return S_OK;
+	for (int i = 0; i < 2; i++)
+	{
+		// i == 0
+		for (int j = i + 1; j < 5; j++)
+		{
+			// 0,1,2,3,4
+
+		}
+
+		// i == 1
+		for (int k = i; k < 5; k++)
+		{
+			// 1,2,3,4
+			// 2,3,4
+			// 3,4
+			// 4
+		}
+	}
+
+	// 위 로직대로 플레이어는 몬스터의 Pair에 접근해서 전부 순회해야 하고
+	// 몬스터는 아래의 로직대로 돌려야함
+
+	for (auto& Pair : *m_mapColliders[OP_TARGET])
+	{
+		// 플레이어의 body라면
+		if(Pair.first.find(TEXT("Player")) != string::npos)
+		{
+			//몬스터를 순회해야 함
+			for (auto& Pair2 : *m_mapColliders[OP_TARGET])
+			{
+				if (Pair.first.find(TEXT("Monster")) != string::npos)
+				{
+
+				}
+			}
+		}
+
+		// 몬스터라면
+		else if (Pair.first.find(TEXT("Monster")) != string::npos)
+		{
+
+		}
+
+		// 나중에 뭐 지형이라면
+	}
+
+
+
+	return bTest;
 }
 
 _bool CCollision_Manager::Detect_Collision(CBounding* pDest, CBounding* pSour)
@@ -373,7 +449,6 @@ _bool CCollision_Manager::Detect_Collision(CBounding* pDest, CBounding* pSour)
 
 			break;
 		}
-
 		case TYPE_SPHERE:
 		{
 			if (TYPE_AABB == *pSour->Get_Type())

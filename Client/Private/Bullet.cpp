@@ -37,7 +37,7 @@ HRESULT CBullet::Initialize(void* pArg)
 
 void CBullet::Priority_Update(_float fTimeDelta)
 {
-    m_pColliderCom->Reset();
+    //m_pColliderCom->Reset();
 
 }
 
@@ -52,17 +52,12 @@ void CBullet::Update(_float fTimeDelta)
     m_pTransformCom->Set_State(CTransform::STATE_POS, vTest);
 
 
-    if (10.f < m_fTotalTime /*||
-        몬스터와 충돌했을 때*/ )
+    if (10.f < m_fTotalTime ||
+        m_pColliderCom->Is_Coll())
     {
-        // 총알 사라짐 구현해야 함
-        // 
-        // 아니 근데 몬스터도 어떻게 사라지게 해야하냐? 
-        //
-        // 
-
-        //m_pGameInstance->Delete_LastObject();
+W        m_pGameInstance->Secede_Update(m_pColliderCom->Get_Bounder());
     }
+
     m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
 }
@@ -74,6 +69,9 @@ void CBullet::Late_Update(_float fTimeDelta)
 
 HRESULT CBullet::Render()
 {
+    if (m_pColliderCom->Is_Coll())
+        return E_ABORT;
+
     if (FAILED(Bind_SR()))
         return E_FAIL;
 
