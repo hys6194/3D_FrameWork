@@ -255,19 +255,17 @@ CBounding* CCollision_Manager::Find_Bound(TYPE eType, CBounding* pBounding)
 
 }
 
-_bool CCollision_Manager::Find_Collision(list<CBounding*>* pList1, list<CBounding*>* pList2)
+_bool CCollision_Manager::Check_Collision(list<CBounding*>* pList1, list<CBounding*>* pList2)
 {
-	_bool bTest{};
-
 	for (auto* a : *pList1)
 		for (auto* b : *pList2)
 			if (Detect_Collision(a, b))
 			{
 				a->Get_Collider()->Set_Coll(true);
 				b->Get_Collider()->Set_Coll(true);
-				return bTest = true;
+				return true;
 			}
-	return bTest = false;
+	return false;
 
 }
 
@@ -314,19 +312,7 @@ _bool CCollision_Manager::Update_Impactor()
 			{
 				if (Pair2.first.find(TEXT("Monster")) != string::npos)
 				{
-					for (auto& iter : *Pair.second)
-					{
-						for (auto& iter2 : *Pair2.second)
-						{
-							bTest = Detect_Collision(iter, iter2);
-
-							if (bTest == true)
-							{
-								iter->Get_Collider()->Set_Coll(bTest);
-								iter2->Get_Collider()->Set_Coll(bTest);
-							}
-						}
-					}
+					Check_Collision(Pair.second, Pair2.second);
 				}
 			}
 		}
@@ -340,19 +326,7 @@ _bool CCollision_Manager::Update_Impactor()
 				{
 					if (Pair2.first.find(TEXT("Player")) != string::npos)
 					{
-						for (auto& iter : *Pair.second)
-						{
-							for (auto& iter2 : *Pair2.second)
-							{
-								bTest = Detect_Collision(iter, iter2);
-
-								if (bTest == true)
-								{
-									iter->Get_Collider()->Set_Coll(bTest);
-									iter2->Get_Collider()->Set_Coll(bTest);
-								}
-							}
-						}
+						Check_Collision(Pair.second, Pair2.second);
 					}
 				}
 			}
@@ -368,18 +342,6 @@ _bool CCollision_Manager::Update_TargetBody()
 	_bool bTest{};
 	_bool bTest1{};
 
-	for (int i = 0; i < 2; i++)
-	{
-				// i == 1
-		for (int k = i; k < 5; k++)
-		{
-			// 1,2,3,4
-			// 2,3,4
-			// 3,4
-			// 4
-		}
-	}
-
 	// 위 로직대로 플레이어는 몬스터의 Pair에 접근해서 전부 순회해야 하고
 	// 몬스터는 아래의 로직대로 돌려야함
 
@@ -393,27 +355,11 @@ _bool CCollision_Manager::Update_TargetBody()
 			{
 				if (Pair2.first.find(TEXT("Monster")) != string::npos)
 				{
-					for (auto& iter : *Pair.second)
-					{
-						for (auto& iter2 : *Pair2.second)
-						{
-							bTest = Detect_Collision(iter, iter2);
-
-							if (bTest == true)
-							{
-								iter->Get_Collider()->Set_Coll(bTest);
-								iter2->Get_Collider()->Set_Coll(bTest);
-							}
-						}
-					}
+					Check_Collision(Pair.second, Pair2.second);
 				}
 			}
 		}
 
-		// 몬스터라면
-		// 위 로직대로 어떻게 돌리지?
-		// 
-		//  
 		else if (Pair.first.find(TEXT("Monster")) != string::npos)
 		{
 			for (auto iter = Pair.second->begin(); std::next(iter) != Pair.second->end(); ++iter)
@@ -432,7 +378,6 @@ _bool CCollision_Manager::Update_TargetBody()
 			}
 		}
 
-		// 나중에 뭐 지형이라면 추가할 수 있게
 	}
 
 	return bTest;

@@ -24,7 +24,7 @@ public:
 	list<class CBounding*>*							Find_List(TYPE eType, class CBounding* pBounding);
 	class CBounding*								Find_Bound(TYPE eType, class CBounding* pBounding);
 
-	_bool											Find_Collision(list<class CBounding*>*, list<class CBounding*>* = nullptr);
+	_bool											Check_Collision(list<class CBounding*>*, list<class CBounding*>* = nullptr);
 
 
 	HRESULT											OnCollision_Enter();		// 업데이트에 등록할 시점 선언
