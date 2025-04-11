@@ -22,6 +22,7 @@ public:
 	HRESULT											Secede_Update(class CBounding* pBounder1, class CBounding* pBounder2 = nullptr);
 
 	list<class CBounding*>*							Find_List(TYPE eType, class CBounding* pBounding);
+	class CBounding*								Find_Bound(TYPE eType, class CBounding* pBounding);
 
 	HRESULT											OnCollision_Enter();		// 업데이트에 등록할 시점 선언
 	HRESULT											OnCollision_Update();		// 충돌처리 확인

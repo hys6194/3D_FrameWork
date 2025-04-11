@@ -81,6 +81,7 @@ void CMonsterState_Search::Set_PreAnimation()
 
 void CMonsterState_Search::Update_Animation(_float fTimeDelta)
 {
+    // 회전량 없애기 위해서
     m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
 }
 
