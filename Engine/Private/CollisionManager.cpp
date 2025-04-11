@@ -88,6 +88,8 @@ HRESULT CCollision_Manager::Update_Collisions()
 		return E_ABORT;
 
 	_bool bTest = Update_Impactor();
+	_bool bTest1 = Update_TargetBody();
+
 
 	if (bTest == true) return S_OK;
 
@@ -364,17 +366,11 @@ _bool CCollision_Manager::Update_TargetBody()
 {
 	// 피충돌체가 피충돌체와 충돌 비교하여 충돌 처리
 	_bool bTest{};
+	_bool bTest1{};
 
 	for (int i = 0; i < 2; i++)
 	{
-		// i == 0
-		for (int j = i + 1; j < 5; j++)
-		{
-			// 0,1,2,3,4
-
-		}
-
-		// i == 1
+				// i == 1
 		for (int k = i; k < 5; k++)
 		{
 			// 1,2,3,4
@@ -395,23 +391,49 @@ _bool CCollision_Manager::Update_TargetBody()
 			//몬스터를 순회해야 함
 			for (auto& Pair2 : *m_mapColliders[OP_TARGET])
 			{
-				if (Pair.first.find(TEXT("Monster")) != string::npos)
+				if (Pair2.first.find(TEXT("Monster")) != string::npos)
 				{
+					for (auto& iter : *Pair.second)
+					{
+						for (auto& iter2 : *Pair2.second)
+						{
+							bTest = Detect_Collision(iter, iter2);
 
+							if (bTest == true)
+							{
+								iter->Get_Collider()->Set_Coll(bTest);
+								iter2->Get_Collider()->Set_Coll(bTest);
+							}
+						}
+					}
 				}
 			}
 		}
 
 		// 몬스터라면
+		// 위 로직대로 어떻게 돌리지?
+		// 
+		//  
 		else if (Pair.first.find(TEXT("Monster")) != string::npos)
 		{
+			for (auto iter = Pair.second->begin(); std::next(iter) != Pair.second->end(); ++iter)
+			{
+				CBounding* pNextBounding = *std::next(iter);
 
+				if (*iter == nullptr || pNextBounding == nullptr)
+					continue;
+
+				// 비교 처리
+				if (Detect_Collision(*iter, pNextBounding))
+				{
+					(*iter)->Get_Collider()->Set_Coll(true);
+					pNextBounding->Get_Collider()->Set_Coll(true);
+				}
+			}
 		}
 
-		// 나중에 뭐 지형이라면
+		// 나중에 뭐 지형이라면 추가할 수 있게
 	}
-
-
 
 	return bTest;
 }
