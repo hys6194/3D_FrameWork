@@ -55,7 +55,7 @@ void CBullet::Update(_float fTimeDelta)
     if (10.f < m_fTotalTime ||
         m_pColliderCom->Is_Coll())
     {
-W        m_pGameInstance->Secede_Update(m_pColliderCom->Get_Bounder());
+        m_pGameInstance->Secede_Update(m_pColliderCom->Get_Bounder());
     }
 
     m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
