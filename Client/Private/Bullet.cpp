@@ -120,6 +120,9 @@ HRESULT CBullet::Ready_Component()
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc)))
         return E_FAIL;
 
+    // 근데 좀 별로다 몸은 자동으로 등록하는데 총알이나 공격 부류는 내가 선언해야 등록되는거
+    // 아닌데? 의도한대로 되긴했는데? 불편한거 아닌가?
+    // 불편한거네 근데 이게 더 낫긴해
     m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
 
     return S_OK;
