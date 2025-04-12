@@ -625,6 +625,33 @@ void CCollision_Manager::Calculate_AABB_OBB(CBounding_AABB* pOBB1, CBounding_OBB
 
 void CCollision_Manager::Calculate_AABB_Sphere(CBounding_AABB* pAABB1, CBounding_Sphere* pSphere1)
 {
+	BoundingBox AABBDesc = *pAABB1->Get_Desc();
+	BoundingSphere SphereDesc = *pSphere1->Get_Desc();
+
+	_float3 fAABBMin = _float3(
+		AABBDesc.Center.x - AABBDesc.Extents.x,
+		AABBDesc.Center.y - AABBDesc.Extents.y,
+		AABBDesc.Center.z - AABBDesc.Extents.z);
+
+	_float3 fAABBMax = _float3(
+		AABBDesc.Center.x + AABBDesc.Extents.x,
+		AABBDesc.Center.y + AABBDesc.Extents.y,
+		AABBDesc.Center.z + AABBDesc.Extents.z);
+
+	_float3 fSphereMin = _float3(
+		SphereDesc.Center.x - SphereDesc.Radius,
+		SphereDesc.Center.y - SphereDesc.Radius,
+		SphereDesc.Center.z - SphereDesc.Radius);
+
+	_float3 fSphereMax = _float3(
+		SphereDesc.Center.x + SphereDesc.Radius,
+		SphereDesc.Center.y + SphereDesc.Radius,
+		SphereDesc.Center.z + SphereDesc.Radius);
+
+
+	//차라리 가서 하자
+
+
 
 }
 
