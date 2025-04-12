@@ -21,6 +21,7 @@ HRESULT CBounding_Sphere::Initialize(const CBounding_Sphere::BOUNDING_SPHERE_DES
     m_eType = pBoundDesc->eType;
     m_tInfo.iOption = pBoundDesc->iOption;
     m_tInfo.strCollTag = pBoundDesc->strCollTag;
+    m_tInfo.pOwner = pBoundDesc->pOwner;
 
     m_pGameInstance->Add_Collistionlist(pBoundDesc->iOption, pBoundDesc->strCollTag, this);
 

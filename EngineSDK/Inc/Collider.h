@@ -22,6 +22,16 @@ public:
 		return m_pBounding;
 	}
 
+	_bool									Is_Coll()
+	{
+		return m_isColl;
+	}
+
+	class CGameObject*						Get_Owner()
+	{
+		return m_pOwner;
+	}
+
 public:
 	void									Set_Coll(_bool bToogle)	{ m_isColl = bToogle; }
 
@@ -40,6 +50,7 @@ public:
 private:
 	TYPE									m_eColliderType = { TYPE_END };
 	class CBounding*						m_pBounding = { nullptr };
+	class CGameObject*						m_pOwner = { nullptr };
 
 	_bool									m_isColl = { false };
 

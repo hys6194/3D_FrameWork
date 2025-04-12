@@ -9,6 +9,8 @@ class CBounding_Sphere final : public CBounding
 public:
 	typedef struct tagBoudingSphereDesc
 	{
+		class CGameObject* pOwner;
+
 		TYPE		eType;
 		_wstring	strCollTag;
 		_uint		iOption;
@@ -18,6 +20,8 @@ public:
 
 	typedef struct tagBoudingSphereInfo
 	{
+		class CGameObject* pOwner;
+
 		TYPE		eType;
 		_wstring	strCollTag;
 		_uint		iOption;
