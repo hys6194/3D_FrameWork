@@ -9,15 +9,18 @@ class CBounding_AABB final : public CBounding
 public:
 	typedef struct tagBoudingAABBDesc
 	{
+		class CGameObject* pOwner;
 		TYPE		eType;
 		_wstring	strCollTag;
 		_uint		iOption;
+
 		_float3		vCenter;
 		_float3		vExtents;
 	}BOUNDING_AABB_DESC;
 
 	typedef struct tagBoudingAABBInfo
 	{
+		class CGameObject* pOwner;
 		TYPE		eType;
 		_wstring	strCollTag;
 		_uint		iOption;

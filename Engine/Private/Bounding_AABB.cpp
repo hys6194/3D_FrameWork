@@ -21,6 +21,7 @@ HRESULT CBounding_AABB::Initialize(const CBounding_AABB::BOUNDING_AABB_DESC* pDe
     m_tInfo.iOption = pBoundDesc->iOption;
     m_tInfo.strCollTag = pBoundDesc->strCollTag;
     m_eType = pBoundDesc->eType;
+    m_tInfo.pOwner = pBoundDesc->pOwner;
 
     m_pGameInstance->Add_Collistionlist(pBoundDesc->iOption, pBoundDesc->strCollTag, this);
 

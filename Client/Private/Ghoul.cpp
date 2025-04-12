@@ -183,6 +183,7 @@ HRESULT CGhoul::Ready_Components()
     ColliderDesc.eType = TYPE_OBB;
     ColliderDesc.strCollTag = Get_Name() + TEXT("_Body");
     ColliderDesc.iOption = COLL_OPT::OP_TARGET;
+    ColliderDesc.pOwner = this;
     
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
     	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);

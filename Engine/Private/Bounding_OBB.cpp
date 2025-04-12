@@ -25,6 +25,7 @@ HRESULT CBounding_OBB::Initialize(const CBounding_OBB::BOUNDING_OBB_DESC* pDesc,
 
     m_eType = pBoundDesc->eType;
     m_tInfo.iOption = pBoundDesc->iOption;
+    m_tInfo.pOwner = pBoundDesc->pOwner;
     m_tInfo.strCollTag = pBoundDesc->strCollTag;
 
     m_pGameInstance->Add_Collistionlist(pBoundDesc->iOption, pBoundDesc->strCollTag, this);
@@ -34,7 +35,6 @@ HRESULT CBounding_OBB::Initialize(const CBounding_OBB::BOUNDING_OBB_DESC* pDesc,
 
 void CBounding_OBB::Update(_fmatrix WorldMatrix)
 {
-  
     m_pLocalDesc->Transform(*m_pDesc, WorldMatrix);
 }
 
@@ -70,7 +70,6 @@ _bool CBounding_OBB::Intersect(TYPE eType, CBounding* pTargetBound)
 #ifdef _DEBUG
 HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
-
     DX::Draw(pBatch, *m_pDesc, vColor);
 
     return S_OK;
@@ -90,6 +89,7 @@ _bool CBounding_OBB::Intersect_OBB(CBounding_OBB* pTargetBound)
         {
             _float          fLength[3] = {};
 
+            // 충돌체 객체와 다른 객체의 거리와 x, y, z 방향으로 투영한 기준 벡터와 내적
             fLength[0] = fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenter) - XMLoadFloat3(&OBBDesc[0].vCenter),
                 XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]);
 
@@ -111,7 +111,7 @@ _bool CBounding_OBB::Intersect_OBB(CBounding_OBB* pTargetBound)
 
 CBounding_OBB::OBB_DESC CBounding_OBB::Compute_OBBDesc()
 {
-    OBB_DESC            OBBDesc{};
+    OBB_DESC    OBBDesc{};
 
     _float3     vPoints[8];
 
@@ -119,10 +119,12 @@ CBounding_OBB::OBB_DESC CBounding_OBB::Compute_OBBDesc()
 
     OBBDesc.vCenter = m_pDesc->Center;
 
+    // x,y,z 축에 대한 방향 벡터 -> 분리 축
     XMStoreFloat3(&OBBDesc.vCenterDir[0], (XMLoadFloat3(&vPoints[5]) - XMLoadFloat3(&vPoints[4])) * 0.5f);
     XMStoreFloat3(&OBBDesc.vCenterDir[1], (XMLoadFloat3(&vPoints[7]) - XMLoadFloat3(&vPoints[4])) * 0.5f);
     XMStoreFloat3(&OBBDesc.vCenterDir[2], (XMLoadFloat3(&vPoints[0]) - XMLoadFloat3(&vPoints[4])) * 0.5f);
 
+    // 해당 면과 수직인 벡터 선언
     for (size_t i = 0; i < 3; i++)
         XMStoreFloat3(&OBBDesc.vAlignDir[i], XMVector3Normalize(XMLoadFloat3(&OBBDesc.vCenterDir[i])));
 

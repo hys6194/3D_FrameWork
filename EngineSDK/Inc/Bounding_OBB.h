@@ -9,6 +9,8 @@ class CBounding_OBB final : public CBounding
 public:
 	typedef struct tagBoudingOBBDesc
 	{
+		class CGameObject* pOwner;
+
 		TYPE		eType;
 		_wstring	strCollTag;
 		_uint		iOption;
@@ -19,6 +21,8 @@ public:
 
 	typedef struct tagBoudingOBBInfo
 	{
+		class CGameObject* pOwner;
+
 		TYPE		eType;
 		_wstring	strCollTag;
 		_uint		iOption;
