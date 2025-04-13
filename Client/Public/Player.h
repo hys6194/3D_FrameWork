@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "ContainerObject.h"
 
+
 BEGIN(Engine)
 class CFSM;
 class CNavigation;
@@ -80,9 +81,6 @@ public:
 		m_bCanMove = bMove;
 	}
 
-//public:
-//	CNavigation*			Get_NavigationCom();// 이거 왜 만듬?
-
 public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize(void* pArg) override;
@@ -91,29 +89,27 @@ public:
 	virtual void			Late_Update(_float fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
-
-	// 파츠들을 모아서 렌더를 할 것인데, PartObject를 상속받는 클래스에서 생성하고 그 클래스에서 렌더를 할 예정이기 때문에 쓸모가 없어짐
-	//private:
-	//	CShader*					m_pShaderCom = { nullptr };	
-	//	CModel*						m_pModelCom = { nullptr };
 private:
-	_uint					m_iState		= { STATE_NONE };
-	_uint					m_iKey			= { KEY_DOWN };
+	_uint					m_iState			= { STATE_NONE };
+	_uint					m_iKey				= { KEY_DOWN };
 
 
-	_bool					m_bIsDashed		= { false };
-	_bool					m_bCanMove		= { true };
+	_bool					m_bIsDashed			= { false };
+	_bool					m_bCanMove			= { true };
 
 private:
-	CFSM*					m_pFSMCom		= { nullptr };
-	CNavigation*			m_pNavigationCom = { nullptr };
-	CCollider*				m_pColliderCom = { nullptr };
+	CFSM*					m_pFSMCom			= { nullptr };
+	CCollider*				m_pColliderCom		= { nullptr };
+	CNavigation*			m_pNavigationCom	= { nullptr };
+	class CStatus*			m_pStatusCom		= { nullptr };
 
 private:
 	HRESULT					Ready_Components();
 	HRESULT					Ready_PartObjects();
 	HRESULT					Ready_States();
 	HRESULT					Bind_SR();
+
+	void					Calculate_StatusInfo();
 
 private:
 	void					Input_Keys();

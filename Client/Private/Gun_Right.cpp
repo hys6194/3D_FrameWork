@@ -49,12 +49,6 @@ HRESULT CGun_Right::Initialize(void* pArg)
 
 void CGun_Right::Priority_Update(_float fTimeDelta)
 {
-    //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-    //m_pTransformCom->Rotation(AXIS_X, XMConvertToRadians(-90.f));
-    //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
-    //m_pTransformCom->Rotation(XMQuaternionRotationAxis())
-    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(20.f, -5.f, 12.5f, 1.f));
-
     m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(19.f, -5.f, 12.5f, 1.f));
 
     m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);

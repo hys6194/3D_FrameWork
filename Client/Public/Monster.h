@@ -24,10 +24,12 @@ public:
 		_bool bBoss = { false };
 		_bool bWave = { false };
 		_uint iState = { STATE_IDLE };
-		_uint iHP = {};
 
+		// 이거 어따 썼지?
 		_float fDetectDistance = { 15.f };
 		_float fNoticeDistance = { 15.f };
+
+		_wstring strMonsterName = {};
 
 	}MONSTER_DESC;
 
@@ -77,7 +79,7 @@ protected:
 	CFSM*									m_pFSMCom									= { nullptr };
 	CNavigation*							m_pNavigationCom							= { nullptr };
 	CCollider*								m_pColliderCom								= { nullptr };
-
+	class CStatus*							m_pStatusCom								= { nullptr };
 
 protected:
 	_bool									m_bIsDead									= { false };

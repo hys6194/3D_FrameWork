@@ -16,16 +16,8 @@ public:
 		_uint		iOption;
 		_float		fRadius;
 		_float3		vCenter;
+		_uint		iAttack; // 아...이거 절대 아닌데
 	}BOUNDING_SPHERE_DESC;
-
-	typedef struct tagBoudingSphereInfo
-	{
-		class CGameObject* pOwner;
-
-		TYPE		eType;
-		_wstring	strCollTag;
-		_uint		iOption;
-	}BOUNDING_SPHERE_INFO;
 
 private:
 	CBounding_Sphere(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -34,11 +26,6 @@ private:
 public:
 	BoundingSphere*				Get_Desc() {
 		return m_pDesc;
-	}
-
-	BOUNDING_SPHERE_INFO*		Get_Info()
-	{
-		return &m_tInfo;
 	}
 
 public:
@@ -54,10 +41,7 @@ public:
 
 private:
 	BoundingSphere*				m_pLocalDesc = { nullptr };
-	BoundingSphere*				m_pDesc = { nullptr };
-
-	BOUNDING_SPHERE_INFO		m_tInfo;
-	
+	BoundingSphere*				m_pDesc = { nullptr };	
 
 public:
 	static CBounding_Sphere*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding_Sphere::BOUNDING_SPHERE_DESC* pDesc, class CCollider* pOwner);

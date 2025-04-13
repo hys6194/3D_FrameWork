@@ -2,6 +2,8 @@
 #include "GameInstance.h"
 
 #include "Test_Monster.h"
+#include "Moloch_Sword.h"
+#include "Body_Moloch.h"
 #include "Body_Player.h"
 #include "Camera_Free.h"
 #include "BackGround.h"
@@ -16,6 +18,7 @@
 #include "Bullet.h"
 #include "Moloch.h"
 #include "Player.h"
+#include "Status.h"
 #include "Weapon.h"
 #include "Ghoul.h"
 #include "Snow.h"
@@ -263,6 +266,9 @@ HRESULT CLoader::Loading_Models()
 			CFSM::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_STATUS,
+			CStatus::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		CVIBuffer_Particle::INSTANCE_DESC		SnowDesc{};
 
@@ -279,12 +285,21 @@ HRESULT CLoader::Loading_Models()
 		/////* For.Prototype_Component_Model_ForkLift */
 		//PreTransformMatrix = XMMatrixScaling(0.2f, 0.2f, 0.2f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 		// 
-		// ForkLift 저장용
-		//PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		// 새로운 애니메이션 모델 저장용
+		//PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH,
 		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
 		//		"../Bin/Resources/Models/AnimModel/Moloch/Moloch.fbx",
 		//		"../Bin/DataFiles/anim/Creature/Moloch.bin",
+		//		PreTransformMatrix))))
+		//	return E_FAIL;
+		// 
+		//  새로운 논애니메이션 모델 저장용
+		//PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_SWORD,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+		//		"../Bin/Resources/Models/AnimModel/Moloch/Moloch_Sword.fbx",
+		//		"../Bin/DataFiles/Nonanim/PartObject/Moloch_Sword.bin",
 		//		PreTransformMatrix))))
 		//	return E_FAIL;
 		//
@@ -324,6 +339,8 @@ HRESULT CLoader::Loading_Models()
 		//	return E_FAIL;
 
 		// ForkLift 불러오기
+
+
 		 PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/ForkLift.bin", PreTransformMatrix))))
@@ -332,21 +349,24 @@ HRESULT CLoader::Loading_Models()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/Moloch.bin", PreTransformMatrix))))
 			return E_FAIL;
+
 		// Strife 불러오기
 		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Heroes/Strife.bin", PreTransformMatrix))))
 			return E_FAIL;
-			
-		
+
+		PreTransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.f)) * XMMatrixRotationZ(XMConvertToRadians(-90.f));
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_SWORD,
+			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/Moloch_Sword.bin", PreTransformMatrix))))
+			return E_FAIL;
+
 		// Ghoul 불러오기
 		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/Ghoul.bin", PreTransformMatrix))))
 			return E_FAIL;
 
-		
-		 
 		PreTransformMatrix =  XMMatrixRotationZ(XMConvertToRadians(180.f));
 		PreTransformMatrix *= XMMatrixRotationY(XMConvertToRadians(180.f));
 		PreTransformMatrix *= XMMatrixRotationX(XMConvertToRadians(90.f));
@@ -574,9 +594,9 @@ HRESULT CLoader::Loading_Prototype()
 	case LEVEL_GAMEPLAY:
 	{
 		/* Test_Monster_Anim*/
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
-			CTest_Monster::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
+		//	CTest_Monster::Create(m_pDevice, m_pContext))))
+		//	return E_FAIL;
 
 		/* Prototype_GameObject_Terrain */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
@@ -592,9 +612,17 @@ HRESULT CLoader::Loading_Prototype()
 			CBody_Ghoul::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
-		//	CMoloch::Create(m_pDevice, m_pContext))))
-		//	return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
+			CMoloch::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH_BODY,
+			CBody_Moloch::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH_SWORD,
+			CMoloch_Sword::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_PLAYER,
 			CPlayer::Create(m_pDevice, m_pContext))))
@@ -640,6 +668,7 @@ HRESULT CLoader::Loading_Prototype()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_BULLET,
 			CBullet::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
 
 #pragma region Map_Objects
 

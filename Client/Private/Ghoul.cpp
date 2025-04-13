@@ -1,6 +1,6 @@
 #include "Ghoul.h"
 #include "Monster.h"
-
+#include "Status.h"
 
 #include "Fist_Left.h"
 #include "Fist_Right.h"
@@ -39,6 +39,7 @@ HRESULT CGhoul::Initialize(void* pArg)
     Desc.fSpeedPerSec = 10.f;
     Desc.fRotationPerSec = XMConvertToRadians(90.f);
     Desc.iState = STATE_IDLE;
+    Desc.strMonsterName = TEXT("_Ghoul");
     m_iState = Desc.iState;
 
     m_fDetectDistance = 4.f;
@@ -175,19 +176,28 @@ HRESULT CGhoul::Ready_Components()
 {
     __super::Ready_Components();
 
-    CBounding_OBB::BOUNDING_OBB_DESC		ColliderDesc{};
+    CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
     ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
     ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
-    ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
+    //ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
     //ColliderDesc.strCollTag = Get_Name() + TEXT("_Body ") + std::to_wstring(m_iIndex);
-    ColliderDesc.eType = TYPE_OBB;
+    ColliderDesc.eType = TYPE_AABB;
     ColliderDesc.strCollTag = Get_Name() + TEXT("_Body");
     ColliderDesc.iOption = COLL_OPT::OP_TARGET;
     ColliderDesc.pOwner = this;
     
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
     	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
     
+    CStatus::STATUS_DESC StatusDesc{};
+    StatusDesc.iAttack = 2;
+    StatusDesc.iHP = 100;
+    StatusDesc.pOwner = this;
+
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_STATUS,
+        reinterpret_cast<CComponent**>(&m_pStatusCom), COM_STATUS, &StatusDesc), E_FAIL);
+
+
     
     return S_OK;
 }

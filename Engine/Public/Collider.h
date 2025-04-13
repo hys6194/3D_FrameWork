@@ -22,19 +22,19 @@ public:
 		return m_pBounding;
 	}
 
+	class CBounding*						Get_TargetBounder()
+	{
+		return m_pTargetBounding;
+	}
+
 	_bool									Is_Coll()
 	{
 		return m_isColl;
 	}
 
-	class CGameObject*						Get_Owner()
-	{
-		return m_pOwner;
-	}
-
 public:
 	void									Set_Coll(_bool bToogle)	{ m_isColl = bToogle; }
-
+	void									Set_TargetColl(CBounding* pTargetBounding) { m_pTargetBounding = pTargetBounding; }
 // 이 함수들은 매니저로 옮겨야 할 수도 있다
 public:
 	void									Update(_fmatrix WorldMatrix);
@@ -43,16 +43,20 @@ public:
 		m_isColl = false;
 	}
 
+	void									Check_CollisionHit();
+
 #ifdef _DEBUG
 	virtual HRESULT							Render();
 #endif
 
 private:
-	TYPE									m_eColliderType = { TYPE_END };
 	class CBounding*						m_pBounding = { nullptr };
+	class CBounding*						m_pTargetBounding = { nullptr };
 	class CGameObject*						m_pOwner = { nullptr };
 
 	_bool									m_isColl = { false };
+
+	TYPE									m_eColliderType = { TYPE_END };
 
 #ifdef _DEBUG
 private:

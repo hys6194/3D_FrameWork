@@ -21,7 +21,7 @@ HRESULT CMap_Object::Initialize(void* pArg)
 
     //m_iIndex = m_pDesc.iObjectIndex;
     
-    //wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(m_pDesc.iObjectIndex);
+    wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(m_pDesc.iObjectIndex);
 
     lstrcpy(Desc->szGameObjectTag, TEXT("Game_MapObject"));
  

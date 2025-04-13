@@ -160,6 +160,18 @@
     <Filter Include="02.GameObjects\Monster\00. MonsterList\Moloch">
       <UniqueIdentifier>{9aaf2cdd-e8b9-4054-b315-0213c919347d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Moloch">
+      <UniqueIdentifier>{198d8f64-3fbe-4b03-b272-7f3e3c9bf8ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Component">
+      <UniqueIdentifier>{d97cb6ac-f269-4b2b-82d4-c3fb183eb8a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Component\Status">
+      <UniqueIdentifier>{add3fd4d-7f46-4e03-9b90-1564c18b0cfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Part\Moloch_Sword">
+      <UniqueIdentifier>{9e4c7d85-f858-4cb2-9e5f-7a8185bc6987}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -301,6 +313,16 @@
       <Filter>02.GameObjects\Monster\00. MonsterList\Moloch</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Test_Monster.h" />
+    <ClInclude Include="..\Public\Body_Moloch.h">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Moloch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Moloch_Sword.h">
+      <Filter>02.GameObjects\Monster\Part\Moloch_Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Attack.h" />
+    <ClInclude Include="..\Public\Status.h">
+      <Filter>03.Component\Status</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -403,9 +425,6 @@
     <ClCompile Include="..\Private\MonsterState_Idle.cpp">
       <Filter>02.GameObjects\Monster\States\Idle</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Ghoul.cpp">
-      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\MonsterState_Hit.cpp">
       <Filter>02.GameObjects\Monster\States\Hit</Filter>
     </ClCompile>
@@ -440,6 +459,19 @@
       <Filter>02.GameObjects\Monster\00. MonsterList\Moloch</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Test_Monster.cpp" />
+    <ClCompile Include="..\Private\Body_Moloch.cpp">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Moloch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ghoul.cpp">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Status.cpp">
+      <Filter>03.Component\Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Moloch_Sword.cpp">
+      <Filter>02.GameObjects\Monster\Part\Moloch_Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Attack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">

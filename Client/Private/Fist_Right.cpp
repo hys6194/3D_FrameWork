@@ -86,7 +86,6 @@ HRESULT CFist_Right::Ready_Components()
     SphereDesc.iOption = COLL_OPT::OP_IMPACT;
     SphereDesc.eType = TYPE::TYPE_SPHERE;
 
-
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc), E_FAIL);
 

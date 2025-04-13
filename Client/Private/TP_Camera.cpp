@@ -41,15 +41,21 @@ void CTP_Camera::Priority_Update(_float fTimeDelta)
 	_vector vPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
 
 	_vector vEye = XMVectorSetW(XMLoadFloat3(&m_vCamEye), 0.f) + vPos;
+	
 	_vector vLook = vPos - vEye;
 
-	vLook = XMVector4Normalize(vLook);
-	//m_pTransformCom->LookAt(XMVectorSetW(vLook, 1.f));
+	vLook = XMVector3Normalize(vLook);
 
+	_vector vUp = XMVector3Normalize(XMVector3Cross(vLook, XMVector3Normalize(m_pTransformCom->Get_State(CTransform::STATE_RIGHT))));
+	_vector vRight = XMVector3Normalize(XMVector3Cross(vUp, vLook));
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
 	m_pTransformCom->Set_State(CTransform::STATE_POS, vEye);
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVectorSetW(vLook, 0.f));
-	 
+
 	__super::Renew_Matrices();
+
 }
 
 void CTP_Camera::Update(_float fTimeDelta)

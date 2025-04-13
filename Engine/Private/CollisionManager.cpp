@@ -95,16 +95,6 @@ HRESULT CCollision_Manager::Update_Collisions(_float fTimeDelta)
 	_bool bTest = Update_Impactor(fTimeDelta);
 	_bool bTest1 = Update_TargetBody(fTimeDelta);
 
-	// 후처리를 어떻게 해야할까
-	// 일단 원하는 녀석들 끼리 충돌은 되고 있음/
-	// 하지만 어떻게 그 객체의 정보를 수정을 할 것이냐가 문제
-	// 하드코딩으로 하기엔 너무 불합리하다고 생각함
-	// 각 Collider는 Owner를 가지고 있다
-	// 그 Owner를 통해서 정보에 접근을 할 것인가?
-	// 그건 그렇게 해결했다고 가정해
-	// 하지만 몸과 몸의 충돌은 어떻게 충돌할 거야?
-
-
 
 	if (bTest == true) return S_OK;
 
@@ -150,50 +140,15 @@ list<CBounding*>* CCollision_Manager::Find_List(TYPE eType, CBounding* pBounding
 	if (eType >= TYPE_END ||
 		pBounding == nullptr)
 		return nullptr;
+	
+	CBounding::BOUNDING_INFO tInfo = *pBounding->Get_Info();
 
-	switch (eType)
-	{
-		case TYPE_SPHERE:
-		{
-			CBounding_Sphere::BOUNDING_SPHERE_INFO tInfo = *static_cast<CBounding_Sphere*>(pBounding)->Get_Info();
+	auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
 
-			auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
+	if (Pair == m_mapColliders[tInfo.iOption]->end())
+		return nullptr;
 
-			if (Pair == m_mapColliders[tInfo.iOption]->end())
-				return nullptr;
-
-			return Pair->second;
-		}
-
-		case TYPE_AABB:
-		{
-			CBounding_AABB::BOUNDING_AABB_INFO tInfo = *static_cast<CBounding_AABB*>(pBounding)->Get_Info();
-
-			auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
-
-			if (Pair == m_mapColliders[tInfo.iOption]->end())
-				return nullptr;
-
-			return Pair->second;
-		}
-
-		case TYPE_OBB:
-		{
-			CBounding_OBB::BOUNDING_OBB_INFO tInfo = *static_cast<CBounding_OBB*>(pBounding)->Get_Info();
-
-			auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
-
-			if (Pair == m_mapColliders[tInfo.iOption]->end())
-				return nullptr;
-
-			return Pair->second;
-		}
-
-		default:
-			break;
-	}
-
-	return nullptr;
+	return Pair->second;
 }
 
 CBounding* CCollision_Manager::Find_Bound(TYPE eType, CBounding* pBounding)
@@ -203,72 +158,26 @@ CBounding* CCollision_Manager::Find_Bound(TYPE eType, CBounding* pBounding)
 		pBounding == nullptr)
 		return nullptr;
 
-	switch (eType)
+	CBounding::BOUNDING_INFO tInfo = *pBounding->Get_Info();
+
+	auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
+
+	if (Pair == m_mapColliders[tInfo.iOption]->end())
+		return nullptr;
+
+	for (auto& iter : *Pair->second)
 	{
-	case TYPE_SPHERE:
-	{
-		CBounding_Sphere::BOUNDING_SPHERE_INFO tInfo = *static_cast<CBounding_Sphere*>(pBounding)->Get_Info();
-
-		auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
-
-		if (Pair == m_mapColliders[tInfo.iOption]->end())
-			return nullptr;
-
-		for (auto& iter : *Pair->second)
+		if (iter == pBounding)
 		{
-			if (iter ==  pBounding)
-			{
-				return iter;
-			}
+			return iter;
 		}
-
-	}
-
-	case TYPE_AABB:
-	{
-		CBounding_AABB::BOUNDING_AABB_INFO tInfo = *static_cast<CBounding_AABB*>(pBounding)->Get_Info();
-
-		auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
-
-		if (Pair == m_mapColliders[tInfo.iOption]->end())
-			return nullptr;
-
-		for (auto& iter : *Pair->second)
-		{
-			if (iter == pBounding)
-			{
-				return iter;
-			}
-		}
-	}
-
-	case TYPE_OBB:
-	{
-		CBounding_OBB::BOUNDING_OBB_INFO tInfo = *static_cast<CBounding_OBB*>(pBounding)->Get_Info();
-
-		auto Pair = m_mapColliders[tInfo.iOption]->find(tInfo.strCollTag);
-
-		if (Pair == m_mapColliders[tInfo.iOption]->end())
-			return nullptr;
-
-		for (auto& iter : *Pair->second)
-		{
-			if (iter == pBounding)
-			{
-				return iter;
-			}
-		}
-	}
-
-	default:
-		break;
 	}
 
 	return nullptr;
 
 }
 
-_bool CCollision_Manager::Check_Collision(list<CBounding*>* pList1, list<CBounding*>* pList2)
+_bool CCollision_Manager::Check_Collision(list<CBounding*>* pList1, list<CBounding*>* pList2, CBounding** pBound1, CBounding** pBound2)
 {
 	for (auto& iter1 : *pList1)
 		for (auto& iter2 : *pList2)
@@ -276,8 +185,16 @@ _bool CCollision_Manager::Check_Collision(list<CBounding*>* pList1, list<CBoundi
 			{
 				iter1->Get_Collider()->Set_Coll(true);
 				iter2->Get_Collider()->Set_Coll(true);
+
+				if(pBound1 != nullptr)
+					*pBound1 = iter1;
+
+				if(pBound2 != nullptr)
+					*pBound2 = iter2;
+
 				return true;
 			}
+
 	return false;
 }
 
@@ -285,22 +202,22 @@ _bool CCollision_Manager::Update_Impactor(_float fTimeDelta)
 {
 	// 피충돌체가 충돌원과 비교해서
 	// 피격했는지 안했는지를 판단한다
-	_bool bTest{};
 
+	_bool bTest{};
+	CBounding* pBounding1 = nullptr;
+	CBounding* pBounding2 = nullptr;
 	// 가독성 별로다 진짜
 	// 아니 진짜 가독성 어떻게 하냐
-	// 업데이트를 최소한 돌리는 생각은 좋은데 가독성은 좋게 짜야지
 
 	for (auto& Pair : *m_mapColliders[OP_TARGET])
 	{
-		// 플레이어의 몸체
-		// 사실상 몸체는 하나뿐이라 하나만 돌림
-		if (Pair.first.find(TEXT("Player")) != string::npos)
+	
+		if (Check_IncWord(Pair.first, TEXT("Player")))
 		{
 			// 몬스터의 충돌체
 			for (auto& Pair2 : *m_mapColliders[OP_IMPACT])
 			{
-				if (Pair2.first.find(TEXT("Monster")) != string::npos)
+				if (Check_IncWord(Pair2.first, TEXT("Monster")))
 				{
 					Check_Collision(Pair.second, Pair2.second);
 				}
@@ -314,7 +231,7 @@ _bool CCollision_Manager::Update_Impactor(_float fTimeDelta)
 			{
 				for (auto& Pair2 : *m_mapColliders[OP_IMPACT])
 				{
-					if (Pair2.first.find(TEXT("Player")) != string::npos)
+					if (Check_IncWord(Pair2.first, TEXT("Player")))
 					{
 						Check_Collision(Pair.second, Pair2.second);
 					}
@@ -338,22 +255,20 @@ _bool CCollision_Manager::Update_TargetBody(_float fTimeDelta)
 	for (auto& Pair : *m_mapColliders[OP_TARGET])
 	{
 		// 플레이어의 body라면
-		if(Pair.first.find(TEXT("Player")) != string::npos)
+		if (Check_IncWord(Pair.first, TEXT("Player")))
 		{
 			//몬스터를 순회해야 함
 			for (auto& Pair2 : *m_mapColliders[OP_TARGET])
 			{
-				if (Pair2.first.find(TEXT("Monster")) != string::npos)
+				if (Check_IncWord(Pair2.first, TEXT("Monster")))
 				{
 					for (auto& iter1 : *Pair.second)
 					{
 						for (auto& iter2 : *Pair2.second)
 						{
+							// 충돌이 감지되면 밀어낸다
 							if (Detect_Collision(iter1, iter2))
 							{
-								iter1->Get_Collider()->Set_Coll(true);
-								iter2->Get_Collider()->Set_Coll(true);
-
 								Detrude_Colliders(iter1, iter2);
 							}
 						}
@@ -365,9 +280,12 @@ _bool CCollision_Manager::Update_TargetBody(_float fTimeDelta)
 
 		else if (Pair.first.find(TEXT("Monster")) != string::npos)
 		{
-			for (auto iter = Pair.second->begin(); std::next(iter) != Pair.second->end(); ++iter)
+			if (Pair.second->empty())
+				return false;
+
+			for (auto iter = Pair.second->begin(); next(iter) != Pair.second->end(); ++iter)
 			{
-				CBounding* pNextBounding = *std::next(iter);
+				CBounding* pNextBounding = *next(iter);
 
 				if (*iter == nullptr || pNextBounding == nullptr)
 					continue;
@@ -375,9 +293,6 @@ _bool CCollision_Manager::Update_TargetBody(_float fTimeDelta)
 				// 비교 처리
 				if (Detect_Collision(*iter, pNextBounding))
 				{
-					(*iter)->Get_Collider()->Set_Coll(true);
-					pNextBounding->Get_Collider()->Set_Coll(true);
-
 					Detrude_Colliders(*iter, pNextBounding);
 				}
 			}
@@ -484,21 +399,24 @@ void CCollision_Manager::Calculate_AABB_AABB(CBounding_AABB* pAABB1, CBounding_A
 	}
 
 	// 두 객체의 중심 위치 차이를 구하여 분리시켜야 할 방향(부호)을 결정
-	_vector vCenter1 = pAABB1->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
-	_vector vCenter2 = pAABB2->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
-	_vector vCenterDiff = vCenter2 - vCenter1;
+	_float3 fCenter1 = pAABB1->Get_Desc()->Center;
+	_float3 fCenter2 = pAABB2->Get_Desc()->Center;
+	_float3 fCenterDiff = _float3(
+		fCenter2.x - fCenter1.x,
+		fCenter2.y - fCenter1.y,
+		fCenter2.z - fCenter1.z);
 
 	_float fSign = 1.f;
 	switch (iAxis)
 	{
 		case 0: // x축
-			fSign = XMVectorGetX(vCenterDiff) < 0 ? -1.f : 1.f;
+			fSign = fCenterDiff.x < 0 ? -1.f : 1.f;
 			break;
 		case 1: // y축
-			fSign = XMVectorGetY(vCenterDiff) < 0 ? -1.f : 1.f;
+			fSign = fCenterDiff.y < 0 ? -1.f : 1.f;
 			break;
 		case 2: // z축
-			fSign = XMVectorGetZ(vCenterDiff) < 0 ? -1.f : 1.f;
+			fSign = fCenterDiff.z < 0 ? -1.f : 1.f;
 			break;
 	}
 
@@ -613,6 +531,7 @@ void CCollision_Manager::Calculate_AABB_OBB(CBounding_AABB* pOBB1, CBounding_OBB
 
 	vMTV = XMVectorSet(XMVectorGetX(vMTV), 0.f, XMVectorGetZ(vMTV), 0.f);
 
+	// 원래 여기서 처리하면 안되려나
 	_vector vPosA = pOBB1->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
 	_vector vPosB = pOBB2->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
 
@@ -625,33 +544,6 @@ void CCollision_Manager::Calculate_AABB_OBB(CBounding_AABB* pOBB1, CBounding_OBB
 
 void CCollision_Manager::Calculate_AABB_Sphere(CBounding_AABB* pAABB1, CBounding_Sphere* pSphere1)
 {
-	BoundingBox AABBDesc = *pAABB1->Get_Desc();
-	BoundingSphere SphereDesc = *pSphere1->Get_Desc();
-
-	_float3 fAABBMin = _float3(
-		AABBDesc.Center.x - AABBDesc.Extents.x,
-		AABBDesc.Center.y - AABBDesc.Extents.y,
-		AABBDesc.Center.z - AABBDesc.Extents.z);
-
-	_float3 fAABBMax = _float3(
-		AABBDesc.Center.x + AABBDesc.Extents.x,
-		AABBDesc.Center.y + AABBDesc.Extents.y,
-		AABBDesc.Center.z + AABBDesc.Extents.z);
-
-	_float3 fSphereMin = _float3(
-		SphereDesc.Center.x - SphereDesc.Radius,
-		SphereDesc.Center.y - SphereDesc.Radius,
-		SphereDesc.Center.z - SphereDesc.Radius);
-
-	_float3 fSphereMax = _float3(
-		SphereDesc.Center.x + SphereDesc.Radius,
-		SphereDesc.Center.y + SphereDesc.Radius,
-		SphereDesc.Center.z + SphereDesc.Radius);
-
-
-	//차라리 가서 하자
-
-
 
 }
 
@@ -863,7 +755,4 @@ void CCollision_Manager::Free()
 
 		Safe_Delete(m_mapColliders[i]);
 	}
-
-
-	int a = 10;
 }

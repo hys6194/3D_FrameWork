@@ -8,6 +8,16 @@ BEGIN(Engine)
 
 class CBounding abstract : public CBase
 {
+public:
+	typedef struct tagBoudingInfo
+	{
+		class CGameObject* pOwner;
+
+		TYPE		eType;
+		_wstring	strCollTag;
+		_uint		iOption;
+	}BOUNDING_INFO;
+
 protected:
 	CBounding(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CBounding() = default;
@@ -15,6 +25,11 @@ protected:
 public:
 	TYPE*						Get_Type()					{ return &m_eType; }
 	CCollider*					Get_Collider()				{ return m_pOwner; }
+
+	BOUNDING_INFO*				Get_Info()
+	{
+		return &m_tInfo;
+	}
 
 public:
 	virtual void				Update(_fmatrix WorldMatrix) = 0;
@@ -35,6 +50,7 @@ protected:
 
 
 	TYPE						m_eType			= { TYPE_END };
+	BOUNDING_INFO				m_tInfo = { nullptr };
 
 public:	
 	virtual void Free() override;

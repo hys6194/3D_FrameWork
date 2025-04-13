@@ -31,6 +31,8 @@ void CMonsterState_Hit::PriorityUpdate_State(_float fTimeDelta)
             m_pMonster->Change_CurrentState(CMonster::STATE_AVOID);
         else
             m_pMonster->Change_CurrentState(CMonster::STATE_IDLE);
+
+
     }
 
 
@@ -58,6 +60,7 @@ void CMonsterState_Hit::Set_PreAnimation()
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
     m_pMonster->Set_PreState(CMonster::STATE_HIT);
+    m_pMonster->Set_Hit(false);
     m_bAnimEnd = false;
 
 }

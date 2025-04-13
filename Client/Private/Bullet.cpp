@@ -69,8 +69,8 @@ void CBullet::Late_Update(_float fTimeDelta)
 
 HRESULT CBullet::Render()
 {
-    //if (m_pColliderCom->Is_Coll())
-    //    return E_ABORT;
+    if (m_pColliderCom->Is_Coll())
+        return E_ABORT;
 
     if (FAILED(Bind_SR()))
         return E_FAIL;
