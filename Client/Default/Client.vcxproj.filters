@@ -160,6 +160,9 @@
     <Filter Include="02.GameObjects\Monster\00. MonsterList\Moloch">
       <UniqueIdentifier>{9aaf2cdd-e8b9-4054-b315-0213c919347d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Moloch">
+      <UniqueIdentifier>{198d8f64-3fbe-4b03-b272-7f3e3c9bf8ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -301,6 +304,9 @@
       <Filter>02.GameObjects\Monster\00. MonsterList\Moloch</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Test_Monster.h" />
+    <ClInclude Include="..\Public\Body_Moloch.h">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Moloch</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -440,6 +446,9 @@
       <Filter>02.GameObjects\Monster\00. MonsterList\Moloch</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Test_Monster.cpp" />
+    <ClCompile Include="..\Private\Body_Moloch.cpp">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Moloch</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">

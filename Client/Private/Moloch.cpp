@@ -85,14 +85,9 @@ void CMoloch::Priority_Update(_float fTimeDelta)
    if (m_pGameInstance->Key_Down(DIK_8))
    {
        m_bHit = true;
-       //m_bRec = true;
    }
    else
        m_bHit = false;
-
-
-
-   //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(1.61f, 2.96f, 34.18f, 1.00f));
 
 }
 
@@ -124,14 +119,15 @@ HRESULT CMoloch::Ready_PartObjects()
     
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL_BODY, PART_BODY, &BodyDesc), E_FAIL);
 
-    CFist_Left::FIST_LEFT_DESC  FDesc1{};
-    FDesc1.pHandMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_GHOUL_LEFT_HAND);
-    FDesc1.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-    FDesc1.pTargetState = &m_iState;
-    FDesc1.pOwner = this;
+    //CFist_Left::FIST_LEFT_DESC  FDesc1{};
+    //FDesc1.pHandMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_GHOUL_LEFT_HAND);
+    //FDesc1.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+    //FDesc1.pTargetState = &m_iState;
+    //FDesc1.pOwner = this;
 
-    FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_L_FIST, PART_LEFT, &FDesc1), E_FAIL);
+    //FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_L_FIST, PART_LEFT, &FDesc1), E_FAIL);
 
+    // ª¿ ¿Ã∏ß Bone_Moloch_Weapon_Blade
     CFist_Right::FIST_RIGHT_DESC  FDesc2{};
     FDesc2.pHandMatrix = dynamic_cast<CBody_Ghoul*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_GHOUL_RIGHT_HAND);
     FDesc2.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
@@ -147,16 +143,16 @@ HRESULT CMoloch::Ready_States()
 {
     CState* pState = nullptr;
 
-    //pState = CMonsterState_Idle::Create(this, m_vecParts[PART_BODY], CMoloch::GHOUL_IDLE);
+    //pState = CMonsterState_Idle::Create(this, m_vecParts[PART_BODY], CMoloch::MOLOCH_IDLE);
     //m_pFSMCom->Add_State(CMonster::STATE_IDLE, pState);
     //
-    //pState = CMonsterState_Hit::Create(this, m_vecParts[PART_BODY], CMoloch::GHOUL_IMPACT_F);
+    //pState = CMonsterState_Hit::Create(this, m_vecParts[PART_BODY], CMoloch::MOLOCH_FULL_IMPACT);
     //m_pFSMCom->Add_State(CMonster::STATE_HIT, pState);
     //
-    //pState = CMonsterState_Search::Create(this, m_vecParts[PART_BODY], CMoloch::GHOUL_TURN90_L);
+    //pState = CMonsterState_Search::Create(this, m_vecParts[PART_BODY], CMoloch::MOLOCH_TURN_90_L);
     //m_pFSMCom->Add_State(CMonster::STATE_SEARCH, pState);
     //
-    //pState = CMonsterState_Dead::Create(this, m_vecParts[PART_BODY], CMoloch::GHOUL_DEATH);
+    //pState = CMonsterState_Dead::Create(this, m_vecParts[PART_BODY], CMoloch::MOLOCH_FULL_IMPACT_STUN);
     //m_pFSMCom->Add_State(CMonster::STATE_DEAD, pState);
     //
     //pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], CMoloch::GHOUL_ATK_FLURRY);

@@ -49,10 +49,10 @@ static const std::wstring PRO_COM_VI_GUIDE				= TEXT("Prototype_Component_VIBuff
 static const std::wstring PRO_COM_VI_TERRAIN			= TEXT("Prototype_Component_VIBuffer_Terrain");
 
 /* Collider */
-static const std::wstring PRO_COM_COLL						= TEXT("Prototype_Component_Collider");
-static const std::wstring PRO_COM_COLL_AABB					= TEXT("Prototype_Component_Collider_AABB");
-static const std::wstring PRO_COM_COLL_OBB					= TEXT("Prototype_Component_Collider_OBB");
-static const std::wstring PRO_COM_COLL_SPHERE				= TEXT("Prototype_Component_Collider_Sphere");
+static const std::wstring PRO_COM_COLL					= TEXT("Prototype_Component_Collider");
+static const std::wstring PRO_COM_COLL_AABB				= TEXT("Prototype_Component_Collider_AABB");
+static const std::wstring PRO_COM_COLL_OBB				= TEXT("Prototype_Component_Collider_OBB");
+static const std::wstring PRO_COM_COLL_SPHERE			= TEXT("Prototype_Component_Collider_Sphere");
 
 /* Model */
 static const std::wstring PRO_MODEL_STRIFE				= TEXT("Prototype_Component_Model_Test");

@@ -95,16 +95,6 @@ HRESULT CCollision_Manager::Update_Collisions(_float fTimeDelta)
 	_bool bTest = Update_Impactor(fTimeDelta);
 	_bool bTest1 = Update_TargetBody(fTimeDelta);
 
-	// 후처리를 어떻게 해야할까
-	// 일단 원하는 녀석들 끼리 충돌은 되고 있음/
-	// 하지만 어떻게 그 객체의 정보를 수정을 할 것이냐가 문제
-	// 하드코딩으로 하기엔 너무 불합리하다고 생각함
-	// 각 Collider는 Owner를 가지고 있다
-	// 그 Owner를 통해서 정보에 접근을 할 것인가?
-	// 그건 그렇게 해결했다고 가정해
-	// 하지만 몸과 몸의 충돌은 어떻게 충돌할 거야?
-
-
 
 	if (bTest == true) return S_OK;
 
@@ -268,7 +258,7 @@ CBounding* CCollision_Manager::Find_Bound(TYPE eType, CBounding* pBounding)
 
 }
 
-_bool CCollision_Manager::Check_Collision(list<CBounding*>* pList1, list<CBounding*>* pList2)
+_bool CCollision_Manager::Check_Collision(list<CBounding*>* pList1, list<CBounding*>* pList2, CBounding** pBound1, CBounding** pBound2)
 {
 	for (auto& iter1 : *pList1)
 		for (auto& iter2 : *pList2)
@@ -276,8 +266,12 @@ _bool CCollision_Manager::Check_Collision(list<CBounding*>* pList1, list<CBoundi
 			{
 				iter1->Get_Collider()->Set_Coll(true);
 				iter2->Get_Collider()->Set_Coll(true);
+
+				*pBound1 = iter1;
+				*pBound2 = iter2;
 				return true;
 			}
+
 	return false;
 }
 
@@ -286,7 +280,8 @@ _bool CCollision_Manager::Update_Impactor(_float fTimeDelta)
 	// 피충돌체가 충돌원과 비교해서
 	// 피격했는지 안했는지를 판단한다
 	_bool bTest{};
-
+	CBounding* pBounding1 = nullptr;
+	CBounding* pBounding2 = nullptr;
 	// 가독성 별로다 진짜
 	// 아니 진짜 가독성 어떻게 하냐
 	// 업데이트를 최소한 돌리는 생각은 좋은데 가독성은 좋게 짜야지
@@ -295,14 +290,18 @@ _bool CCollision_Manager::Update_Impactor(_float fTimeDelta)
 	{
 		// 플레이어의 몸체
 		// 사실상 몸체는 하나뿐이라 하나만 돌림
-		if (Pair.first.find(TEXT("Player")) != string::npos)
+	
+		if (Check_IncWord(Pair.first, TEXT("Player")))
 		{
 			// 몬스터의 충돌체
 			for (auto& Pair2 : *m_mapColliders[OP_IMPACT])
 			{
-				if (Pair2.first.find(TEXT("Monster")) != string::npos)
+				if (Check_IncWord(Pair.first, TEXT("Monster")))
 				{
-					Check_Collision(Pair.second, Pair2.second);
+					if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+					{
+						
+					}
 				}
 			}
 		}
@@ -314,9 +313,12 @@ _bool CCollision_Manager::Update_Impactor(_float fTimeDelta)
 			{
 				for (auto& Pair2 : *m_mapColliders[OP_IMPACT])
 				{
-					if (Pair2.first.find(TEXT("Player")) != string::npos)
+					if (Check_IncWord(Pair2.first, TEXT("Player")))
 					{
-						Check_Collision(Pair.second, Pair2.second);
+						if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+						{
+
+						}
 					}
 				}
 			}
@@ -338,21 +340,22 @@ _bool CCollision_Manager::Update_TargetBody(_float fTimeDelta)
 	for (auto& Pair : *m_mapColliders[OP_TARGET])
 	{
 		// 플레이어의 body라면
-		if(Pair.first.find(TEXT("Player")) != string::npos)
+		if (Check_IncWord(Pair.first, TEXT("Player")))
 		{
 			//몬스터를 순회해야 함
 			for (auto& Pair2 : *m_mapColliders[OP_TARGET])
 			{
-				if (Pair2.first.find(TEXT("Monster")) != string::npos)
+				if (Check_IncWord(Pair2.first, TEXT("Monster")))
 				{
 					for (auto& iter1 : *Pair.second)
 					{
 						for (auto& iter2 : *Pair2.second)
 						{
+							// 충돌이 감지되면 밀어낸다
 							if (Detect_Collision(iter1, iter2))
 							{
-								iter1->Get_Collider()->Set_Coll(true);
-								iter2->Get_Collider()->Set_Coll(true);
+								//iter1->Get_Collider()->Set_Coll(true);
+								//iter2->Get_Collider()->Set_Coll(true);
 
 								Detrude_Colliders(iter1, iter2);
 							}
@@ -375,8 +378,8 @@ _bool CCollision_Manager::Update_TargetBody(_float fTimeDelta)
 				// 비교 처리
 				if (Detect_Collision(*iter, pNextBounding))
 				{
-					(*iter)->Get_Collider()->Set_Coll(true);
-					pNextBounding->Get_Collider()->Set_Coll(true);
+					//(*iter)->Get_Collider()->Set_Coll(true);
+					//pNextBounding->Get_Collider()->Set_Coll(true);
 
 					Detrude_Colliders(*iter, pNextBounding);
 				}
@@ -625,33 +628,6 @@ void CCollision_Manager::Calculate_AABB_OBB(CBounding_AABB* pOBB1, CBounding_OBB
 
 void CCollision_Manager::Calculate_AABB_Sphere(CBounding_AABB* pAABB1, CBounding_Sphere* pSphere1)
 {
-	BoundingBox AABBDesc = *pAABB1->Get_Desc();
-	BoundingSphere SphereDesc = *pSphere1->Get_Desc();
-
-	_float3 fAABBMin = _float3(
-		AABBDesc.Center.x - AABBDesc.Extents.x,
-		AABBDesc.Center.y - AABBDesc.Extents.y,
-		AABBDesc.Center.z - AABBDesc.Extents.z);
-
-	_float3 fAABBMax = _float3(
-		AABBDesc.Center.x + AABBDesc.Extents.x,
-		AABBDesc.Center.y + AABBDesc.Extents.y,
-		AABBDesc.Center.z + AABBDesc.Extents.z);
-
-	_float3 fSphereMin = _float3(
-		SphereDesc.Center.x - SphereDesc.Radius,
-		SphereDesc.Center.y - SphereDesc.Radius,
-		SphereDesc.Center.z - SphereDesc.Radius);
-
-	_float3 fSphereMax = _float3(
-		SphereDesc.Center.x + SphereDesc.Radius,
-		SphereDesc.Center.y + SphereDesc.Radius,
-		SphereDesc.Center.z + SphereDesc.Radius);
-
-
-	//차라리 가서 하자
-
-
 
 }
 

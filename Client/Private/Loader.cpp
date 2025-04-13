@@ -279,8 +279,8 @@ HRESULT CLoader::Loading_Models()
 		/////* For.Prototype_Component_Model_ForkLift */
 		//PreTransformMatrix = XMMatrixScaling(0.2f, 0.2f, 0.2f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 		// 
-		// ForkLift 저장용
-		//PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		// 새로운 모델 저장용
+		//PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH,
 		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
 		//		"../Bin/Resources/Models/AnimModel/Moloch/Moloch.fbx",
@@ -338,15 +338,12 @@ HRESULT CLoader::Loading_Models()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Heroes/Strife.bin", PreTransformMatrix))))
 			return E_FAIL;
 			
-		
 		// Ghoul 불러오기
 		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/Ghoul.bin", PreTransformMatrix))))
 			return E_FAIL;
 
-		
-		 
 		PreTransformMatrix =  XMMatrixRotationZ(XMConvertToRadians(180.f));
 		PreTransformMatrix *= XMMatrixRotationY(XMConvertToRadians(180.f));
 		PreTransformMatrix *= XMMatrixRotationX(XMConvertToRadians(90.f));

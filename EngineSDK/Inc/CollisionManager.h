@@ -25,14 +25,17 @@ public:
 	list<CBounding*>*								Find_List(TYPE eType, CBounding* pBounding);
 	CBounding*										Find_Bound(TYPE eType, CBounding* pBounding);
 
-	_bool											Check_Collision(list<CBounding*>*, list<CBounding*>* = nullptr);
+	_bool											Check_Collision(list<CBounding*>*, list<CBounding*>* = nullptr, class CBounding** pBound1 = nullptr , class CBounding** pBound2 = nullptr);
 
 private:
 	_bool											Update_Impactor(_float fTimeDelta);
 	_bool											Update_TargetBody(_float fTimeDelta);
 	_bool											Detect_Collision(CBounding* pDest, CBounding* pSour);
 
-
+	//_bool											Check_IncWord(const wstring& strName, const wstring& strTagName)
+	//{
+	//	return (strName.find(strTagName) != wstring::npos);
+	//}
 private:
 	void											Calculate_AABB_AABB(class CBounding_AABB* pAABB1, class CBounding_AABB* pAABB2);
 	void											Calculate_AABB_OBB(class CBounding_AABB* pOBB1, class CBounding_OBB* pOBB2);

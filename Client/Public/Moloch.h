@@ -14,6 +14,8 @@ private:
 
 public:
     enum MOLOCH_ANIM {
+        MOLOCH_TURN_90_L = 0,
+        MOLOCH_TURN_90_R,
         MOLOCH_ATK_180_L,
         MOLOCH_ATK_180_R,
         MOLOCH_ATK_CRYSTALERUPTION,
@@ -22,18 +24,21 @@ public:
         MOLOCH_ATK_FULL_GEYSER,
         MOLOCH_ATK_FULL_GEYSER_02,
         MOLOCH_ATK_FULL_GEYSER_START,
-        MOLOCH_ATK_SWIPE_01,
+        MOLOCH_ATK_FULL_SWING_01,
+        MOLOCH_ATK_FULL_SWING_02,
+        MOLOCH_ATK_FULL_SWING_03,
+        MOLOCH_ATK_SWIP,
         MOLOCH_ATK_SWIPE_02,
+        MOLOCH_ATK_SWIPE_02_001,
         MOLOCH_ATK_SWIPE_03,
         MOLOCH_BLADE_EXTEND,
-        MOLOCH_FULL_IDLE,
-        MOLOCH_FULL_IMPACT_F,
+        MOLOCH_FULL_IDL,
+        MOLOCH_FULL_IMPACT,
         MOLOCH_FULL_IMPACT_STUN,
         MOLOCH_IDLE,
         MOLOCH_INTRO,
         MOLOCH_RUN_F,
-        MOLOCH_TURN_90_L,
-        MOLOCH_TURN_90_R
+        MOLOCH_RUN_F_001
     };
 
 public:

@@ -27,10 +27,11 @@ public:
 		return m_isColl;
 	}
 
-	class CGameObject*						Get_Owner()
+	/*class CGameObject*						Get_Owner()
 	{
 		return m_pOwner;
-	}
+	}*/
+
 
 public:
 	void									Set_Coll(_bool bToogle)	{ m_isColl = bToogle; }
@@ -53,6 +54,7 @@ private:
 	class CGameObject*						m_pOwner = { nullptr };
 
 	_bool									m_isColl = { false };
+	_bool									m_isHit = { false };
 
 #ifdef _DEBUG
 private:

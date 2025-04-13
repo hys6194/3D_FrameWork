@@ -53,6 +53,13 @@ namespace Engine
 		return iRefCnt;
 	}
 
+	template<typename T>
+	bool Check_IncWord(const wstring& strName, T& strTagName)
+	{
+		return (strName.find(strTagName) != wstring::npos);
+	}
+
+
 }
 
 #endif // Engine_Function_h__
