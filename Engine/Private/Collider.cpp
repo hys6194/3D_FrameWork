@@ -78,20 +78,23 @@ HRESULT CCollider::Initialize(void* pArg)
         case TYPE_AABB:
         {
             const CBounding_AABB::BOUNDING_AABB_DESC* pDesc = static_cast<const CBounding_AABB::BOUNDING_AABB_DESC*>(pArg);
-            //pDesc.
+            m_pOwner = pDesc->pOwner;
             m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pDesc, this);
             break;
         }
         case TYPE_OBB:
         {
-            const CBounding_OBB::BOUNDING_OBB_DESC* pDesc1 = static_cast<const CBounding_OBB::BOUNDING_OBB_DESC*>(pArg);
-            m_pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pDesc1, this);
+            const CBounding_OBB::BOUNDING_OBB_DESC* pDesc = static_cast<const CBounding_OBB::BOUNDING_OBB_DESC*>(pArg);
+            m_pOwner = pDesc->pOwner;
+            m_pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pDesc, this);
             break;
         }
         case TYPE_SPHERE:
         {
-            const CBounding_Sphere::BOUNDING_SPHERE_DESC* pDesc2 = static_cast<const CBounding_Sphere::BOUNDING_SPHERE_DESC*>(pArg);
-            m_pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pDesc2, this);
+            const CBounding_Sphere::BOUNDING_SPHERE_DESC* pDesc = static_cast<const CBounding_Sphere::BOUNDING_SPHERE_DESC*>(pArg);
+            m_pOwner = pDesc->pOwner;
+
+            m_pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pDesc, this);
             break;
         }
     }
@@ -102,6 +105,42 @@ HRESULT CCollider::Initialize(void* pArg)
 void CCollider::Update(_fmatrix WorldMatrix)
 {
     m_pBounding->Update(WorldMatrix);
+
+    // 피격 처리
+    if (m_pTargetBounding != nullptr)
+    {
+        switch (m_pTargetBounding->Get_Info()->eType)
+        {
+            case TYPE_AABB:
+            {
+                wstring strTest = this->m_pOwner->Get_Name();
+
+                if (Check_IncWord(this->m_pOwner->Get_Name(), TEXT("Monster")))
+                {
+
+                }
+                break;
+            }
+            case TYPE_OBB:
+            {
+                wstring strTest = this->m_pOwner->Get_Name();
+
+                int a = 10;
+
+                break;
+            }
+            case TYPE_SPHERE:
+            {
+                wstring strTest = this->m_pOwner->Get_Name();
+
+                int a = 10;
+
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }
 
 _bool CCollider::Intersect(CCollider* pTargetCollider)
@@ -119,6 +158,11 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
 }
 
 #ifdef _DEBUG
+
+void CCollider::Check_CollisionHit()
+{
+
+}
 
 HRESULT CCollider::Render()
 {

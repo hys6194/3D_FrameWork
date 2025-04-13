@@ -1,6 +1,10 @@
 #include "Player.h"
 #include "GameInstance.h"
 #include "Body_Player.h"
+#include "Status.h"
+
+#include "Ghoul.h"
+#include "Moloch.h"
 
 #include "Gun_Left.h"
 #include "Gun_Right.h"
@@ -53,13 +57,27 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 {
 	Input_Keys();
 
-	// 왜 이렇게 했지? 이유가 있었는데
-	// 대쉬 초기화 때문에
 	m_pFSMCom->Change_State(m_iState);
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
 
-	//m_pFSMCom->PriUpdate_State(fTimeDelta);
-	//m_pFSMCom->Change_State(m_iState);
+
+	if (m_pColliderCom->Is_Coll())
+	{
+		list<CGameObject*>* pObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+
+		for (auto* iter : *pObjectList)
+		{
+			wstring strName = iter->Get_Name();
+			CGameObject* pObject = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Monster"), strName.c_str());
+
+			if (Check_IncWord(strName, TEXT("Ghoul")))
+			{
+				CGhoul* pGhoul = static_cast<CGhoul*>(pObject);
+				static_cast<CStatus*>(pGhoul->Get_Component(COM_STATUS))->Get_StatusDesc().iAttack;
+			}
+		}
+
+	}
 
 	m_pColliderCom->Reset();
 
@@ -73,6 +91,7 @@ void CPlayer::Update(_float fTimeDelta)
 	m_pFSMCom->Update_State(fTimeDelta);
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+
 
 }
 
@@ -95,12 +114,12 @@ HRESULT CPlayer::Render()
 	m_pColliderCom->Render();
 #endif 
 
-	//_float4 fPos{};
-	//XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
-	//TCHAR debugMessage[256];
-	//_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
-	//	fPos.x, fPos.y, fPos.z, fPos.w);
-	//OutputDebugString(debugMessage);
+	_float4 fPos{};
+	XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
+	TCHAR debugMessage[256];
+	_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
+		fPos.x, fPos.y, fPos.z, fPos.w);
+	OutputDebugString(debugMessage);
 
 	return S_OK;
 }
@@ -116,21 +135,24 @@ HRESULT CPlayer::Ready_Components()
 	CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
 	ColliderDesc.vExtents		= _float3(1.f, 2.f, 1.f);
 	ColliderDesc.vCenter		= _float3(0.f, ColliderDesc.vExtents.y, 0.f);
-	//ColliderDesc.strCollTag	= Get_Name() + TEXT("_Body") + std::to_wstring(1);
-	// bool 타입이 필요하려나 원래 필요 용도에 따라서 충돌할지 안할지를 정하려고 한건데
-	// 솔직히 의미 없어 보이기도 하고
 	ColliderDesc.strCollTag		= Get_Name() + TEXT("_Body");
 	ColliderDesc.iOption		= COLL_OPT::OP_TARGET;
 	ColliderDesc.eType			= TYPE::TYPE_AABB;
-	ColliderDesc.pOwner = this;
+	ColliderDesc.pOwner			= this;
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
 		reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
 
-
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
 		reinterpret_cast<CComponent**>(&m_pFSMCom), COM_FSM), E_FAIL);
 
+	CStatus::STATUS_DESC StatusDesc{};
+	StatusDesc.iAttack = 5;
+	StatusDesc.iHP = 200;
+	StatusDesc.pOwner = this;
+
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_STATUS,
+		reinterpret_cast<CComponent**>(&m_pStatusCom), COM_STATUS, &StatusDesc), E_FAIL);
 
 	return S_OK;
 }
@@ -294,5 +316,6 @@ void CPlayer::Free()
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pFSMCom);
+	Safe_Release(m_pStatusCom);
 
 }

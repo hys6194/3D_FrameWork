@@ -59,6 +59,13 @@ namespace Engine
 		return (strName.find(strTagName) != wstring::npos);
 	}
 
+	template<typename T>
+	T Clamp(T value, T min, T max)
+	{
+		T result = (value < min ? min : value);
+		return (result > max ? max : result);
+	}
+
 
 }
 

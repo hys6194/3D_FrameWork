@@ -18,14 +18,6 @@ public:
 		_float3		vExtents;
 	}BOUNDING_AABB_DESC;
 
-	typedef struct tagBoudingAABBInfo
-	{
-		class CGameObject* pOwner;
-		TYPE		eType;
-		_wstring	strCollTag;
-		_uint		iOption;
-	}BOUNDING_AABB_INFO;
-
 private:
 	CBounding_AABB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CBounding_AABB() = default;
@@ -33,11 +25,6 @@ private:
 public:
 	BoundingBox*					Get_Desc() {
 		return m_pDesc;
-	}
-
-	BOUNDING_AABB_INFO*				Get_Info()
-	{
-		return &m_tInfo;
 	}
 
 public:
@@ -56,15 +43,10 @@ private:
 	BoundingBox*					m_pLocalDesc = { nullptr };
 	BoundingBox*					m_pDesc = { nullptr };
 
-	BOUNDING_AABB_INFO				m_tInfo;
-
 private:
 	_bool							Intersect_AABB(CBounding_AABB* pTargetBound);
 	_float3							Compute_Min();
 	_float3							Compute_Max();
-
-	
-	
 
 public:
 	static CBounding_AABB*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding_AABB::BOUNDING_AABB_DESC* pDesc, class CCollider* pOwner);

@@ -59,7 +59,7 @@ HRESULT CBody_Moloch::Render()
 
 HRESULT CBody_Moloch::Ready_Component()
 {
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH,
 		reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
@@ -70,15 +70,9 @@ HRESULT CBody_Moloch::Ready_Component()
 
 HRESULT CBody_Moloch::Ready_SocketMatrices()
 {
-	// 이건 Monster를 상속받는 녀석들에게 선언을 하고 실행하자
-	// Bone_SW_Hand_L
-	// Bone_SW_Hand_R
-	// Bone_SW_Finger_Middle1_R
-	// Bone_SW_Finger_Middle1_L
-
-	m_mapSocketmat.emplace(SOCKET_GHOUL_LEFT_HAND,  m_pModelCom->Get_BoneMatrix("Bone_SW_Finger_Middle1_L"));
-	m_mapSocketmat.emplace(SOCKET_GHOUL_RIGHT_HAND, m_pModelCom->Get_BoneMatrix("Bone_SW_Finger_Middle1_R"));
-
+	m_mapSocketmat.emplace(SOCKET_MOLOCH_RIGHT_HAND, m_pModelCom->Get_BoneMatrix("Bone_Moloch_Weapon_Blade"));
+	// Bone_Moloch_Hand_R
+	//Bone_Moloch_Weapon_Blade
 	return S_OK;
 }
 

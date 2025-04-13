@@ -17,16 +17,8 @@ public:
 		_float3		vCenter;
 		_float3		vExtents;
 		_float3		vRotation;
+		_uint		iAttack; // 아...이거 절대 아닌데
 	}BOUNDING_OBB_DESC;
-
-	typedef struct tagBoudingOBBInfo
-	{
-		class CGameObject* pOwner;
-
-		TYPE		eType;
-		_wstring	strCollTag;
-		_uint		iOption;
-	}BOUNDING_OBB_INFO;
 
 	typedef struct tagOBBDesc
 	{
@@ -44,11 +36,6 @@ public:
 		return m_pDesc;
 	}
 
-	BOUNDING_OBB_INFO*					Get_Info()
-	{
-		return &m_tInfo;
-	}
-
 public:
 	HRESULT								Initialize(const CBounding_OBB::BOUNDING_OBB_DESC* pDesc, class CCollider* pOwner);
 	virtual void						Update(_fmatrix WorldMatrix) override;
@@ -63,8 +50,6 @@ public:
 private:								
 	BoundingOrientedBox*				m_pLocalDesc = { nullptr };
 	BoundingOrientedBox*				m_pDesc = { nullptr };
-										
-	BOUNDING_OBB_INFO					m_tInfo;
 
 private:								
 	_bool								Intersect_OBB(CBounding_OBB* pTargetBound);

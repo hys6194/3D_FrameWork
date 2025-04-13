@@ -41,6 +41,7 @@ static const std::wstring PRO_TEX_BACKGROUND			= TEXT("Prototype_Component_Textu
 
 /* Component */
 static const std::wstring PRO_COM_FSM					= TEXT("Prototype_Component_FSM");
+static const std::wstring PRO_COM_STATUS				= TEXT("Prototype_Component_Status");
 static const std::wstring PRO_COM_NAVI					= TEXT("Prototype_Component_Navigation");
 static const std::wstring PRO_COM_VI_CELL				= TEXT("Prototype_Component_VIBuffer_Cell");
 static const std::wstring PRO_COM_VI_CUBE				= TEXT("Prototype_Component_VIBuffer_Cube");
@@ -93,6 +94,7 @@ static const std::wstring PRO_MODEL_SPIKE_A				= TEXT("Prototype_Component_Model
 static const std::wstring PRO_MODEL_PILLAR_ALCOVE		= TEXT("Prototype_Component_Model_Pillar Alcove A");
 
 static const std::wstring PRO_MODEL_MOLOCH				= TEXT("Prototype_Component_Model_Moloch");
+static const std::wstring PRO_MODEL_MOLOCH_SWORD		= TEXT("Prototype_Component_Model_Moloch_Sword");
 
 /* Shader */
 static const std::wstring PRO_SHADER_CELL				= TEXT("Prototype_Component_Shader_VtxCell");
@@ -128,6 +130,8 @@ static const std::wstring PRO_OBJ_ROCK_TALL				= TEXT("Prototype_GameObject_Dese
 static const std::wstring PRO_OBJ_SPIKE_A				= TEXT("Prototype_GameObject_FortressSpike A");
 static const std::wstring PRO_OBJ_SPIKE_E				= TEXT("Prototype_GameObject_FortressSpike E");
 static const std::wstring PRO_OBJ_MOLOCH				= TEXT("Prototype_GameObject_Moloch");
+static const std::wstring PRO_OBJ_MOLOCH_BODY			= TEXT("Prototype_GameObject_Moloch Body");
+static const std::wstring PRO_OBJ_MOLOCH_SWORD			= TEXT("Prototype_GameObject_Moloch Sword");
 
 static const std::wstring PRO_OBJ_GROUND_DECAL			= TEXT("Prototype_GameObject_GroundDecal LG A");
 static const std::wstring PRO_OBJ_DAM_END				= TEXT("Prototype_GameObject_Dam EndCap A");
@@ -160,6 +164,9 @@ static const std::wstring SOCKET_HOLSTER_RIGHT			= TEXT("Socket_Strife_Holster R
 static const std::wstring SOCKET_GHOUL_LEFT_HAND		= TEXT("Socket_Ghoul_Hand L");
 static const std::wstring SOCKET_GHOUL_RIGHT_HAND		= TEXT("Socket_Ghoul_Hand R");
 
+static const std::wstring SOCKET_MOLOCH_LEFT_HAND		= TEXT("Socket_Moloch_Hand L");
+static const std::wstring SOCKET_MOLOCH_RIGHT_HAND		= TEXT("Socket_Moloch_Hand R");
+
 /* Layers */
 static const std::wstring LAYER_DESERT_ROCK_1			= TEXT("Layer_Desert_Rock1");
 static const std::wstring LAYER_DESERT_ROCK_2			= TEXT("Layer_Desert_Rock2");
@@ -170,6 +177,7 @@ static const std::wstring LAYER_DESERT_ROCK_2			= TEXT("Layer_Desert_Rock2");
 
 /* Component */
 static const std::wstring COM_FSM						= TEXT("Component_FSM");
+static const std::wstring COM_STATUS					= TEXT("Component_Status");
 static const std::wstring COM_NAVI						= TEXT("Component_Navigation");
 static const std::wstring COM_VI_CELL					= TEXT("Component_VIBuffer_Cell");
 static const std::wstring COM_VI_CUBE					= TEXT("Component_VIBuffer_Cube");

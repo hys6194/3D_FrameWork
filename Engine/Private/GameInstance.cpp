@@ -429,7 +429,6 @@ HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _wstring& str
 
 #pragma region Collision_Manager
 
-
 HRESULT CGameInstance::Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, CBounding* pInstance)
 {
 	return m_pCollision_Manager->Add_Collistionlist(iCollOption, strColliderTag, pInstance);

@@ -32,10 +32,6 @@ private:
 	_bool											Update_TargetBody(_float fTimeDelta);
 	_bool											Detect_Collision(CBounding* pDest, CBounding* pSour);
 
-	//_bool											Check_IncWord(const wstring& strName, const wstring& strTagName)
-	//{
-	//	return (strName.find(strTagName) != wstring::npos);
-	//}
 private:
 	void											Calculate_AABB_AABB(class CBounding_AABB* pAABB1, class CBounding_AABB* pAABB2);
 	void											Calculate_AABB_OBB(class CBounding_AABB* pOBB1, class CBounding_OBB* pOBB2);
