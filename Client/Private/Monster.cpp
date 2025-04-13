@@ -63,6 +63,7 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 		m_pStatusCom->Take_Damage(pPlayerStatus->Get_StatusDesc().iAttack);
 	}
+
 	else
 		m_bHit = false;
 
