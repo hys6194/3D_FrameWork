@@ -67,12 +67,27 @@ void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
     m_pMonster->Get_Transform()->Go_Straight(fTimeDelta, 
         dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
 
+    m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
+
+    if (m_fTotalTime >= 0.5f)
+    {
+        _float4 fPos{};
+        XMStoreFloat4(&fPos, m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK));
+        TCHAR debugMessage[256];
+        _stprintf_s(debugMessage, _T("Monster_Look: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
+            fPos.x, fPos.y, fPos.z, fPos.w);
+        OutputDebugString(debugMessage);
+
+        m_fTotalTime = 0.f;
+    }
+
 }
 
 
 void CMonsterState_Trace::Update_State(_float fTimeDelta)
 {
     Update_Animation(fTimeDelta);
+
 
 
 }

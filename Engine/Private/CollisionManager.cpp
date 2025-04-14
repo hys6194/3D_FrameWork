@@ -550,57 +550,57 @@ void CCollision_Manager::Calculate_AABB_Sphere(CBounding_AABB* pAABB1, CBounding
 void CCollision_Manager::Calculate_0BB_0BB(CBounding_OBB* pOBB1, CBounding_OBB* pOBB2)
 {
 	CBounding_OBB::OBB_DESC    OBBDesc[2]{};
-
+	
 	_float fMinOverlap = FLT_MAX;
-
+	
 	_float3     vPoints1[8];
 	_float3     vPoints2[8];
-
+	
 	pOBB1->Get_Desc()->GetCorners(vPoints1);
 	pOBB2->Get_Desc()->GetCorners(vPoints2);
-
+	
 	OBBDesc[0].vCenter = pOBB1->Get_Desc()->Center;
 	OBBDesc[1].vCenter = pOBB2->Get_Desc()->Center;
-
+	
 	// x,y,z 축에 대한 방향 벡터 -> 분리 축
 	XMStoreFloat3(&OBBDesc[0].vCenterDir[0], (XMLoadFloat3(&vPoints1[5]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
 	XMStoreFloat3(&OBBDesc[0].vCenterDir[1], (XMLoadFloat3(&vPoints1[7]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
 	XMStoreFloat3(&OBBDesc[0].vCenterDir[2], (XMLoadFloat3(&vPoints1[0]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
-
+	
 	// 해당 면과 수직인 벡터 선언
 	for (size_t i = 0; i < 3; i++)
 		XMStoreFloat3(&OBBDesc[0].vAlignDir[i], XMVector3Normalize(XMLoadFloat3(&OBBDesc[0].vCenterDir[i])));
-
+	
 	XMStoreFloat3(&OBBDesc[1].vCenterDir[0], (XMLoadFloat3(&vPoints2[5]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
 	XMStoreFloat3(&OBBDesc[1].vCenterDir[1], (XMLoadFloat3(&vPoints2[7]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
 	XMStoreFloat3(&OBBDesc[1].vCenterDir[2], (XMLoadFloat3(&vPoints2[0]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
-
+	
 	// 해당 면과 수직인 벡터 선언
 	for (size_t i = 0; i < 3; i++)
 		XMStoreFloat3(&OBBDesc[1].vAlignDir[i], XMVector3Normalize(XMLoadFloat3(&OBBDesc[1].vCenterDir[i])));
-
-
+	
+	
 	_uint iAxis1 = {};
 	_uint iAxis2 = {};
-
+	
 	for (size_t i = 0; i < 2; i++)
 	{
 		for (size_t j = 0; j < 3; j++)
 		{
 			_float          fLength[3] = {};
-
+	
 			// 충돌체 객체와 다른 객체의 거리와 x, y, z 방향으로 투영한 기준 벡터와 내적
 			fLength[0] = fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenter) - XMLoadFloat3(&OBBDesc[0].vCenter),
 				XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]);
-
+	
 			fLength[1] = fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[0]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]) +
 				fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[1]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]) +
 				fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[2]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]);
-
+	
 			fLength[2] = fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[0]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]) +
 				fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[1]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]) +
 				fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[2]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]);
-
+	
 			_float fOverlap = fLength[1] + fLength[2] - fLength[0];
 	
 			if (fOverlap < fMinOverlap)
@@ -609,9 +609,9 @@ void CCollision_Manager::Calculate_0BB_0BB(CBounding_OBB* pOBB1, CBounding_OBB* 
 				iAxis1 = i;
 				iAxis2 = j;
 			}
-
+	
 		}
-
+	
 	}
 	
 	_vector vDiffCenter = XMVectorSet(
@@ -619,19 +619,19 @@ void CCollision_Manager::Calculate_0BB_0BB(CBounding_OBB* pOBB1, CBounding_OBB* 
 		OBBDesc[1].vCenter.y - OBBDesc[0].vCenter.y,
 		OBBDesc[1].vCenter.z - OBBDesc[0].vCenter.z,
 		0.f);
-
+	
 	_vector vAxis = XMVectorSet(
 		OBBDesc[iAxis1].vAlignDir[iAxis2].x,
 		OBBDesc[iAxis1].vAlignDir[iAxis2].y,
 		OBBDesc[iAxis1].vAlignDir[iAxis2].z,
 		0.f);
-
+	
 	_float fDotResult = XMVectorGetX(XMVector3Dot(vAxis, vDiffCenter));
-
+	
 	_float fSign = fDotResult < 0.f ? -1.f : 1.f;
-
+	
 	_vector vMTV = XMVectorScale(XMVector3Normalize(vAxis), fSign * fMinOverlap);
-
+	
 	_vector vPos1 = XMVectorSet(
 		OBBDesc[0].vCenter.x,
 		OBBDesc[0].vCenter.y,
@@ -642,16 +642,106 @@ void CCollision_Manager::Calculate_0BB_0BB(CBounding_OBB* pOBB1, CBounding_OBB* 
 		OBBDesc[1].vCenter.y,
 		OBBDesc[1].vCenter.z,
 		0.f);
-
+	
 	vPos1 = XMVectorSubtract(vPos1, XMVectorScale(vMTV, 0.5f));
 	vPos2 = XMVectorAdd(vPos2, XMVectorScale(vMTV, 0.5f));
-
+	
 	vPos1 = XMVectorSetY(vPos1, pOBB1->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS).m128_f32[1]);
 	vPos2 = XMVectorSetY(vPos2, pOBB2->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS).m128_f32[1]);
-
+	
 	pOBB1->Get_Info()->pOwner->Get_Transform()->Set_State(CTransform::STATE_POS, vPos1);
 	pOBB2->Get_Info()->pOwner->Get_Transform()->Set_State(CTransform::STATE_POS, vPos2);
-
+	
+	//CBounding_OBB::OBB_DESC OBBDesc[2] = { };
+	//
+	//_float3 vPoints1[8];
+	//_float3 vPoints2[8];
+	//pOBB1->Get_Desc()->GetCorners(vPoints1);
+	//OBBDesc[0].vCenter = pOBB1->Get_Desc()->Center;
+	//
+	//XMStoreFloat3(&OBBDesc[0].vCenterDir[0],
+	//	(XMLoadFloat3(&vPoints1[5]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
+	//XMStoreFloat3(&OBBDesc[0].vCenterDir[1],
+	//	(XMLoadFloat3(&vPoints1[7]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
+	//XMStoreFloat3(&OBBDesc[0].vCenterDir[2],
+	//	(XMLoadFloat3(&vPoints1[0]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
+	//
+	//
+	//pOBB2->Get_Desc()->GetCorners(vPoints2);
+	//OBBDesc[1].vCenter = pOBB2->Get_Desc()->Center;
+	//
+	//XMStoreFloat3(&OBBDesc[1].vCenterDir[0],
+	//	(XMLoadFloat3(&vPoints2[5]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
+	//XMStoreFloat3(&OBBDesc[1].vCenterDir[1],
+	//	(XMLoadFloat3(&vPoints2[7]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
+	//XMStoreFloat3(&OBBDesc[1].vCenterDir[2],
+	//	(XMLoadFloat3(&vPoints2[0]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
+	//
+	//
+	//for (size_t i = 0; i < 3; i++)
+	//{
+	//	_vector vDir = XMVector3Normalize(XMLoadFloat3(&OBBDesc[1].vCenterDir[i]));
+	//	XMStoreFloat3(&OBBDesc[1].vAlignDir[i], vDir);
+	//}
+	//
+	//float fMinOverlap = FLT_MAX;
+	//int iOwner = 0;
+	//int iAxis = 0;
+	//
+	//for (size_t i = 0; i < 2; i++)
+	//{
+	//	for (size_t j = 0; j < 3; j++)
+	//	{
+	//		float fLength[3] = { 0.f, 0.f, 0.f };
+	//
+	//		_vector vCandAxis = XMLoadFloat3(&OBBDesc[i].vAlignDir[j]);
+	//		vCandAxis = XMVector3Normalize(vCandAxis);
+	//
+	//		_vector vCenterDiff = XMLoadFloat3(&OBBDesc[1].vCenter) - XMLoadFloat3(&OBBDesc[0].vCenter);
+	//		fLength[0] = fabsf(XMVectorGetX(XMVector3Dot(vCenterDiff, vCandAxis)));
+	//
+	//		for (int k = 0; k < 3; k++)
+	//		{
+	//			_vector v = XMLoadFloat3(&OBBDesc[0].vCenterDir[k]);
+	//			fLength[1] += fabsf(XMVectorGetX(XMVector3Dot(v, vCandAxis)));
+	//		}
+	//
+	//		for (int k = 0; k < 3; k++)
+	//		{
+	//			_vector v = XMLoadFloat3(&OBBDesc[1].vCenterDir[k]);
+	//			fLength[2] += fabsf(XMVectorGetX(XMVector3Dot(v, vCandAxis)));
+	//		}
+	//
+	//		float overlap = (fLength[1] + fLength[2]) - fLength[0];
+	//
+	//		if (overlap < fMinOverlap)
+	//		{
+	//			fMinOverlap = overlap;
+	//			iOwner = i;
+	//			iAxis = j;
+	//		}
+	//	}
+	//}
+	//
+	//_vector vAxis = XMVector3Normalize(XMLoadFloat3(&OBBDesc[iOwner].vAlignDir[iAxis]));
+	//
+	//_vector vDiff = XMLoadFloat3(&OBBDesc[1].vCenter) - XMLoadFloat3(&OBBDesc[0].vCenter);
+	//
+	//_float fSign = (XMVectorGetX(XMVector3Dot(vDiff, vAxis)) < 0.f) ? -1.f : 1.f;
+	//
+	//_vector vMTV = XMVectorScale(vAxis, fMinOverlap * fSign);
+	//
+	//vMTV = XMVectorSet(XMVectorGetX(vMTV), 0.f, XMVectorGetZ(vMTV), 0.f);
+	//
+	//// 원래 여기서 처리하면 안되려나
+	//_vector vPosA = pOBB1->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
+	//_vector vPosB = pOBB2->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
+	//
+	//vPosA = XMVectorSubtract(vPosA, XMVectorScale(vMTV, 0.5f));
+	//vPosB = XMVectorAdd(vPosB, XMVectorScale(vMTV, 0.5f));
+	//
+	//pOBB1->Get_Info()->pOwner->Get_Transform()->Set_State(CTransform::STATE_POS, vPosA);
+	//pOBB2->Get_Info()->pOwner->Get_Transform()->Set_State(CTransform::STATE_POS, vPosB);
 }								
 
 void CCollision_Manager::Calculate_0BB_Sphere(CBounding_OBB* pOBB1, CBounding_Sphere* pSphere1)

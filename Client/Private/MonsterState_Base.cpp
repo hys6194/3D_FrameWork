@@ -45,18 +45,25 @@ _bool CMonsterState_Base::Update_MonsterLook(_float fTimeDelta)
 	return m_pMonster->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, vTargetPos);
 }
 
-_float CMonsterState_Base::Update_MonsterTurnSpeed(_float fSpeed)
+void CMonsterState_Base::Update_MonsterTurnSpeed(_float fSpeed)
 {
-	_vector vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
-	_vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
-
-	_float fDot = acosf(XMVectorGetX(XMVector4Dot(vLook, vTargetPos)));
+	_float fDot = Get_MonsterLookDot();
 
 	_float fDegree = XMConvertToDegrees(fDot);
 	// 진입했을 때 각도에 따른 속도 설정
 	m_pMonster->Get_Transform()->Set_RotationSpeed(fDot * fSpeed);
-	
-	return fDegree;
+}
+
+_float CMonsterState_Base::Get_MonsterLookDot()
+{
+	_vector vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+	_vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
+	_float fTest = XMVectorGetX(XMVector4Dot(vLook, vTargetPos));
+	_float fDot = acosf(XMVectorGetX(XMVector4Dot(vLook, vTargetPos)));
+
+	_float fDegree = XMConvertToDegrees(fDot);
+
+	return fDot;
 }
 
 void CMonsterState_Base::Setting_PlayerInfo()
@@ -93,7 +100,7 @@ HRESULT CMonsterState_Base::Check_Hit(_float fTimeDelta)
 
 		if (fDegree < 40.f)
 		{
-			if (m_pGameInstance->Random_Persent(20))
+			if (m_pGameInstance->Random_Persent(m_pMonster->Get_HitPersent()))
 			{
 				m_pMonster->Change_CurrentState(CMonster::STATE_HIT);
 				return E_ABORT;

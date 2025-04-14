@@ -35,19 +35,24 @@ HRESULT CMoloch::Initialize(void* pArg)
 
     Desc.bBoss = true;
     Desc.bWave = false;
-    Desc.fSpeedPerSec = 10.f;
+    Desc.fSpeedPerSec = 5.f;
     Desc.fRotationPerSec = XMConvertToRadians(90.f);
-    Desc.iState = STATE_DEAD;
+    Desc.iState = STATE_IDLE;
     Desc.strMonsterName = TEXT("_Moloch");
     m_iState = Desc.iState;
 
     // ¿Ã∞≈ ππø¥¡ˆ
-    m_fDetectDistance = 4.f;
+    m_fDetectDistance = 12.f;
+    m_fHitPersent = 0.5f;
 
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
+
+
+    m_pTransformCom->Set_State(CTransform::STATE_POS,
+        XMVectorSet(16.459108f, 16.321875f, 146.170197f, 1.000000f));
 
     m_pFSMCom->Change_State(m_iState);
 
@@ -61,11 +66,11 @@ void CMoloch::Priority_Update(_float fTimeDelta)
     //if (m_pGameInstance->Key_Down(DIK_1))
     //    m_iState = STATE_HIT;
     //
-    //if (m_pGameInstance->Key_Down(DIK_2))
-    // m_iState = STATE_IDLE;
-    //
-    //if (m_pGameInstance->Key_Down(DIK_3))
-    // m_iState = STATE_DEAD;
+    if (m_pGameInstance->Key_Down(DIK_2))
+     m_iState = STATE_IDLE;
+    
+    if (m_pGameInstance->Key_Down(DIK_3))
+     m_iState = STATE_DEAD;
     //
     //if (m_pGameInstance->Key_Down(DIK_4))
     //    m_iState = STATE_SEARCH;  
@@ -79,12 +84,6 @@ void CMoloch::Priority_Update(_float fTimeDelta)
     //if (m_pGameInstance->Key_Down(DIK_7))
     //    m_iState = STATE_TRACE;
     
-    if (m_pGameInstance->Key_Down(DIK_8))
-    {
-        m_bHit = true;
-    }
-    else
-        m_bHit = false;
     
 }
 
@@ -102,6 +101,20 @@ HRESULT CMoloch::Render()
 {
     __super::Render();
 
+    //m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
+    //
+    //if (m_fTotalTime >= 0.5f)
+    //{
+    //    _float4 fPos{};
+    //    XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+    //    TCHAR debugMessage[256];
+    //    _stprintf_s(debugMessage, _T("Monster_Look: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
+    //        fPos.x, fPos.y, fPos.z, fPos.w);
+    //    OutputDebugString(debugMessage);
+    //
+    //    m_fTotalTime = 0.f;
+    //}
+
 
     return S_OK;
 }
@@ -114,7 +127,6 @@ HRESULT CMoloch::Ready_PartObjects()
     
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH_BODY, PART_BODY, &BodyDesc), E_FAIL);
 
-    // ª¿ ¿Ã∏ß Bone_Moloch_Weapon_Blade
     CMoloch_Sword::MOLOCH_SWORD_DESC  GDesc2{};
     GDesc2.pHandMatrix = dynamic_cast<CBody_Moloch*>(m_vecParts[PART_BODY])->Get_f4SocketMatrix(SOCKET_MOLOCH_RIGHT_HAND);
     GDesc2.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
@@ -144,7 +156,7 @@ HRESULT CMoloch::Ready_States()
     pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIP);
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
     
-    pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IDL);
+    pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IDLE);
     m_pFSMCom->Add_State(CMonster::STATE_AVOID, pState);
     
     pState = CMonsterState_Trace::Create(this, m_vecParts[PART_BODY], MOLOCH_RUN_F);
@@ -155,10 +167,17 @@ HRESULT CMoloch::Ready_States()
 
 HRESULT CMoloch::Ready_Components()
 {
-    __super::Ready_Components();
+    CNavigation::NAVIGATION_DESC		NaviDesc{};
+    NaviDesc.iCellIndex = 446;
+
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_NAVI,
+        reinterpret_cast<CComponent**>(&m_pNavigationCom), COM_NAVI, &NaviDesc), E_FAIL);
+
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
+        reinterpret_cast<CComponent**>(&m_pFSMCom), COM_FSM), E_FAIL);
 
     CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
-    ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
+    ColliderDesc.vExtents = _float3(2.f, 7.f, 2.f);
     ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
     ColliderDesc.eType = TYPE_AABB;
     ColliderDesc.strCollTag = Get_Name() + TEXT("_Body");

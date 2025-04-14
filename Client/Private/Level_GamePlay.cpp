@@ -38,6 +38,15 @@ HRESULT CLevel_GamePlay::Initialize()
 void CLevel_GamePlay::Update(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, TEXT("현재 레벨 : 게임플레이 레벨"));
+
+	if (m_pGameInstance->Key_Down(DIK_F1))
+		m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+			LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+	
+	if (m_pGameInstance->Key_Down(DIK_F2))
+		m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
+			LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+
 }
 
 HRESULT CLevel_GamePlay::Render()
@@ -47,9 +56,9 @@ HRESULT CLevel_GamePlay::Render()
 
 HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
-	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
-	//	LEVEL_GAMEPLAY, pLayerTag)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
+		LEVEL_GAMEPLAY, pLayerTag)))
+		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_SKY,
 		LEVEL_GAMEPLAY, pLayerTag)))
 		return E_FAIL;
@@ -104,8 +113,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 	// 나중에 여기에서 Index를 추가하는 방식으로 구분을 하던가 해
 	for (size_t i = 0; i < 2; i++)
 	{
-		FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
-			LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
+		//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+		//	LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
 	}
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,

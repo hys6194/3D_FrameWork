@@ -43,6 +43,7 @@ HRESULT CGhoul::Initialize(void* pArg)
     m_iState = Desc.iState;
 
     m_fDetectDistance = 4.f;
+    m_fHitPersent = 15.f;
 
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
@@ -62,39 +63,7 @@ void CGhoul::Priority_Update(_float fTimeDelta)
 {
     __super::Priority_Update(fTimeDelta);
 
-   if (m_pGameInstance->Key_Down(DIK_1))
-       m_iState = STATE_HIT;
-   
-   if (m_pGameInstance->Key_Down(DIK_2))
-	   m_iState = STATE_IDLE;
-
-   if (m_pGameInstance->Key_Down(DIK_3))
-	   m_iState = STATE_DEAD;
-
-   if (m_pGameInstance->Key_Down(DIK_4))
-       m_iState = STATE_SEARCH;  
-
-   if (m_pGameInstance->Key_Down(DIK_5))
-       m_iState = STATE_AVOID;
-
-   if (m_pGameInstance->Key_Down(DIK_6))
-       m_iState = STATE_ATTACK;
-
-   if (m_pGameInstance->Key_Down(DIK_7))
-       m_iState = STATE_TRACE;
-
-   if (m_pGameInstance->Key_Down(DIK_8))
-   {
-       m_bHit = true;
-       //m_bRec = true;
-   }
-   else
-       m_bHit = false;
-
-
-
    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(1.61f, 2.96f, 34.18f, 1.00f));
-
 }
 
 void CGhoul::Update(_float fTimeDelta)
@@ -189,6 +158,20 @@ HRESULT CGhoul::Ready_Components()
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
     	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
     
+    //CBounding_OBB::BOUNDING_OBB_DESC		ColliderDesc{};
+    //ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
+    //ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
+    ////ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
+    ////ColliderDesc.strCollTag = Get_Name() + TEXT("_Body ") + std::to_wstring(m_iIndex);
+    //ColliderDesc.eType = TYPE_OBB;
+    //ColliderDesc.strCollTag = Get_Name() + TEXT("_Body");
+    //ColliderDesc.iOption = COLL_OPT::OP_TARGET;
+    //ColliderDesc.pOwner = this;
+    //
+    //FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
+    //    reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
+
+
     CStatus::STATUS_DESC StatusDesc{};
     StatusDesc.iAttack = 2;
     StatusDesc.iHP = 100;

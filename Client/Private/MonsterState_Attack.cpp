@@ -31,9 +31,7 @@ void CMonsterState_Attack::PriorityUpdate_State(_float fTimeDelta)
 
     if (0.65f < m_fTotalTime && !m_bRegisted)
     {
-        m_pGameInstance->Regist_Update(m_pMonster->Get_PartObject(CMonster::PART_LEFT)->Get_ColliderCom()->Get_Bounder(),
-            m_pMonster->Get_PartObject(CMonster::PART_RIGHT)->Get_ColliderCom()->Get_Bounder());
-
+        Regist_PartCollUpdate();
         m_bRegisted = true;
     }
     
@@ -41,16 +39,15 @@ void CMonsterState_Attack::PriorityUpdate_State(_float fTimeDelta)
     if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() / 1.5f &&
         !m_bSeceded)
     {
+        Secede_PartCollUpdate();
         m_bSeceded = true;
-        m_pGameInstance->Secede_Update(m_pMonster->Get_PartObject(CMonster::PART_LEFT)->Get_ColliderCom()->Get_Bounder(),
-            m_pMonster->Get_PartObject(CMonster::PART_RIGHT)->Get_ColliderCom()->Get_Bounder());
     }
 
 
     if (m_bAnimEnd)
     {
-        m_pGameInstance->Secede_Update(m_pMonster->Get_PartObject(CMonster::PART_LEFT)->Get_ColliderCom()->Get_Bounder(),
-            m_pMonster->Get_PartObject(CMonster::PART_RIGHT)->Get_ColliderCom()->Get_Bounder());
+        Secede_PartCollUpdate();
+
         m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
 
         m_bRegisted = false;
@@ -75,6 +72,7 @@ void CMonsterState_Attack::LateUpdate_State(_float fTimeDelta)
 HRESULT CMonsterState_Attack::Exit_State()
 {
     Set_PreAnimation();
+    Secede_PartCollUpdate();
 
     return S_OK;
 }
@@ -104,6 +102,31 @@ void CMonsterState_Attack::Set_CurAnimation()
     m_pModelCom = m_pBody->Get_Model();
 
     m_pModelCom->Set_AnimationIndex(m_iAnimIndex);
+}
+
+void CMonsterState_Attack::Regist_PartCollUpdate()
+{
+    if (m_pMonster->Get_PartObject(CMonster::PART_LEFT) == nullptr)
+        m_pGameInstance->Regist_Update(m_pMonster->Get_PartObject(CMonster::PART_RIGHT)->Get_ColliderCom()->Get_Bounder());
+
+    else if (m_pMonster->Get_PartObject(CMonster::PART_RIGHT) == nullptr)
+        m_pGameInstance->Regist_Update(m_pMonster->Get_PartObject(CMonster::PART_LEFT)->Get_ColliderCom()->Get_Bounder());
+    else
+        m_pGameInstance->Regist_Update(m_pMonster->Get_PartObject(CMonster::PART_LEFT)->Get_ColliderCom()->Get_Bounder(),
+            m_pMonster->Get_PartObject(CMonster::PART_RIGHT)->Get_ColliderCom()->Get_Bounder());
+}
+
+void CMonsterState_Attack::Secede_PartCollUpdate()
+{
+    if (m_pMonster->Get_PartObject(CMonster::PART_LEFT) == nullptr)
+        m_pGameInstance->Secede_Update(m_pMonster->Get_PartObject(CMonster::PART_RIGHT)->Get_ColliderCom()->Get_Bounder());
+
+    else if (m_pMonster->Get_PartObject(CMonster::PART_RIGHT) == nullptr)
+        m_pGameInstance->Secede_Update(m_pMonster->Get_PartObject(CMonster::PART_LEFT)->Get_ColliderCom()->Get_Bounder());
+    else
+        m_pGameInstance->Secede_Update(m_pMonster->Get_PartObject(CMonster::PART_LEFT)->Get_ColliderCom()->Get_Bounder(),
+            m_pMonster->Get_PartObject(CMonster::PART_RIGHT)->Get_ColliderCom()->Get_Bounder());
+
 }
 
 CMonsterState_Attack* CMonsterState_Attack::Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex)

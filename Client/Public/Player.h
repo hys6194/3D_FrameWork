@@ -97,6 +97,8 @@ private:
 	_bool					m_bIsDashed			= { false };
 	_bool					m_bCanMove			= { true };
 
+	_float					m_fTotalTime = { 0.f };
+
 private:
 	CFSM*					m_pFSMCom			= { nullptr };
 	CCollider*				m_pColliderCom		= { nullptr };

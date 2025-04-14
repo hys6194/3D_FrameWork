@@ -27,9 +27,9 @@ void CMonsterState_Hit::PriorityUpdate_State(_float fTimeDelta)
 
     if (m_bAnimEnd)
     {
-        if (m_pGameInstance->Random_Persent(50))
-            m_pMonster->Change_CurrentState(CMonster::STATE_AVOID);
-        else
+        //if (m_pGameInstance->Random_Persent(50))
+        //    m_pMonster->Change_CurrentState(CMonster::STATE_AVOID);
+        //else
             m_pMonster->Change_CurrentState(CMonster::STATE_IDLE);
 
 

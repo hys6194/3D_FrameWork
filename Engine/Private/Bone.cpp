@@ -47,17 +47,17 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
     // 다음에는 함수 만들 때 루트 본의 이름을 받아오고 이름을 확인한 후 그 뼈의 매트릭스에 접근하는 것으로 하자
     else if (1 == m_iParentBoneIndex)
     {
-        _float4x4 matPreTransform;
+        _float4x4 f4PreTransform;
         _float4 vPreTrans, vDelta, vNonTrans {0.f,0.f,0.f,1.f};
     
         // 루트 본의 매트릭스를 제일 부모의 매트릭스에 곱하기 전의 로컬(?) 매트릭스 꺼내오기
-        XMStoreFloat4x4(&matPreTransform,
+        XMStoreFloat4x4(&f4PreTransform,
             XMLoadFloat4x4(&m_matTransform) * XMLoadFloat4x4(&Bones[m_iParentBoneIndex]->m_matCombinedTransform));
 
-        memcpy(&vPreTrans, &matPreTransform.m[3][0], sizeof(_float4));
+        memcpy(&vPreTrans, &f4PreTransform.m[3][0], sizeof(_float4));
     
         // 현재 매트릭스 값에 이동량을 초기화
-        memcpy(&matPreTransform.m[3][0], &vNonTrans, sizeof(_float4));  
+        memcpy(&f4PreTransform.m[3][0], &vNonTrans, sizeof(_float4));
     
         // 이동량 계산
         XMStoreFloat4(&vDelta, XMVectorSetW(XMLoadFloat4(&vPreTrans) - XMLoadFloat4(&m_vPreDelta), 1.f));
@@ -69,8 +69,25 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
         // 이전 값을 저장
         m_vPreDelta = vPreTrans;
 
-        XMStoreFloat4x4(&m_matCombinedTransform,
-            XMLoadFloat4x4(&matPreTransform));
+        // 회전량 죽임
+        _vector vScale, vRotation, vTranslation;
+
+        _matrix matPreTransform = {};
+
+        // 원본 행렬 분해 (스케일, 회전, 위치)
+        XMMatrixDecompose(&vScale, &vRotation, &vTranslation, XMLoadFloat4x4(&f4PreTransform));
+
+        vRotation = XMQuaternionIdentity();
+
+        _matrix matNoRotation = XMMatrixAffineTransformation(vScale, XMVectorZero(), vRotation, vTranslation);
+
+        _matrix matFixRotation = XMMatrixRotationX(XMConvertToRadians(90.f));
+
+        matPreTransform = matFixRotation * matNoRotation;
+
+        XMStoreFloat4x4(&m_matCombinedTransform, matPreTransform);
+
+
 
 
         //_float4 fDebug{};

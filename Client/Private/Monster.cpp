@@ -49,13 +49,13 @@ void CMonster::Priority_Update(_float fTimeDelta)
 		m_pGameInstance->Secede_Update(m_pColliderCom->Get_Bounder());
 		m_iState = STATE_DEAD;
 		m_bIsDead = true;
-		m_bRec = true;
+		m_bRec = false;
 	}
 
 	if (m_pColliderCom->Is_Coll())
 	{
 		m_bHit = true;
-
+		m_bRec = true;
 		CGameObject* pObject = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
 		CPlayer* pPlayer = static_cast<CPlayer*>(pObject);
 
