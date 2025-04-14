@@ -138,7 +138,7 @@ HRESULT CMoloch::Ready_States()
     pState = CMonsterState_Dead::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IMPACT_STUN);
     m_pFSMCom->Add_State(CMonster::STATE_DEAD, pState);
     
-    pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIPE_02);
+    pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIP);
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
     
     pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IDLE);

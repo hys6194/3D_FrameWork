@@ -595,9 +595,9 @@ HRESULT CLoader::Loading_Prototype()
 	case LEVEL_GAMEPLAY:
 	{
 		/* Test_Monster_Anim*/
-		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
-		//	CTest_Monster::Create(m_pDevice, m_pContext))))
-		//	return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_TEST_MONSTER,
+			CTest_Monster::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		/* Prototype_GameObject_Terrain */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,

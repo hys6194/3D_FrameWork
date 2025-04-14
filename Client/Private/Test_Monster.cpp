@@ -33,10 +33,11 @@ HRESULT CTest_Monster::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_iAnimIndex = 3;
 	//m_pTransformCom->Set_State(CTransform::STATE_POS,
 	//	XMVectorSet(m_pGameInstance->Random(0.f, 10.f), 2.f, m_pGameInstance->Random(0.f, 10.f), 1.f));
 
-	m_pModelCom->Set_AnimationIndex(3, true);
+	m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
 
 	return S_OK;
 }
@@ -44,6 +45,26 @@ HRESULT CTest_Monster::Initialize(void* pArg)
 void CTest_Monster::Priority_Update(_float fTimeDelta)
 {
 	int a = 10;
+
+	if (m_pGameInstance->Key_Down(DIK_1))
+	{
+		m_iAnimIndex = 10;
+		m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_2))
+	{
+		m_iAnimIndex = 11;
+		m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_3))
+	{
+		m_iAnimIndex = 12;
+		m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
+	}
+
+
 }
 
 void CTest_Monster::Update(_float fTimeDelta)

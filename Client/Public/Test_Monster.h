@@ -33,6 +33,8 @@ private:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
 
+	_uint	 m_iAnimIndex = {};
+
 private:
 	HRESULT Ready_Components();
 	HRESULT Bind_ShaderResources();

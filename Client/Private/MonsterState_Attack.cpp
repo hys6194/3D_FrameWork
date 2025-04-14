@@ -46,9 +46,13 @@ void CMonsterState_Attack::PriorityUpdate_State(_float fTimeDelta)
 
     if (m_bAnimEnd)
     {
-        Secede_PartCollUpdate();
+        m_iAnimIndex++;
 
-        m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
+        if(16 == m_iAnimIndex)
+            m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
+
+        Secede_PartCollUpdate();
+        m_pModelCom->Set_AnimationIndex(m_iAnimIndex);
 
         m_bRegisted = false;
         m_bSeceded = false;

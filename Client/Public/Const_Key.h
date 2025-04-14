@@ -130,6 +130,7 @@ static const std::wstring PRO_OBJ_ROCK_TALL				= TEXT("Prototype_GameObject_Dese
 static const std::wstring PRO_OBJ_SPIKE_A				= TEXT("Prototype_GameObject_FortressSpike A");
 static const std::wstring PRO_OBJ_SPIKE_E				= TEXT("Prototype_GameObject_FortressSpike E");
 static const std::wstring PRO_OBJ_MOLOCH				= TEXT("Prototype_GameObject_Moloch");
+static const std::wstring PRO_OBJ_TEST_MONSTER			= TEXT("Prototype_GameObject_TEST_MONSTER");
 static const std::wstring PRO_OBJ_MOLOCH_BODY			= TEXT("Prototype_GameObject_Moloch Body");
 static const std::wstring PRO_OBJ_MOLOCH_SWORD			= TEXT("Prototype_GameObject_Moloch Sword");
 
