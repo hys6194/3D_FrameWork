@@ -101,21 +101,6 @@ HRESULT CMoloch::Render()
 {
     __super::Render();
 
-    //m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
-    //
-    //if (m_fTotalTime >= 0.5f)
-    //{
-    //    _float4 fPos{};
-    //    XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-    //    TCHAR debugMessage[256];
-    //    _stprintf_s(debugMessage, _T("Monster_Look: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
-    //        fPos.x, fPos.y, fPos.z, fPos.w);
-    //    OutputDebugString(debugMessage);
-    //
-    //    m_fTotalTime = 0.f;
-    //}
-
-
     return S_OK;
 }
 
@@ -153,7 +138,7 @@ HRESULT CMoloch::Ready_States()
     pState = CMonsterState_Dead::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IMPACT_STUN);
     m_pFSMCom->Add_State(CMonster::STATE_DEAD, pState);
     
-    pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIP);
+    pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIPE_02);
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
     
     pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IDLE);
@@ -194,7 +179,6 @@ HRESULT CMoloch::Ready_Components()
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_STATUS,
         reinterpret_cast<CComponent**>(&m_pStatusCom), COM_STATUS, &StatusDesc), E_FAIL);
-
 
     return S_OK;
 }

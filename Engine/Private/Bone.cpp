@@ -35,7 +35,7 @@ void CBone::Update_CombinedTransformationMatrix(const vector<class CBone*>& Bone
 
 }
 
-void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _float4x4* pPreTransformMatrix, CGameObject* pObject)
+void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _float4x4* pPreTransformMatrix, _uint iCurKeyFrameIndex,CGameObject* pObject)
 {
     if (-1 == m_iParentBoneIndex)
         XMStoreFloat4x4(&m_matCombinedTransform,
@@ -55,19 +55,41 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
             XMLoadFloat4x4(&m_matTransform) * XMLoadFloat4x4(&Bones[m_iParentBoneIndex]->m_matCombinedTransform));
 
         memcpy(&vPreTrans, &f4PreTransform.m[3][0], sizeof(_float4));
-    
-        // 현재 매트릭스 값에 이동량을 초기화
+
         memcpy(&f4PreTransform.m[3][0], &vNonTrans, sizeof(_float4));
-    
+
         // 이동량 계산
         XMStoreFloat4(&vDelta, XMVectorSetW(XMLoadFloat4(&vPreTrans) - XMLoadFloat4(&m_vPreDelta), 1.f));
         
+        // 만약 원점 근처에서 시작한 경우
+        if (0 == iCurKeyFrameIndex &&
+            XMVector4NearEqual(XMLoadFloat4(&vNonTrans), XMLoadFloat4(&vDelta)
+                , XMVectorSet(1.f, 1.f, 1.f, 1.f)))
+        {
+            m_vCurDelta = vDelta;
+            m_vPreDelta = vPreTrans;
+        }
+        
+        // 원점에서 많이 벗어난 경우 -> 원점 시작으로 판단하지 않음
+        else if (0 == iCurKeyFrameIndex &&
+            !XMVector4NearEqual(XMLoadFloat4(&vNonTrans), XMLoadFloat4(&vDelta)
+                , XMVectorSet(3.f, 3.f, 3.f, 3.f)))
+        {
+            m_vCurDelta = vNonTrans;
+            m_vPreDelta = vDelta;
+        }
+            
+        else if(0 != iCurKeyFrameIndex)
+        {
+            m_vCurDelta = vDelta;
+            m_vPreDelta = vPreTrans;
+        }
         // 변화량을 담아서 다른 클래스에서 사용할 수 있게 저장
         // 추후 Transform에서 원하는 값만 가져와서 사용
-        m_vCurDelta = vDelta;
+        //m_vCurDelta = vDelta;
 
         // 이전 값을 저장
-        m_vPreDelta = vPreTrans;
+        //m_vPreDelta = vPreTrans;
 
         // 회전량 죽임
         _vector vScale, vRotation, vTranslation;
@@ -90,12 +112,12 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
 
 
 
-        //_float4 fDebug{};
-        //XMStoreFloat4(&fDebug, vAngle);
-        //TCHAR debugMessage[256];
-        //_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
-        //    vDelta.x, vDelta.y, vDelta.z, vDelta.w);
-        //OutputDebugString(debugMessage);
+        _float4 fDebug{};
+        XMStoreFloat4(&fDebug, XMLoadFloat4(&vDelta));
+        TCHAR debugMessage[256];
+        _stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
+            vDelta.x, vDelta.y, vDelta.z, vDelta.w);
+        OutputDebugString(debugMessage);
 
 //        //TCHAR debugMessage1[256];
         //_stprintf_s(debugMessage1, _T("Debug_Value: x = %.6f\n"),

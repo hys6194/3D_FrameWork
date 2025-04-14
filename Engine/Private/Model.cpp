@@ -402,7 +402,7 @@ _bool CModel::Play_Animation(_float fTimeDelta, CGameObject* pObject)
         bIsEnd = m_Animations[m_iCurrentAnimationIndex]->Update_TransformationMatrix(m_vecBone, fTimeDelta, m_bIsLoop, &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], m_vecKeyFrameIndex[m_iCurrentAnimationIndex], pObject);
         for (auto& pBone : m_vecBone)
         {
-            pBone->Update_Combine_RootMatrix(m_vecBone, &m_PreTransformMatrix, pObject);
+            pBone->Update_Combine_RootMatrix(m_vecBone, &m_PreTransformMatrix, m_iCurKeyFrameIndex, pObject);
         }
     }
 

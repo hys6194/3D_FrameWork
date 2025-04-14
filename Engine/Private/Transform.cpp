@@ -58,7 +58,7 @@ HRESULT CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
     _float4 fTest1{};
     XMStoreFloat4(&fTest1, Get_State(CTransform::STATE_POS));
 
-    // 사라지기만 해봐 십련아 ㅋㅋ 디버깅 걸면 그만이야~
+    // 사라지기만 해봐 ㅋㅋ 디버깅 걸면 그만이야~
     if (_isnan(fTest1.x) ||
         _isnan(fTest1.y) ||
         _isnan(fTest1.z) ||
@@ -68,7 +68,7 @@ HRESULT CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
     }
 
     // 계산한 Vector를 position에 대입한다
-
+    // 왜 내비에서 사라지는거니?
     if (nullptr == pNavigation ||
         true == pNavigation->isMove(vPos))
         Set_State(STATE_POS, vPos);
@@ -77,7 +77,7 @@ HRESULT CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
     _float4 fTest{};
     XMStoreFloat4(&fTest, Get_State(CTransform::STATE_POS));
 
-    // 사라지기만 해봐 십련아 ㅋㅋ 디버깅 걸면 그만이야~
+    // 사라지기만 해봐 ㅋㅋ 디버깅 걸면 그만이야~
     if (_isnan(fTest.x) ||
         _isnan(fTest.y) ||
         _isnan(fTest.z) ||

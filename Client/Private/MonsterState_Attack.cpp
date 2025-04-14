@@ -90,11 +90,13 @@ void CMonsterState_Attack::Set_PreAnimation()
 
 void CMonsterState_Attack::Update_Animation(_float fTimeDelta)
 {
-    if (0 != m_pModelCom->Get_PreAnimIndex()
-        && m_pModelCom->Get_Interpolate())
-        m_pModelCom->Interpolate_Animation(0.2f);
-    else
+    //if (0 != m_pModelCom->Get_PreAnimIndex()
+    //    && m_pModelCom->Get_Interpolate())
+    //    m_pModelCom->Interpolate_Animation(0.2f);
+    //else
         m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
+
+    m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
 }
 
 void CMonsterState_Attack::Set_CurAnimation()
