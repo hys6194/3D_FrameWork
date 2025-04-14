@@ -1,8 +1,9 @@
 #include "Test_Monster.h"
 #include "GameInstance.h"
+#include "Moloch.h"
 
 #include "Player.h"
-#include	"PartObject.h"
+#include "PartObject.h"
 
 CTest_Monster::CTest_Monster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -33,7 +34,7 @@ HRESULT CTest_Monster::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_iAnimIndex = 3;
+	m_iAnimIndex = 0;
 	//m_pTransformCom->Set_State(CTransform::STATE_POS,
 	//	XMVectorSet(m_pGameInstance->Random(0.f, 10.f), 2.f, m_pGameInstance->Random(0.f, 10.f), 1.f));
 
@@ -48,22 +49,21 @@ void CTest_Monster::Priority_Update(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down(DIK_1))
 	{
-		m_iAnimIndex = 10;
+		m_iAnimIndex++;
+		if (16 <= m_iAnimIndex)
+			m_iAnimIndex = CMoloch::MOLOCH_ATK_180_L;
+
 		m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
 	}
 
 	if (m_pGameInstance->Key_Down(DIK_2))
 	{
-		m_iAnimIndex = 11;
+		m_iAnimIndex--;
+		if (0 > m_iAnimIndex)
+			m_iAnimIndex = CMoloch::MOLOCH_ATK_SWIPE_02;
+		
 		m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
 	}
-
-	if (m_pGameInstance->Key_Down(DIK_3))
-	{
-		m_iAnimIndex = 12;
-		m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
-	}
-
 
 }
 

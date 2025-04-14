@@ -54,6 +54,7 @@ public:
 	_bool									Is_Hit ()									{ return m_bHit;    }
 	_bool									Is_Rec ()									{ return m_bRec;    }
 	_bool									Is_Critical()								{ return m_bCri;    }
+	_bool									Is_Boss()									{ return m_bIsBoss;    }
 
 	_uint									Get_PreState()								{ return m_iPreState;}
 	_uint									Get_Index()									{ return m_iIndex;}

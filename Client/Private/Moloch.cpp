@@ -35,13 +35,14 @@ HRESULT CMoloch::Initialize(void* pArg)
 
     Desc.bBoss = true;
     Desc.bWave = false;
-    Desc.fSpeedPerSec = 5.f;
+    Desc.fSpeedPerSec = 7.5f;
     Desc.fRotationPerSec = XMConvertToRadians(90.f);
     Desc.iState = STATE_IDLE;
     Desc.strMonsterName = TEXT("_Moloch");
     m_iState = Desc.iState;
 
-    // ÀÌ°Å ¹¹¿´Áö
+    m_bIsBoss = Desc.bBoss;
+
     m_fDetectDistance = 12.f;
     m_fHitPersent = 0.5f;
 
@@ -138,7 +139,7 @@ HRESULT CMoloch::Ready_States()
     pState = CMonsterState_Dead::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IMPACT_STUN);
     m_pFSMCom->Add_State(CMonster::STATE_DEAD, pState);
     
-    pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIP);
+    pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_SWING_01);
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
     
     pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IDLE);
