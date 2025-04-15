@@ -176,7 +176,7 @@ HRESULT CPlayer::Ready_Components()
 	SphereDesc.fRadius = 5.f;
 	SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
 	SphereDesc.strCollTag = Get_Name() + TEXT("_Body_Detect");
-	SphereDesc.iOption = COLL_OPT::OP_TARGET;
+	SphereDesc.iOption = COLL_OPT::OP_DETECT;
 	SphereDesc.eType = TYPE::TYPE_SPHERE;
 	SphereDesc.pOwner = this;
 

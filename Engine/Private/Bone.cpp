@@ -73,7 +73,7 @@ void CBone::Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _
         // 원점에서 많이 벗어난 경우 -> 원점 시작으로 판단하지 않음
         else if (0 == iCurKeyFrameIndex &&
             !XMVector4NearEqual(XMLoadFloat4(&vNonTrans), XMLoadFloat4(&vDelta)
-                , XMVectorSet(3.f, 3.f, 3.f, 3.f)))
+                , XMVectorSet(3.f, 3.f, 3.f, 1.f)))
         {
             m_vCurDelta = vNonTrans;
             m_vPreDelta = vDelta;

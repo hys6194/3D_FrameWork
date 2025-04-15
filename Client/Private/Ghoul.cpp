@@ -158,20 +158,18 @@ HRESULT CGhoul::Ready_Components()
     ColliderDesc.pOwner = this;
     
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
-    	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
+    	reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_AABB]), COM_COLL, &ColliderDesc), E_FAIL);
     
-    //CBounding_OBB::BOUNDING_OBB_DESC		ColliderDesc{};
-    //ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
-    //ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
-    ////ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
-    ////ColliderDesc.strCollTag = Get_Name() + TEXT("_Body ") + std::to_wstring(m_iIndex);
-    //ColliderDesc.eType = TYPE_OBB;
-    //ColliderDesc.strCollTag = Get_Name() + TEXT("_Body");
-    //ColliderDesc.iOption = COLL_OPT::OP_TARGET;
-    //ColliderDesc.pOwner = this;
-    //
-    //FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
-    //    reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
+    CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
+    SphereDesc.fRadius = 5.f;
+    SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    SphereDesc.strCollTag = Get_Name() + TEXT("_Body_Detect");
+    SphereDesc.iOption = COLL_OPT::OP_DETECT;
+    SphereDesc.eType = TYPE::TYPE_SPHERE;
+    SphereDesc.pOwner = this;
+
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
+        reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_SPHERE]), COM_COLL, &SphereDesc), E_FAIL);
 
 
     CStatus::STATUS_DESC StatusDesc{};
@@ -216,6 +214,13 @@ CGameObject* CGhoul::Clone(void* pArg)
 void CGhoul::Free()
 {
     __super::Free();
-    Safe_Release(m_pColliderCom);
+
+#ifdef _DEBUG
+    for (size_t i = 0; i < TYPE_END; i++)
+    {
+        Safe_Release(m_pColliderCom[i]);
+    }
+
+#endif
 
 }

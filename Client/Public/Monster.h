@@ -34,12 +34,10 @@ public:
 
 	}MONSTER_DESC;
 
-
-	enum PARTOBJ { PART_BODY, PART_LEFT, PART_RIGHT, PART_EFFECT, PART_END };
-
-
 public:
 	enum MONSTER_STATE { STATE_IDLE, STATE_SEARCH, STATE_TRACE, STATE_HIT, STATE_ATTACK, STATE_AVOID, STATE_DEAD, STATE_NONE };
+	enum PARTOBJ { PART_BODY, PART_LEFT, PART_RIGHT, PART_EFFECT, PART_END };
+	enum COLL_TYPE {COLL_AABB, COLL_OBB, COLL_SPHERE, COLL_END };
 
 public:
 	void									Set_Dead			(_bool bDead)			{ m_bIsDead		= bDead; }
@@ -82,7 +80,9 @@ public:
 protected:
 	CFSM*									m_pFSMCom									= { nullptr };
 	CNavigation*							m_pNavigationCom							= { nullptr };
-	CCollider*								m_pColliderCom								= { nullptr };
+	CCollider*								m_pColliderCom[COLL_END]					= {nullptr};
+
+	class CAttack*							m_pAttackCom								= { nullptr };
 	class CStatus*							m_pStatusCom								= { nullptr };
 
 protected:

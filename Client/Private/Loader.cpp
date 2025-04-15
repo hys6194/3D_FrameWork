@@ -15,6 +15,7 @@
 #include "Gun_Right.h"
 #include "Gun_Left.h"
 #include "Terrain.h"
+#include "Attack.h"
 #include "Bullet.h"
 #include "Moloch.h"
 #include "Player.h"
@@ -268,6 +269,10 @@ HRESULT CLoader::Loading_Models()
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_STATUS,
 			CStatus::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_ATTACK,
+			CAttack::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		CVIBuffer_Particle::INSTANCE_DESC		SnowDesc{};

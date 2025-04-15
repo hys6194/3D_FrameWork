@@ -1,12 +1,13 @@
 #include "Moloch.h"
-#include "Monster.h"
 #include "Status.h"
+#include "Attack.h"
 #include "GameInstance.h"
 
 #include "Body_Moloch.h"
 #include "Moloch_Sword.h"
 
-#include "MonsterState_Attack.h"
+#include "Moloch_Swipe.h"
+
 #include "MonsterState_Search.h"
 #include "MonsterState_Trace.h"
 #include "MonsterState_Avoid.h"
@@ -144,8 +145,10 @@ HRESULT CMoloch::Ready_States()
     pState = CMonsterState_Dead::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IMPACT_STUN);
     m_pFSMCom->Add_State(CMonster::STATE_DEAD, pState);
     
-    pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_SWING_01);
+    pState = CMoloch_Swipe::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIPE_01, 5.f);
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
+
+    m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_SWIPE_01, static_cast<CAttack_Base*>(pState));
     
     pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IDLE);
     m_pFSMCom->Add_State(CMonster::STATE_AVOID, pState);
@@ -167,8 +170,11 @@ HRESULT CMoloch::Ready_Components()
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
         reinterpret_cast<CComponent**>(&m_pFSMCom), COM_FSM), E_FAIL);
 
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_ATTACK,
+        reinterpret_cast<CComponent**>(&m_pAttackCom), COM_ATTACK), E_FAIL);
+
     CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
-    ColliderDesc.vExtents = _float3(2.f, 7.f, 2.f);
+    ColliderDesc.vExtents = _float3(2.f, 5.f, 2.f);
     ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
     ColliderDesc.eType = TYPE_AABB;
     ColliderDesc.strCollTag = Get_Name() + TEXT("_Body");
@@ -176,7 +182,18 @@ HRESULT CMoloch::Ready_Components()
     ColliderDesc.pOwner = this;
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
-        reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_AABB]), COM_COLL, &ColliderDesc), E_FAIL);
+
+    CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
+    SphereDesc.fRadius = 5.f;
+    SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    SphereDesc.strCollTag = Get_Name() + TEXT("_Body_Detect");
+    SphereDesc.iOption = COLL_OPT::OP_DETECT;
+    SphereDesc.eType = TYPE::TYPE_SPHERE;
+    SphereDesc.pOwner = this;
+
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
+        reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_SPHERE]), COM_COLL, &SphereDesc), E_FAIL);
     
     CStatus::STATUS_DESC StatusDesc{};
     StatusDesc.iAttack = 2;
@@ -218,5 +235,12 @@ CGameObject* CMoloch::Clone(void* pArg)
 void CMoloch::Free()
 {
     __super::Free();
-    Safe_Release(m_pColliderCom);
+
+#ifdef _DEBUG
+    for (size_t i = 0; i < TYPE_END; i++)
+    {
+        Safe_Release(m_pColliderCom[i]);
+    }
+
+#endif
 }

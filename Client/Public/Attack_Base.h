@@ -23,6 +23,8 @@ public:
 	virtual void							Set_CurAnimation() = 0;
 	virtual void							Update_CoolTime(_float fTimeDelta) = 0;
 
+	virtual _bool							Check_Attackable() = 0;
+
 protected:
 	void									Regist_PartCollUpdate();
 	void									Secede_PartCollUpdate();
@@ -31,8 +33,13 @@ protected:
 protected:
 	_bool									m_bCool		= { false };
 	_bool									m_bAttack	= { false };
+	_bool									m_bRegisted = { false };
+	_bool									m_bSeceded = { false };
 
+	_float									m_fDistance = {};
+	_float									m_fTotalTime = {};
 	_float									m_fCoolTime = {};
+	_float									m_fElapseTime = {};
 
 public:
 	virtual void							Free() override;

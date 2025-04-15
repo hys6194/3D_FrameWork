@@ -33,7 +33,7 @@ HRESULT CCollision_Manager::Add_Collistionlist(const _uint iCollOption, const ws
 		auto iter = new list<CBounding*>();
 	
 		// 피충돌체의 경우 항상 업데이트를 돌려야 하므로 Update에 등록한다
-		if (iCollOption == OP_TARGET)
+		if (iCollOption != OP_IMPACT)
 		{
 			iter->push_back(pInstance);
 			Safe_AddRef(pInstance);
@@ -45,7 +45,7 @@ HRESULT CCollision_Manager::Add_Collistionlist(const _uint iCollOption, const ws
 	// 리스트에 Target 넣기
 	else
 	{
-		if (iCollOption == OP_TARGET)
+		if (iCollOption != OP_IMPACT)
 		{
 			Pair->second->push_back(pInstance);
 			Safe_AddRef(pInstance);
@@ -92,11 +92,11 @@ HRESULT CCollision_Manager::Update_Collisions(_float fTimeDelta)
 		m_mapColliders[OP_IMPACT]->empty())
 		return E_ABORT;
 
-	_bool bTest = Update_Impactor(fTimeDelta);
-	_bool bTest1 = Update_TargetBody(fTimeDelta);
+	Update_Impactor(fTimeDelta);
 
+	Update_TargetBody(fTimeDelta);
 
-	if (bTest == true) return S_OK;
+	Update_Detector(fTimeDelta);
 
 	return S_OK;
 }
@@ -183,9 +183,6 @@ _bool CCollision_Manager::Check_Collision(list<CBounding*>* pList1, list<CBoundi
 		for (auto& iter2 : *pList2)
 			if (Detect_Collision(iter1, iter2))
 			{
-				iter1->Get_Collider()->Set_Coll(true);
-				iter2->Get_Collider()->Set_Coll(true);
-
 				if(pBound1 != nullptr)
 					*pBound1 = iter1;
 
@@ -219,7 +216,14 @@ _bool CCollision_Manager::Update_Impactor(_float fTimeDelta)
 			{
 				if (Check_IncWord(Pair2.first, TEXT("Monster")))
 				{
-					Check_Collision(Pair.second, Pair2.second);
+					if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+					{
+						if (TYPE_SPHERE == *pBounding1->Get_Type())
+							continue;
+
+						pBounding1->Get_Collider()->Set_Coll(true);
+						pBounding2->Get_Collider()->Set_Coll(true);
+					}
 				}
 			}
 		}
@@ -233,7 +237,14 @@ _bool CCollision_Manager::Update_Impactor(_float fTimeDelta)
 				{
 					if (Check_IncWord(Pair2.first, TEXT("Player")))
 					{
-						Check_Collision(Pair.second, Pair2.second);
+						if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+						{
+							if (TYPE_SPHERE == *pBounding1->Get_Type())
+								continue;
+
+							pBounding1->Get_Collider()->Set_Coll(true);
+							pBounding2->Get_Collider()->Set_Coll(true);
+						}
 					}
 				}
 			}
@@ -313,6 +324,59 @@ _bool CCollision_Manager::Update_TargetBody(_float fTimeDelta)
 			//}
 		}
 
+	}
+
+	return bTest;
+}
+
+_bool CCollision_Manager::Update_Detector(_float fTimeDelta)
+{
+	// 피충돌체가 피충돌체와 충돌 비교하여 충돌 처리
+	_bool bTest{};
+	_bool bTest1{};
+
+	CBounding* pBounding1 = nullptr;
+	CBounding* pBounding2 = nullptr;
+	// 위 로직대로 플레이어는 몬스터의 Pair에 접근해서 전부 순회해야 하고
+	// 몬스터는 아래의 로직대로 돌려야함
+
+	for (auto& Pair : *m_mapColliders[OP_DETECT])
+	{
+
+		if (Check_IncWord(Pair.first, TEXT("Player")))
+		{
+			// 몬스터의 충돌체
+			for (auto& Pair2 : *m_mapColliders[OP_DETECT])
+			{
+				if (Check_IncWord(Pair2.first, TEXT("Monster")))
+				{
+					if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+					{
+						pBounding1->Get_Collider()->Set_Coll(true);
+						pBounding2->Get_Collider()->Set_Coll(true);
+					}
+				}
+			}
+		}
+
+		// 몬스터의 몸체
+		else
+		{
+			for (size_t i = 0; i < Pair.second->size(); i++)
+			{
+				for (auto& Pair2 : *m_mapColliders[OP_DETECT])
+				{
+					if (Check_IncWord(Pair2.first, TEXT("Player")))
+					{
+						if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+						{
+							pBounding1->Get_Collider()->Set_Coll(true);
+							pBounding2->Get_Collider()->Set_Coll(true);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	return bTest;

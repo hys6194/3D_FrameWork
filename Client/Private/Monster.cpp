@@ -1,6 +1,7 @@
 #include "Monster.h"
 #include "Player.h"
 #include "Status.h"
+#include "Attack.h"
 
 #include "GameInstance.h"
 #include "Body_Monster.h"
@@ -18,7 +19,7 @@ CMonster::CMonster(const CMonster& Prototype)
 	, m_iPreState { Prototype.m_iPreState }
 	, m_pFSMCom{ Prototype.m_pFSMCom }
 	, m_pNavigationCom { Prototype.m_pNavigationCom }
-	, m_pColliderCom { Prototype.m_pColliderCom }
+	, m_pColliderCom { Prototype.m_pColliderCom[COLL_END] }
 	, m_pStatusCom { Prototype.m_pStatusCom }
 {
 }
@@ -47,13 +48,16 @@ void CMonster::Priority_Update(_float fTimeDelta)
 {
 	if (0 >= m_pStatusCom->Get_StatusDesc().iHP)
 	{
-		m_pGameInstance->Secede_Update(m_pColliderCom->Get_Bounder());
+		m_pGameInstance->Secede_Update(m_pColliderCom[COLL_AABB]->Get_Bounder());
+		m_pGameInstance->Secede_Update(m_pColliderCom[COLL_SPHERE]->Get_Bounder());
 		m_iState = STATE_DEAD;
 		m_bIsDead = true;
 		m_bRec = false;
 	}
 
-	if (m_pColliderCom->Is_Coll())
+	// 이 부분을 따로 빼서 적용한다던가
+	// 아니면 aabb 부분만 체크하게 하자
+	if (m_pColliderCom[COLL_AABB]->Is_Coll())
 	{
 		m_bHit = true;
 		m_bRec = true;
@@ -71,7 +75,13 @@ void CMonster::Priority_Update(_float fTimeDelta)
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
 	m_pFSMCom->Change_State(m_iState);
 
-	m_pColliderCom->Reset();
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		if (nullptr == m_pColliderCom[i])
+			continue;
+
+		m_pColliderCom[i]->Reset();
+	}
 
 	__super::Priority_Update(fTimeDelta);
 }
@@ -82,7 +92,17 @@ void CMonster::Update(_float fTimeDelta)
 
 	m_pFSMCom->Update_State(fTimeDelta);
 
-	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+
+#ifdef _DEBUG
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		if (nullptr == m_pColliderCom[i])
+			continue;
+
+
+		m_pColliderCom[i]->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+	}
+#endif
 }
 
 
@@ -104,8 +124,14 @@ HRESULT CMonster::Render()
 		return E_ABORT;
 
 #ifdef _DEBUG
-	m_pColliderCom->Render();
-#endif 
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		if (nullptr == m_pColliderCom[i])
+			continue;
+
+		m_pColliderCom[i]->Render();
+	}
+#endif
 
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
@@ -117,6 +143,9 @@ HRESULT CMonster::Ready_Components()
 {
 	CNavigation::NAVIGATION_DESC		NaviDesc{};
 	NaviDesc.iCellIndex = 0;
+
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_ATTACK,
+		reinterpret_cast<CComponent**>(&m_pAttackCom), COM_ATTACK), E_FAIL);
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_NAVI,
 		reinterpret_cast<CComponent**>(&m_pNavigationCom), COM_NAVI, &NaviDesc), E_FAIL);
@@ -139,4 +168,6 @@ void CMonster::Free()
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pStatusCom);
 	Safe_Release(m_pFSMCom);
+	Safe_Release(m_pAttackCom);
+
 }

@@ -29,6 +29,11 @@ void CAttack::Update_CoolTime(_float fTimeDelta)
     }
 }
 
+CAttack_Base* CAttack::Find_Attackable()
+{
+    return nullptr;
+}
+
 //HRESULT CAttack::Enter_State()
 //{
 //    m_pAttackState->Enter_State();
@@ -100,10 +105,10 @@ void CAttack::Free()
 {
     __super::Free();
 
-    for (auto& Pair : m_mapPattern)
-    {
-        Pair.second->Free();
-    }
+    //for (auto& Pair : m_mapPattern)
+    //{
+    //    Pair.second->Free();
+    //}
 
     m_mapPattern.clear();
 }
