@@ -174,11 +174,11 @@ HRESULT CTransform::LookAt(_vector vAt)
     return S_OK;
 }
 
-HRESULT CTransform::Dash(_float4 fDelta, CNavigation* pNavigation)
+HRESULT CTransform::Dash(_float4 fDelta, CNavigation* pNavigation, _float fMag)
 {
     _vector vPos = Get_State(STATE_POS);
     _vector vLook = Get_State(STATE_LOOK);
-    _vector vDelta = XMVectorSet(fDelta.z, 0.f, fDelta.z, 0.f);
+    _vector vDelta = XMVectorSet(fDelta.z * fMag, 0.f, fDelta.z * fMag, 0.f);
 
     vPos += XMVector4Normalize(vLook) * vDelta;
 
@@ -219,9 +219,13 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 
 _bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir)
 {
+
     _vector		vRight         = Get_State(STATE_RIGHT);
     _vector		vUp            = Get_State(STATE_UP);
     _vector		vLook          = Get_State(STATE_LOOK);
+
+    if (XMVector4NearEqual(XMVector3Normalize(vLook), vTargetToDir, XMVectorSet(0.1f, 0.f, 0.1f, 0.f)))
+        return true;
 
     _vector vAxisBase = vAxis;
 

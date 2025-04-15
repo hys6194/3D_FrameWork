@@ -17,7 +17,6 @@ HRESULT CMonsterState_Search::Enter_State()
 
     Set_CurAnimation();
     // 진입했을 때 플레이어와 몬스터의 각도로 회전 속도 설정
-
     m_iPreState = m_pMonster->Get_PreState();
 
     Update_MonsterTurnSpeed();

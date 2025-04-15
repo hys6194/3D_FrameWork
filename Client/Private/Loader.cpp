@@ -346,7 +346,7 @@ HRESULT CLoader::Loading_Models()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/ForkLift.bin", PreTransformMatrix))))
 			return E_FAIL;
 
-		PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f);
+		PreTransformMatrix = XMMatrixScaling(0.0018f, 0.0018f, 0.0018f);
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/Moloch.bin", PreTransformMatrix))))
 			return E_FAIL;

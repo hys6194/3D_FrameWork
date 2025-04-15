@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Attack.h" />
+    <ClInclude Include="..\Public\Attack_Base.h" />
     <ClInclude Include="..\Public\BackGround.h" />
     <ClInclude Include="..\Public\Body_Ghoul.h" />
     <ClInclude Include="..\Public\Body_Moloch.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Map_Object.h" />
     <ClInclude Include="..\Public\Moloch.h" />
+    <ClInclude Include="..\Public\Moloch_Swipe.h" />
     <ClInclude Include="..\Public\Moloch_Sword.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\MonsterState_Attack.h" />
@@ -201,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Attack.cpp" />
+    <ClCompile Include="..\Private\Attack_Base.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\Private\Body_Ghoul.cpp" />
     <ClCompile Include="..\Private\Body_Moloch.cpp" />
@@ -221,6 +224,7 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Map_Object.cpp" />
     <ClCompile Include="..\Private\Moloch.cpp" />
+    <ClCompile Include="..\Private\Moloch_Swipe.cpp" />
     <ClCompile Include="..\Private\Moloch_Sword.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\MonsterState_Attack.cpp" />

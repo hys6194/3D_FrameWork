@@ -6,11 +6,13 @@
 CMonsterState_Base::CMonsterState_Base(CGameObject* pOwner, CGameObject* pAnimOwner)
 	: CState{ pOwner, pAnimOwner, m_pGameInstance }
 {
-	// 이래도 되려나	
-	m_pMonster  = dynamic_cast<CMonster*>(m_pOwner);
-	m_pBody     = dynamic_cast<CBody_Monster*>(m_pAnimOwner);
+	m_pMonster = dynamic_cast<CMonster*>(m_pOwner);
+	m_pBody = dynamic_cast<CBody_Monster*>(m_pAnimOwner);
+
+	// 이게 문제인 거 같은데
 	m_pModelCom = m_pBody->Get_Model();
 }
+
 
 HRESULT CMonsterState_Base::Enter_State()
 {

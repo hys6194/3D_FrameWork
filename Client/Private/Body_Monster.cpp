@@ -10,10 +10,12 @@ CBody_Monster::CBody_Monster(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 CBody_Monster::CBody_Monster(const CBody_Monster& Prototype)
 	: CPartObject{ Prototype }
 	, m_pTargetState { Prototype.m_pTargetState }
-	, m_pShaderCom { Prototype.m_pShaderCom }
-	, m_pModelCom{ Prototype.m_pModelCom }
+	//, m_pShaderCom { Prototype.m_pShaderCom }
+	//, m_pModelCom{ Prototype.m_pModelCom }
 	, m_mapSocketmat{ Prototype.m_mapSocketmat }
 {
+	Safe_AddRef(m_pShaderCom);
+	Safe_AddRef(m_pModelCom);
 }
 
 const _float4x4* CBody_Monster::Get_f4SocketMatrix(const _wstring& strSocketName)
@@ -126,7 +128,6 @@ void CBody_Monster::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
-
+	Safe_Release(m_pModelCom);
 }

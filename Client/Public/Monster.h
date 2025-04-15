@@ -60,7 +60,8 @@ public:
 	_uint									Get_Index()									{ return m_iIndex;}
 	_float									Get_HitPersent()							{ return m_fHitPersent; }
 	
-	_float									Get_AttackDistance()						{ return m_fDetectDistance; }
+	_float									Get_AttackDistance()						{ return m_fAttackDistance; }
+	_float									Get_DetectDistance()						{ return m_fDetectDistance; }
 
 public:
 	void									Change_CurrentState (MONSTER_STATE eState)  { m_iState = eState; }
@@ -100,7 +101,9 @@ protected:
 	_float									m_fHitPersent								= {};
 	_float									m_fNoticeDistance							= {};
 	_float									m_fDetectDistance							= {};
+	_float									m_fAttackDistance							= {};
 	_float									m_fTotalTime								= { 0.f };
+	_float									m_fAttackCoolTime							= { 0.f };
 
 	_wstring								m_strModelTag								= {};
 

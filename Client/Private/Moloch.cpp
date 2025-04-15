@@ -43,7 +43,9 @@ HRESULT CMoloch::Initialize(void* pArg)
 
     m_bIsBoss = Desc.bBoss;
 
-    m_fDetectDistance = 12.f;
+    m_fAttackDistance = 12.f;
+    m_fDetectDistance = 18.f;
+    m_fAttackCoolTime = 1.f;
     m_fHitPersent = 0.5f;
 
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
@@ -52,6 +54,9 @@ HRESULT CMoloch::Initialize(void* pArg)
     FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
 
 
+    //m_pTransformCom->SetUp_Scaled(1.85f, 1.85f, 1.85f);
+
+    // 수정할 필요가 있어보임
     m_pTransformCom->Set_State(CTransform::STATE_POS,
         XMVectorSet(16.459108f, 16.321875f, 146.170197f, 1.000000f));
 
@@ -127,13 +132,13 @@ HRESULT CMoloch::Ready_States()
 {
     CState* pState = nullptr;
 
-    pState = CMonsterState_Idle::Create(this, m_vecParts[PART_BODY], MOLOCH_IDLE);
+    pState = CMonsterState_Idle::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IDLE);
     m_pFSMCom->Add_State(CMonster::STATE_IDLE, pState);
     
-    pState = CMonsterState_Hit::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IMPACT);
+    pState = CMonsterState_Hit::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IMPACT_F);
     m_pFSMCom->Add_State(CMonster::STATE_HIT, pState);
     
-    pState = CMonsterState_Search::Create(this, m_vecParts[PART_BODY], MOLOCH_TURN_90_L);
+    pState = CMonsterState_Search::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_TURN_90_L);
     m_pFSMCom->Add_State(CMonster::STATE_SEARCH, pState);
     
     pState = CMonsterState_Dead::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IMPACT_STUN);
@@ -145,7 +150,7 @@ HRESULT CMoloch::Ready_States()
     pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IDLE);
     m_pFSMCom->Add_State(CMonster::STATE_AVOID, pState);
     
-    pState = CMonsterState_Trace::Create(this, m_vecParts[PART_BODY], MOLOCH_RUN_F);
+    pState = CMonsterState_Trace::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_WALK_F);
     m_pFSMCom->Add_State(CMonster::STATE_TRACE, pState);
 
     return S_OK;

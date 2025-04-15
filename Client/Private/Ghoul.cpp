@@ -42,8 +42,10 @@ HRESULT CGhoul::Initialize(void* pArg)
     Desc.strMonsterName = TEXT("_Ghoul");
     m_iState = Desc.iState;
 
-    m_fDetectDistance = 4.f;
+    m_fDetectDistance = 15.f;
+    m_fAttackDistance = 4.f;
     m_fHitPersent = 15.f;
+    m_fAttackCoolTime = 3.f;
 
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
@@ -117,25 +119,25 @@ HRESULT CGhoul::Ready_States()
 {
     CState* pState = nullptr;
 
-    pState = CMonsterState_Idle::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_IDLE);
+    pState = CMonsterState_Idle::Create(this, this->m_vecParts[PART_BODY], CGhoul::GHOUL_IDLE);
     m_pFSMCom->Add_State(CMonster::STATE_IDLE, pState);
 
-    pState = CMonsterState_Hit::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_IMPACT_F);
+    pState = CMonsterState_Hit::Create(this, this->m_vecParts[PART_BODY], CGhoul::GHOUL_IMPACT_F);
     m_pFSMCom->Add_State(CMonster::STATE_HIT, pState);
 
-    pState = CMonsterState_Search::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_TURN90_L);
+    pState = CMonsterState_Search::Create(this, this->m_vecParts[PART_BODY], CGhoul::GHOUL_TURN90_L);
     m_pFSMCom->Add_State(CMonster::STATE_SEARCH, pState);
 
-    pState = CMonsterState_Dead::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_DEATH);
+    pState = CMonsterState_Dead::Create(this, this->m_vecParts[PART_BODY], CGhoul::GHOUL_DEATH);
     m_pFSMCom->Add_State(CMonster::STATE_DEAD, pState);
 
-    pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_FLURRY);
+    pState = CMonsterState_Attack::Create(this, this->m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_FLURRY);
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
 
-    pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_EVADE_LEFT);
+    pState = CMonsterState_Avoid::Create(this, this->m_vecParts[PART_BODY], CGhoul::GHOUL_EVADE_LEFT);
     m_pFSMCom->Add_State(CMonster::STATE_AVOID, pState);
 
-    pState = CMonsterState_Trace::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_RUN_F);
+    pState = CMonsterState_Trace::Create(this, this->m_vecParts[PART_BODY], CGhoul::GHOUL_RUN_F);
     m_pFSMCom->Add_State(CMonster::STATE_TRACE, pState);
 
     return S_OK;

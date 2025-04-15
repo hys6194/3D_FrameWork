@@ -9,7 +9,6 @@ CState::CState(CGameObject* pOwner, CGameObject* pAnimOwner, CGameInstance* pGam
 	Safe_AddRef(m_pGameInstance);
 }
 
-
 void CState::Free()
 {
 	__super::Free();

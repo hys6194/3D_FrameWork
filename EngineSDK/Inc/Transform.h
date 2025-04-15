@@ -74,7 +74,7 @@ public:
 	HRESULT						Go_Left(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
 	HRESULT						Jump(_float fTimeDelta);
 	HRESULT						LookAt(_vector vAt);
-	HRESULT						Dash(_float4 fDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT						Dash(_float4 fDelta, class CNavigation* pNavigation = nullptr, _float fMag = 1.f);
 	HRESULT						Avoid(_float4 fDelta, class CNavigation* pNavigation = nullptr);
 	void						Turn(_fvector vAxis, _float fTimeDelta);
 	_bool						Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir);

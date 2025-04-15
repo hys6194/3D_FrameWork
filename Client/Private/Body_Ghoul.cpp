@@ -130,8 +130,4 @@ CGameObject* CBody_Ghoul::Clone(void* pArg)
 void CBody_Ghoul::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pModelCom);
-	Safe_Release(m_pShaderCom);
-
 }

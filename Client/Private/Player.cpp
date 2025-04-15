@@ -35,7 +35,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Player"));
 	Desc.fSpeedPerSec = 10.f;
-	Desc.fRotationPerSec = XMConvertToRadians(90.f); 
+	Desc.fRotationPerSec = XMConvertToRadians(360.f); 
 	Desc.iNumPartObjects = PART_END;
 	Desc.iState = STATE_IDLE;
 	m_iState = Desc.iState;
@@ -60,25 +60,32 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 	m_pFSMCom->Change_State(m_iState);
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
 
-	if (m_pColliderCom->Is_Coll())
+	//if (m_pColliderCom->Is_Coll())
+	//{
+	//	//list<CGameObject*>* pObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+	//	//
+	//	//for (auto* iter : *pObjectList)
+	//	//{
+	//	//	wstring strName = iter->Get_Name();
+	//	//	CGameObject* pObject = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Monster"), strName.c_str());
+	//	//
+	//	//	if (Check_IncWord(strName, TEXT("Ghoul")))
+	//	//	{
+	//	//		CGhoul* pGhoul = static_cast<CGhoul*>(pObject);
+	//	//		static_cast<CStatus*>(pGhoul->Get_Component(COM_STATUS))->Get_StatusDesc().iAttack;
+	//	//	}
+	//	//}
+	//
+	//}
+
+
+	for (size_t i = 0; i < TYPE_END; i++)
 	{
-		//list<CGameObject*>* pObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
-		//
-		//for (auto* iter : *pObjectList)
-		//{
-		//	wstring strName = iter->Get_Name();
-		//	CGameObject* pObject = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Monster"), strName.c_str());
-		//
-		//	if (Check_IncWord(strName, TEXT("Ghoul")))
-		//	{
-		//		CGhoul* pGhoul = static_cast<CGhoul*>(pObject);
-		//		static_cast<CStatus*>(pGhoul->Get_Component(COM_STATUS))->Get_StatusDesc().iAttack;
-		//	}
-		//}
+		if (nullptr == m_pColliderCom[i])
+			continue;
 
+		m_pColliderCom[i]->Reset();
 	}
-
-	m_pColliderCom->Reset();
 
 	__super::Priority_Update(fTimeDelta);
 }
@@ -89,8 +96,16 @@ void CPlayer::Update(_float fTimeDelta)
 
 	m_pFSMCom->Update_State(fTimeDelta);
 
-	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+#ifdef _DEBUG
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		if (nullptr == m_pColliderCom[i])
+			continue;
 
+
+		m_pColliderCom[i]->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+	}
+#endif
 
 }
 
@@ -109,9 +124,17 @@ void CPlayer::Late_Update(_float fTimeDelta)
 
 HRESULT CPlayer::Render()
 {
+
 #ifdef _DEBUG
-	m_pColliderCom->Render();
-#endif 
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		if (nullptr == m_pColliderCom[i])
+			continue;
+
+
+		m_pColliderCom[i]->Render();
+	}
+#endif
 
 	//m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
 	//
@@ -138,16 +161,27 @@ HRESULT CPlayer::Ready_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_NAVI,
 		reinterpret_cast<CComponent**>(&m_pNavigationCom), COM_NAVI, &NaviDesc),E_FAIL);
 
-	CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
+	CBounding_OBB::BOUNDING_OBB_DESC		ColliderDesc{};
 	ColliderDesc.vExtents		= _float3(1.f, 2.f, 1.f);
 	ColliderDesc.vCenter		= _float3(0.f, ColliderDesc.vExtents.y, 0.f);
 	ColliderDesc.strCollTag		= Get_Name() + TEXT("_Body");
 	ColliderDesc.iOption		= COLL_OPT::OP_TARGET;
-	ColliderDesc.eType			= TYPE::TYPE_AABB;
+	ColliderDesc.eType			= TYPE::TYPE_OBB;
 	ColliderDesc.pOwner			= this;
 
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
-		reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
+		reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_OBB]), COM_COLL, &ColliderDesc), E_FAIL);
+
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
+	SphereDesc.fRadius = 5.f;
+	SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	SphereDesc.strCollTag = Get_Name() + TEXT("_Body_Detect");
+	SphereDesc.iOption = COLL_OPT::OP_TARGET;
+	SphereDesc.eType = TYPE::TYPE_SPHERE;
+	SphereDesc.pOwner = this;
+
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
+		reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_SPHERE]), COM_COLL, &SphereDesc), E_FAIL);
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
 		reinterpret_cast<CComponent**>(&m_pFSMCom), COM_FSM), E_FAIL);
@@ -320,8 +354,17 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Release(m_pNavigationCom);
-	Safe_Release(m_pColliderCom);
+	//Safe_Release(m_pColliderCom);
 	Safe_Release(m_pFSMCom);
 	Safe_Release(m_pStatusCom);
+
+
+#ifdef _DEBUG
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		Safe_Release(m_pColliderCom[i]);
+	}
+
+#endif
 
 }

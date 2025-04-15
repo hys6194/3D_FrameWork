@@ -137,13 +137,13 @@ void CChannel::Update_TransformationMatrix(const vector<class CBone*>& pBone, _f
 		_vector vNextScale, vNextRotation, vNextTranslation;
 
 		vCurScale = XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex)].vScale);
-		vNextScale = XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex) + 1].vScale);
-
 		vCurRotation = XMLoadFloat4(&m_vecFrame[(*pKeyFrameIndex)].vRotation);
-		vNextRotation = XMLoadFloat4(&m_vecFrame[(*pKeyFrameIndex) + 1].vRotation);
-
 		vCurTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex)].vTranslation), 1.f);
+
+		vNextScale = XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex) + 1].vScale);
+		vNextRotation = XMLoadFloat4(&m_vecFrame[(*pKeyFrameIndex) + 1].vRotation);
 		vNextTranslation = XMVectorSetW(XMLoadFloat3(&m_vecFrame[(*pKeyFrameIndex) + 1].vTranslation), 1.f);
+
 
 		vScale = XMVectorLerp(vCurScale, vNextScale, fRatio);
 		vRotation = XMQuaternionSlerp(vCurRotation, vNextRotation, fRatio);

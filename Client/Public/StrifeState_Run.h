@@ -13,8 +13,8 @@ BEGIN(Client)
 class CStrifeState_Run : public CState
 {
 private:
-								CStrifeState_Run(CGameObject* pOwner, CGameObject* pAnimOwner);
-	virtual						~CStrifeState_Run() = default;
+	CStrifeState_Run(CGameObject* pOwner, CGameObject* pAnimOwner);
+	virtual ~CStrifeState_Run() = default;
 public:
 	virtual HRESULT				Enter_State();
 	virtual void				PriorityUpdate_State(_float fTimeDelta);

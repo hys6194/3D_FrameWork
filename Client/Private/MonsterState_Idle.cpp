@@ -12,6 +12,10 @@ CMonsterState_Idle::CMonsterState_Idle(CGameObject* pOwner, CGameObject* pAnimOw
 
 HRESULT CMonsterState_Idle::Enter_State()
 { 
+    m_pMonster = dynamic_cast<CMonster*>(m_pOwner);
+    m_pBody = dynamic_cast<CBody_Monster*>(m_pAnimOwner);
+    m_pModelCom = m_pBody->Get_Model();
+
     Setting_PlayerInfo();
 
     Set_CurAnimation();
@@ -49,7 +53,7 @@ void CMonsterState_Idle::PriorityUpdate_State(_float fTimeDelta)
 
     _float fDistance = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
 
-    if(fDistance < m_fDistance)
+    if(fDistance < m_pMonster->Get_DetectDistance())
     {
         if (fDegree > 60.f)
             m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);

@@ -25,14 +25,18 @@ CModel::CModel(const CModel& Prototype)
     , m_vecMaterial { Prototype.m_vecMaterial }
     //, m_vecBone { Prototype.m_vecBone } 굳이 복사를 할 필요가 없어짐 -> Clone하면서 vector에 담아 깊복했기 때문
     , m_iNumAnimations{ Prototype.m_iNumAnimations }
-    , m_Animations{ Prototype.m_Animations }
+    //, m_Animations{ Prototype.m_Animations }
     , m_iCurrentAnimationIndex{ Prototype.m_iCurrentAnimationIndex }
+    , m_iPreAnimationIndex{ Prototype.m_iPreAnimationIndex }
     , m_vecCurrentTrackPosition{ Prototype.m_vecCurrentTrackPosition }
     , m_vecKeyFrameIndex{ Prototype.m_vecKeyFrameIndex }
 {
+    for (auto& pAnimation : Prototype.m_Animations)
+        m_Animations.push_back(pAnimation->Clone());
+
     for (auto& pAnimation : m_Animations)
         Safe_AddRef(pAnimation);
-
+    
     for (auto& pBone : Prototype.m_vecBone)
         m_vecBone.push_back(pBone->Clone());
 
@@ -61,9 +65,9 @@ const _float4x4* CModel::Get_BoneMatrix(const _char* pBoneName)
 
 void CModel::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInter)
 {
-
     m_bIsInter = IsInter;
     m_vecBone[2]->Reset_Delta();
+
     // 현재 재생하고 있는 애니메이션과 인자값이 같다면 함수진행을 막음
     if (m_iCurrentAnimationIndex == iAnimationIndex)    
         return;
@@ -90,17 +94,6 @@ void CModel::Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop, _bool IsInt
         for (auto& pCurrentKeyFrameIndex : m_vecKeyFrameIndex[iAnimationIndex])
             pCurrentKeyFrameIndex = 0;
     }
-
-    //for (auto& pCurrentTrackPosition : m_vecCurrentTrackPosition)
-    //    pCurrentTrackPosition = 0;
-    //
-    //// vector의 vector인 점을 까먹으면 안된다
-    //for (auto& pCurrentKeyFrameIndices : m_vecKeyFrameIndex)
-    //{
-    //    for (auto& pCurrentKeyFrameIndex : pCurrentKeyFrameIndices)
-    //        pCurrentKeyFrameIndex = 0;
-    //}
-
  
     // 애니메이션의 교체를 위해서 KeyFrame_Reset
     // 왜 KeyFrame_Reset을 하는가? -> 현재 진행되고 있던 애니메이션의 KeyFrame값에서 애니메이션을 재생하게 되면
@@ -389,17 +382,12 @@ _bool CModel::Play_Animation(_float fTimeDelta, CGameObject* pObject)
         {
             pBone->Update_CombinedTransformationMatrix(m_vecBone, &m_PreTransformMatrix);
         }
-
-        //_float4 f42;
-        //memcpy(&f42, &m_vecBone[2]->Get_CombinedTransformfloat4x4ptr()->m[3][0], sizeof(_float4));
-        //
-        //int a = 10;
     }
 
     // 루트 애니메이션의 이동량 제거
     else
     {
-        bIsEnd = m_Animations[m_iCurrentAnimationIndex]->Update_TransformationMatrix(m_vecBone, fTimeDelta, m_bIsLoop, &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], m_vecKeyFrameIndex[m_iCurrentAnimationIndex], pObject);
+        bIsEnd = m_Animations[m_iCurrentAnimationIndex]->Update_TransformationMatrix(m_vecBone, fTimeDelta, m_bIsLoop, &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], m_vecKeyFrameIndex[m_iCurrentAnimationIndex]);
         for (auto& pBone : m_vecBone)
         {
             pBone->Update_Combine_RootMatrix(m_vecBone, &m_PreTransformMatrix, m_iCurKeyFrameIndex, pObject);
@@ -638,7 +626,6 @@ HRESULT CModel::Initialize_Prototype(const _char* _pBinaryFilePath, _fmatrix _Pr
     Ready_Animation_Load(InStream);
 
     InStream.close();
-
 
     return S_OK;
 }

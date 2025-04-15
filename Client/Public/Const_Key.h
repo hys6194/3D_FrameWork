@@ -41,6 +41,7 @@ static const std::wstring PRO_TEX_BACKGROUND			= TEXT("Prototype_Component_Textu
 
 /* Component */
 static const std::wstring PRO_COM_FSM					= TEXT("Prototype_Component_FSM");
+static const std::wstring PRO_COM_ATTACK				= TEXT("Prototype_Component_Attack");
 static const std::wstring PRO_COM_STATUS				= TEXT("Prototype_Component_Status");
 static const std::wstring PRO_COM_NAVI					= TEXT("Prototype_Component_Navigation");
 static const std::wstring PRO_COM_VI_CELL				= TEXT("Prototype_Component_VIBuffer_Cell");
@@ -178,6 +179,7 @@ static const std::wstring LAYER_DESERT_ROCK_2			= TEXT("Layer_Desert_Rock2");
 
 /* Component */
 static const std::wstring COM_FSM						= TEXT("Component_FSM");
+static const std::wstring COM_ATTACK					= TEXT("Component_Attack");
 static const std::wstring COM_STATUS					= TEXT("Component_Status");
 static const std::wstring COM_NAVI						= TEXT("Component_Navigation");
 static const std::wstring COM_VI_CELL					= TEXT("Component_VIBuffer_Cell");

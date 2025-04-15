@@ -57,6 +57,11 @@ public:
 		return m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
 	}
 
+	_bool			Get_AnimEnd()
+	{
+		return m_Animations[m_iCurrentAnimationIndex]->Get_AnimEnd();
+	}
+
 public:
 	//재생하려고 하는 애니메이션, 루프, 보간
 	void								Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop = false, _bool IsInter = true);
@@ -132,6 +137,8 @@ private:
 
 	vector<class CChannel*>				m_pPreChannel;
 	vector<class CChannel*>				m_pCurChannel;
+
+	vector<class CChannel*>				m_vecChannel;
 
 	KEYFRAME							m_pPreKeyFrame = { };
 	KEYFRAME							m_pCurKeyFrame = { };

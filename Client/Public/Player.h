@@ -39,6 +39,7 @@ public:
 		KEY_RB				= 0x00000080,
 		KEY_NONE			= 0x00000000,
 	};
+	enum PLAYER_COLLTYPE { COLL_AABB, COLL_OBB, COLL_SPHERE, COLL_END };
 
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -100,10 +101,10 @@ private:
 	_float					m_fTotalTime = { 0.f };
 
 private:
-	CFSM*					m_pFSMCom			= { nullptr };
-	CCollider*				m_pColliderCom		= { nullptr };
-	CNavigation*			m_pNavigationCom	= { nullptr };
-	class CStatus*			m_pStatusCom		= { nullptr };
+	CFSM*					m_pFSMCom					= { nullptr };
+	CCollider*				m_pColliderCom[COLL_END]	= { nullptr };
+	CNavigation*			m_pNavigationCom			= { nullptr };
+	class CStatus*			m_pStatusCom				= { nullptr };
 
 private:
 	HRESULT					Ready_Components();

@@ -29,10 +29,10 @@ public:
 	void							Update_Animation(_float fTimeDelta) override;
 	void							Set_CurAnimation() override;
 
-
 private:
 	void							Regist_PartCollUpdate();
 	void							Secede_PartCollUpdate();
+
 private:
 	_bool							m_bRegisted = { false };
 	_bool							m_bSeceded = { false };
@@ -40,9 +40,12 @@ private:
 	_float							m_fDistance		= {};
 	_float							m_fTotalTime	= {};
 
+	class CAttack*					m_pAttackCom = { nullptr };
+	class CAttack_Base*				m_pAttackPattern = { nullptr };
+
 public:
 	// 몬스터들이 공용으로 사용할 State라서 애니메이션 인덱스를 인자로 받아 출력하게 한다
-	static CMonsterState_Attack*	Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex);
+	static CMonsterState_Attack* Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex = 0);
 	virtual void					Free() override;
 };
 

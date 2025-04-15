@@ -7,7 +7,8 @@
 #include "GameObject.h"
 #include "GameInstance.h"
 
-CCollision_Manager::CCollision_Manager()
+CCollision_Manager::CCollision_Manager()	
+	: m_pGameInstance{ CGameInstance::GetInstance()}
 {
 }
 
@@ -17,8 +18,6 @@ HRESULT CCollision_Manager::Initialize()
 	{
 		m_mapColliders[i] = new map< const wstring, list<CBounding*>*>();
 	}
-
-	m_pGameInstance = CGameInstance::GetInstance();
 	
 	return S_OK;
 }
@@ -30,6 +29,7 @@ HRESULT CCollision_Manager::Add_Collistionlist(const _uint iCollOption, const ws
 	// 리스트가 존재하지 않는다면 리스트 생성하고 Target은 자동 등록
 	if (Pair == m_mapColliders[iCollOption]->end())
 	{
+		// 근데 생성해버려서 insert가 맞지 않나 흐음
 		auto iter = new list<CBounding*>();
 	
 		// 피충돌체의 경우 항상 업데이트를 돌려야 하므로 Update에 등록한다
@@ -39,7 +39,7 @@ HRESULT CCollision_Manager::Add_Collistionlist(const _uint iCollOption, const ws
 			Safe_AddRef(pInstance);
 		}
 
-		m_mapColliders[iCollOption]->emplace(strColliderTag, iter);
+		m_mapColliders[iCollOption]->insert({ strColliderTag, iter });
 	}
 
 	// 리스트에 Target 넣기
@@ -49,7 +49,7 @@ HRESULT CCollision_Manager::Add_Collistionlist(const _uint iCollOption, const ws
 		{
 			Pair->second->push_back(pInstance);
 			Safe_AddRef(pInstance);
-			m_mapColliders[iCollOption]->emplace(strColliderTag, Pair->second);
+			m_mapColliders[iCollOption]->insert({ strColliderTag, Pair->second });
 		}
 	}
 
@@ -281,21 +281,36 @@ _bool CCollision_Manager::Update_TargetBody(_float fTimeDelta)
 		else if (Pair.first.find(TEXT("Monster")) != string::npos)
 		{
 			if (Pair.second->empty())
-				return false;
+				continue;
 
-			for (auto iter = Pair.second->begin(); next(iter) != Pair.second->end(); ++iter)
+			for (auto iter : *Pair.second)
 			{
-				CBounding* pNextBounding = *next(iter);
-
-				if (*iter == nullptr || pNextBounding == nullptr)
-					continue;
-
-				// 비교 처리
-				if (Detect_Collision(*iter, pNextBounding))
+				for (auto iter2 : *Pair.second)
 				{
-					Detrude_Colliders(*iter, pNextBounding);
+					if (iter == iter2)
+						continue;
+
+					if (Detect_Collision(iter, iter2))
+					{
+						Detrude_Colliders(iter, iter2);
+					}
 				}
 			}
+
+
+			//for (auto iter = Pair.second->begin(); next(iter) != Pair.second->end(); ++iter)
+			//{
+			//	CBounding* pNextBounding = *next(iter);
+			//
+			//	if (*iter == nullptr || pNextBounding == nullptr)
+			//		continue;
+			//
+			//	// 비교 처리
+			//	if (Detect_Collision(*iter, pNextBounding))
+			//	{
+			//		Detrude_Colliders(*iter, pNextBounding);
+			//	}
+			//}
 		}
 
 	}
