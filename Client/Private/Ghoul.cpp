@@ -64,8 +64,6 @@ HRESULT CGhoul::Initialize(void* pArg)
 void CGhoul::Priority_Update(_float fTimeDelta)
 {
     __super::Priority_Update(fTimeDelta);
-
-   //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(1.61f, 2.96f, 34.18f, 1.00f));
 }
 
 void CGhoul::Update(_float fTimeDelta)

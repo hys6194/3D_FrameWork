@@ -97,7 +97,7 @@ void CMoloch_Swipe::PriorityUpdate_State(_float fTimeDelta)
         return;
     }
     
-    //m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
+    m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
     
     // 애니메이션 돌아갈 때 히트 판정의 발동과 해제
     if (0.65f < m_fTotalTime && !m_bRegisted)
