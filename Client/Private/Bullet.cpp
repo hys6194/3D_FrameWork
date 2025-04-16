@@ -56,6 +56,7 @@ void CBullet::Update(_float fTimeDelta)
         m_pColliderCom->Is_Coll())
     {
         m_pGameInstance->Secede_Update(m_pColliderCom->Get_Bounder());
+        m_bDisappear = true;
     }
 
     m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
@@ -69,7 +70,7 @@ void CBullet::Late_Update(_float fTimeDelta)
 
 HRESULT CBullet::Render()
 {
-    if (m_pColliderCom->Is_Coll())
+    if (m_bDisappear)
         return E_ABORT;
 
     if (FAILED(Bind_SR()))

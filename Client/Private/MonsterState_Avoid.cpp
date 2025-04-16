@@ -9,10 +9,12 @@
 CMonsterState_Avoid::CMonsterState_Avoid(CGameObject* pOwner, CGameObject* pAnimOwner)
     : CMonsterState_Base{ pOwner, pAnimOwner }
 {
+
 }
 
 HRESULT CMonsterState_Avoid::Enter_State()
 { 
+
     Setting_PlayerInfo();
 
     Set_CurAnimation();

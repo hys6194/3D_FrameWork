@@ -15,6 +15,7 @@
 #include "Gun_Right.h"
 #include "Gun_Left.h"
 #include "Terrain.h"
+#include "Attack.h"
 #include "Bullet.h"
 #include "Moloch.h"
 #include "Player.h"
@@ -270,6 +271,10 @@ HRESULT CLoader::Loading_Models()
 			CStatus::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_ATTACK,
+			CAttack::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		CVIBuffer_Particle::INSTANCE_DESC		SnowDesc{};
 
 		SnowDesc.iNumInstances = 3000;
@@ -287,10 +292,18 @@ HRESULT CLoader::Loading_Models()
 		// 
 		// 새로운 애니메이션 모델 저장용
 		//PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
-		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH,
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_DOG,
 		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
-		//		"../Bin/Resources/Models/AnimModel/Moloch/Moloch.fbx",
-		//		"../Bin/DataFiles/anim/Creature/Moloch.bin",
+		//		"../Bin/Resources/Models/AnimModel/FallenDog/FallenDog.fbx",
+		//		"../Bin/DataFiles/anim/Creature/FallenDog.bin",
+		//		PreTransformMatrix))))
+		//	return E_FAIL;
+		//
+		//PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_DOG_LAVA,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
+		//		"../Bin/Resources/Models/AnimModel/FallenDog/FallenDog_Lava.fbx",
+		//		"../Bin/DataFiles/anim/Creature/FallenDog_Lava.bin",
 		//		PreTransformMatrix))))
 		//	return E_FAIL;
 		// 
@@ -341,11 +354,12 @@ HRESULT CLoader::Loading_Models()
 		// ForkLift 불러오기
 
 
-		 PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+		PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/ForkLift.bin", PreTransformMatrix))))
 			return E_FAIL;
-		 
+
+		PreTransformMatrix = XMMatrixScaling(0.0018f, 0.0018f, 0.0018f);
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/Moloch.bin", PreTransformMatrix))))
 			return E_FAIL;
@@ -365,6 +379,15 @@ HRESULT CLoader::Loading_Models()
 		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/Ghoul.bin", PreTransformMatrix))))
+			return E_FAIL;
+
+		PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(-180.f));
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_DOG,
+			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/FallenDog.bin", PreTransformMatrix))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_DOG_LAVA,
+			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/FallenDog_Lava.bin", PreTransformMatrix))))
 			return E_FAIL;
 
 		PreTransformMatrix =  XMMatrixRotationZ(XMConvertToRadians(180.f));
@@ -594,9 +617,9 @@ HRESULT CLoader::Loading_Prototype()
 	case LEVEL_GAMEPLAY:
 	{
 		/* Test_Monster_Anim*/
-		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
-		//	CTest_Monster::Create(m_pDevice, m_pContext))))
-		//	return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_TEST_MONSTER,
+			CTest_Monster::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		/* Prototype_GameObject_Terrain */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,

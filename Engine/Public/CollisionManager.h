@@ -30,6 +30,7 @@ public:
 private:
 	_bool											Update_Impactor(_float fTimeDelta);
 	_bool											Update_TargetBody(_float fTimeDelta);
+	_bool											Update_Detector(_float fTimeDelta);
 	_bool											Detect_Collision(CBounding* pDest, CBounding* pSour);
 
 private:

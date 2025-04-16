@@ -26,19 +26,18 @@ public:
 		_uint iState = { STATE_IDLE };
 
 		// 이거 어따 썼지?
+		_float iEvadePersent = {};
 		_float fDetectDistance = { 15.f };
-		_float fNoticeDistance = { 15.f };
+		_float fNoticeDistance = { 15.f };	//  쓰고싶은데 못쓰고 있는중
 
 		_wstring strMonsterName = {};
 
 	}MONSTER_DESC;
 
-
-	enum PARTOBJ { PART_BODY, PART_LEFT, PART_RIGHT, PART_EFFECT, PART_END };
-
-
 public:
 	enum MONSTER_STATE { STATE_IDLE, STATE_SEARCH, STATE_TRACE, STATE_HIT, STATE_ATTACK, STATE_AVOID, STATE_DEAD, STATE_NONE };
+	enum PARTOBJ { PART_BODY, PART_LEFT, PART_RIGHT, PART_EFFECT, PART_END };
+	enum COLL_TYPE {COLL_AABB, COLL_OBB, COLL_SPHERE, COLL_END };
 
 public:
 	void									Set_Dead			(_bool bDead)			{ m_bIsDead		= bDead; }
@@ -53,11 +52,14 @@ public:
 	_bool									Is_Hit ()									{ return m_bHit;    }
 	_bool									Is_Rec ()									{ return m_bRec;    }
 	_bool									Is_Critical()								{ return m_bCri;    }
+	_bool									Is_Boss()									{ return m_bIsBoss;    }
 
 	_uint									Get_PreState()								{ return m_iPreState;}
 	_uint									Get_Index()									{ return m_iIndex;}
+	_float									Get_HitPersent()							{ return m_fHitPersent; }
 	
-	_float									Get_AttackDistance()						{ return m_fDetectDistance; }
+	_float									Get_AttackDistance()						{ return m_fAttackDistance; }
+	_float									Get_DetectDistance()						{ return m_fDetectDistance; }
 
 public:
 	void									Change_CurrentState (MONSTER_STATE eState)  { m_iState = eState; }
@@ -78,7 +80,9 @@ public:
 protected:
 	CFSM*									m_pFSMCom									= { nullptr };
 	CNavigation*							m_pNavigationCom							= { nullptr };
-	CCollider*								m_pColliderCom								= { nullptr };
+	CCollider*								m_pColliderCom[COLL_END]					= {nullptr};
+
+	class CAttack*							m_pAttackCom								= { nullptr };
 	class CStatus*							m_pStatusCom								= { nullptr };
 
 protected:
@@ -92,11 +96,15 @@ protected:
 	_uint									m_iPreState									= { STATE_NONE};
 	_uint									m_iState									= { STATE_NONE };
 	_uint									m_iHP										= {};
-	_uint									m_iIndex									= { };
+	_uint									m_iIndex									= {};
 
+	_float									m_fHitPersent								= {};
 	_float									m_fNoticeDistance							= {};
 	_float									m_fDetectDistance							= {};
-	
+	_float									m_fAttackDistance							= {};
+	_float									m_fTotalTime								= { 0.f };
+	_float									m_fAttackCoolTime							= { 0.f };
+
 	_wstring								m_strModelTag								= {};
 
 protected:

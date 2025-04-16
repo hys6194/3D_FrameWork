@@ -55,7 +55,7 @@ public:
 public:
 	HRESULT Initialize(const aiNode* pAINode, _int iParentBoneIndex);
 	void Update_CombinedTransformationMatrix(const vector<class CBone*>& Bones, const _float4x4* pPreTransformMatrix);
-	void Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _float4x4* pPreTransformMatrix, class CGameObject* pObject = nullptr);
+	void Update_Combine_RootMatrix(const vector<class CBone*>& Bones, const _float4x4* pPreTransformMatrix, _uint iCurKeyFrameIndex, class CGameObject* pObject = nullptr);
 	_bool Compare_Name(const _char* pName) {
 		return !strcmp(m_szName, pName);
 	}

@@ -1,11 +1,14 @@
 #include "Ghoul.h"
 #include "Monster.h"
 #include "Status.h"
+#include "Attack.h"
 
 #include "Fist_Left.h"
 #include "Fist_Right.h"
 #include "Body_Ghoul.h"
 #include "GameInstance.h"
+
+#include "GhoulAttack_Flurry.h"
 
 #include "MonsterState_Attack.h"
 #include "MonsterState_Search.h"
@@ -42,7 +45,10 @@ HRESULT CGhoul::Initialize(void* pArg)
     Desc.strMonsterName = TEXT("_Ghoul");
     m_iState = Desc.iState;
 
-    m_fDetectDistance = 4.f;
+    m_fDetectDistance = 15.f;
+    m_fAttackDistance = 4.f;
+    m_fHitPersent = 15.f;
+    m_fAttackCoolTime = 3.f;
 
     FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
@@ -61,40 +67,6 @@ HRESULT CGhoul::Initialize(void* pArg)
 void CGhoul::Priority_Update(_float fTimeDelta)
 {
     __super::Priority_Update(fTimeDelta);
-
-   if (m_pGameInstance->Key_Down(DIK_1))
-       m_iState = STATE_HIT;
-   
-   if (m_pGameInstance->Key_Down(DIK_2))
-	   m_iState = STATE_IDLE;
-
-   if (m_pGameInstance->Key_Down(DIK_3))
-	   m_iState = STATE_DEAD;
-
-   if (m_pGameInstance->Key_Down(DIK_4))
-       m_iState = STATE_SEARCH;  
-
-   if (m_pGameInstance->Key_Down(DIK_5))
-       m_iState = STATE_AVOID;
-
-   if (m_pGameInstance->Key_Down(DIK_6))
-       m_iState = STATE_ATTACK;
-
-   if (m_pGameInstance->Key_Down(DIK_7))
-       m_iState = STATE_TRACE;
-
-   if (m_pGameInstance->Key_Down(DIK_8))
-   {
-       m_bHit = true;
-       //m_bRec = true;
-   }
-   else
-       m_bHit = false;
-
-
-
-   //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(1.61f, 2.96f, 34.18f, 1.00f));
-
 }
 
 void CGhoul::Update(_float fTimeDelta)
@@ -122,6 +94,7 @@ HRESULT CGhoul::Ready_PartObjects()
     CBody_Ghoul::BODY_MONSTER_DESC		BodyDesc{};
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     BodyDesc.pTargetState = &m_iState;
+    BodyDesc.pOwner = this;
     
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL_BODY, PART_BODY, &BodyDesc), E_FAIL);
 
@@ -163,6 +136,9 @@ HRESULT CGhoul::Ready_States()
     pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_FLURRY);
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
 
+    pState = CGhoulAttack_Flurry::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_FLURRY, 1.f);
+    m_pAttackCom->Regist_AttackPattern(GHOUL_ATK_FLURRY, static_cast<CAttack_Base*>(pState));
+
     pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_EVADE_LEFT);
     m_pFSMCom->Add_State(CMonster::STATE_AVOID, pState);
 
@@ -187,8 +163,20 @@ HRESULT CGhoul::Ready_Components()
     ColliderDesc.pOwner = this;
     
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
-    	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
+    	reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_AABB]), COM_COLL_AABB, &ColliderDesc), E_FAIL);
     
+    CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
+    SphereDesc.fRadius = 5.f;
+    SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    SphereDesc.strCollTag = Get_Name() + TEXT("_Body_Detect");
+    SphereDesc.iOption = COLL_OPT::OP_DETECT;
+    SphereDesc.eType = TYPE::TYPE_SPHERE;
+    SphereDesc.pOwner = this;
+
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
+        reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_SPHERE]), COM_COLL_SPHERE, &SphereDesc), E_FAIL);
+
+
     CStatus::STATUS_DESC StatusDesc{};
     StatusDesc.iAttack = 2;
     StatusDesc.iHP = 100;
@@ -231,6 +219,13 @@ CGameObject* CGhoul::Clone(void* pArg)
 void CGhoul::Free()
 {
     __super::Free();
-    Safe_Release(m_pColliderCom);
+
+#ifdef _DEBUG
+    for (size_t i = 0; i < TYPE_END; i++)
+    {
+        Safe_Release(m_pColliderCom[i]);
+    }
+
+#endif
 
 }

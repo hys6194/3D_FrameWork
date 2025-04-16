@@ -36,9 +36,10 @@ private:
 	vector<KEYFRAME>	m_vecFrame = {};
 	
 public:
-	static CChannel* Create(const aiNodeAnim* pAIChannel, const vector<class CBone*>& pBone);
-	static CChannel* Create(const vector<class CBone*>& _Bones, ifstream& _InStream);
-	virtual void Free() override;
+	static CChannel*	Create(const aiNodeAnim* pAIChannel, const vector<class CBone*>& pBone);
+	static CChannel*	Create(const vector<class CBone*>& _Bones, ifstream& _InStream);
+	virtual CChannel*	Clone() { return new CChannel(*this);	}
+	virtual void		Free() override;
 
 };
 

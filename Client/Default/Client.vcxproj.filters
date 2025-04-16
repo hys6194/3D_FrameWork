@@ -172,6 +172,21 @@
     <Filter Include="02.GameObjects\Monster\Part\Moloch_Sword">
       <UniqueIdentifier>{9e4c7d85-f858-4cb2-9e5f-7a8185bc6987}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns">
+      <UniqueIdentifier>{f3a05032-d94f-484a-b023-2f40f8ff0e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Component\Attack">
+      <UniqueIdentifier>{a73048da-ddd0-425a-b41e-d6d108983a84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul">
+      <UniqueIdentifier>{06e17100-b493-4346-b866-770c24b5613f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch">
+      <UniqueIdentifier>{86cafc10-ae52-4dc7-8826-cb7328af960b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Test_Monster">
+      <UniqueIdentifier>{f3600126-3c19-47a1-9496-bd2f6a8963f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -312,16 +327,29 @@
     <ClInclude Include="..\Public\Moloch.h">
       <Filter>02.GameObjects\Monster\00. MonsterList\Moloch</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Test_Monster.h" />
     <ClInclude Include="..\Public\Body_Moloch.h">
       <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Moloch</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Moloch_Sword.h">
       <Filter>02.GameObjects\Monster\Part\Moloch_Sword</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Attack.h" />
     <ClInclude Include="..\Public\Status.h">
       <Filter>03.Component\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Attack_Base.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Attack.h">
+      <Filter>03.Component\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GhoulAttack_Flurry.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Moloch_Swipe.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Test_Monster.h">
+      <Filter>02.GameObjects\Monster\Test_Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -458,7 +486,6 @@
     <ClCompile Include="..\Private\Moloch.cpp">
       <Filter>02.GameObjects\Monster\00. MonsterList\Moloch</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Test_Monster.cpp" />
     <ClCompile Include="..\Private\Body_Moloch.cpp">
       <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Moloch</Filter>
     </ClCompile>
@@ -471,7 +498,21 @@
     <ClCompile Include="..\Private\Moloch_Sword.cpp">
       <Filter>02.GameObjects\Monster\Part\Moloch_Sword</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Attack.cpp" />
+    <ClCompile Include="..\Private\Attack_Base.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Attack.cpp">
+      <Filter>03.Component\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Moloch_Swipe.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Test_Monster.cpp">
+      <Filter>02.GameObjects\Monster\Test_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GhoulAttack_Flurry.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">

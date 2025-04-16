@@ -7,7 +7,8 @@
 #include "GameObject.h"
 #include "GameInstance.h"
 
-CCollision_Manager::CCollision_Manager()
+CCollision_Manager::CCollision_Manager()	
+	: m_pGameInstance{ CGameInstance::GetInstance()}
 {
 }
 
@@ -17,8 +18,6 @@ HRESULT CCollision_Manager::Initialize()
 	{
 		m_mapColliders[i] = new map< const wstring, list<CBounding*>*>();
 	}
-
-	m_pGameInstance = CGameInstance::GetInstance();
 	
 	return S_OK;
 }
@@ -30,26 +29,27 @@ HRESULT CCollision_Manager::Add_Collistionlist(const _uint iCollOption, const ws
 	// 리스트가 존재하지 않는다면 리스트 생성하고 Target은 자동 등록
 	if (Pair == m_mapColliders[iCollOption]->end())
 	{
+		// 근데 생성해버려서 insert가 맞지 않나 흐음
 		auto iter = new list<CBounding*>();
 	
 		// 피충돌체의 경우 항상 업데이트를 돌려야 하므로 Update에 등록한다
-		if (iCollOption == OP_TARGET)
+		if (iCollOption != OP_IMPACT)
 		{
 			iter->push_back(pInstance);
 			Safe_AddRef(pInstance);
 		}
 
-		m_mapColliders[iCollOption]->emplace(strColliderTag, iter);
+		m_mapColliders[iCollOption]->insert({ strColliderTag, iter });
 	}
 
 	// 리스트에 Target 넣기
 	else
 	{
-		if (iCollOption == OP_TARGET)
+		if (iCollOption != OP_IMPACT)
 		{
 			Pair->second->push_back(pInstance);
 			Safe_AddRef(pInstance);
-			m_mapColliders[iCollOption]->emplace(strColliderTag, Pair->second);
+			m_mapColliders[iCollOption]->insert({ strColliderTag, Pair->second });
 		}
 	}
 
@@ -92,11 +92,11 @@ HRESULT CCollision_Manager::Update_Collisions(_float fTimeDelta)
 		m_mapColliders[OP_IMPACT]->empty())
 		return E_ABORT;
 
-	_bool bTest = Update_Impactor(fTimeDelta);
-	_bool bTest1 = Update_TargetBody(fTimeDelta);
+	Update_Impactor(fTimeDelta);
 
+	Update_TargetBody(fTimeDelta);
 
-	if (bTest == true) return S_OK;
+	Update_Detector(fTimeDelta);
 
 	return S_OK;
 }
@@ -183,9 +183,6 @@ _bool CCollision_Manager::Check_Collision(list<CBounding*>* pList1, list<CBoundi
 		for (auto& iter2 : *pList2)
 			if (Detect_Collision(iter1, iter2))
 			{
-				iter1->Get_Collider()->Set_Coll(true);
-				iter2->Get_Collider()->Set_Coll(true);
-
 				if(pBound1 != nullptr)
 					*pBound1 = iter1;
 
@@ -219,7 +216,14 @@ _bool CCollision_Manager::Update_Impactor(_float fTimeDelta)
 			{
 				if (Check_IncWord(Pair2.first, TEXT("Monster")))
 				{
-					Check_Collision(Pair.second, Pair2.second);
+					if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+					{
+						if (TYPE_SPHERE == *pBounding1->Get_Type())
+							continue;
+
+						pBounding1->Get_Collider()->Set_Coll(true);
+						pBounding2->Get_Collider()->Set_Coll(true);
+					}
 				}
 			}
 		}
@@ -233,7 +237,14 @@ _bool CCollision_Manager::Update_Impactor(_float fTimeDelta)
 				{
 					if (Check_IncWord(Pair2.first, TEXT("Player")))
 					{
-						Check_Collision(Pair.second, Pair2.second);
+						if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+						{
+							if (TYPE_SPHERE == *pBounding1->Get_Type())
+								continue;
+
+							pBounding1->Get_Collider()->Set_Coll(true);
+							pBounding2->Get_Collider()->Set_Coll(true);
+						}
 					}
 				}
 			}
@@ -281,23 +292,91 @@ _bool CCollision_Manager::Update_TargetBody(_float fTimeDelta)
 		else if (Pair.first.find(TEXT("Monster")) != string::npos)
 		{
 			if (Pair.second->empty())
-				return false;
+				continue;
 
-			for (auto iter = Pair.second->begin(); next(iter) != Pair.second->end(); ++iter)
+			for (auto iter : *Pair.second)
 			{
-				CBounding* pNextBounding = *next(iter);
-
-				if (*iter == nullptr || pNextBounding == nullptr)
-					continue;
-
-				// 비교 처리
-				if (Detect_Collision(*iter, pNextBounding))
+				for (auto iter2 : *Pair.second)
 				{
-					Detrude_Colliders(*iter, pNextBounding);
+					if (iter == iter2)
+						continue;
+
+					if (Detect_Collision(iter, iter2))
+					{
+						Detrude_Colliders(iter, iter2);
+					}
+				}
+			}
+
+
+			//for (auto iter = Pair.second->begin(); next(iter) != Pair.second->end(); ++iter)
+			//{
+			//	CBounding* pNextBounding = *next(iter);
+			//
+			//	if (*iter == nullptr || pNextBounding == nullptr)
+			//		continue;
+			//
+			//	// 비교 처리
+			//	if (Detect_Collision(*iter, pNextBounding))
+			//	{
+			//		Detrude_Colliders(*iter, pNextBounding);
+			//	}
+			//}
+		}
+
+	}
+
+	return bTest;
+}
+
+_bool CCollision_Manager::Update_Detector(_float fTimeDelta)
+{
+	// 피충돌체가 피충돌체와 충돌 비교하여 충돌 처리
+	_bool bTest{};
+	_bool bTest1{};
+
+	CBounding* pBounding1 = nullptr;
+	CBounding* pBounding2 = nullptr;
+	// 위 로직대로 플레이어는 몬스터의 Pair에 접근해서 전부 순회해야 하고
+	// 몬스터는 아래의 로직대로 돌려야함
+
+	for (auto& Pair : *m_mapColliders[OP_DETECT])
+	{
+
+		if (Check_IncWord(Pair.first, TEXT("Player")))
+		{
+			// 몬스터의 충돌체
+			for (auto& Pair2 : *m_mapColliders[OP_DETECT])
+			{
+				if (Check_IncWord(Pair2.first, TEXT("Monster")))
+				{
+					if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+					{
+						pBounding1->Get_Collider()->Set_Coll(true);
+						pBounding2->Get_Collider()->Set_Coll(true);
+					}
 				}
 			}
 		}
 
+		// 몬스터의 몸체
+		else
+		{
+			for (size_t i = 0; i < Pair.second->size(); i++)
+			{
+				for (auto& Pair2 : *m_mapColliders[OP_DETECT])
+				{
+					if (Check_IncWord(Pair2.first, TEXT("Player")))
+					{
+						if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+						{
+							pBounding1->Get_Collider()->Set_Coll(true);
+							pBounding2->Get_Collider()->Set_Coll(true);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	return bTest;
@@ -550,57 +629,57 @@ void CCollision_Manager::Calculate_AABB_Sphere(CBounding_AABB* pAABB1, CBounding
 void CCollision_Manager::Calculate_0BB_0BB(CBounding_OBB* pOBB1, CBounding_OBB* pOBB2)
 {
 	CBounding_OBB::OBB_DESC    OBBDesc[2]{};
-
+	
 	_float fMinOverlap = FLT_MAX;
-
+	
 	_float3     vPoints1[8];
 	_float3     vPoints2[8];
-
+	
 	pOBB1->Get_Desc()->GetCorners(vPoints1);
 	pOBB2->Get_Desc()->GetCorners(vPoints2);
-
+	
 	OBBDesc[0].vCenter = pOBB1->Get_Desc()->Center;
 	OBBDesc[1].vCenter = pOBB2->Get_Desc()->Center;
-
+	
 	// x,y,z 축에 대한 방향 벡터 -> 분리 축
 	XMStoreFloat3(&OBBDesc[0].vCenterDir[0], (XMLoadFloat3(&vPoints1[5]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
 	XMStoreFloat3(&OBBDesc[0].vCenterDir[1], (XMLoadFloat3(&vPoints1[7]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
 	XMStoreFloat3(&OBBDesc[0].vCenterDir[2], (XMLoadFloat3(&vPoints1[0]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
-
+	
 	// 해당 면과 수직인 벡터 선언
 	for (size_t i = 0; i < 3; i++)
 		XMStoreFloat3(&OBBDesc[0].vAlignDir[i], XMVector3Normalize(XMLoadFloat3(&OBBDesc[0].vCenterDir[i])));
-
+	
 	XMStoreFloat3(&OBBDesc[1].vCenterDir[0], (XMLoadFloat3(&vPoints2[5]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
 	XMStoreFloat3(&OBBDesc[1].vCenterDir[1], (XMLoadFloat3(&vPoints2[7]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
 	XMStoreFloat3(&OBBDesc[1].vCenterDir[2], (XMLoadFloat3(&vPoints2[0]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
-
+	
 	// 해당 면과 수직인 벡터 선언
 	for (size_t i = 0; i < 3; i++)
 		XMStoreFloat3(&OBBDesc[1].vAlignDir[i], XMVector3Normalize(XMLoadFloat3(&OBBDesc[1].vCenterDir[i])));
-
-
+	
+	
 	_uint iAxis1 = {};
 	_uint iAxis2 = {};
-
+	
 	for (size_t i = 0; i < 2; i++)
 	{
 		for (size_t j = 0; j < 3; j++)
 		{
 			_float          fLength[3] = {};
-
+	
 			// 충돌체 객체와 다른 객체의 거리와 x, y, z 방향으로 투영한 기준 벡터와 내적
 			fLength[0] = fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenter) - XMLoadFloat3(&OBBDesc[0].vCenter),
 				XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]);
-
+	
 			fLength[1] = fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[0]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]) +
 				fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[1]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]) +
 				fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[2]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]);
-
+	
 			fLength[2] = fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[0]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]) +
 				fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[1]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]) +
 				fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[2]), XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]);
-
+	
 			_float fOverlap = fLength[1] + fLength[2] - fLength[0];
 	
 			if (fOverlap < fMinOverlap)
@@ -609,9 +688,9 @@ void CCollision_Manager::Calculate_0BB_0BB(CBounding_OBB* pOBB1, CBounding_OBB* 
 				iAxis1 = i;
 				iAxis2 = j;
 			}
-
+	
 		}
-
+	
 	}
 	
 	_vector vDiffCenter = XMVectorSet(
@@ -619,19 +698,19 @@ void CCollision_Manager::Calculate_0BB_0BB(CBounding_OBB* pOBB1, CBounding_OBB* 
 		OBBDesc[1].vCenter.y - OBBDesc[0].vCenter.y,
 		OBBDesc[1].vCenter.z - OBBDesc[0].vCenter.z,
 		0.f);
-
+	
 	_vector vAxis = XMVectorSet(
 		OBBDesc[iAxis1].vAlignDir[iAxis2].x,
 		OBBDesc[iAxis1].vAlignDir[iAxis2].y,
 		OBBDesc[iAxis1].vAlignDir[iAxis2].z,
 		0.f);
-
+	
 	_float fDotResult = XMVectorGetX(XMVector3Dot(vAxis, vDiffCenter));
-
+	
 	_float fSign = fDotResult < 0.f ? -1.f : 1.f;
-
+	
 	_vector vMTV = XMVectorScale(XMVector3Normalize(vAxis), fSign * fMinOverlap);
-
+	
 	_vector vPos1 = XMVectorSet(
 		OBBDesc[0].vCenter.x,
 		OBBDesc[0].vCenter.y,
@@ -642,16 +721,106 @@ void CCollision_Manager::Calculate_0BB_0BB(CBounding_OBB* pOBB1, CBounding_OBB* 
 		OBBDesc[1].vCenter.y,
 		OBBDesc[1].vCenter.z,
 		0.f);
-
+	
 	vPos1 = XMVectorSubtract(vPos1, XMVectorScale(vMTV, 0.5f));
 	vPos2 = XMVectorAdd(vPos2, XMVectorScale(vMTV, 0.5f));
-
+	
 	vPos1 = XMVectorSetY(vPos1, pOBB1->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS).m128_f32[1]);
 	vPos2 = XMVectorSetY(vPos2, pOBB2->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS).m128_f32[1]);
-
+	
 	pOBB1->Get_Info()->pOwner->Get_Transform()->Set_State(CTransform::STATE_POS, vPos1);
 	pOBB2->Get_Info()->pOwner->Get_Transform()->Set_State(CTransform::STATE_POS, vPos2);
-
+	
+	//CBounding_OBB::OBB_DESC OBBDesc[2] = { };
+	//
+	//_float3 vPoints1[8];
+	//_float3 vPoints2[8];
+	//pOBB1->Get_Desc()->GetCorners(vPoints1);
+	//OBBDesc[0].vCenter = pOBB1->Get_Desc()->Center;
+	//
+	//XMStoreFloat3(&OBBDesc[0].vCenterDir[0],
+	//	(XMLoadFloat3(&vPoints1[5]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
+	//XMStoreFloat3(&OBBDesc[0].vCenterDir[1],
+	//	(XMLoadFloat3(&vPoints1[7]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
+	//XMStoreFloat3(&OBBDesc[0].vCenterDir[2],
+	//	(XMLoadFloat3(&vPoints1[0]) - XMLoadFloat3(&vPoints1[4])) * 0.5f);
+	//
+	//
+	//pOBB2->Get_Desc()->GetCorners(vPoints2);
+	//OBBDesc[1].vCenter = pOBB2->Get_Desc()->Center;
+	//
+	//XMStoreFloat3(&OBBDesc[1].vCenterDir[0],
+	//	(XMLoadFloat3(&vPoints2[5]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
+	//XMStoreFloat3(&OBBDesc[1].vCenterDir[1],
+	//	(XMLoadFloat3(&vPoints2[7]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
+	//XMStoreFloat3(&OBBDesc[1].vCenterDir[2],
+	//	(XMLoadFloat3(&vPoints2[0]) - XMLoadFloat3(&vPoints2[4])) * 0.5f);
+	//
+	//
+	//for (size_t i = 0; i < 3; i++)
+	//{
+	//	_vector vDir = XMVector3Normalize(XMLoadFloat3(&OBBDesc[1].vCenterDir[i]));
+	//	XMStoreFloat3(&OBBDesc[1].vAlignDir[i], vDir);
+	//}
+	//
+	//float fMinOverlap = FLT_MAX;
+	//int iOwner = 0;
+	//int iAxis = 0;
+	//
+	//for (size_t i = 0; i < 2; i++)
+	//{
+	//	for (size_t j = 0; j < 3; j++)
+	//	{
+	//		float fLength[3] = { 0.f, 0.f, 0.f };
+	//
+	//		_vector vCandAxis = XMLoadFloat3(&OBBDesc[i].vAlignDir[j]);
+	//		vCandAxis = XMVector3Normalize(vCandAxis);
+	//
+	//		_vector vCenterDiff = XMLoadFloat3(&OBBDesc[1].vCenter) - XMLoadFloat3(&OBBDesc[0].vCenter);
+	//		fLength[0] = fabsf(XMVectorGetX(XMVector3Dot(vCenterDiff, vCandAxis)));
+	//
+	//		for (int k = 0; k < 3; k++)
+	//		{
+	//			_vector v = XMLoadFloat3(&OBBDesc[0].vCenterDir[k]);
+	//			fLength[1] += fabsf(XMVectorGetX(XMVector3Dot(v, vCandAxis)));
+	//		}
+	//
+	//		for (int k = 0; k < 3; k++)
+	//		{
+	//			_vector v = XMLoadFloat3(&OBBDesc[1].vCenterDir[k]);
+	//			fLength[2] += fabsf(XMVectorGetX(XMVector3Dot(v, vCandAxis)));
+	//		}
+	//
+	//		float overlap = (fLength[1] + fLength[2]) - fLength[0];
+	//
+	//		if (overlap < fMinOverlap)
+	//		{
+	//			fMinOverlap = overlap;
+	//			iOwner = i;
+	//			iAxis = j;
+	//		}
+	//	}
+	//}
+	//
+	//_vector vAxis = XMVector3Normalize(XMLoadFloat3(&OBBDesc[iOwner].vAlignDir[iAxis]));
+	//
+	//_vector vDiff = XMLoadFloat3(&OBBDesc[1].vCenter) - XMLoadFloat3(&OBBDesc[0].vCenter);
+	//
+	//_float fSign = (XMVectorGetX(XMVector3Dot(vDiff, vAxis)) < 0.f) ? -1.f : 1.f;
+	//
+	//_vector vMTV = XMVectorScale(vAxis, fMinOverlap * fSign);
+	//
+	//vMTV = XMVectorSet(XMVectorGetX(vMTV), 0.f, XMVectorGetZ(vMTV), 0.f);
+	//
+	//// 원래 여기서 처리하면 안되려나
+	//_vector vPosA = pOBB1->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
+	//_vector vPosB = pOBB2->Get_Info()->pOwner->Get_Transform()->Get_State(CTransform::STATE_POS);
+	//
+	//vPosA = XMVectorSubtract(vPosA, XMVectorScale(vMTV, 0.5f));
+	//vPosB = XMVectorAdd(vPosB, XMVectorScale(vMTV, 0.5f));
+	//
+	//pOBB1->Get_Info()->pOwner->Get_Transform()->Set_State(CTransform::STATE_POS, vPosA);
+	//pOBB2->Get_Info()->pOwner->Get_Transform()->Set_State(CTransform::STATE_POS, vPosB);
 }								
 
 void CCollision_Manager::Calculate_0BB_Sphere(CBounding_OBB* pOBB1, CBounding_Sphere* pSphere1)

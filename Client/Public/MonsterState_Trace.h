@@ -33,6 +33,8 @@ private:
 	_float							m_fDistance = { 15.f }; // 임시로 설정
 
 	_float							m_fUpdateTime = {};
+	_float							m_fTotalTime = { 0.f };
+
 
 	_bool							m_bTurned = { false };
 

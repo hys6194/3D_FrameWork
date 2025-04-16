@@ -46,7 +46,6 @@ void CFist_Right::Priority_Update(_float fTimeDelta)
 
 void CFist_Right::Update(_float fTimeDelta)
 {
- 
     _matrix		SocketMatrix = XMLoadFloat4x4(m_pHandMatrix);
 
     for (size_t i = 0; i < 3; i++)
@@ -69,6 +68,8 @@ void CFist_Right::Late_Update(_float fTimeDelta)
 
 HRESULT CFist_Right::Render()
 {
+    if (m_pOwner->Is_Dead())
+        return S_OK;
 
 #ifdef _DEBUG
     m_pColliderCom->Render();

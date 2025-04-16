@@ -77,7 +77,6 @@ void CGun_Left::Update(_float fTimeDelta)
         matSocket *
         XMLoadFloat4x4(m_pParentMatrix));
 
-
 }
 
 void CGun_Left::Late_Update(_float fTimeDelta)

@@ -10,8 +10,13 @@ CMonsterState_Trace::CMonsterState_Trace(CGameObject* pOwner, CGameObject* pAnim
 {
 }
 
+
 HRESULT CMonsterState_Trace::Enter_State()
 { 
+    m_pMonster = dynamic_cast<CMonster*>(m_pOwner);
+    m_pBody = dynamic_cast<CBody_Monster*>(m_pAnimOwner);
+    m_pModelCom = m_pBody->Get_Model();
+
     Setting_PlayerInfo();
 
     Set_CurAnimation();
@@ -23,8 +28,6 @@ HRESULT CMonsterState_Trace::Enter_State()
 
 void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
 {
-    // 시발 여기에서 사라지는 거네?
-    // 왜 사라지는 거니?
     // 이게 맞나? 차라리 Base에 그냥 함수로 만들어서 호출하는게 훨 나아보이기도 하고
     if (FAILED(Check_Dead(fTimeDelta)))
         return;
@@ -47,10 +50,10 @@ void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
     m_fUpdateTime += m_pGameInstance->Get_TimeDelta(TIME60);
 
     // 1초마다 몬스터의 방향 설정 하려했는데 어색함
-    if (1.f < m_fUpdateTime)
+    if (0.5f < m_fUpdateTime)
     {
         m_fUpdateTime = 0.f;
-        Update_MonsterTurnSpeed(2.f);
+        Update_MonsterTurnSpeed(4.f); 
         m_bTurned = false;
     }
 
@@ -66,15 +69,12 @@ void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
 
     m_pMonster->Get_Transform()->Go_Straight(fTimeDelta, 
         dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
-
 }
 
 
 void CMonsterState_Trace::Update_State(_float fTimeDelta)
 {
     Update_Animation(fTimeDelta);
-
-
 }
 
 void CMonsterState_Trace::LateUpdate_State(_float fTimeDelta)

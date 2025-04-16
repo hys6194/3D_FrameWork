@@ -48,6 +48,8 @@ void CBody_Ghoul::Late_Update(_float fTimeDelta)
 
 HRESULT CBody_Ghoul::Render()
 {
+
+
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
@@ -130,8 +132,4 @@ CGameObject* CBody_Ghoul::Clone(void* pArg)
 void CBody_Ghoul::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pModelCom);
-	Safe_Release(m_pShaderCom);
-
 }

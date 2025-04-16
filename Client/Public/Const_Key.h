@@ -41,6 +41,7 @@ static const std::wstring PRO_TEX_BACKGROUND			= TEXT("Prototype_Component_Textu
 
 /* Component */
 static const std::wstring PRO_COM_FSM					= TEXT("Prototype_Component_FSM");
+static const std::wstring PRO_COM_ATTACK				= TEXT("Prototype_Component_Attack");
 static const std::wstring PRO_COM_STATUS				= TEXT("Prototype_Component_Status");
 static const std::wstring PRO_COM_NAVI					= TEXT("Prototype_Component_Navigation");
 static const std::wstring PRO_COM_VI_CELL				= TEXT("Prototype_Component_VIBuffer_Cell");
@@ -95,6 +96,8 @@ static const std::wstring PRO_MODEL_PILLAR_ALCOVE		= TEXT("Prototype_Component_M
 
 static const std::wstring PRO_MODEL_MOLOCH				= TEXT("Prototype_Component_Model_Moloch");
 static const std::wstring PRO_MODEL_MOLOCH_SWORD		= TEXT("Prototype_Component_Model_Moloch_Sword");
+static const std::wstring PRO_MODEL_DOG					= TEXT("Prototype_Component_Model_Dog");
+static const std::wstring PRO_MODEL_DOG_LAVA			= TEXT("Prototype_Component_Model_Dog_Lava");
 
 /* Shader */
 static const std::wstring PRO_SHADER_CELL				= TEXT("Prototype_Component_Shader_VtxCell");
@@ -107,6 +110,8 @@ static const std::wstring PRO_SHADER_ANIM				= TEXT("Prototype_Component_Shader_
 /* GameObject */
 static const std::wstring PRO_OBJ_SKY					= TEXT("Prototype_GameObject_Sky");
 static const std::wstring PRO_OBJ_GHOUL					= TEXT("Prototype_GameObject_Ghoul");
+static const std::wstring PRO_OBJ_DOG					= TEXT("Prototype_GameObject_Dog");
+static const std::wstring PRO_OBJ_DOG_LAVA				= TEXT("Prototype_GameObject_Dog_Lava");
 static const std::wstring PRO_OBJ_BULLET				= TEXT("Prototype_GameObject_Bullet"); 
 static const std::wstring PRO_OBJ_PLAYER				= TEXT("Prototype_GameObject_Player");
 static const std::wstring PRO_OBJ_WEAPON				= TEXT("Prototype_GameObject_Weapon");
@@ -130,6 +135,7 @@ static const std::wstring PRO_OBJ_ROCK_TALL				= TEXT("Prototype_GameObject_Dese
 static const std::wstring PRO_OBJ_SPIKE_A				= TEXT("Prototype_GameObject_FortressSpike A");
 static const std::wstring PRO_OBJ_SPIKE_E				= TEXT("Prototype_GameObject_FortressSpike E");
 static const std::wstring PRO_OBJ_MOLOCH				= TEXT("Prototype_GameObject_Moloch");
+static const std::wstring PRO_OBJ_TEST_MONSTER			= TEXT("Prototype_GameObject_TEST_MONSTER");
 static const std::wstring PRO_OBJ_MOLOCH_BODY			= TEXT("Prototype_GameObject_Moloch Body");
 static const std::wstring PRO_OBJ_MOLOCH_SWORD			= TEXT("Prototype_GameObject_Moloch Sword");
 
@@ -177,6 +183,7 @@ static const std::wstring LAYER_DESERT_ROCK_2			= TEXT("Layer_Desert_Rock2");
 
 /* Component */
 static const std::wstring COM_FSM						= TEXT("Component_FSM");
+static const std::wstring COM_ATTACK					= TEXT("Component_Attack");
 static const std::wstring COM_STATUS					= TEXT("Component_Status");
 static const std::wstring COM_NAVI						= TEXT("Component_Navigation");
 static const std::wstring COM_VI_CELL					= TEXT("Component_VIBuffer_Cell");

@@ -10,8 +10,13 @@ CMonsterState_Hit::CMonsterState_Hit(CGameObject* pOwner, CGameObject* pAnimOwne
 {
 }
 
+
 HRESULT CMonsterState_Hit::Enter_State()
 { 
+    m_pMonster = dynamic_cast<CMonster*>(m_pOwner);
+    m_pBody = dynamic_cast<CBody_Monster*>(m_pAnimOwner);
+    m_pModelCom = m_pBody->Get_Model();
+
     Setting_PlayerInfo();
     Set_CurAnimation();
 
@@ -27,9 +32,9 @@ void CMonsterState_Hit::PriorityUpdate_State(_float fTimeDelta)
 
     if (m_bAnimEnd)
     {
-        if (m_pGameInstance->Random_Persent(50))
-            m_pMonster->Change_CurrentState(CMonster::STATE_AVOID);
-        else
+        //if (m_pGameInstance->Random_Persent(50))
+        //    m_pMonster->Change_CurrentState(CMonster::STATE_AVOID);
+        //else
             m_pMonster->Change_CurrentState(CMonster::STATE_IDLE);
 
 

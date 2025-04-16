@@ -1,4 +1,5 @@
 #include "Body_Monster.h"
+#include "Monster.h"
 
 #include "GameInstance.h"
 
@@ -10,10 +11,12 @@ CBody_Monster::CBody_Monster(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 CBody_Monster::CBody_Monster(const CBody_Monster& Prototype)
 	: CPartObject{ Prototype }
 	, m_pTargetState { Prototype.m_pTargetState }
-	, m_pShaderCom { Prototype.m_pShaderCom }
-	, m_pModelCom{ Prototype.m_pModelCom }
+	//, m_pShaderCom { Prototype.m_pShaderCom }
+	//, m_pModelCom{ Prototype.m_pModelCom }
 	, m_mapSocketmat{ Prototype.m_mapSocketmat }
 {
+	Safe_AddRef(m_pShaderCom);
+	Safe_AddRef(m_pModelCom);
 }
 
 const _float4x4* CBody_Monster::Get_f4SocketMatrix(const _wstring& strSocketName)
@@ -36,6 +39,7 @@ HRESULT CBody_Monster::Initialize(void* pArg)
 
 	BODY_MONSTER_DESC* pDesc = static_cast<BODY_MONSTER_DESC*>(pArg);
 	m_pTargetState = *pDesc->pTargetState;
+	m_pOwner = pDesc->pOwner;
 
 	FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
 
@@ -59,6 +63,9 @@ void CBody_Monster::Late_Update(_float fTimeDelta)
 
 HRESULT CBody_Monster::Render()
 {
+	if (m_pOwner->Is_Dead())
+		return E_ABORT;
+
 	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
 
 	for (size_t i = 0; i < iNumMeshes; i++)
@@ -126,7 +133,6 @@ void CBody_Monster::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
-
+	Safe_Release(m_pModelCom);
 }

@@ -9,6 +9,8 @@ CContainerObject::CContainerObject(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 CContainerObject::CContainerObject(const CContainerObject& Prototype)
     : CGameObject{ Prototype }
+    , m_iNumPartObjects { Prototype.m_iNumPartObjects }
+    , m_vecParts { Prototype.m_vecParts }
 {
 
 }

@@ -44,6 +44,8 @@ private:
 	CModel*						m_pModelCom = { nullptr };
 	CCollider*					m_pColliderCom = { nullptr };
 
+	_bool						m_bDisappear = { false };
+
 	_float4x4					m_matHand;
 
 	_float4						m_fBulletPos;
