@@ -24,6 +24,7 @@ public:
 	virtual void							Update_CoolTime(_float fTimeDelta) = 0;
 
 	virtual _bool							Check_Attackable() = 0;
+	virtual _bool							Check_Condition() = 0;
 
 protected:
 	void									Regist_PartCollUpdate();
@@ -39,7 +40,7 @@ protected:
 	_float									m_fDistance = {};
 	_float									m_fTotalTime = {};
 	_float									m_fCoolTime = {};
-	_float									m_fElapseTime = {};
+	_float									m_fElapseTime = { 999.f};
 
 public:
 	virtual void							Free() override;

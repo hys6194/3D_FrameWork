@@ -22,6 +22,7 @@ HRESULT CMonsterState_Base::Enter_State()
 void CMonsterState_Base::PriorityUpdate_State(_float fTimeDelta)
 {
 	//구조가 바뀌었다
+	
 }
 
 void CMonsterState_Base::Update_Animation(_float fTimeDelta)
@@ -52,6 +53,7 @@ void CMonsterState_Base::Update_MonsterTurnSpeed(_float fSpeed)
 	_float fDot = Get_MonsterLookDot();
 
 	_float fDegree = XMConvertToDegrees(fDot);
+
 	// 진입했을 때 각도에 따른 속도 설정
 	m_pMonster->Get_Transform()->Set_RotationSpeed(fDot * fSpeed);
 }
@@ -70,7 +72,8 @@ _float CMonsterState_Base::Get_MonsterLookDot()
 
 void CMonsterState_Base::Setting_PlayerInfo()
 {
-	m_pPlayer = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
+	if(nullptr == m_pPlayer)
+		m_pPlayer = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
 }
 
 HRESULT CMonsterState_Base::Check_Dead(_float fTimeDelta)

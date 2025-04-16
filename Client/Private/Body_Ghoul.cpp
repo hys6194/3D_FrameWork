@@ -48,6 +48,8 @@ void CBody_Ghoul::Late_Update(_float fTimeDelta)
 
 HRESULT CBody_Ghoul::Render()
 {
+
+
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
 

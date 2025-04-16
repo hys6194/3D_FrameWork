@@ -17,6 +17,7 @@ public:
 	typedef struct tagBodyMonsterDesc : public CPartObject::PARTOBJ_DESC
 	{
 		const _uint* pTargetState = { nullptr };
+		class CMonster*    pOwner = { nullptr };
 	}BODY_MONSTER_DESC;
 
 protected:
@@ -48,6 +49,8 @@ protected:
 
 	class CShader*								m_pShaderCom			= { nullptr };
 	class CModel*								m_pModelCom				= { nullptr };
+
+	class CMonster*								m_pOwner = { nullptr };
 
 	map<const _wstring, const _float4x4*>		m_mapSocketmat;   // 특정 뼈들의 매트릭스를 가지고 있는 map
 

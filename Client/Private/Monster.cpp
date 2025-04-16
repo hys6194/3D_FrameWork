@@ -51,7 +51,6 @@ void CMonster::Priority_Update(_float fTimeDelta)
 		m_pGameInstance->Secede_Update(m_pColliderCom[COLL_AABB]->Get_Bounder());
 		m_pGameInstance->Secede_Update(m_pColliderCom[COLL_SPHERE]->Get_Bounder());
 		m_iState = STATE_DEAD;
-		m_bIsDead = true;
 		m_bRec = false;
 	}
 
@@ -91,6 +90,8 @@ void CMonster::Update(_float fTimeDelta)
 	__super::Update(fTimeDelta);
 
 	m_pFSMCom->Update_State(fTimeDelta);
+
+	m_pAttackCom->Update_CoolTime(fTimeDelta);
 
 
 #ifdef _DEBUG

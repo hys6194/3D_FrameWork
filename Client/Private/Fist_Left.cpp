@@ -72,6 +72,9 @@ void CFist_Left::Late_Update(_float fTimeDelta)
 
 HRESULT CFist_Left::Render()
 {
+    if (m_pOwner->Is_Dead())
+        return S_OK;
+
 #ifdef _DEBUG
     m_pColliderCom->Render();
 #endif 

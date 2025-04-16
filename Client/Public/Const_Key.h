@@ -96,6 +96,8 @@ static const std::wstring PRO_MODEL_PILLAR_ALCOVE		= TEXT("Prototype_Component_M
 
 static const std::wstring PRO_MODEL_MOLOCH				= TEXT("Prototype_Component_Model_Moloch");
 static const std::wstring PRO_MODEL_MOLOCH_SWORD		= TEXT("Prototype_Component_Model_Moloch_Sword");
+static const std::wstring PRO_MODEL_DOG					= TEXT("Prototype_Component_Model_Dog");
+static const std::wstring PRO_MODEL_DOG_LAVA			= TEXT("Prototype_Component_Model_Dog_Lava");
 
 /* Shader */
 static const std::wstring PRO_SHADER_CELL				= TEXT("Prototype_Component_Shader_VtxCell");
@@ -108,6 +110,8 @@ static const std::wstring PRO_SHADER_ANIM				= TEXT("Prototype_Component_Shader_
 /* GameObject */
 static const std::wstring PRO_OBJ_SKY					= TEXT("Prototype_GameObject_Sky");
 static const std::wstring PRO_OBJ_GHOUL					= TEXT("Prototype_GameObject_Ghoul");
+static const std::wstring PRO_OBJ_DOG					= TEXT("Prototype_GameObject_Dog");
+static const std::wstring PRO_OBJ_DOG_LAVA				= TEXT("Prototype_GameObject_Dog_Lava");
 static const std::wstring PRO_OBJ_BULLET				= TEXT("Prototype_GameObject_Bullet"); 
 static const std::wstring PRO_OBJ_PLAYER				= TEXT("Prototype_GameObject_Player");
 static const std::wstring PRO_OBJ_WEAPON				= TEXT("Prototype_GameObject_Weapon");

@@ -120,8 +120,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
 	//	LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
 
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TEST_MONSTER,
-	//	LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
+
+	// 테스트 몬스터
+	// 
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TEST_MONSTER,
+		LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
 
 	return S_OK;
 }

@@ -72,6 +72,9 @@ void CMoloch_Sword::Late_Update(_float fTimeDelta)
 
 HRESULT CMoloch_Sword::Render()
 {
+    if (m_pOwner->Is_Dead())
+        return E_ABORT;
+
     if (FAILED(Bind_SR()))
         return E_FAIL;
 

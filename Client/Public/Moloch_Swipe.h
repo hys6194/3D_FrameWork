@@ -19,17 +19,16 @@ public:
 	virtual HRESULT							Exit_State();
 
 	virtual void							Set_PreAnimation();
-	virtual void							Update_Animation(_float fTimeDelta);
+	virtual void							Update_Animation(_float fTimeDelta) override;
 	virtual void							Set_CurAnimation();
 
 	virtual void							Update_CoolTime(_float fTimeDelta);
 	virtual _bool							Check_Attackable();
-
-public:
+	virtual _bool							Check_Condition();
 
 public:
 	static CMoloch_Swipe*					Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);
-	virtual void							Free();
+	virtual void							Free() override;
 
 
 };

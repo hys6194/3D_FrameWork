@@ -31,11 +31,9 @@ void CMonsterState_Dead::PriorityUpdate_State(_float fTimeDelta)
     // 몬스터마다 탐지거리는 달리 할 것인가?
     // 그것은 생각을 해봐야 함 
     // 어차피 탐지할 몬스터들은 보스를 제외한 나머지 간단한 몹들이므로 통일시켜 하자
-    _vector vPos = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS);
-    _vector vPlayerPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
 
-    _float fDistanace = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
-
+    if (m_bAnimEnd)
+        m_pMonster->Set_Dead(true);
 
 }
 

@@ -170,7 +170,7 @@ HRESULT CPlayer::Ready_Components()
 	ColliderDesc.pOwner			= this;
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
-		reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_OBB]), COM_COLL, &ColliderDesc), E_FAIL);
+		reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_OBB]), COM_COLL_OBB, &ColliderDesc), E_FAIL);
 
 	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
 	SphereDesc.fRadius = 5.f;
@@ -181,7 +181,7 @@ HRESULT CPlayer::Ready_Components()
 	SphereDesc.pOwner = this;
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
-		reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_SPHERE]), COM_COLL, &SphereDesc), E_FAIL);
+		reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_SPHERE]), COM_COLL_SPHERE, &SphereDesc), E_FAIL);
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
 		reinterpret_cast<CComponent**>(&m_pFSMCom), COM_FSM), E_FAIL);

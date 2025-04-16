@@ -31,6 +31,12 @@ void CAttack::Update_CoolTime(_float fTimeDelta)
 
 CAttack_Base* CAttack::Find_Attackable()
 {
+    for (auto& Pair : m_mapPattern)
+    {
+        if(Pair.second->Check_Attackable())
+            return Pair.second;
+    }
+
     return nullptr;
 }
 

@@ -1,4 +1,5 @@
 #include "Body_Monster.h"
+#include "Monster.h"
 
 #include "GameInstance.h"
 
@@ -38,6 +39,7 @@ HRESULT CBody_Monster::Initialize(void* pArg)
 
 	BODY_MONSTER_DESC* pDesc = static_cast<BODY_MONSTER_DESC*>(pArg);
 	m_pTargetState = *pDesc->pTargetState;
+	m_pOwner = pDesc->pOwner;
 
 	FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
 
@@ -61,6 +63,9 @@ void CBody_Monster::Late_Update(_float fTimeDelta)
 
 HRESULT CBody_Monster::Render()
 {
+	if (m_pOwner->Is_Dead())
+		return E_ABORT;
+
 	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
 
 	for (size_t i = 0; i < iNumMeshes; i++)

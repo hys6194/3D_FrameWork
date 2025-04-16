@@ -47,23 +47,23 @@ void CTest_Monster::Priority_Update(_float fTimeDelta)
 {
 	int a = 10;
 
-	if (m_pGameInstance->Key_Down(DIK_1))
-	{
-		m_iAnimIndex++;
-		if (16 <= m_iAnimIndex)
-			m_iAnimIndex = CMoloch::MOLOCH_ATK_180_L;
-
-		m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
-	}
-
-	if (m_pGameInstance->Key_Down(DIK_2))
-	{
-		m_iAnimIndex--;
-		if (0 > m_iAnimIndex)
-			m_iAnimIndex = CMoloch::MOLOCH_ATK_SWIPE_02;
-		
-		m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
-	}
+	//if (m_pGameInstance->Key_Down(DIK_1))
+	//{
+	//	m_iAnimIndex++;
+	//	if (16 <= m_iAnimIndex)
+	//		m_iAnimIndex = CMoloch::MOLOCH_ATK_180_L;
+	//
+	//	m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
+	//}
+	//
+	//if (m_pGameInstance->Key_Down(DIK_2))
+	//{
+	//	m_iAnimIndex--;
+	//	if (0 > m_iAnimIndex)
+	//		m_iAnimIndex = CMoloch::MOLOCH_ATK_SWIPE_02;
+	//	
+	//	m_pModelCom->Set_AnimationIndex(m_iAnimIndex, true);
+	//}
 
 }
 
@@ -120,7 +120,7 @@ HRESULT CTest_Monster::Render()
 HRESULT CTest_Monster::Ready_Components()
 {
 	/* Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH,
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_DOG_LAVA,
 		reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model"))))
 		return E_FAIL;
 

@@ -30,10 +30,6 @@ public:
 	void							Set_CurAnimation() override;
 
 private:
-	void							Regist_PartCollUpdate();
-	void							Secede_PartCollUpdate();
-
-private:
 	_bool							m_bRegisted = { false };
 	_bool							m_bSeceded = { false };
 
