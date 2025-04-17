@@ -51,7 +51,7 @@ public:
 public:
 	//Getter
 	_bool									Is_Dead()									{ return m_bIsDead; }
-	_bool									Is_Attack()									{ return m_bAttack; }
+	_bool									Is_Attackable()								{ return m_bAttack; }
 	_bool									Is_Hit ()									{ return m_bHit;    }
 	_bool									Is_Rec ()									{ return m_bRec;    }
 	_bool									Is_Critical()								{ return m_bCri;    }

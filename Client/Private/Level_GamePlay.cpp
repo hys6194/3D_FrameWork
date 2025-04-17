@@ -42,8 +42,12 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
 	if (m_pGameInstance->Key_Down(DIK_F1))
 		m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
 			LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
-	
+
 	if (m_pGameInstance->Key_Down(DIK_F2))
+		m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+			LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+	
+	if (m_pGameInstance->Key_Down(DIK_F8))
 		m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
 			LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
 

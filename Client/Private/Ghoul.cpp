@@ -8,7 +8,9 @@
 #include "Body_Ghoul.h"
 #include "GameInstance.h"
 
+#include "GhoulAttack_Leaf.h"
 #include "GhoulAttack_Flurry.h"
+#include "GhoulAttack_DoubleSwipe.h"
 
 #include "MonsterState_LookOut.h"
 #include "MonsterState_Attack.h"
@@ -138,11 +140,14 @@ HRESULT CGhoul::Ready_States()
     pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_FLURRY);
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
 
-    pState = CGhoulAttack_Flurry::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_FLURRY, 1.f);
+    pState = CGhoulAttack_Leaf::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_LEAP, 5.f);
+    m_pAttackCom->Regist_AttackPattern(GHOUL_ATK_LEAP, static_cast<CAttack_Base*>(pState));
+
+    pState = CGhoulAttack_Flurry::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_FLURRY, 5.f);
     m_pAttackCom->Regist_AttackPattern(GHOUL_ATK_FLURRY, static_cast<CAttack_Base*>(pState));
 
-    pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_EVADE_LEFT);
-    m_pFSMCom->Add_State(CMonster::STATE_AVOID, pState);
+    pState = CGhoulAttack_DoubleSwipe::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_DOUBLESWIPE, 5.f);
+    m_pAttackCom->Regist_AttackPattern(GHOUL_ATK_DOUBLESWIPE, static_cast<CAttack_Base*>(pState));
 
     pState = CMonsterState_LookOut::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_WALK_L);
     m_pFSMCom->Add_State(CMonster::STATE_LOOKOUT, pState);
@@ -171,7 +176,7 @@ HRESULT CGhoul::Ready_Components()
     	reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_AABB]), COM_COLL_AABB, &ColliderDesc), E_FAIL);
     
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
-    SphereDesc.fRadius = 5.f;
+    SphereDesc.fRadius = 1.f;
     SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
     SphereDesc.strCollTag = Get_Name() + TEXT("_Body_Detect");
     SphereDesc.iOption = COLL_OPT::OP_DETECT;

@@ -121,9 +121,6 @@
     <Filter Include="02.GameObjects\Monster\States\Idle">
       <UniqueIdentifier>{e2d96590-e887-4b1c-a0cd-6d8ad36e4221}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster\00. MonsterList\Ghoul\Body">
-      <UniqueIdentifier>{a846b894-3f41-4280-bc90-b4be269703de}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster\States\Hit">
       <UniqueIdentifier>{87b2bce9-12c9-47d9-a8c2-ba5ce741f971}</UniqueIdentifier>
     </Filter>
@@ -154,23 +151,14 @@
     <Filter Include="02.GameObjects\Monster\Part\Fist\Fist_Right.h">
       <UniqueIdentifier>{aa45a8d4-9f2e-45ef-bcb4-2dce82ea7177}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Ghoul">
-      <UniqueIdentifier>{82af4ca7-447c-459a-9e3f-720612e0e913}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster\00. MonsterList\Moloch">
       <UniqueIdentifier>{9aaf2cdd-e8b9-4054-b315-0213c919347d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Moloch">
-      <UniqueIdentifier>{198d8f64-3fbe-4b03-b272-7f3e3c9bf8ea}</UniqueIdentifier>
     </Filter>
     <Filter Include="03.Component">
       <UniqueIdentifier>{d97cb6ac-f269-4b2b-82d4-c3fb183eb8a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="03.Component\Status">
       <UniqueIdentifier>{add3fd4d-7f46-4e03-9b90-1564c18b0cfc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Monster\Part\Moloch_Sword">
-      <UniqueIdentifier>{9e4c7d85-f858-4cb2-9e5f-7a8185bc6987}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns">
       <UniqueIdentifier>{f3a05032-d94f-484a-b023-2f40f8ff0e0c}</UniqueIdentifier>
@@ -189,6 +177,57 @@
     </Filter>
     <Filter Include="02.GameObjects\Monster\States\LookOut">
       <UniqueIdentifier>{510942b3-6429-4eac-ac14-6f146d4423cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul\DoubleSwipe">
+      <UniqueIdentifier>{a84ecaa8-6223-4a94-902b-54a7b30a440e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul\Flurry">
+      <UniqueIdentifier>{ca45b31d-97ca-4cb7-ae3e-156dee6c6cca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul\Leaf">
+      <UniqueIdentifier>{b3d1ab62-60fc-40bc-9914-2167904b75d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Swipe">
+      <UniqueIdentifier>{91fe91d5-f17d-42fe-b5c2-d069c7e26087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Swing">
+      <UniqueIdentifier>{41dfed1b-e553-4a58-9c04-325e20b07825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Body">
+      <UniqueIdentifier>{a846b894-3f41-4280-bc90-b4be269703de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Body\Ghoul">
+      <UniqueIdentifier>{82af4ca7-447c-459a-9e3f-720612e0e913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Body\Moloch">
+      <UniqueIdentifier>{198d8f64-3fbe-4b03-b272-7f3e3c9bf8ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Body\Dog">
+      <UniqueIdentifier>{862c73dd-5779-4f13-a9a5-a2383493a1fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\00. MonsterList\Dog">
+      <UniqueIdentifier>{2c0ceece-cb27-4112-9714-1b07e736a75b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\FallenDog">
+      <UniqueIdentifier>{12e92110-f71b-435a-a713-2bc3186f4426}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\FallenDog\3Combo">
+      <UniqueIdentifier>{28d7d41f-46d2-45c5-a107-6a9f280b362f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\FallenDog\GroundSlam">
+      <UniqueIdentifier>{05f33cb4-870c-4a61-b8a7-c6bd132cd8b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\FallenDog\Slash">
+      <UniqueIdentifier>{4c49329e-2047-4832-907d-e7e48d125a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\00. MonsterList\Moloch\Weapons">
+      <UniqueIdentifier>{5d04a868-7ca0-4bb5-a8c8-3149de7d4cf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\00. MonsterList\Moloch\Weapons\Moloch_Sword">
+      <UniqueIdentifier>{9e4c7d85-f858-4cb2-9e5f-7a8185bc6987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\00. MonsterList\Moloch\Weapons\Crystal">
+      <UniqueIdentifier>{94888632-40ce-4553-bcc6-ad0e5fcf45fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -322,19 +361,19 @@
       <Filter>02.GameObjects\Monster\Part\Fist\Fist_Right.h</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_Ghoul.h">
-      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Ghoul</Filter>
+      <Filter>02.GameObjects\Monster\Body\Ghoul</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_Monster.h">
-      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
+      <Filter>02.GameObjects\Monster\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Moloch.h">
       <Filter>02.GameObjects\Monster\00. MonsterList\Moloch</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_Moloch.h">
-      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Moloch</Filter>
+      <Filter>02.GameObjects\Monster\Body\Moloch</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Moloch_Sword.h">
-      <Filter>02.GameObjects\Monster\Part\Moloch_Sword</Filter>
+      <Filter>02.GameObjects\Monster\00. MonsterList\Moloch\Weapons\Moloch_Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Status.h">
       <Filter>03.Component\Status</Filter>
@@ -345,17 +384,44 @@
     <ClInclude Include="..\Public\Attack.h">
       <Filter>03.Component\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\GhoulAttack_Flurry.h">
-      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Moloch_Swipe.h">
-      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Test_Monster.h">
       <Filter>02.GameObjects\Monster\Test_Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MonsterState_LookOut.h">
       <Filter>02.GameObjects\Monster\States\LookOut</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GhoulAttack_Flurry.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul\Flurry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GhoulAttack_DoubleSwipe.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul\DoubleSwipe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GhoulAttack_Leaf.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul\Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MolochAttack_Swing.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Swing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MolochAttack_Swipe.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Swipe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Fallen_Dog.h">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Dog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_FallenDog.h">
+      <Filter>02.GameObjects\Monster\Body\Dog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DogAttack_3HitCombo.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\FallenDog\3Combo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DogAttack_GroundSlam.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\FallenDog\GroundSlam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DogAttack_Slash.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\FallenDog\Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Crystal.h">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Moloch\Weapons\Crystal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -484,16 +550,16 @@
       <Filter>02.GameObjects\Monster\Part\Fist\FIst_Left</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_Ghoul.cpp">
-      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Ghoul</Filter>
+      <Filter>02.GameObjects\Monster\Body\Ghoul</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_Monster.cpp">
-      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body</Filter>
+      <Filter>02.GameObjects\Monster\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Moloch.cpp">
       <Filter>02.GameObjects\Monster\00. MonsterList\Moloch</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_Moloch.cpp">
-      <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul\Body\Moloch</Filter>
+      <Filter>02.GameObjects\Monster\Body\Moloch</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ghoul.cpp">
       <Filter>02.GameObjects\Monster\00. MonsterList\Ghoul</Filter>
@@ -502,7 +568,7 @@
       <Filter>03.Component\Status</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Moloch_Sword.cpp">
-      <Filter>02.GameObjects\Monster\Part\Moloch_Sword</Filter>
+      <Filter>02.GameObjects\Monster\00. MonsterList\Moloch\Weapons\Moloch_Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Attack_Base.cpp">
       <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns</Filter>
@@ -510,17 +576,44 @@
     <ClCompile Include="..\Private\Attack.cpp">
       <Filter>03.Component\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Moloch_Swipe.cpp">
-      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Test_Monster.cpp">
       <Filter>02.GameObjects\Monster\Test_Monster</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\GhoulAttack_Flurry.cpp">
-      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\MonsterState_LookOut.cpp">
       <Filter>02.GameObjects\Monster\States\LookOut</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GhoulAttack_Flurry.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul\Flurry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GhoulAttack_DoubleSwipe.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul\DoubleSwipe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GhoulAttack_Leaf.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul\Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MolochAttack_Swing.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Swing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MolochAttack_Swipe.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Swipe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Fallen_Dog.cpp">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Dog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_FallenDog.cpp">
+      <Filter>02.GameObjects\Monster\Body\Dog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DogAttack_3HitCombo.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\FallenDog\3Combo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DogAttack_GroundSlam.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\FallenDog\GroundSlam</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DogAttack_Slash.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\FallenDog\Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Crystal.cpp">
+      <Filter>02.GameObjects\Monster\00. MonsterList\Moloch\Weapons\Crystal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -37,6 +37,8 @@ public:
 private:
 	map<const _uint ,CAttack_Base*>		m_mapPattern;
 
+	vector<CAttack_Base*>				m_vecPattern;
+
 	CAttack_Base*						m_pAttackState;
 
 	_float								m_fTotalTime = {};

@@ -30,13 +30,12 @@ void CMonsterState_LookOut::PriorityUpdate_State(_float fTimeDelta)
         return;
 
     CAttack_Base* pAttack = static_cast<CAttack*>(m_pMonster->Get_Component(COM_ATTACK))->Find_Attackable();
-    if (nullptr != pAttack)
+
+    if (nullptr != pAttack && !m_pMonster->Is_Attackable())
         m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
 
 
     m_pMonster->Get_Transform()->LookAt(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
-    //Update_MonsterLook(fTimeDelta);
-
 
 }
 
@@ -76,8 +75,7 @@ void CMonsterState_LookOut::Update_Animation(_float fTimeDelta)
     else
         m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
 
-    // 여기에서 옆으로 이동하는 기능 만들어야 함
-    m_pMonster->Get_Transform()->Avoid(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
+    m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
 
 }
 

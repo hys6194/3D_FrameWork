@@ -1,6 +1,8 @@
 #include "Loader.h"
 #include "GameInstance.h"
 
+
+#include "Body_FallenDog.h"
 #include "Test_Monster.h"
 #include "Moloch_Sword.h"
 #include "Body_Moloch.h"
@@ -10,6 +12,7 @@
 #include "Map_Object.h"
 #include "Body_Ghoul.h"
 #include "Fist_Right.h"
+#include "Fallen_Dog.h"
 #include "Fist_Left.h"
 #include "TP_Camera.h"
 #include "Gun_Right.h"
@@ -24,6 +27,7 @@
 #include "Ghoul.h"
 #include "Snow.h"
 #include "Sky.h"
+
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -301,18 +305,51 @@ HRESULT CLoader::Loading_Models()
 		//
 		//PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_DOG_LAVA,
+		//	 CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
+		//		 "../Bin/Resources/Models/AnimModel/FallenDog/FallenDog_Lava.fbx",
+		//		 "../Bin/DataFiles/anim/Creature/FallenDog_Lava.bin",
+		//		 PreTransformMatrix))))
+		//	 return E_FAIL;
+		// 
+		// PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		// if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH,
+		// 	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
+		// 		"../Bin/Resources/Models/AnimModel/Moloch/Moloch.fbx",
+		// 		"../Bin/DataFiles/anim/Creature/Moloch.bin",
+		// 		PreTransformMatrix))))
+		// 	return E_FAIL;
+		// 
+		//PreTransformMatrix = XMMatrixScaling(0.0002f, 0.0002f, 0.0002f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FALLEN_GHOUL,
 		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
-		//		"../Bin/Resources/Models/AnimModel/FallenDog/FallenDog_Lava.fbx",
-		//		"../Bin/DataFiles/anim/Creature/FallenDog_Lava.bin",
+		//		"../Bin/Resources/Models/AnimModel/Ghoul/Fallen_Ghoul.fbx",
+		//		"../Bin/DataFiles/anim/Creature/Fallen_Ghoul.bin",
 		//		PreTransformMatrix))))
 		//	return E_FAIL;
 		// 
+		// 
+		// PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		// if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_DOG_LAVA,
+		// 	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_ANIM,
+		// 		"../Bin/Resources/Models/AnimModel/FallenDog/FallenDog_Lava.fbx",
+		// 		"../Bin/DataFiles/anim/Creature/FallenDog_Lava.bin",
+		// 		PreTransformMatrix))))
+		// 	return E_FAIL;
+		// 
 		//  새로운 논애니메이션 모델 저장용
+		PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_CRYSTAL_A,
+			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+				"../Bin/Resources/Models/NonAnimModel/Crystal/TremorCrystal_A.fbx",
+				"../Bin/DataFiles/Nonanim/AttackObject/TremorCrystal_A.bin",
+				PreTransformMatrix))))
+			return E_FAIL;
+		
 		//PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
-		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_SWORD,
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_CRYSTAL_B,
 		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-		//		"../Bin/Resources/Models/AnimModel/Moloch/Moloch_Sword.fbx",
-		//		"../Bin/DataFiles/Nonanim/PartObject/Moloch_Sword.bin",
+		//		"../Bin/Resources/Models/NonAnimModel/Crystal/TremorCrystal_B.fbx",
+		//		"../Bin/DataFiles/Nonanim/AttackObject/TremorCrystal_B.bin",
 		//		PreTransformMatrix))))
 		//	return E_FAIL;
 		//
@@ -376,12 +413,16 @@ HRESULT CLoader::Loading_Models()
 			return E_FAIL;
 
 		// Ghoul 불러오기
-		PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationY(XMConvertToRadians(-180.f));
+		PreTransformMatrix = XMMatrixScaling(0.0002f, 0.0002f, 0.0002f) * XMMatrixRotationY(XMConvertToRadians(-180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/Ghoul.bin", PreTransformMatrix))))
 			return E_FAIL;
 
-		PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(-180.f));
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FALLEN_GHOUL,
+			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/Fallen_Ghoul.bin", PreTransformMatrix))))
+			return E_FAIL;
+
+		PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f);
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_DOG,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/anim/Creature/FallenDog.bin", PreTransformMatrix))))
 			return E_FAIL;
@@ -403,6 +444,9 @@ HRESULT CLoader::Loading_Models()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_RGUN,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/Gun2.bin", PreTransformMatrix))))
 			return E_FAIL;
+
+#pragma region MAP_OBJECT
+
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_ROCK1,
 			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/DestRock1.bin"))))
@@ -525,6 +569,9 @@ HRESULT CLoader::Loading_Models()
 			CModel::Create(m_pDevice, m_pContext, "../../Client/Bin/DataFiles/Nonanim/MapObjects/Wall_Top_A.bin"))))
 			return E_FAIL;
 
+#pragma endregion
+
+
 
 	}
 
@@ -643,8 +690,12 @@ HRESULT CLoader::Loading_Prototype()
 			CBody_Moloch::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH_SWORD,
-			CMoloch_Sword::Create(m_pDevice, m_pContext))))
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+			CFallen_Dog::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_DOG_BODY,
+			CBody_FallenDog::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_PLAYER,

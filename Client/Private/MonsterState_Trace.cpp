@@ -41,7 +41,7 @@ void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
         return;
 
     // 몬스터마다 가지는 Attack_State의 진입으로의 쿨타임을 판별하여 상태 진입
-    if (m_pMonster->Is_Attack())
+    if (m_pMonster->Is_Attackable())
     {
         CAttack* pAttack = static_cast<CAttack*>(m_pMonster->Get_Component(COM_ATTACK));
         NULL_CHECK_RETURN(pAttack);
@@ -52,6 +52,7 @@ void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
 
         if (nullptr == pPattern)
         {
+            // 플레이어 방향으로 움직이되 일정거리 안에 들어오면 State변경해야할 듯 하다
             MoveTo_Player(fTimeDelta);
             return;
         }
@@ -62,6 +63,17 @@ void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
     }
 
     MoveTo_Player(fTimeDelta);
+
+
+    // 폐기
+    //_vector vPos = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS);
+    //_vector vPlayerPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
+
+    //_float fDistanace = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
+
+    //if (m_pMonster->Get_AttackDistance() > fDistanace)
+    //    m_pMonster->Change_CurrentState(CMonster::STATE_LOOKOUT);
+
 
 }
 

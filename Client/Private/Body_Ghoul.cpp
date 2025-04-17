@@ -48,8 +48,6 @@ void CBody_Ghoul::Late_Update(_float fTimeDelta)
 
 HRESULT CBody_Ghoul::Render()
 {
-
-
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
@@ -61,8 +59,17 @@ HRESULT CBody_Ghoul::Render()
 
 HRESULT CBody_Ghoul::Ready_Component()
 {
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
-		reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+	_uint iNum = m_pGameInstance->Draw_RandomNum(2);
+	if(1 == iNum)
+	{
+		FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
+			reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+	}
+	else
+	{
+		FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_FALLEN_GHOUL,
+			reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+	}
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
 		reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);

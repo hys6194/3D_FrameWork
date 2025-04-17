@@ -21,7 +21,7 @@ CMonsterState_Attack::CMonsterState_Attack(CGameObject* pOwner, CGameObject* pAn
 HRESULT CMonsterState_Attack::Enter_State()
 { 
     m_bAnimEnd = false;
-
+    // 여기에서 AnimIndex설정해줘야 함
     m_pAttackCom = static_cast<CAttack*>(m_pMonster->Get_Component(COM_ATTACK));
 
     if (nullptr == m_pAttackCom)

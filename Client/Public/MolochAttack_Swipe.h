@@ -5,11 +5,11 @@
 
 BEGIN(Client)
 
-class CMoloch_Swipe : public CAttack_Base
+class CMolochAttack_Swipe : public CAttack_Base
 {
 private:
-	CMoloch_Swipe(CGameObject* pOwner, CGameObject* pAnimOwner);
-	virtual ~CMoloch_Swipe() = default;
+	CMolochAttack_Swipe(CGameObject* pOwner, CGameObject* pAnimOwner);
+	virtual ~CMolochAttack_Swipe() = default;
 
 public:
 	virtual HRESULT							Enter_State();
@@ -27,7 +27,7 @@ public:
 	virtual _bool							Check_Colls();
 
 public:
-	static CMoloch_Swipe*					Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);
+	static CMolochAttack_Swipe*				Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);
 	virtual void							Free() override;
 
 

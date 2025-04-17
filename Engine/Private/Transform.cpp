@@ -217,17 +217,20 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
     Set_State(STATE_LOOK, XMVector4Transform(vLook, RotationMatrix));
 }
 
-_bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir)
+_bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir, _bool bClamp)
 {
 
     _vector		vRight         = Get_State(STATE_RIGHT);
     _vector		vUp            = Get_State(STATE_UP);
     _vector		vLook          = Get_State(STATE_LOOK);
 
-    if (XMVector4NearEqual(XMVector3Normalize(vLook), vTargetToDir, XMVectorSet(0.1f, 0.f, 0.1f, 0.f)))
+    if(bClamp)
     {
-        Set_State(STATE_LOOK, vTargetToDir);
-        return true;
+        if (XMVector4NearEqual(XMVector3Normalize(vLook), vTargetToDir, XMVectorSet(0.1f, 0.f, 0.1f, 0.f)))
+        {
+            Set_State(STATE_LOOK, vTargetToDir);
+            return true;
+        }
     }
 
     _vector vAxisBase = vAxis;
@@ -246,9 +249,10 @@ _bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTarg
     Set_State(STATE_LOOK,      XMVector4Transform(vLook,    RotationMatrix));
 
     // 방향과 타겟으로 향한 벡터와 비슷하다면 종료하게 끔
+
     if (XMVector4NearEqual(vLook, vTargetToDir, XMVectorSet(0.05f, 0.f, 0.05f, 0.f)))
     {
-        Set_State(STATE_LOOK, vTargetToDir);
+        Set_State(STATE_LOOK, vLook);
         return true;
     }
     else

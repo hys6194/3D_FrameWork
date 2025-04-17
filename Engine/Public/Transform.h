@@ -77,7 +77,7 @@ public:
 	HRESULT						Dash(_float4 fDelta, class CNavigation* pNavigation = nullptr, _float fMag = 1.f);
 	HRESULT						Avoid(_float4 fDelta, class CNavigation* pNavigation = nullptr);
 	void						Turn(_fvector vAxis, _float fTimeDelta);
-	_bool						Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir);
+	_bool						Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir, _bool bClamp = false);
 	void						Rotation(_fvector vAxis, _float fRadian);
 
 public:

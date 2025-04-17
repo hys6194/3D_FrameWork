@@ -144,6 +144,25 @@ _bool CGameInstance::Random_Persent(_uint iSuccessProb)
 		return false;
 }
 
+_uint CGameInstance::Draw_RandomNum(_uint iNumber)
+{
+	if (0 > iNumber)
+		iNumber = 0;
+
+	random_device rand;
+	mt19937 gen1(rand());
+
+	_uint iLow, iHigh;
+	iLow = 1;
+	iHigh = iNumber;
+
+	uniform_int_distribution<>Index(iLow, iHigh);
+
+	_uint iIndex = (_uint)Index(gen1);
+
+	return iIndex;
+}
+
 #pragma region GRAPHIC_DEVICE
 
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)

@@ -34,6 +34,9 @@ public:
 	_float							Random(_float fMin, _float fMax);
 
 	_bool 							Random_Persent(_uint iSuccessProb);
+	_uint							Draw_RandomNum(_uint iNumber);
+	//_uint							Draw_RandomNum();
+
 
 
 #pragma region GRAPHIC_DEVICE

@@ -28,8 +28,6 @@ void CGhoulAttack_Flurry::PriorityUpdate_State(_float fTimeDelta)
     if (FAILED(Check_Dead(fTimeDelta)))
         return;
 
-    Check_Colls();
-
     if (m_bAnimEnd)
     {
         m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
@@ -39,7 +37,6 @@ void CGhoulAttack_Flurry::PriorityUpdate_State(_float fTimeDelta)
         m_bRegisted = false;
         m_bSeceded = false;
         m_fTotalTime = 0.f;
-
 
         return;
     }
