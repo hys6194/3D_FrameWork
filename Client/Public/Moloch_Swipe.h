@@ -24,7 +24,7 @@ public:
 
 	virtual void							Update_CoolTime(_float fTimeDelta);
 	virtual _bool							Check_Attackable();
-	virtual _bool							Check_Condition();
+	virtual _bool							Check_Colls();
 
 public:
 	static CMoloch_Swipe*					Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);

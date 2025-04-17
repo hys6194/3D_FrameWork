@@ -60,24 +60,6 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 	m_pFSMCom->Change_State(m_iState);
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
 
-	//if (m_pColliderCom->Is_Coll())
-	//{
-	//	//list<CGameObject*>* pObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
-	//	//
-	//	//for (auto* iter : *pObjectList)
-	//	//{
-	//	//	wstring strName = iter->Get_Name();
-	//	//	CGameObject* pObject = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Monster"), strName.c_str());
-	//	//
-	//	//	if (Check_IncWord(strName, TEXT("Ghoul")))
-	//	//	{
-	//	//		CGhoul* pGhoul = static_cast<CGhoul*>(pObject);
-	//	//		static_cast<CStatus*>(pGhoul->Get_Component(COM_STATUS))->Get_StatusDesc().iAttack;
-	//	//	}
-	//	//}
-	//
-	//}
-
 
 	for (size_t i = 0; i < TYPE_END; i++)
 	{

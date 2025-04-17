@@ -21,7 +21,7 @@ HRESULT CMonsterState_Base::Enter_State()
 
 void CMonsterState_Base::PriorityUpdate_State(_float fTimeDelta)
 {
-	//구조가 바뀌었다
+		//구조가 바뀌었다
 	
 }
 

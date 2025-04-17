@@ -25,7 +25,7 @@ public:
     virtual void                                Update_Animation(_float fTimeDelta) override;
 
     virtual _bool                               Check_Attackable() override;
-    virtual _bool                               Check_Condition() override;
+    virtual _bool                               Check_Colls() override;
 
 public:
     static CGhoulAttack_Flurry* Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);

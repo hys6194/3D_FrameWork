@@ -35,7 +35,7 @@ public:
 	}MONSTER_DESC;
 
 public:
-	enum MONSTER_STATE { STATE_IDLE, STATE_SEARCH, STATE_TRACE, STATE_HIT, STATE_ATTACK, STATE_AVOID, STATE_DEAD, STATE_NONE };
+	enum MONSTER_STATE { STATE_IDLE, STATE_SEARCH, STATE_TRACE, STATE_HIT, STATE_ATTACK, STATE_AVOID, STATE_LOOKOUT,STATE_DEAD, STATE_NONE };
 	enum PARTOBJ { PART_BODY, PART_LEFT, PART_RIGHT, PART_EFFECT, PART_END };
 	enum COLL_TYPE {COLL_AABB, COLL_OBB, COLL_SPHERE, COLL_END };
 
@@ -44,11 +44,14 @@ public:
 	void									Set_Hit				(_bool bHit)			{ m_bHit		= bHit;  }
 	void									Set_Rec				(_bool bRec)			{ m_bRec		= bRec;  }
 	void									Set_Critical		(_bool bCri)			{ m_bCri		= bCri;  }
+	void									Set_Attack			(_bool bAttack)			{ m_bAttack		= bAttack; }
+
 	void									Set_PreState		(_uint iState)			{ m_iPreState	= iState;}
 
 public:
 	//Getter
 	_bool									Is_Dead()									{ return m_bIsDead; }
+	_bool									Is_Attack()									{ return m_bAttack; }
 	_bool									Is_Hit ()									{ return m_bHit;    }
 	_bool									Is_Rec ()									{ return m_bRec;    }
 	_bool									Is_Critical()								{ return m_bCri;    }
@@ -58,6 +61,7 @@ public:
 	_uint									Get_Index()									{ return m_iIndex;}
 	_float									Get_HitPersent()							{ return m_fHitPersent; }
 	
+	_float									Get_CoolTime()								{ return m_fAttackCoolTime; }
 	_float									Get_AttackDistance()						{ return m_fAttackDistance; }
 	_float									Get_DetectDistance()						{ return m_fDetectDistance; }
 
@@ -92,6 +96,7 @@ protected:
 	_bool									m_bCri										= { false };
 	_bool									m_bIsBoss									= { false };
 	_bool									m_bWave										= { false };
+	_bool									m_bAttack									= { false };
 
 	_uint									m_iPreState									= { STATE_NONE};
 	_uint									m_iState									= { STATE_NONE };

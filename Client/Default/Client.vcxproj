@@ -181,6 +181,7 @@
     <ClInclude Include="..\Public\MonsterState_Dead.h" />
     <ClInclude Include="..\Public\MonsterState_Hit.h" />
     <ClInclude Include="..\Public\MonsterState_Idle.h" />
+    <ClInclude Include="..\Public\MonsterState_LookOut.h" />
     <ClInclude Include="..\Public\MonsterState_Search.h" />
     <ClInclude Include="..\Public\MonsterState_Trace.h" />
     <ClInclude Include="..\Public\Player.h" />
@@ -235,6 +236,7 @@
     <ClCompile Include="..\Private\MonsterState_Dead.cpp" />
     <ClCompile Include="..\Private\MonsterState_Hit.cpp" />
     <ClCompile Include="..\Private\MonsterState_Idle.cpp" />
+    <ClCompile Include="..\Private\MonsterState_LookOut.cpp" />
     <ClCompile Include="..\Private\MonsterState_Search.cpp" />
     <ClCompile Include="..\Private\MonsterState_Trace.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />

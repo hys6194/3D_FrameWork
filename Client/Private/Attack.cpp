@@ -40,33 +40,30 @@ CAttack_Base* CAttack::Find_Attackable()
     return nullptr;
 }
 
-//HRESULT CAttack::Enter_State()
-//{
-//    m_pAttackState->Enter_State();
-//    return S_OK;
-//}
-//
-//void CAttack::PriorityUpdate_State(_float fTimeDelta)
-//{
-//    m_pAttackState->PriorityUpdate_State(fTimeDelta);
-//}
-//
-//void CAttack::Update_State(_float fTimeDelta)
-//{
-//    m_pAttackState->Update_State(fTimeDelta);
-//}
-//
-//void CAttack::LateUpdate_State(_float fTimeDelta)
-//{
-//    m_pAttackState->LateUpdate_State(fTimeDelta);
-//}
-//
-//HRESULT CAttack::Exit_State()
-//{
-//    m_pAttackState->Exit_State();
-//
-//    return S_OK;
-//}
+CAttack_Base* CAttack::Find_AttackPattern(_uint iStateTag)
+{
+    auto Pair1 = m_mapPattern.find(iStateTag);
+
+    if(m_mapPattern.end() != Pair1)
+    {
+        if(Pair1->second->Check_Attackable())
+            return Pair1->second;
+    }
+
+    return nullptr;
+}
+
+CAttack_Base* CAttack::Find_Attackable(_bool bSoruColl, _bool bDestColl)
+{
+    for (auto& Pair : m_mapPattern)
+    {
+        if (Pair.second->Check_Attackable())
+            return Pair.second;
+    }
+
+    return nullptr;
+}
+
 
 void CAttack::Regist_AttackPattern(_uint iStateEnum, CAttack_Base* pState)
 {
@@ -74,11 +71,6 @@ void CAttack::Regist_AttackPattern(_uint iStateEnum, CAttack_Base* pState)
         return;
 
     m_mapPattern.insert({iStateEnum, pState});
-}
-
-void CAttack::Secede_AttackPattern()
-{
-
 }
 
 CAttack* CAttack::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

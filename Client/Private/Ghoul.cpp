@@ -10,6 +10,7 @@
 
 #include "GhoulAttack_Flurry.h"
 
+#include "MonsterState_LookOut.h"
 #include "MonsterState_Attack.h"
 #include "MonsterState_Search.h"
 #include "MonsterState_Trace.h"
@@ -44,6 +45,7 @@ HRESULT CGhoul::Initialize(void* pArg)
     Desc.iState = STATE_IDLE;
     Desc.strMonsterName = TEXT("_Ghoul");
     m_iState = Desc.iState;
+
 
     m_fDetectDistance = 15.f;
     m_fAttackDistance = 4.f;
@@ -141,6 +143,9 @@ HRESULT CGhoul::Ready_States()
 
     pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_EVADE_LEFT);
     m_pFSMCom->Add_State(CMonster::STATE_AVOID, pState);
+
+    pState = CMonsterState_LookOut::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_WALK_L);
+    m_pFSMCom->Add_State(CMonster::STATE_LOOKOUT, pState);
 
     pState = CMonsterState_Trace::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_RUN_F);
     m_pFSMCom->Add_State(CMonster::STATE_TRACE, pState);

@@ -187,6 +187,9 @@
     <Filter Include="02.GameObjects\Monster\Test_Monster">
       <UniqueIdentifier>{f3600126-3c19-47a1-9496-bd2f6a8963f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\States\LookOut">
+      <UniqueIdentifier>{510942b3-6429-4eac-ac14-6f146d4423cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -351,6 +354,9 @@
     <ClInclude Include="..\Public\Test_Monster.h">
       <Filter>02.GameObjects\Monster\Test_Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MonsterState_LookOut.h">
+      <Filter>02.GameObjects\Monster\States\LookOut</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -512,6 +518,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\GhoulAttack_Flurry.cpp">
       <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Ghoul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState_LookOut.cpp">
+      <Filter>02.GameObjects\Monster\States\LookOut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

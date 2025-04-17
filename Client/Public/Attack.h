@@ -25,19 +25,14 @@ public:
 	void								Update_CoolTime(_float fTimeDelta);
 	
 	CAttack_Base*						Find_Attackable();
+	CAttack_Base*						Find_AttackPattern(_uint iStateTag);
 
-	//HRESULT							Enter_State();
-	//void								PriorityUpdate_State(_float fTimeDelta);
-	//void								Update_State(_float fTimeDelta);
-	//void								LateUpdate_State(_float fTimeDelta);
-	//HRESULT							Exit_State();
-
+	// 어떻게 해야 뒤 돌았을 때의 패턴을 찾고 이를 랜덤으로 뽑아낼까
+	// 차라리 하드 코딩을 해야할 수도 있는데 그렇게 처리할까 
+	// 딱히 아이디어가 떠오르지 않는다
+	CAttack_Base*						Find_Attackable(_bool bSoruColl, _bool bDestColl);
 public:
-	// 등록은 해야하는건 맞으나 해제는 해야할까?
-
 	void								Regist_AttackPattern(_uint iStateEnum, CAttack_Base* pState);
-	void								Secede_AttackPattern();
-
 
 private:
 	map<const _uint ,CAttack_Base*>		m_mapPattern;

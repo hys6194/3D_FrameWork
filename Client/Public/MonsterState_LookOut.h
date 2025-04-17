@@ -10,11 +10,11 @@ END
 
 BEGIN(Client)
 
-class CMonsterState_Trace : public CMonsterState_Base
+class CMonsterState_LookOut : public CMonsterState_Base
 {
 private:
-	CMonsterState_Trace(CGameObject* pOwner, CGameObject* pAnimOwner);
-	virtual ~CMonsterState_Trace() = default;
+	CMonsterState_LookOut(CGameObject* pOwner, CGameObject* pAnimOwner);
+	virtual ~CMonsterState_LookOut() = default;
 
 
 public:
@@ -29,21 +29,9 @@ public:
 	void							Update_Animation(_float fTimeDelta) override;
 	void							Set_CurAnimation() override;
 
-private:
-	_float							m_fDistance = { 15.f }; // 임시로 설정
-
-	_float							m_fUpdateTime = {};
-	_float							m_fTotalTime = { 0.f };
-
-
-	_bool							m_bTurned = { false };
-
-private:
-	void							MoveTo_Player(_float fTimeDelta);
-
 public:
 	// 몬스터들이 공용으로 사용할 State라서 애니메이션 인덱스를 인자로 받아 출력하게 한다
-	static CMonsterState_Trace*		Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex);
+	static CMonsterState_LookOut*		Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint AnimIndex);
 	virtual void					Free() override;
 };
 
