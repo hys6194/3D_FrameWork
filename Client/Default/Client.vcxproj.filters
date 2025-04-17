@@ -229,6 +229,9 @@
     <Filter Include="02.GameObjects\Monster\00. MonsterList\Moloch\Weapons\Crystal">
       <UniqueIdentifier>{94888632-40ce-4553-bcc6-ad0e5fcf45fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Geyser">
+      <UniqueIdentifier>{4bec32c7-e208-4876-8808-c01db0a82067}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -423,6 +426,9 @@
     <ClInclude Include="..\Public\Crystal.h">
       <Filter>02.GameObjects\Monster\00. MonsterList\Moloch\Weapons\Crystal</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MolochAttack_Geyser.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Geyser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -614,6 +620,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Crystal.cpp">
       <Filter>02.GameObjects\Monster\00. MonsterList\Moloch\Weapons\Crystal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MolochAttack_Geyser.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Geyser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

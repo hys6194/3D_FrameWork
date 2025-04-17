@@ -59,6 +59,28 @@ void CAttack_Base::Check_Patterns()
     }
 }
 
+void CAttack_Base::Regist_CollUpdate(_uint iKeyFrame1, _uint iKeyFrame2)
+{
+    if ((iKeyFrame1 <= m_pModelCom->Get_CurAnimationTrackPosition() &&
+        m_pModelCom->Get_CurAnimationTrackPosition() <= iKeyFrame2) &&
+        !m_bRegisted)
+    {
+        Regist_PartCollUpdate();
+        m_bRegisted = true;
+    }
+}
+
+void CAttack_Base::Secede_CollUpdate(_uint iKeyFrame1, _uint iKeyFrame2)
+{
+    if (!(iKeyFrame1 <= m_pModelCom->Get_CurAnimationTrackPosition() &&
+        m_pModelCom->Get_CurAnimationTrackPosition() <= iKeyFrame2) &&
+        !m_bSeceded)
+    {
+        Secede_PartCollUpdate();
+        m_bSeceded = true;
+    }
+}
+
 void CAttack_Base::Free()
 {
     __super::Free();

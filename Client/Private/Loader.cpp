@@ -337,14 +337,14 @@ HRESULT CLoader::Loading_Models()
 		// 	return E_FAIL;
 		// 
 		//  새로운 논애니메이션 모델 저장용
-		PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_CRYSTAL_A,
-			CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-				"../Bin/Resources/Models/NonAnimModel/Crystal/TremorCrystal_A.fbx",
-				"../Bin/DataFiles/Nonanim/AttackObject/TremorCrystal_A.bin",
-				PreTransformMatrix))))
-			return E_FAIL;
-		
+		//PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_CRYSTAL_A,
+		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+		//		"../Bin/Resources/Models/NonAnimModel/Crystal/TremorCrystal_A.fbx",
+		//		"../Bin/DataFiles/Nonanim/AttackObject/TremorCrystal_A.bin",
+		//		PreTransformMatrix))))
+		//	return E_FAIL;
+		//
 		//PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
 		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_CRYSTAL_B,
 		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
@@ -352,6 +352,14 @@ HRESULT CLoader::Loading_Models()
 		//		"../Bin/DataFiles/Nonanim/AttackObject/TremorCrystal_B.bin",
 		//		PreTransformMatrix))))
 		//	return E_FAIL;
+
+		//'PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
+		//'if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_SWORD,
+		//'	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
+		//'		"../Bin/Resources/Models/AnimModel/Moloch/Moloch_Sword.fbx",
+		//'		"../Bin/DataFiles/Nonanim/PartObject/Moloch_Sword.bin",
+		//'		PreTransformMatrix))))
+		//'	return E_FAIL;
 		//
 		//// Strife 저장용
 		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
@@ -684,6 +692,10 @@ HRESULT CLoader::Loading_Prototype()
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
 			CMoloch::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH_SWORD,
+			CMoloch_Sword::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH_BODY,
