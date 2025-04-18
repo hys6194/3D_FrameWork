@@ -23,6 +23,20 @@ HRESULT CVIBuffer_Instancing::Initialize_Prototype(CVIBuffer_Instancing::INSTANC
 
 HRESULT CVIBuffer_Instancing::Initialize(void* pArg)
 {
+	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
+	m_BufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstance;
+	m_BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_BufferDesc.StructureByteStride = m_iInstanceStride;
+	m_BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	m_BufferDesc.MiscFlags = 0;
+
+	ZeroMemory(&m_InitialData, sizeof m_InitialData);
+	m_InitialData.pSysMem = m_pInstanceVertices;
+
+	if (FAILED(__super::Create_Buffer(&m_pVBInstance)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

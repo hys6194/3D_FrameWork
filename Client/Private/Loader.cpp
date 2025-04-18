@@ -280,11 +280,14 @@ HRESULT CLoader::Loading_Models()
 			CAttack::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		CVIBuffer_Particle::INSTANCE_DESC		SnowDesc{};
+		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		SnowDesc{};
 
 		SnowDesc.iNumInstances = 3000;
 		SnowDesc.vCenter = _float3(65.f, 10.f, 65.f);
 		SnowDesc.vRange = _float3(129.f, 1.f, 129.f);
+		SnowDesc.vSpeed = _float2(2.f, 10.f);
+		SnowDesc.vLifeTime = _float2(1.f, 3.f);
+		SnowDesc.vSize = _float2(0.1f, 0.3f);
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Snow"),
 			CVIBuffer_Rect_Instancing::Create(m_pDevice, m_pContext, &SnowDesc))))
@@ -644,7 +647,7 @@ HRESULT CLoader::Loading_Shaders()
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxRectParticle"),
-			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxRectParticle.hlsl"), INST_VTXPOSTEX::ElementDesc, INST_VTXPOSTEX::iNumElements))))
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxRectParticle.hlsl"), VTXPOSTEX_PARTICLE_INSTANCE::ElementDesc, VTXPOSTEX_PARTICLE_INSTANCE::iNumElements))))
 			return E_FAIL;
 
 	}

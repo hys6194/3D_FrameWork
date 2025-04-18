@@ -24,6 +24,19 @@ namespace Engine
 		unsigned int	iBoneIndex;
 	}KEYFRAME;
 
+	typedef struct tagLightDesc
+	{
+		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
+
+		TYPE			eType;				// ±¤¿ø Å¸ÀÔ
+		XMFLOAT4		vDirection;			// ±¤¿øÀÇ ·è ¹æÇâ
+		XMFLOAT4		vPosition;			// ±¤¿ø À§Ä¡
+		float			fRange;				// ±¤¿ø ±æÀÌ
+		XMFLOAT4		vDiffuse;			// ³­¹Ý»ç
+		XMFLOAT4		vAmbient;			// ¿¥ºñ¾ðÆ® (¹Ý»ç±¤)
+		XMFLOAT4		vSpecular;			// Á¤¹Ý»ç
+	}LIGHT_DESC;
+
 	typedef struct ENGINE_DLL tagVertexPosition
 	{
 		XMFLOAT3		vPosition;
@@ -154,19 +167,6 @@ namespace Engine
 		};
 	}INST_VTXPOSTEX;
 
-	typedef struct tagLightDesc
-	{
-		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
-
-		TYPE			eType;				// ±¤¿ø Å¸ÀÔ
-		XMFLOAT4		vDirection;			// ±¤¿øÀÇ ·è ¹æÇâ
-		XMFLOAT4		vPosition;			// ±¤¿ø À§Ä¡
-		float			fRange;				// ±¤¿ø ±æÀÌ
-		XMFLOAT4		vDiffuse;			// ³­¹Ý»ç
-		XMFLOAT4		vAmbient;			// ¿¥ºñ¾ðÆ® (¹Ý»ç±¤)
-		XMFLOAT4		vSpecular;			// Á¤¹Ý»ç
-	}LIGHT_DESC;
-
 	typedef struct ENGINE_DLL tagInstancingVertex
 	{
 		XMFLOAT4	vRight;
@@ -174,6 +174,29 @@ namespace Engine
 		XMFLOAT4	vLook;
 		XMFLOAT4	vTranslation;
 	}INSTVTX;
+
+	typedef struct tagVertexParticle
+	{
+		XMFLOAT2 vLifeTime;
+	}VTXPARTICLE;
+
+	typedef struct ENGINE_DLL tagVertexPosTexParticleInstance
+	{
+		const static unsigned int iNumElements = 7;
+		constexpr const static D3D11_INPUT_ELEMENT_DESC ElementDesc[iNumElements] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+
+			{ "TEXCOORD", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "TEXCOORD", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "TEXCOORD", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "TEXCOORD", 4, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+
+			{ "TEXCOORD", 5, DXGI_FORMAT_R32G32_FLOAT, 2, 0, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+		};
+		
+	}VTXPOSTEX_PARTICLE_INSTANCE;
 }
 
 
