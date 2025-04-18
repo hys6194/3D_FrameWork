@@ -15,9 +15,9 @@ HRESULT CGhoulAttack_Flurry::Enter_State()
     Setting_PlayerInfo();
     Set_CurAnimation();
 
-    m_iAnimIndex = CGhoul::GHOUL_ATK_FLURRY;
-
+    // 해당 State가 공격에 들어갔다면 쿨타임 체크를 안돌게 한다
     m_bAttack = true;
+    m_pMonster->Set_Attack(m_bAttack);
 
     return S_OK;
 }
@@ -28,8 +28,6 @@ void CGhoulAttack_Flurry::PriorityUpdate_State(_float fTimeDelta)
     if (FAILED(Check_Dead(fTimeDelta)))
         return;
 
-    Check_Condition();
-
     if (m_bAnimEnd)
     {
         m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
@@ -39,7 +37,6 @@ void CGhoulAttack_Flurry::PriorityUpdate_State(_float fTimeDelta)
         m_bRegisted = false;
         m_bSeceded = false;
         m_fTotalTime = 0.f;
-
 
         return;
     }
@@ -52,7 +49,6 @@ void CGhoulAttack_Flurry::PriorityUpdate_State(_float fTimeDelta)
         m_bRegisted = true;
     }
 
-    // 애니메이션의 중간에 이벤트를 발생해서 Update 등록 및 해제를 하고 싶은데 안되나
     if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() / 1.5f &&
         !m_bSeceded)
     {
@@ -81,6 +77,7 @@ HRESULT CGhoulAttack_Flurry::Exit_State()
 
     m_fElapseTime = 0.f;
     m_bAttack = false;
+    m_pMonster->Set_Attack(m_bAttack);
 
     return S_OK;
 }
@@ -113,8 +110,9 @@ void CGhoulAttack_Flurry::Set_CurAnimation()
 
 void CGhoulAttack_Flurry::Update_CoolTime(_float fTimeDelta)
 {
-    if (m_bAttack /*|| m_fCoolTime이 원래 쿨타임과 같아지거나 커졌다면 */)
+    if (m_bAttack)
         return;
+
     else
     {
         m_fElapseTime += fTimeDelta;
@@ -126,16 +124,15 @@ _bool CGhoulAttack_Flurry::Check_Attackable()
     if (m_fElapseTime < m_fCoolTime)
         return false;
 
-    if (!Check_Condition())
+    if (!Check_Colls())
         return false;
 
     return true;
 }
 
-_bool CGhoulAttack_Flurry::Check_Condition()
+_bool CGhoulAttack_Flurry::Check_Colls()
 {
     Setting_PlayerInfo();
-
 
     _bool bColl = static_cast<CCollider*>(m_pMonster->Get_Component(COM_COLL_SPHERE))->Is_Coll();
     _bool bColl2 = static_cast<CCollider*>(m_pPlayer->Get_Component(COM_COLL_SPHERE))->Is_Coll();

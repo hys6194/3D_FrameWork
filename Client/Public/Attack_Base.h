@@ -24,12 +24,18 @@ public:
 	virtual void							Update_CoolTime(_float fTimeDelta) = 0;
 
 	virtual _bool							Check_Attackable() = 0;
-	virtual _bool							Check_Condition() = 0;
+	virtual _bool							Check_Colls() = 0;
 
 protected:
 	void									Regist_PartCollUpdate();
 	void									Secede_PartCollUpdate();
 
+	void									Check_Patterns();
+
+	void									Regist_CollUpdate(_uint iKeyFrame1, _uint iKeyFrame2);
+	void									Secede_CollUpdate(_uint iKeyFrame1, _uint iKeyFrame2);
+
+	
 
 protected:
 	_bool									m_bCool		= { false };
@@ -39,8 +45,8 @@ protected:
 
 	_float									m_fDistance = {};
 	_float									m_fTotalTime = {};
-	_float									m_fCoolTime = {};
-	_float									m_fElapseTime = { 999.f};
+	_float									m_fCoolTime = {};			// 패턴 자체가 가지는 쿨타임
+	_float									m_fElapseTime = { 999.f };	// 처음 경과시간은 큰 값으로 시작해 바로 몬스터가 공격할 수 있도록 설정
 
 public:
 	virtual void							Free() override;

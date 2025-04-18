@@ -60,24 +60,6 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 	m_pFSMCom->Change_State(m_iState);
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
 
-	//if (m_pColliderCom->Is_Coll())
-	//{
-	//	//list<CGameObject*>* pObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
-	//	//
-	//	//for (auto* iter : *pObjectList)
-	//	//{
-	//	//	wstring strName = iter->Get_Name();
-	//	//	CGameObject* pObject = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Monster"), strName.c_str());
-	//	//
-	//	//	if (Check_IncWord(strName, TEXT("Ghoul")))
-	//	//	{
-	//	//		CGhoul* pGhoul = static_cast<CGhoul*>(pObject);
-	//	//		static_cast<CStatus*>(pGhoul->Get_Component(COM_STATUS))->Get_StatusDesc().iAttack;
-	//	//	}
-	//	//}
-	//
-	//}
-
 
 	for (size_t i = 0; i < TYPE_END; i++)
 	{
@@ -86,6 +68,22 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 
 		m_pColliderCom[i]->Reset();
 	}
+
+	if (m_pGameInstance->Get_DIKeyState(DIK_7))
+	{
+		m_pTransformCom->Set_Speed(50.f);
+	}
+
+	if (m_pGameInstance->Get_DIKeyState(DIK_8))
+	{
+		m_pTransformCom->Set_Speed(25.f);
+	}
+
+	if (m_pGameInstance->Get_DIKeyState(DIK_9))
+	{
+		m_pTransformCom->Set_Speed(10.f);
+	}
+
 
 	__super::Priority_Update(fTimeDelta);
 }

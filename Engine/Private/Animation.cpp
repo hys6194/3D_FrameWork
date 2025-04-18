@@ -104,18 +104,6 @@ _bool CAnimation::Update_TransformationMatrix(const vector<class CBone*>& pBone,
         else
             m_bIsAnimEnd = true;
     }
-
-    
-     if (pBone[1]->Compare_Name("Swarm_A"))
-     {
-         // float µð¹ö±ë
-         TCHAR debugMessage[256];
-         _stprintf_s(debugMessage, _T("Debug_Value: %.6f\n"),
-             *pCurrentTrackPosition);
-         OutputDebugString(debugMessage);
-     }
-   
-
     
     for (size_t i = 0; i < m_iNumChannel; i++)
     {

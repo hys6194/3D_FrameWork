@@ -30,6 +30,8 @@ protected:
 
 public:
 	void									Set_AnimIndex(_uint iIndex) { m_iAnimIndex = iIndex;}
+
+	_bool									Get_AnimEnd()				{ return m_bAnimEnd; }
 	
 	// 상태 관련 가상함수
 public:
@@ -52,6 +54,7 @@ protected:
 	_float									Get_MonsterLookDot();
 	void									Update_MonsterTurnSpeed(_float fSpeed = 1.f);
 	void									Setting_PlayerInfo();
+	_bool									Check_PlayerLeft();
 
 	HRESULT									Check_Dead(_float fTimeDelta);
 	HRESULT									Check_Hit(_float fTimeDelta);

@@ -350,10 +350,16 @@ _bool CCollision_Manager::Update_Detector(_float fTimeDelta)
 			{
 				if (Check_IncWord(Pair2.first, TEXT("Monster")))
 				{
-					if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+					for (auto iter : *Pair.second)
 					{
-						pBounding1->Get_Collider()->Set_Coll(true);
-						pBounding2->Get_Collider()->Set_Coll(true);
+						for (auto iter2 : *Pair2.second)
+						{
+							if (Detect_Collision(iter, iter2))
+							{
+								iter->Get_Collider()->Set_Coll(true);
+								iter2->Get_Collider()->Set_Coll(true);
+							}
+						}
 					}
 				}
 			}
@@ -368,10 +374,16 @@ _bool CCollision_Manager::Update_Detector(_float fTimeDelta)
 				{
 					if (Check_IncWord(Pair2.first, TEXT("Player")))
 					{
-						if (Check_Collision(Pair.second, Pair2.second, &pBounding1, &pBounding2))
+						for (auto iter : *Pair.second)
 						{
-							pBounding1->Get_Collider()->Set_Coll(true);
-							pBounding2->Get_Collider()->Set_Coll(true);
+							for (auto iter2 : *Pair2.second)
+							{
+								if (Detect_Collision(iter, iter2))
+								{
+									iter->Get_Collider()->Set_Coll(true);
+									iter2->Get_Collider()->Set_Coll(true);
+								}
+							}
 						}
 					}
 				}

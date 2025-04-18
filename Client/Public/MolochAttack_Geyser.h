@@ -5,11 +5,11 @@
 
 BEGIN(Client)
 
-class CMoloch_Swipe : public CAttack_Base
+class CMolochAttack_Geyser : public CAttack_Base
 {
 private:
-	CMoloch_Swipe(CGameObject* pOwner, CGameObject* pAnimOwner);
-	virtual ~CMoloch_Swipe() = default;
+	CMolochAttack_Geyser(CGameObject* pOwner, CGameObject* pAnimOwner);
+	virtual ~CMolochAttack_Geyser() = default;
 
 public:
 	virtual HRESULT							Enter_State();
@@ -24,10 +24,15 @@ public:
 
 	virtual void							Update_CoolTime(_float fTimeDelta);
 	virtual _bool							Check_Attackable();
-	virtual _bool							Check_Condition();
+	virtual _bool							Check_Colls();
+	HRESULT									Create_Crystals();
+
+private: 
+	_bool									m_bSpawn = { false };
+
 
 public:
-	static CMoloch_Swipe*					Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);
+	static CMolochAttack_Geyser*			Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);
 	virtual void							Free() override;
 
 

@@ -40,6 +40,11 @@ public:
 		return &m_f4WorldMatrix;
 	}
 
+	_float Get_Speed()
+	{
+		return m_fSpeedPerSec;
+	}
+
 public:
 
 	void Set_Matrix(const _float4x4* _fMatrix)
@@ -55,6 +60,11 @@ public:
 	void Set_RotationSpeed(_float fRadian)
 	{
 		m_fRotationPerSec = fRadian;
+	}
+
+	void Set_Speed(_float fSpeed)
+	{
+		m_fSpeedPerSec = fSpeed;
 	}
 
 private:
@@ -77,7 +87,7 @@ public:
 	HRESULT						Dash(_float4 fDelta, class CNavigation* pNavigation = nullptr, _float fMag = 1.f);
 	HRESULT						Avoid(_float4 fDelta, class CNavigation* pNavigation = nullptr);
 	void						Turn(_fvector vAxis, _float fTimeDelta);
-	_bool						Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir);
+	_bool						Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir, _bool bClamp = false);
 	void						Rotation(_fvector vAxis, _float fRadian);
 
 public:

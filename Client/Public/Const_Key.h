@@ -60,6 +60,7 @@ static const std::wstring PRO_COM_COLL_SPHERE			= TEXT("Prototype_Component_Coll
 static const std::wstring PRO_MODEL_STRIFE				= TEXT("Prototype_Component_Model_Test");
 static const std::wstring PRO_MODEL_FIONA				= TEXT("Prototype_Component_Model_Fiona");
 static const std::wstring PRO_MODEL_GHOUL				= TEXT("Prototype_Component_Model_Ghoul"); 
+static const std::wstring PRO_MODEL_FALLEN_GHOUL		= TEXT("Prototype_Component_Model_Fallen_Ghoul"); 
 static const std::wstring PRO_MODEL_FLOOR1				= TEXT("Prototype_Component_Model_Floor 1");
 static const std::wstring PRO_MODEL_FLOOR2				= TEXT("Prototype_Component_Model_Floor 2");
 static const std::wstring PRO_MODEL_FLOOR3				= TEXT("Prototype_Component_Model_Floor 3");
@@ -96,6 +97,8 @@ static const std::wstring PRO_MODEL_PILLAR_ALCOVE		= TEXT("Prototype_Component_M
 
 static const std::wstring PRO_MODEL_MOLOCH				= TEXT("Prototype_Component_Model_Moloch");
 static const std::wstring PRO_MODEL_MOLOCH_SWORD		= TEXT("Prototype_Component_Model_Moloch_Sword");
+static const std::wstring PRO_MODEL_MOLOCH_CRYSTAL_A	= TEXT("Prototype_Component_Model_Crystal_A");
+static const std::wstring PRO_MODEL_MOLOCH_CRYSTAL_B	= TEXT("Prototype_Component_Model_Crystal_B");
 static const std::wstring PRO_MODEL_DOG					= TEXT("Prototype_Component_Model_Dog");
 static const std::wstring PRO_MODEL_DOG_LAVA			= TEXT("Prototype_Component_Model_Dog_Lava");
 
@@ -111,6 +114,7 @@ static const std::wstring PRO_SHADER_ANIM				= TEXT("Prototype_Component_Shader_
 static const std::wstring PRO_OBJ_SKY					= TEXT("Prototype_GameObject_Sky");
 static const std::wstring PRO_OBJ_GHOUL					= TEXT("Prototype_GameObject_Ghoul");
 static const std::wstring PRO_OBJ_DOG					= TEXT("Prototype_GameObject_Dog");
+static const std::wstring PRO_OBJ_DOG_BODY				= TEXT("Prototype_GameObject_Dog Body");
 static const std::wstring PRO_OBJ_DOG_LAVA				= TEXT("Prototype_GameObject_Dog_Lava");
 static const std::wstring PRO_OBJ_BULLET				= TEXT("Prototype_GameObject_Bullet"); 
 static const std::wstring PRO_OBJ_PLAYER				= TEXT("Prototype_GameObject_Player");
@@ -136,8 +140,9 @@ static const std::wstring PRO_OBJ_SPIKE_A				= TEXT("Prototype_GameObject_Fortre
 static const std::wstring PRO_OBJ_SPIKE_E				= TEXT("Prototype_GameObject_FortressSpike E");
 static const std::wstring PRO_OBJ_MOLOCH				= TEXT("Prototype_GameObject_Moloch");
 static const std::wstring PRO_OBJ_TEST_MONSTER			= TEXT("Prototype_GameObject_TEST_MONSTER");
-static const std::wstring PRO_OBJ_MOLOCH_BODY			= TEXT("Prototype_GameObject_Moloch Body");
+static const std::wstring PRO_OBJ_MOLOCH_BODY 			= TEXT("Prototype_GameObject_Moloch Body");
 static const std::wstring PRO_OBJ_MOLOCH_SWORD			= TEXT("Prototype_GameObject_Moloch Sword");
+static const std::wstring PRO_OBJ_CRYSTAL				= TEXT("Prototype_GameObject_Crystal");
 
 static const std::wstring PRO_OBJ_GROUND_DECAL			= TEXT("Prototype_GameObject_GroundDecal LG A");
 static const std::wstring PRO_OBJ_DAM_END				= TEXT("Prototype_GameObject_Dam EndCap A");
@@ -161,6 +166,7 @@ static const std::wstring PRO_OBJ_WODDEN_CIRCLE			= TEXT("Prototype_GameObject_W
 static const std::wstring PRO_OBJ_PILLAR_ALCOVE			= TEXT("Prototype_GameObject_Pillar Alcove A");
 
 
+
 /* Sockets */
 static const std::wstring SOCKET_LEFT_HAND				= TEXT("Socket_Strife_Hand L");
 static const std::wstring SOCKET_RIGHT_HAND				= TEXT("Socket_Strife_Hand R");
@@ -172,6 +178,9 @@ static const std::wstring SOCKET_GHOUL_RIGHT_HAND		= TEXT("Socket_Ghoul_Hand R")
 
 static const std::wstring SOCKET_MOLOCH_LEFT_HAND		= TEXT("Socket_Moloch_Hand L");
 static const std::wstring SOCKET_MOLOCH_RIGHT_HAND		= TEXT("Socket_Moloch_Hand R");
+
+static const std::wstring SOCKET_DOG_LEFT_HAND			= TEXT("Socket_Dog_Hand L");
+static const std::wstring SOCKET_DOG_RIGHT_HAND			= TEXT("Socket_Dog_Hand R");
 
 /* Layers */
 static const std::wstring LAYER_DESERT_ROCK_1			= TEXT("Layer_Desert_Rock1");

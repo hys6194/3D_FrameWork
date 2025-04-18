@@ -20,6 +20,9 @@ CMonsterState_Attack::CMonsterState_Attack(CGameObject* pOwner, CGameObject* pAn
 
 HRESULT CMonsterState_Attack::Enter_State()
 { 
+
+    Setting_PlayerInfo();
+
     m_bAnimEnd = false;
     // 여기에서 AnimIndex설정해줘야 함
     m_pAttackCom = static_cast<CAttack*>(m_pMonster->Get_Component(COM_ATTACK));
@@ -27,6 +30,11 @@ HRESULT CMonsterState_Attack::Enter_State()
     if (nullptr == m_pAttackCom)
     {
         m_pMonster->Change_CurrentState(CMonster::STATE_IDLE);
+
+        // 다음에 FSM을 State 패턴 내에서 돌려주는 방식으로 가야할 듯 하다 한 프레임 차이가 난다
+        // FSM의 맵 키를 uint로 하는게 맞고 전역으로 Change_State()에 인자를 넣어서 FSM과 해당 객체의 상태를
+        // 바꾸게 하는 형식으로 가는 것이 좋아보임
+
         static_cast<CFSM*>(m_pMonster->Get_Component(COM_FSM))->Change_State(CMonster::STATE_IDLE);
         return S_OK;
     }
@@ -48,6 +56,35 @@ HRESULT CMonsterState_Attack::Enter_State()
 void CMonsterState_Attack::PriorityUpdate_State(_float fTimeDelta)
 {
     m_pAttackPattern->PriorityUpdate_State(fTimeDelta);
+
+    // 이 때 보스일 때의 처리를 할까 그게 더 디버깅 및 코드 짜임새가 더 좋아보이기도 하고
+
+    if (m_pMonster->Is_Boss() &&
+        m_pAttackPattern->Get_AnimEnd())
+    {
+        CAttack_Base* pPattern = m_pAttackCom->Find_AttackPattern(CMoloch::MOLOCH_ATK_180_L);
+        if (nullptr != pPattern)
+        {
+            _float fDegree = XMConvertToDegrees(Get_MonsterLookDot());
+
+            // ㅈㄴ 위험한데 이거
+            if (fDegree > 130.f)
+            {
+                pPattern->Enter_State();
+                m_pAttackPattern = pPattern;
+            }
+            else
+                m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
+
+            return;
+        }
+        else
+        {
+            /*if()*/
+
+            m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
+        }
+    }
 }
 
 

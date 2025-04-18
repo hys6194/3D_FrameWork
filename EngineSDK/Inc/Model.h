@@ -57,6 +57,11 @@ public:
 		return m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
 	}
 
+	const _uint							Get_CurKeyFrameIndex()
+	{
+		return m_iCurKeyFrameIndex;
+	}
+
 	_bool			Get_AnimEnd()
 	{
 		return m_Animations[m_iCurrentAnimationIndex]->Get_AnimEnd();
