@@ -109,6 +109,7 @@ technique11 DefaultTechnique
 
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
@@ -124,6 +125,7 @@ technique11 DefaultTechnique
         /*vs_5_0 : 쉐이더 5.0 버전임을 의미*/
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 

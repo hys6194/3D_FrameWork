@@ -236,6 +236,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\VIBuffer_Flat_Terrain.h" />
     <ClInclude Include="..\Public\VIBuffer_Instancing.h" />
     <ClInclude Include="..\public\VIBuffer_Particle.h" />
+    <ClInclude Include="..\Public\VIBuffer_Point_Instancing.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect.h" />
     <ClInclude Include="..\public\VIBuffer_Rect_Instancing.h" />
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
@@ -292,6 +293,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\VIBuffer_Flat_Terrain.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Instancing.cpp" />
     <ClCompile Include="..\private\VIBuffer_Particle.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Point_Instancing.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect_Instancing.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />

@@ -104,7 +104,35 @@ void CVIBuffer_Particle::Drop(_float fTimeDelta)
 
 void CVIBuffer_Particle::Spread(_float fTimeDelta)
 {
+	D3D11_MAPPED_SUBRESOURCE			InstanceSubResource{};
+	D3D11_MAPPED_SUBRESOURCE			ParticleSubResource{};
 
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &InstanceSubResource);
+	m_pContext->Map(m_pVBParticle, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &ParticleSubResource);
+
+	INSTVTX* pMatrices = static_cast<INSTVTX*>(InstanceSubResource.pData);
+	VTXPARTICLE* pParticles = static_cast<VTXPARTICLE*>(ParticleSubResource.pData);
+
+
+	for (size_t i = 0; i < m_iNumInstance; i++)
+	{
+		pParticles[i].vLifeTime.y += fTimeDelta;
+
+		if (pParticles[i].vLifeTime.y >= pParticles[i].vLifeTime.x)
+		{
+			if (true == m_isLoop)
+			{
+				pParticles[i].vLifeTime.y = 0.f;
+				pMatrices[i].vTranslation = m_pInstanceVertices[i].vTranslation;
+			}
+		}
+
+		_vector		vMoveDir = XMLoadFloat4(&pMatrices[i].vTranslation) - XMVectorSetW(XMLoadFloat3(&m_vPivot), 1.f);
+		XMStoreFloat4(&pMatrices[i].vTranslation, XMLoadFloat4(&pMatrices[i].vTranslation) + XMVector3Normalize(vMoveDir) * m_pParticleSpeeds[i] * fTimeDelta);
+	}
+
+	m_pContext->Unmap(m_pVBParticle, 0);
+	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
 void CVIBuffer_Particle::Free()

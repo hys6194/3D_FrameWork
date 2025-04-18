@@ -423,6 +423,9 @@
     <ClInclude Include="..\Public\CollisionManager.h">
       <Filter>01.Utility\04. Component\Collider\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Point_Instancing.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Instancing\Particle\Point</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -628,6 +631,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CollisionManager.cpp">
       <Filter>01.Utility\04. Component\Collider\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Point_Instancing.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Instancing\Particle\Point</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

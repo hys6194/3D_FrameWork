@@ -163,6 +163,7 @@
     <ClInclude Include="..\Public\DogAttack_3HitCombo.h" />
     <ClInclude Include="..\Public\DogAttack_GroundSlam.h" />
     <ClInclude Include="..\Public\DogAttack_Slash.h" />
+    <ClInclude Include="..\Public\Explosion.h" />
     <ClInclude Include="..\Public\Fallen_Dog.h" />
     <ClInclude Include="..\Public\Fist_Left.h" />
     <ClInclude Include="..\Public\Fist_Right.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="..\Private\DogAttack_3HitCombo.cpp" />
     <ClCompile Include="..\Private\DogAttack_GroundSlam.cpp" />
     <ClCompile Include="..\Private\DogAttack_Slash.cpp" />
+    <ClCompile Include="..\Private\Explosion.cpp" />
     <ClCompile Include="..\Private\Fallen_Dog.cpp" />
     <ClCompile Include="..\Private\Fist_Left.cpp" />
     <ClCompile Include="..\Private\Fist_Right.cpp" />
@@ -295,6 +297,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosParticle.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectParticle.hlsl" />
   </ItemGroup>

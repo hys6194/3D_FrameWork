@@ -9,8 +9,10 @@ class ENGINE_DLL CVIBuffer_Particle abstract : public CVIBuffer_Instancing
 public:
 	typedef struct tagInstanceParticle : public CVIBuffer_Instancing::INSTANCE_DESC
 	{
-		_float2 vSpeed;
-		_float2 vLifeTime;
+		_float3				vPivot;
+		_float2				vSpeed;
+		_float2				vLifeTime;
+		_bool				isLoop;
 	}INSTANCE_PARTICLE_DESC;
 
 protected:
@@ -31,7 +33,8 @@ public:
 
 protected:
 	ID3D11Buffer*		m_pVBParticle = { nullptr };
-
+	_float3				m_vPivot = {};
+	_bool				m_isLoop = {};
 	_float*				m_pParticleSpeeds = { nullptr };
 	_uint				m_iParticleInstanceStride = {};
 	VTXPARTICLE*		m_pParticleInstanceVertices = { nullptr };

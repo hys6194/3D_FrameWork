@@ -238,6 +238,9 @@
     <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Dash">
       <UniqueIdentifier>{3997deea-10be-4e06-95cc-de080f4ca13e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Instancing\Explosion">
+      <UniqueIdentifier>{1f2a7a1f-7ce3-42c7-93d3-a4f657b353df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -441,6 +444,9 @@
     <ClInclude Include="..\Public\MolochAttack_Dash.h">
       <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Dash</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Explosion.h">
+      <Filter>02.GameObjects\Instancing\Explosion</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -642,6 +648,9 @@
     <ClCompile Include="..\Private\MolochAttack_Dash.cpp">
       <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Dash</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Explosion.cpp">
+      <Filter>02.GameObjects\Instancing\Explosion</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">
@@ -668,6 +677,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectParticle.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosParticle.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

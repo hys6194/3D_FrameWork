@@ -53,17 +53,17 @@ void CTerrain::Late_Update(_float fTimeDelta)
 
 HRESULT CTerrain::Render()
 {
-	//if (FAILED(Bind_SR()))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pShaderCom->Begin(0)))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pVIBufferCom->Render()))
-	//	return E_FAIL;
+	if (FAILED(Bind_SR()))
+		return E_FAIL;
+	
+	if (FAILED(m_pShaderCom->Begin(0)))
+		return E_FAIL;
+	
+	if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))
+		return E_FAIL;
+	
+	if (FAILED(m_pVIBufferCom->Render()))
+		return E_FAIL;
 
 #ifdef _DEBUG
 	m_pNavigationCom->Render();

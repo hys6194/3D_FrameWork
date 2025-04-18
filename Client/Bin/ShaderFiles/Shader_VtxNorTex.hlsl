@@ -115,37 +115,25 @@ PS_OUT PS_MAIN1(PS_IN In)
 //{
 //    // 스플래팅 셰이더
 //    PS_OUT Out = (PS_OUT) 0;
-    
 //    vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexcoord * 30.f);
-//    vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexcoord * 30.f);
-    
+//    vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexcoord * 30.f);    
 //    vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexcoord);
-//    vector vBrush = 0.f;
-        
+//    vector vBrush = 0.f;        
 //    if (g_vBrushPos.x - g_fBrushRange < In.vWorldPos.x && In.vWorldPos.x <= g_vBrushPos.x + g_fBrushRange &&
-//        g_vBrushPos.z - g_fBrushRange < In.vWorldPos.z && In.vWorldPos.z <= g_vBrushPos.z + g_fBrushRange)
-//    {
-//        float2 vTexcoord;
-        
+//        g_vBrushPos.z - g_fBrushRange < In.vWorldPos.z && In.vWorldPos.z <= g_vBrushPos.z + g_fBrushRange)//    {
+//        float2 vTexcoord;        
 //        vTexcoord.x = (In.vWorldPos.x - (g_vBrushPos.x - g_fBrushRange)) / (2.f * g_fBrushRange);
-//        vTexcoord.y = ((g_vBrushPos.z + g_fBrushRange) - In.vWorldPos.z) / (2.f * g_fBrushRange);
-        
+//        vTexcoord.y = ((g_vBrushPos.z + g_fBrushRange) - In.vWorldPos.z) / (2.f * g_fBrushRange);        
 //        vBrush = g_BrushTexture.Sample(LinearSampler, vTexcoord);
-//    }
-    
-//    vector vMtrlDiffuse = vDestDiffuse * vMask + vSourDiffuse * (1.f - vMask) + vBrush;
-    
+//    }    
+//    vector vMtrlDiffuse = vDestDiffuse * vMask + vSourDiffuse * (1.f - vMask) + vBrush;    
 //    //float fShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
-//    float fShade = saturate(dot(normalize(g_vLightDir) * -1.f, In.vNormal));
-    
+//    float fShade = saturate(dot(normalize(g_vLightDir) * -1.f, In.vNormal));    
 //    vector vLook = In.vWorldPos - g_vCamPosition;
-//    vector vReflect = reflect(normalize(g_vLightDir), In.vNormal);
-    
-//    float fSpecular = pow(saturate(dot(normalize(vLook) * -1.f, normalize(vReflect))), 50.f);
-    
+//    vector vReflect = reflect(normalize(g_vLightDir), In.vNormal);    
+//    float fSpecular = pow(saturate(dot(normalize(vLook) * -1.f, normalize(vReflect))), 50.f);    
 //    Out.vColor = g_vLightDiffuse * vMtrlDiffuse * saturate(fShade + (g_vLightAmbient * g_vMtrlAmbient))
 //        + (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
-
 //    return Out;
 //}
 
@@ -170,6 +158,7 @@ technique11 DefaultTechnique
 
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
@@ -180,6 +169,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN1();
     }
 
@@ -191,6 +181,7 @@ technique11 DefaultTechnique
 
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN1();
 
     }
@@ -203,6 +194,7 @@ technique11 DefaultTechnique
 
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN3();
 
     }
