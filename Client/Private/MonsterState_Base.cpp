@@ -52,8 +52,6 @@ void CMonsterState_Base::Update_MonsterTurnSpeed(_float fSpeed)
 {
 	_float fDot = Get_MonsterLookDot();
 
-	_float fDegree = XMConvertToDegrees(fDot);
-
 	// 진입했을 때 각도에 따른 속도 설정
 	m_pMonster->Get_Transform()->Set_RotationSpeed(fDot * fSpeed);
 }
@@ -74,6 +72,24 @@ void CMonsterState_Base::Setting_PlayerInfo()
 {
 	if(nullptr == m_pPlayer)
 		m_pPlayer = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
+}
+
+_bool CMonsterState_Base::Check_PlayerLeft()
+{
+	_vector vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+	_vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
+
+	_vector vCross = XMVector3Cross(vLook, vTargetPos);
+	_float fCrossY = XMVectorGetY(vCross);
+
+	if (fCrossY > 0.f)
+	{
+		return false;
+	}
+	else if (fCrossY < 0.f)
+	{
+		return true;
+	}
 }
 
 HRESULT CMonsterState_Base::Check_Dead(_float fTimeDelta)

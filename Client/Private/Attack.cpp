@@ -120,10 +120,5 @@ void CAttack::Free()
 {
     __super::Free();
 
-    //for (auto& Pair : m_mapPattern)
-    //{
-    //    Pair.second->Free();
-    //}
-
     m_mapPattern.clear();
 }

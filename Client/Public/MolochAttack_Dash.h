@@ -5,11 +5,11 @@
 
 BEGIN(Client)
 
-class CMolochAttack_Geyser : public CAttack_Base
+class CMolochAttack_Dash : public CAttack_Base
 {
 private:
-	CMolochAttack_Geyser(CGameObject* pOwner, CGameObject* pAnimOwner);
-	virtual ~CMolochAttack_Geyser() = default;
+	CMolochAttack_Dash(CGameObject* pOwner, CGameObject* pAnimOwner);
+	virtual ~CMolochAttack_Dash() = default;
 
 public:
 	virtual HRESULT							Enter_State();
@@ -25,14 +25,16 @@ public:
 	virtual void							Update_CoolTime(_float fTimeDelta);
 	virtual _bool							Check_Attackable();
 	virtual _bool							Check_Colls();
+
+private:
+	void									Reset_Pattern();
 	HRESULT									Create_Crystals();
 
-private: 
+private:
 	_bool									m_bSpawn = { false };
 
-
 public:
-	static CMolochAttack_Geyser*			Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);
+	static CMolochAttack_Dash*				Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);
 	virtual void							Free() override;
 
 

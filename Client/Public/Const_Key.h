@@ -142,6 +142,7 @@ static const std::wstring PRO_OBJ_MOLOCH				= TEXT("Prototype_GameObject_Moloch"
 static const std::wstring PRO_OBJ_TEST_MONSTER			= TEXT("Prototype_GameObject_TEST_MONSTER");
 static const std::wstring PRO_OBJ_MOLOCH_BODY 			= TEXT("Prototype_GameObject_Moloch Body");
 static const std::wstring PRO_OBJ_MOLOCH_SWORD			= TEXT("Prototype_GameObject_Moloch Sword");
+static const std::wstring PRO_OBJ_CRYSTAL				= TEXT("Prototype_GameObject_Crystal");
 
 static const std::wstring PRO_OBJ_GROUND_DECAL			= TEXT("Prototype_GameObject_GroundDecal LG A");
 static const std::wstring PRO_OBJ_DAM_END				= TEXT("Prototype_GameObject_Dam EndCap A");
@@ -163,6 +164,7 @@ static const std::wstring PRO_OBJ_WALL_TOP				= TEXT("Prototype_GameObject_Ruin 
 static const std::wstring PRO_OBJ_DAM_TRIM				= TEXT("Prototype_GameObject_Dam Trim");
 static const std::wstring PRO_OBJ_WODDEN_CIRCLE			= TEXT("Prototype_GameObject_Wooden Circle C");
 static const std::wstring PRO_OBJ_PILLAR_ALCOVE			= TEXT("Prototype_GameObject_Pillar Alcove A");
+
 
 
 /* Sockets */

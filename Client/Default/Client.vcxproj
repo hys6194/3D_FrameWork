@@ -180,6 +180,8 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Map_Object.h" />
     <ClInclude Include="..\Public\Moloch.h" />
+    <ClInclude Include="..\Public\MolochAttack_180.h" />
+    <ClInclude Include="..\Public\MolochAttack_Dash.h" />
     <ClInclude Include="..\Public\MolochAttack_Geyser.h" />
     <ClInclude Include="..\Public\MolochAttack_Swing.h" />
     <ClInclude Include="..\Public\MolochAttack_Swipe.h" />
@@ -245,6 +247,8 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Map_Object.cpp" />
     <ClCompile Include="..\Private\Moloch.cpp" />
+    <ClCompile Include="..\Private\MolochAttack_180.cpp" />
+    <ClCompile Include="..\Private\MolochAttack_Dash.cpp" />
     <ClCompile Include="..\Private\MolochAttack_Geyser.cpp" />
     <ClCompile Include="..\Private\MolochAttack_Swing.cpp" />
     <ClCompile Include="..\Private\MolochAttack_Swipe.cpp" />

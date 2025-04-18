@@ -4,6 +4,8 @@
 #include "TP_Camera.h"
 #include "Map_Object.h"
 
+#include "Crystal.h"
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel { pDevice , pContext }
 {
@@ -196,7 +198,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Object(const _tchar* pLayerTag)
 	}
 
 	CloseHandle(hFile);
-
 
 	return S_OK;
 }

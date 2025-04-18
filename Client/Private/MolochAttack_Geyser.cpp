@@ -4,6 +4,7 @@
 
 #include "Moloch.h"
 #include "Body_Moloch.h"
+#include "Crystal.h"
 
 CMolochAttack_Geyser::CMolochAttack_Geyser(CGameObject* pOwner, CGameObject* pAnimOwner)
     : CAttack_Base { pOwner, pAnimOwner }
@@ -29,48 +30,50 @@ void CMolochAttack_Geyser::PriorityUpdate_State(_float fTimeDelta)
     switch (m_iAnimIndex)
     {
         case CMoloch::MOLOCH_ATK_FULL_GEYSER_START:
-
-            // 충돌체 등록 시간
-            if ((22 <= m_pModelCom->Get_CurAnimationTrackPosition() &&
-                m_pModelCom->Get_CurAnimationTrackPosition() <= 41) &&
-                !m_bRegisted)
+            if (m_bAnimEnd)
             {
-                Regist_PartCollUpdate();
-                m_bRegisted = true;
+                m_pModelCom->Set_AnimationIndex(CMoloch::MOLOCH_ATK_FULL_GEYSER);
+                m_iAnimIndex = CMoloch::MOLOCH_ATK_FULL_GEYSER;
+                m_bAnimEnd = false;
             }
-
-            else if (!(22 <= m_pModelCom->Get_CurAnimationTrackPosition() &&
-                m_pModelCom->Get_CurAnimationTrackPosition() <= 41) &&
-                !m_bSeceded)
-            {
-                Secede_PartCollUpdate();
-                m_bSeceded = true;
-            }
-
             break;
         case CMoloch::MOLOCH_ATK_FULL_GEYSER:
+        {
+            Regist_CollUpdate(0, 56);
+            Secede_CollUpdate(0, 56);
+
+            // 운이 좋았던 것 같은데 
+            if(11.f <= m_pModelCom->Get_CurAnimationTrackPosition() && 
+                !m_bSpawn)
+            {
+                m_bSpawn = true;
+                Create_Crystals();
+            }
+
+            if (m_bAnimEnd)
+            {
+                m_pModelCom->Set_AnimationIndex(CMoloch::MOLOCH_ATK_FULL_GEYSER_02);
+                m_iAnimIndex = CMoloch::MOLOCH_ATK_FULL_GEYSER_02;
+                m_bAnimEnd = false;
+                m_bSpawn = false;
+
+            }
+        }
+
+            // 여기에서 크리스탈 생성 코드 로직을 짜야 함
 
             break;
         case CMoloch::MOLOCH_ATK_FULL_GEYSER_02:
+            Regist_CollUpdate(0, 65);
+            Secede_CollUpdate(0, 65);
+
+            if (m_bAnimEnd)
+            {
+                m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
+                m_bAnimEnd = false;
+            }
 
             break;
-    }
-
-    m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
-    
-    // 애니메이션 돌아갈 때 히트 판정의 발동과 해제
-    if (0.65f < m_fTotalTime && !m_bRegisted)
-    {
-        Regist_PartCollUpdate();
-        m_bRegisted = true;
-    }
-    
-    // 애니메이션의 중간에 이벤트를 발생해서 Update 등록 및 해제를 하고 싶은데 안되나
-    if (m_pModelCom->Get_CurAnimationTrackPosition() >= m_pModelCom->Get_CurAnimationDuration() / 1.5f &&
-        !m_bSeceded)
-    {
-        Secede_PartCollUpdate();
-        m_bSeceded = true;
     }
 
 }
@@ -105,8 +108,12 @@ void CMolochAttack_Geyser::Set_PreAnimation()
 }
 
 void CMolochAttack_Geyser::Update_Animation(_float fTimeDelta)
-{
-    m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
+{    
+    if (0 != m_pModelCom->Get_PreAnimIndex()
+          && m_pModelCom->Get_Interpolate())
+        m_pModelCom->Interpolate_Animation(0.2f);
+    else
+        m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
 
     m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)), 0.5f);
 }
@@ -116,6 +123,7 @@ void CMolochAttack_Geyser::Set_CurAnimation()
     m_pModelCom = m_pBody->Get_Model();
 
     m_iAnimIndex = CMoloch::MOLOCH_ATK_FULL_GEYSER_START;
+
 
     m_pModelCom->Set_AnimationIndex(m_iAnimIndex);
 }
@@ -133,10 +141,6 @@ _bool CMolochAttack_Geyser::Check_Attackable()
     if (m_fElapseTime >= m_fCoolTime && Check_Colls())
         return true;
 
-    // 공격 조건이라면
-    if (Check_Colls())
-        return true;
-
     return false;
 }
 
@@ -151,6 +155,51 @@ _bool CMolochAttack_Geyser::Check_Colls()
         return true;
 
     return false;
+}
+
+HRESULT CMolochAttack_Geyser::Create_Crystals()
+{
+    CCrystal::CRYSTAL_DESC Desc{};
+    Desc.vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+    Desc.strModelTag = PRO_MODEL_MOLOCH_CRYSTAL_A;
+    Desc.pOwner = dynamic_cast<CMoloch*>(m_pMonster);
+
+    _float4 fMonsterPos{};
+    XMStoreFloat4(&fMonsterPos, m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS));
+   
+    // 생성 개수
+    mt19937 gen3(rand());
+
+    uniform_int_distribution<> Count(16, 24);
+
+    _uint iNum = Count(gen3);
+
+    for(size_t i = 0; i < iNum; i++)
+    {
+        random_device rand;
+        mt19937 gen1(rand());
+        mt19937 gen2(rand());
+
+        float fDistance;
+        fDistance = 30.f;
+
+        // 거리
+        uniform_real_distribution<> dis(-fDistance, fDistance);
+
+
+        float fRandPosX = (_float)dis(gen1);
+        float fRandPosZ = (_float)dis(gen2);
+
+        Desc.vCrystalPos = XMVectorSet(fMonsterPos.x + fRandPosX,
+            fMonsterPos.y,
+            fMonsterPos.z + fRandPosZ,
+            1.f);
+
+        FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_CRYSTAL,
+            LEVEL_GAMEPLAY, Desc.strModelTag, &Desc), E_FAIL);
+    }
+
+    return S_OK;
 }
 
 CMolochAttack_Geyser* CMolochAttack_Geyser::Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime)

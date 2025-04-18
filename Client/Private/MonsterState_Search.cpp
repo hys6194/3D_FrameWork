@@ -21,7 +21,6 @@ HRESULT CMonsterState_Search::Enter_State()
 
     Update_MonsterTurnSpeed();
 
-
     return S_OK;
 }
 
@@ -75,9 +74,9 @@ void CMonsterState_Search::Update_Animation(_float fTimeDelta)
 
 void CMonsterState_Search::Set_CurAnimation()
 {
-    _float fDegree = XMConvertToRadians(Get_MonsterLookDot());
+    _bool bCheck = Check_PlayerLeft();
 
-    if(0 <= fDegree)
+    if(bCheck)
         m_pModelCom->Set_AnimationIndex(m_iAnimIndex);
     else
         m_pModelCom->Set_AnimationIndex(m_iAnimIndex + 1);

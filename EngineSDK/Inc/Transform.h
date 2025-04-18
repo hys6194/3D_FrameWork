@@ -40,6 +40,11 @@ public:
 		return &m_f4WorldMatrix;
 	}
 
+	_float Get_Speed()
+	{
+		return m_fSpeedPerSec;
+	}
+
 public:
 
 	void Set_Matrix(const _float4x4* _fMatrix)
@@ -55,6 +60,11 @@ public:
 	void Set_RotationSpeed(_float fRadian)
 	{
 		m_fRotationPerSec = fRadian;
+	}
+
+	void Set_Speed(_float fSpeed)
+	{
+		m_fSpeedPerSec = fSpeed;
 	}
 
 private:

@@ -22,12 +22,16 @@ HRESULT CCrystal::Initialize(void* pArg)
 {
     CRYSTAL_DESC* pDesc = static_cast<CRYSTAL_DESC*>(pArg);
 
-    m_fCrystalPos = pDesc->fCrystalPos;
-    m_fLook = pDesc->fLook;
+    m_fLifeTime = pDesc->fLifeTime;
+    m_vCrystalPos = pDesc->vCrystalPos;
+    m_vLook = pDesc->vLook;
     m_pOwner = pDesc->pOwner;
+    m_strModelTag = pDesc->strModelTag;
 
     FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
-    FAILED_CHECK_RETURN(Ready_Component(), E_FAIL)
+    FAILED_CHECK_RETURN(Ready_Component(), E_FAIL);
+
+    m_pTransformCom->Set_State(CTransform::STATE_POS, m_vCrystalPos);
 
     return S_OK;
 }
@@ -39,17 +43,21 @@ void CCrystal::Priority_Update(_float fTimeDelta)
     // 크리스탈을 생성했을때 위치와 각도를 선정해야 함
     // 그러면 인자로 받아오면서 생성하는걸로
     // 우선 크리스탈을 생성하는 공격 패턴 클래스를 최대한 빠르게 생성한다
+
 }
 
 void CCrystal::Update(_float fTimeDelta)
 {
     m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
 
-    if (10.f < m_fTotalTime ||
+    if (m_fLifeTime < m_fTotalTime ||
         m_pColliderCom->Is_Coll())
     {
         m_pGameInstance->Secede_Update(m_pColliderCom->Get_Bounder());
         m_bDisappear = true;
+
+        // 이 때 이펙트를 만드는 것도 방법이라고 생각하기는 함
+
     }
 
     m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
@@ -93,16 +101,17 @@ HRESULT CCrystal::Render()
 
 HRESULT CCrystal::Ready_Component()
 {
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_CRYSTAL_A,
+    // 모델 어떻게 넘겨줄까 
+    // Desc으로 받아서 할까
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, m_strModelTag,
         reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL)
         ;
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
-    SphereDesc.fRadius      = 0.2f;
+    SphereDesc.fRadius      = 2.f;
     SphereDesc.vCenter      = _float3(0.f, 0.f, 0.f);
-    //SphereDesc.strCollTag   = Get_Name() + std::to_wstring(m_iIndex);
     SphereDesc.strCollTag   = Get_Name();
     SphereDesc.iOption      = COLL_OPT::OP_IMPACT;
     SphereDesc.eType =      TYPE::TYPE_SPHERE;
@@ -111,9 +120,6 @@ HRESULT CCrystal::Ready_Component()
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc)))
         return E_FAIL;
 
-    // 근데 좀 별로다 몸은 자동으로 등록하는데 총알이나 공격 부류는 내가 선언해야 등록되는거
-    // 아닌데? 의도한대로 되긴했는데? 불편한거 아닌가?
-    // 불편한거네 근데 이게 더 낫긴해
     m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
 
     return S_OK;

@@ -35,6 +35,8 @@ protected:
 	void									Regist_CollUpdate(_uint iKeyFrame1, _uint iKeyFrame2);
 	void									Secede_CollUpdate(_uint iKeyFrame1, _uint iKeyFrame2);
 
+	
+
 protected:
 	_bool									m_bCool		= { false };
 	_bool									m_bAttack	= { false };

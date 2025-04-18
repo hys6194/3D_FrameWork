@@ -10,6 +10,8 @@
 #include "MolochAttack_Geyser.h"
 #include "MolochAttack_Swipe.h"
 #include "MolochAttack_Swing.h"
+#include "MolochAttack_Dash.h"
+#include "MolochAttack_180.h"
 
 #include "MonsterState_Attack.h"
 #include "MonsterState_Search.h"
@@ -157,17 +159,20 @@ HRESULT CMoloch::Ready_States()
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
     
     // 여기에서 다음과 같은 방식으로 공격 패턴에 관한 클래스를 계속 등록해줘야 함
-    pState = CMolochAttack_Swipe::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIPE_01, 5.f);
+    pState = CMolochAttack_Swipe::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIPE_01, 12.f);
     m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_SWIPE_01, static_cast<CAttack_Base*>(pState));
 
-    pState = CMolochAttack_Swing::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_SWING_01, 5.f);
+    pState = CMolochAttack_Swing::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_SWING_01, 12.f);
     m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_FULL_SWING_01, static_cast<CAttack_Base*>(pState));
 
-    pState = CMolochAttack_Geyser::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_GEYSER_START, 5.f);
+    pState = CMolochAttack_Geyser::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_GEYSER_START, 90.f);
     m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_FULL_GEYSER_START, static_cast<CAttack_Base*>(pState));
-    
-    pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], MOLOCH_FULL_IDLE);
-    m_pFSMCom->Add_State(CMonster::STATE_AVOID, pState);
+
+    pState = CMolochAttack_Dash::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_DASH, 45.f);
+    m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_FULL_DASH, static_cast<CAttack_Base*>(pState));
+
+    pState = CMolochAttack_180::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_180_L, 1.f);
+    m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_180_L, static_cast<CAttack_Base*>(pState));
     
     pState = CMonsterState_Trace::Create(this, m_vecParts[PART_BODY], MOLOCH_WALK_F);
     m_pFSMCom->Add_State(CMonster::STATE_TRACE, pState);
@@ -214,7 +219,7 @@ HRESULT CMoloch::Ready_Components()
     
     CStatus::STATUS_DESC StatusDesc{};
     StatusDesc.iAttack = 2;
-    StatusDesc.iHP = 50;
+    StatusDesc.iHP = 500;
     StatusDesc.pOwner = this;
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_STATUS,

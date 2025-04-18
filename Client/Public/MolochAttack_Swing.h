@@ -26,6 +26,10 @@ public:
 	virtual _bool							Check_Attackable();
 	virtual _bool							Check_Colls();
 
+private:
+	_bool									    m_bSpawn = { false };
+
+
 public:
 	static CMolochAttack_Swing*					Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);
 	virtual void							Free() override;

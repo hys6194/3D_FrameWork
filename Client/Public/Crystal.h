@@ -17,8 +17,9 @@ class CCrystal : public CGameObject
 public:
 	typedef struct tagCrystalDesc :public GAMEOBJECT_DESC
 	{
-		_float4 fCrystalPos;
-		_float4 fLook;
+		_float fLifeTime = 5.f;
+		_vector vCrystalPos;
+		_vector vLook;
 
 		_wstring strModelTag;
 
@@ -49,10 +50,10 @@ private:
 
 	_bool						m_bDisappear = { false };
 
-	_float4x4					m_matHand;
+	_float						m_fLifeTime = {};
 
-	_float4						m_fCrystalPos;
-	_float4						m_fLook;
+	_vector						m_vCrystalPos;
+	_vector						m_vLook;
 	_float						m_fTotalTime = { 0.f };
 
 	_uint						m_iIndex	= { 0 };
@@ -62,7 +63,7 @@ private:
 	class CMoloch*				m_pOwner = { nullptr };
 
 public:
-	static CCrystal*				Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CCrystal*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject*		Clone(void* pArg)override;
 	virtual void				Free() override;
 };

@@ -232,6 +232,12 @@
     <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Geyser">
       <UniqueIdentifier>{4bec32c7-e208-4876-8808-c01db0a82067}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\180">
+      <UniqueIdentifier>{75cf4fe7-48b3-42bb-b6af-a4c8afad3d6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Dash">
+      <UniqueIdentifier>{3997deea-10be-4e06-95cc-de080f4ca13e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -429,6 +435,12 @@
     <ClInclude Include="..\Public\MolochAttack_Geyser.h">
       <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Geyser</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MolochAttack_180.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\180</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MolochAttack_Dash.h">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Dash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -623,6 +635,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\MolochAttack_Geyser.cpp">
       <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Geyser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MolochAttack_180.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\180</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MolochAttack_Dash.cpp">
+      <Filter>02.GameObjects\Monster\States\Attrack\Attack_Patterns\Moloch\Dash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

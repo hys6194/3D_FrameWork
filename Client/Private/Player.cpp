@@ -69,6 +69,22 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 		m_pColliderCom[i]->Reset();
 	}
 
+	if (m_pGameInstance->Get_DIKeyState(DIK_7))
+	{
+		m_pTransformCom->Set_Speed(50.f);
+	}
+
+	if (m_pGameInstance->Get_DIKeyState(DIK_8))
+	{
+		m_pTransformCom->Set_Speed(25.f);
+	}
+
+	if (m_pGameInstance->Get_DIKeyState(DIK_9))
+	{
+		m_pTransformCom->Set_Speed(10.f);
+	}
+
+
 	__super::Priority_Update(fTimeDelta);
 }
 

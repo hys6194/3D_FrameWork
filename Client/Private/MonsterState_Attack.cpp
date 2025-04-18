@@ -20,6 +20,9 @@ CMonsterState_Attack::CMonsterState_Attack(CGameObject* pOwner, CGameObject* pAn
 
 HRESULT CMonsterState_Attack::Enter_State()
 { 
+
+    Setting_PlayerInfo();
+
     m_bAnimEnd = false;
     // 여기에서 AnimIndex설정해줘야 함
     m_pAttackCom = static_cast<CAttack*>(m_pMonster->Get_Component(COM_ATTACK));
@@ -53,6 +56,35 @@ HRESULT CMonsterState_Attack::Enter_State()
 void CMonsterState_Attack::PriorityUpdate_State(_float fTimeDelta)
 {
     m_pAttackPattern->PriorityUpdate_State(fTimeDelta);
+
+    // 이 때 보스일 때의 처리를 할까 그게 더 디버깅 및 코드 짜임새가 더 좋아보이기도 하고
+
+    if (m_pMonster->Is_Boss() &&
+        m_pAttackPattern->Get_AnimEnd())
+    {
+        CAttack_Base* pPattern = m_pAttackCom->Find_AttackPattern(CMoloch::MOLOCH_ATK_180_L);
+        if (nullptr != pPattern)
+        {
+            _float fDegree = XMConvertToDegrees(Get_MonsterLookDot());
+
+            // ㅈㄴ 위험한데 이거
+            if (fDegree > 130.f)
+            {
+                pPattern->Enter_State();
+                m_pAttackPattern = pPattern;
+            }
+            else
+                m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
+
+            return;
+        }
+        else
+        {
+            /*if()*/
+
+            m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
+        }
+    }
 }
 
 

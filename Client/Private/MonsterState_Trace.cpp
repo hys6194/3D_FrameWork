@@ -64,17 +64,6 @@ void CMonsterState_Trace::PriorityUpdate_State(_float fTimeDelta)
 
     MoveTo_Player(fTimeDelta);
 
-
-    // 폐기
-    //_vector vPos = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS);
-    //_vector vPlayerPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
-
-    //_float fDistanace = XMVectorGetX(XMVector4Length(XMVectorSubtract(vPos, vPlayerPos)));
-
-    //if (m_pMonster->Get_AttackDistance() > fDistanace)
-    //    m_pMonster->Change_CurrentState(CMonster::STATE_LOOKOUT);
-
-
 }
 
 
@@ -99,7 +88,6 @@ void CMonsterState_Trace::Set_PreAnimation()
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
     m_pMonster->Set_PreState(CMonster::STATE_TRACE);
-
 }
 
 void CMonsterState_Trace::Update_Animation(_float fTimeDelta)
@@ -123,7 +111,6 @@ void CMonsterState_Trace::MoveTo_Player(_float fTimeDelta)
         Update_MonsterTurnSpeed(4.f);
         m_bTurned = false;
     }
-
 
     // 만약 일직선이 아닐 경우
     if (!m_bTurned)

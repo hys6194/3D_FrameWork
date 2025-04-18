@@ -239,7 +239,7 @@ _bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTarg
     _float      fDot = acosf(XMVectorGetX(XMVector3Dot(vLook, vTargetToDir)));
 
     if (0 > fY)
-       vAxisBase = XMVectorSetY(vAxis, -1.f);
+       vAxisBase = XMVectorScale(vAxis, -1.f);
 
 
     _matrix		RotationMatrix = XMMatrixRotationAxis(vAxisBase, fTimeDelta * m_fRotationPerSec);

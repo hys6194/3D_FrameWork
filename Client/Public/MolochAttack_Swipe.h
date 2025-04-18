@@ -26,6 +26,9 @@ public:
 	virtual _bool							Check_Attackable();
 	virtual _bool							Check_Colls();
 
+private:
+	void									Reset_Pattern();
+
 public:
 	static CMolochAttack_Swipe*				Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);
 	virtual void							Free() override;

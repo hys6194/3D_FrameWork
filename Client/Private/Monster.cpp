@@ -84,6 +84,7 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 	m_fTotalTime += fTimeDelta;
 
+	// 공격 패턴에 넘어갈 수 있는 조건
 	if (m_fTotalTime >= m_fAttackCoolTime)
 	{
 		m_fTotalTime = 0.f;
