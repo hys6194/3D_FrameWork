@@ -10,7 +10,7 @@ private:
 	virtual ~CRenderTarget() = default;
 
 public:
-	HRESULT Initialize(_uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
+	HRESULT							Initialize(_uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
 
 private:
 	ID3D11Device*					m_pDevice		= { nullptr };
@@ -21,11 +21,11 @@ private:
 	ID3D11RenderTargetView*			m_pRTV			= { nullptr };
 	ID3D11ShaderResourceView*		m_pSRV			= { nullptr };
 
-	_float4						m_vClearColor = {};
+	_float4							m_vClearColor = {};
 
 public:
-	static CRenderTarget* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
-	virtual void Free() override;
+	static CRenderTarget*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
+	virtual void					Free() override;
 };
 
 END
