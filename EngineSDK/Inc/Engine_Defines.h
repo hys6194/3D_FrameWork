@@ -82,4 +82,14 @@ namespace Engine
 #endif
 
 
+static const std::wstring TARGET_DIFF	= TEXT("Target_Diffuse");
+static const std::wstring TARGET_NORM	= TEXT("Target_Normal");
+static const std::wstring TARGET_SHAD	= TEXT("Target_Shade");
+
+
+static const std::wstring MRT_GAMEOBJ	= TEXT("MRT_GameObject");
+static const std::wstring MRT_LIGHT		= TEXT("MRT_Light");
+
+
+
 using namespace Engine;

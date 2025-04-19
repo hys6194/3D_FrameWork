@@ -223,8 +223,10 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\PipeLine.h" />
     <ClInclude Include="..\Public\Prototype.h" />
     <ClInclude Include="..\Public\Renderer.h" />
+    <ClInclude Include="..\Public\RenderTarget.h" />
     <ClInclude Include="..\Public\Shader.h" />
     <ClInclude Include="..\Public\State.h" />
+    <ClInclude Include="..\Public\Target_Manager.h" />
     <ClInclude Include="..\Public\Texture.h" />
     <ClInclude Include="..\Public\Timer.h" />
     <ClInclude Include="..\Public\Timer_Manager.h" />
@@ -236,6 +238,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\VIBuffer_Flat_Terrain.h" />
     <ClInclude Include="..\Public\VIBuffer_Instancing.h" />
     <ClInclude Include="..\public\VIBuffer_Particle.h" />
+    <ClInclude Include="..\Public\VIBuffer_Point_Instancing.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect.h" />
     <ClInclude Include="..\public\VIBuffer_Rect_Instancing.h" />
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
@@ -279,8 +282,10 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\PipeLine.cpp" />
     <ClCompile Include="..\Private\Prototype.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
+    <ClCompile Include="..\Private\RenderTarget.cpp" />
     <ClCompile Include="..\Private\Shader.cpp" />
     <ClCompile Include="..\Private\State.cpp" />
+    <ClCompile Include="..\Private\Target_Manager.cpp" />
     <ClCompile Include="..\Private\Texture.cpp" />
     <ClCompile Include="..\Private\Timer.cpp" />
     <ClCompile Include="..\Private\Timer_Manager.cpp" />
@@ -292,6 +297,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\VIBuffer_Flat_Terrain.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Instancing.cpp" />
     <ClCompile Include="..\private\VIBuffer_Particle.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Point_Instancing.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect_Instancing.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />
@@ -316,6 +322,7 @@ call Copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

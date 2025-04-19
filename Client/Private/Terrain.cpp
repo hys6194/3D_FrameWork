@@ -53,17 +53,17 @@ void CTerrain::Late_Update(_float fTimeDelta)
 
 HRESULT CTerrain::Render()
 {
-	//if (FAILED(Bind_SR()))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pShaderCom->Begin(0)))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pVIBufferCom->Render()))
-	//	return E_FAIL;
+	if (FAILED(Bind_SR()))
+		return E_FAIL;
+	
+	if (FAILED(m_pShaderCom->Begin(1)))
+		return E_FAIL;
+	
+	if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))
+		return E_FAIL;
+	
+	if (FAILED(m_pVIBufferCom->Render()))
+		return E_FAIL;
 
 #ifdef _DEBUG
 	m_pNavigationCom->Render();
@@ -121,7 +121,7 @@ HRESULT CTerrain::Bind_SR()
 	if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom,  CPipeLine::D3DTS_PROJ)))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_SR("g_DiffuseTexture", m_pShaderCom, 0)))
+	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_SRVs("g_DiffuseTexture", m_pShaderCom)))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_SR("g_MaskTexture", m_pShaderCom, 0)))

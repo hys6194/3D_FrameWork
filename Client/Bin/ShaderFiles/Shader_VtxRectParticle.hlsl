@@ -21,6 +21,8 @@ struct VS_IN
     float4 vUp : TEXCOORD2;
     float4 vLook : TEXCOORD3;
     float4 vTranslation : TEXCOORD4;
+    
+    float2 vLifeTime : TEXCOORD5;
 };
 
 
@@ -28,6 +30,7 @@ struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
+    float2 vLifeTime : TEXCOORD5;
 };
 
 VS_OUT VS_MAIN(VS_IN In)
@@ -47,6 +50,7 @@ VS_OUT VS_MAIN(VS_IN In)
   
     Out.vPosition = mul(vPosition, matWVP);
     Out.vTexcoord = In.vTexcoord;
+    Out.vLifeTime = In.vLifeTime;
   
     return Out;
 }
@@ -55,6 +59,7 @@ struct PS_IN
 {
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
+    float2 vLifeTime : TEXCOORD5;
 };
 
 struct PS_OUT
@@ -67,12 +72,14 @@ struct PS_OUT
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-
+    
     Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
     
-    if(0.4f >= Out.vColor.a)
+    if(0.3f >= Out.vColor.a)
         discard;
     
+    Out.vColor.a = In.vLifeTime.x - In.vLifeTime.y;
+ 
     return Out;
 }
  
@@ -89,10 +96,11 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 }

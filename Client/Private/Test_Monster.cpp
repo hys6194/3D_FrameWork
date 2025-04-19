@@ -170,8 +170,6 @@ HRESULT CTest_Monster::Bind_ShaderResources()
 	if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom,  CPipeLine::D3DTS_PROJ)))
 		return E_FAIL;
 
-
-
 	return S_OK;
 }
 

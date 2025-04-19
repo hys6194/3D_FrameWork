@@ -1,4 +1,5 @@
-#include "VIBuffer_Rect_Instancing.h"
+#include "VIBuffer_Particle.h"
+
 
 #include "GameInstance.h"
 
@@ -14,16 +15,20 @@ CVIBuffer_Rect_Instancing::CVIBuffer_Rect_Instancing(const CVIBuffer_Rect_Instan
 
 HRESULT CVIBuffer_Rect_Instancing::Initialize_Prototype(CVIBuffer_Instancing::INSTANCE_DESC* pInstDesc)
 {
-	CVIBuffer_Instancing::INSTANCE_DESC* pDesc = static_cast<CVIBuffer_Instancing::INSTANCE_DESC*>(pInstDesc);
+	CVIBuffer_Particle::INSTANCE_PARTICLE_DESC* pDesc = static_cast<CVIBuffer_Particle::INSTANCE_PARTICLE_DESC*>(pInstDesc);
 
 	// 원래 사각형을 그릴 때, 버텍스 정점 6개를 사용했기 때문에 6으로 선언
 	m_iNumIndexPerInstance = 6;
 	m_iVertexStride = sizeof(VTXPOSTEX);
 	m_iNumVertices = 4;
 	m_iIndexStride = 2;
+
+	//Desc으로 받아온 생성할 개수만큼  버퍼를 할당 및 생성
 	m_iNumInstance = pDesc->iNumInstances;
+
+	// 사각형을 그릴 것이므로 6 * num
 	m_iNumIndices = 6 * m_iNumInstance;
-	m_iNumVertexBuffers = 2;
+	m_iNumVertexBuffers = 3;
 	m_eIndexFormat = DXGI_FORMAT_R16_UINT;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
@@ -86,7 +91,6 @@ HRESULT CVIBuffer_Rect_Instancing::Initialize_Prototype(CVIBuffer_Instancing::IN
 		pIndices[iNumIndices++] = 3;
 	}
 
-
 	ZeroMemory(&m_InitialData, sizeof m_InitialData);
 	m_InitialData.pSysMem = pIndices;
 
@@ -94,6 +98,21 @@ HRESULT CVIBuffer_Rect_Instancing::Initialize_Prototype(CVIBuffer_Instancing::IN
 		return E_FAIL;
 
 	Safe_Delete_Array(pIndices);
+
+#pragma endregion
+
+#pragma region PARTICLE_INSTANCEBUFFER
+	m_pParticleSpeeds = new _float[m_iNumInstance];
+	m_iParticleInstanceStride = sizeof(VTXPARTICLE);
+
+	m_pParticleInstanceVertices = new VTXPARTICLE[m_iNumInstance];
+	ZeroMemory(m_pParticleInstanceVertices, sizeof(VTXPARTICLE) * m_iNumInstance);
+
+	for (size_t i = 0; i < m_iNumInstance; i++)
+	{
+		m_pParticleSpeeds[i] = m_pGameInstance->Random(pDesc->vSpeed.x, pDesc->vSpeed.y);
+		m_pParticleInstanceVertices[i].vLifeTime = _float2(m_pGameInstance->Random(pDesc->vLifeTime.x, pDesc->vLifeTime.y), 0.f);
+	}
 
 #pragma endregion
 
@@ -127,18 +146,7 @@ HRESULT CVIBuffer_Rect_Instancing::Initialize_Prototype(CVIBuffer_Instancing::IN
 
 HRESULT CVIBuffer_Rect_Instancing::Initialize(void* pArg)
 {
-	ZeroMemory(&m_BufferDesc, sizeof(m_BufferDesc));
-	m_BufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstance;
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	m_BufferDesc.StructureByteStride = m_iInstanceStride;
-	m_BufferDesc.CPUAccessFlags = 0;
-	m_BufferDesc.MiscFlags = 0;
-
-	ZeroMemory(&m_InitialData, sizeof(m_InitialData));
-	m_InitialData.pSysMem = m_pInstanceVertices;
-
-	if (FAILED(__super::Create_Buffer(&m_pVBInstance)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	return S_OK;
@@ -173,4 +181,13 @@ CComponent* CVIBuffer_Rect_Instancing::Clone(void* pArg)
 void CVIBuffer_Rect_Instancing::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pVBParticle);
+
+	if (false == m_isCloned)
+	{
+		Safe_Delete_Array(m_pParticleSpeeds);
+		Safe_Delete_Array(m_pParticleInstanceVertices);
+	}
+
 }

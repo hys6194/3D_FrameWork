@@ -3,20 +3,9 @@
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
-float4 g_vLightDir;
-float4 g_vLightDiffuse;
-float4 g_vLightAmbient;
-float4 g_vLightSpecular;
-
-texture2D g_DiffuseTexture;
-//texture2D g_DiffuseTexture[2];
+texture2D g_DiffuseTexture[2];
 texture2D g_MaskTexture;
 texture2D g_BrushTexture;
-
-float4 g_vMtrlAmbient = float4(0.3f, 0.3f, 0.3f, 1.f);
-float4 g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);
-
-float4 g_vCamPosition;
 
 float4 g_vBrushPos = float4(40.f, 0.f, 20.f, 1.f);
 float  g_fBrushRange = 5.f;
@@ -64,95 +53,99 @@ struct PS_IN
 
 struct PS_OUT
 {
+    float4 vDiffuse : SV_TARGET0;
+    float4 vNormal  : SV_TARGET1;
+};
+
+struct PS_OUT_TOOL
+{
     float4 vColor : SV_TARGET0;
 };
 
 
-// 빛 반사 적용
-PS_OUT PS_MAIN(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-    
-    vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord * 30.f);
-    
-    //float fShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
-    float fShade = saturate(dot(normalize(g_vLightDir) * -1.f, In.vNormal));
-    
-    vector vLook = In.vWorldPos - g_vCamPosition;
-    vector vReflect = reflect(normalize(g_vLightDir), In.vNormal);
-    
-    float fSpecular = pow(saturate(dot(normalize(vLook) * -1.f, normalize(vReflect))), 50.f);
-    
-    Out.vColor = g_vLightDiffuse * vDiffuse * saturate(fShade + (g_vLightAmbient * g_vMtrlAmbient))
-        + (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
-    
-    //Out.vColor.a = 0.5f;
-    
-    return Out;
-}
-
-// 빛 반사 미적용
-PS_OUT PS_MAIN1(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-    
-    vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord * 30.f);
-    
-    float fShade = saturate(dot(normalize(g_vLightDir) * -1.f, In.vNormal));
-    
-    vector vLook = In.vWorldPos - g_vCamPosition;
-    vector vReflect = reflect(normalize(g_vLightDir), In.vNormal);
-    
-    float fSpecular = pow(saturate(normalize(vReflect)), 50.f);
-    
-    Out.vColor = g_vLightDiffuse * vDiffuse * saturate(fShade + (g_vLightAmbient * g_vMtrlAmbient))
-        + (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
-    
-    return Out;
-}
-
-//PS_OUT PS_MAIN2(PS_IN In)
+//// 빛 반사 적용
+//PS_OUT PS_MAIN(PS_IN In)
 //{
-//    // 스플래팅 셰이더
 //    PS_OUT Out = (PS_OUT) 0;
-    
-//    vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexcoord * 30.f);
-//    vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexcoord * 30.f);
-    
-//    vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexcoord);
-//    vector vBrush = 0.f;
-        
-//    if (g_vBrushPos.x - g_fBrushRange < In.vWorldPos.x && In.vWorldPos.x <= g_vBrushPos.x + g_fBrushRange &&
-//        g_vBrushPos.z - g_fBrushRange < In.vWorldPos.z && In.vWorldPos.z <= g_vBrushPos.z + g_fBrushRange)
-//    {
-//        float2 vTexcoord;
-        
-//        vTexcoord.x = (In.vWorldPos.x - (g_vBrushPos.x - g_fBrushRange)) / (2.f * g_fBrushRange);
-//        vTexcoord.y = ((g_vBrushPos.z + g_fBrushRange) - In.vWorldPos.z) / (2.f * g_fBrushRange);
-        
-//        vBrush = g_BrushTexture.Sample(LinearSampler, vTexcoord);
-//    }
-    
-//    vector vMtrlDiffuse = vDestDiffuse * vMask + vSourDiffuse * (1.f - vMask) + vBrush;
-    
+//    
+//    vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord * 30.f);
+//    
 //    //float fShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f);
 //    float fShade = saturate(dot(normalize(g_vLightDir) * -1.f, In.vNormal));
-    
+//    
 //    vector vLook = In.vWorldPos - g_vCamPosition;
 //    vector vReflect = reflect(normalize(g_vLightDir), In.vNormal);
-    
+//    
 //    float fSpecular = pow(saturate(dot(normalize(vLook) * -1.f, normalize(vReflect))), 50.f);
-    
-//    Out.vColor = g_vLightDiffuse * vMtrlDiffuse * saturate(fShade + (g_vLightAmbient * g_vMtrlAmbient))
+//    
+//    Out.vColor = g_vLightDiffuse * vDiffuse * saturate(fShade + (g_vLightAmbient * g_vMtrlAmbient))
 //        + (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
-
+//    
+//    //Out.vColor.a = 0.5f;
+//    
+//    return Out;
+//}
+//
+//// 빛 반사 미적용
+//PS_OUT PS_MAIN1(PS_IN In)
+//{
+//    PS_OUT Out = (PS_OUT) 0;
+//    
+//    vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord * 30.f);
+//    
+//    float fShade = saturate(dot(normalize(g_vLightDir) * -1.f, In.vNormal));
+//    
+//    vector vLook = In.vWorldPos - g_vCamPosition;
+//    vector vReflect = reflect(normalize(g_vLightDir), In.vNormal);
+//    
+//    float fSpecular = pow(saturate(normalize(vReflect)), 50.f);
+//    
+//    Out.vColor = g_vLightDiffuse * vDiffuse * saturate(fShade + (g_vLightAmbient * g_vMtrlAmbient))
+//        + (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
+//    
 //    return Out;
 //}
 
-// 툴 전용
-PS_OUT PS_MAIN3(PS_IN In)
+PS_OUT PS_MAIN2(PS_IN In)
 {
+    // 스플래팅 셰이더
     PS_OUT Out = (PS_OUT) 0;
+    
+    vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexcoord * 30.f);
+    vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexcoord * 30.f);
+    
+    vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexcoord);
+    vector vBrush = 0.f;
+        
+    if (g_vBrushPos.x - g_fBrushRange < In.vWorldPos.x && In.vWorldPos.x <= g_vBrushPos.x + g_fBrushRange &&
+        g_vBrushPos.z - g_fBrushRange < In.vWorldPos.z && In.vWorldPos.z <= g_vBrushPos.z + g_fBrushRange)
+    {
+        float2 vTexcoord;
+        
+        vTexcoord.x = (In.vWorldPos.x - (g_vBrushPos.x - g_fBrushRange)) / (2.f * g_fBrushRange);
+        vTexcoord.y = ((g_vBrushPos.z + g_fBrushRange) - In.vWorldPos.z) / (2.f * g_fBrushRange);
+        
+        vBrush = g_BrushTexture.Sample(LinearSampler, vTexcoord);
+    }
+    
+    // 마스크가 1에 가까워지면 vDestDiffuse가 쎔
+    // 마스크가 0에 가까워지면 vSourDiffuse가 쎔
+    
+    // 마스크 값을 이용해서 원본 색상을 선형 보간하면서 브러시 색상을 더한 것
+    vector vMtrlDiffuse = vDestDiffuse * vMask + vSourDiffuse * (1.f - vMask) + vBrush;
+    
+    Out.vDiffuse = vMtrlDiffuse;
+    // 노말 벡터는 -1도 정규화 된 데이터인데 Out.vNormal은 0과 1의 데이터에서 기록된다
+    // 따라서 이를 보정해줘야 한다
+    Out.vNormal = vector(In.vNormal.xyz * 0.5 + 0.5, 0.f);
+    
+    return Out;
+}
+
+// 툴 전용
+PS_OUT_TOOL PS_MAIN3(PS_IN In)
+{
+    PS_OUT_TOOL Out = (PS_OUT_TOOL) 0;
     
     vector v1 = { 0.f, 0.f, 0.f, 0.f };
     Out.vColor = v1;
@@ -170,7 +163,8 @@ technique11 DefaultTechnique
 
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile ps_5_0 PS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN2();
     }
 
     pass DefaultPass1
@@ -180,7 +174,8 @@ technique11 DefaultTechnique
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile ps_5_0 PS_MAIN1();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN2();
     }
 
     pass DefaultPass2
@@ -191,7 +186,8 @@ technique11 DefaultTechnique
 
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile ps_5_0 PS_MAIN1();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN2();
 
     }
 
@@ -203,6 +199,7 @@ technique11 DefaultTechnique
 
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN3();
 
     }

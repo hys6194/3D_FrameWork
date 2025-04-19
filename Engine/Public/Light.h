@@ -2,11 +2,13 @@
 
 #include "Base.h"
 
-class Light : public CBase
+BEGIN(Engine)
+
+class CLight : public CBase
 {
 private:
-	Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~Light() = default;
+	CLight(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CLight() = default;
 
 public:
 	const LIGHT_DESC* Get_LightDesc() const {
@@ -15,6 +17,8 @@ public:
 
 public:
 	HRESULT Initialize(const LIGHT_DESC& pDesc);
+	HRESULT Render(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer); 
+
 
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
@@ -22,8 +26,9 @@ private:
 	LIGHT_DESC				m_LightDesc = {};
 
 public:
-	static Light* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHT_DESC& pDesc);
+	static CLight* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHT_DESC& pDesc);
 	virtual void Free() override;
 
 };
 
+END

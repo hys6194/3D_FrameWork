@@ -13,6 +13,7 @@
 #include "Body_Ghoul.h"
 #include "Fist_Right.h"
 #include "Fallen_Dog.h"
+#include "Explosion.h"
 #include "Fist_Left.h"
 #include "TP_Camera.h"
 #include "Gun_Right.h"
@@ -206,8 +207,8 @@ HRESULT CLoader::Loading_Textures()
 	case LEVEL_GAMEPLAY:
 	{
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_TERRAIN,
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.dds")))))
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile%d.dds"), 2))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_SKY,
@@ -277,17 +278,35 @@ HRESULT CLoader::Loading_Models()
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_ATTACK,
-			CAttack::Create(m_pDevice, m_pContext))))
+			CAttack::Create(m_pDevice, m_pContext)))) 
 			return E_FAIL;
 
-		CVIBuffer_Particle::INSTANCE_DESC		SnowDesc{};
+		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		SnowDesc{};
 
 		SnowDesc.iNumInstances = 3000;
 		SnowDesc.vCenter = _float3(65.f, 10.f, 65.f);
 		SnowDesc.vRange = _float3(129.f, 1.f, 129.f);
+		SnowDesc.vSpeed = _float2(2.f, 10.f);
+		SnowDesc.vLifeTime = _float2(1.f, 3.f);
+		SnowDesc.vSize = _float2(0.1f, 0.3f);
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Snow"),
 			CVIBuffer_Rect_Instancing::Create(m_pDevice, m_pContext, &SnowDesc))))
+			return E_FAIL;
+
+		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		ExploDesc{};
+
+		ExploDesc.iNumInstances = 300;
+		ExploDesc.vCenter = _float3(0.f, 0.f, 0.f);
+		ExploDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
+		ExploDesc.vSpeed = _float2(2.f, 10.f);
+		ExploDesc.vLifeTime = _float2(0.1f, 0.5f);
+		ExploDesc.vSize = _float2(0.1f, 0.3f);
+		ExploDesc.vPivot = _float3(0.f, -1.0f, 0.f);
+		ExploDesc.isLoop = true;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Explosion"),
+			CVIBuffer_Point_Instancing::Create(m_pDevice, m_pContext, &ExploDesc))))
 			return E_FAIL;
 
 		_matrix		PreTransformMatrix = XMMatrixIdentity();
@@ -644,9 +663,12 @@ HRESULT CLoader::Loading_Shaders()
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxRectParticle"),
-			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxRectParticle.hlsl"), INST_VTXPOSTEX::ElementDesc, INST_VTXPOSTEX::iNumElements))))
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxRectParticle.hlsl"), VTXPOSTEX_PARTICLE_INSTANCE::ElementDesc, VTXPOSTEX_PARTICLE_INSTANCE::iNumElements))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxPosParticle"),
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosParticle.hlsl"), VTXPOS_PARTICLE_INSTANCE::ElementDesc, VTXPOS_PARTICLE_INSTANCE::iNumElements))))
+			return E_FAIL;
 	}
 
 
@@ -896,6 +918,10 @@ HRESULT CLoader::Loading_Prototype()
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Snow"),
 			CSnow::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Explosion"),
+			CExplosion::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 	}

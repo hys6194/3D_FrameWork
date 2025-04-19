@@ -12,6 +12,7 @@ public:
 		_uint			iNumInstances = {};	// 인스턴싱하여 생성할 객체의 개수
 		_float3			vCenter;
 		_float3			vRange;
+		_float2			vSize;
 	}INSTANCE_DESC;
 
 protected:

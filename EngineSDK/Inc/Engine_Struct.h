@@ -24,6 +24,19 @@ namespace Engine
 		unsigned int	iBoneIndex;
 	}KEYFRAME;
 
+	typedef struct tagLightDesc
+	{
+		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
+
+		TYPE			eType;				// 광원 타입
+		XMFLOAT4		vDirection;			// 광원의 룩 방향
+		XMFLOAT4		vPosition;			// 광원 위치
+		float			fRange;				// 광원 길이
+		XMFLOAT4		vDiffuse;			// 난반사
+		XMFLOAT4		vAmbient;			// 엠비언트 (반사광)
+		XMFLOAT4		vSpecular;			// 정반사
+	}LIGHT_DESC;
+
 	typedef struct ENGINE_DLL tagVertexPosition
 	{
 		XMFLOAT3		vPosition;
@@ -136,36 +149,23 @@ namespace Engine
 		};
 	}VTXANIMESH;
 
-	typedef struct ENGINE_DLL tagVertexPosTexInstance
+	typedef struct ENGINE_DLL tagVertexPosParticelInstance
 	{
 		const	  static unsigned int						  iNumElements = 6;
 		constexpr const static D3D11_INPUT_ELEMENT_DESC       ElementDesc[iNumElements] =
 		{
-			{ "POSITION", 0,	 DXGI_FORMAT_R32G32B32_FLOAT,	 0, 0,  D3D11_INPUT_PER_VERTEX_DATA,   0},
-			{ "TEXCOORD", 0,	 DXGI_FORMAT_R32G32_FLOAT,		 0, 12, D3D11_INPUT_PER_VERTEX_DATA,   0},
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
 
-			// "TEXCOORD", 1 :   셰이더의 시멘틱 넘버 구별을 위해서 수를 넣은 것
-			//  1 :		         인스턴싱하면서 버퍼를 두 개 만들었는데 몇 번째 버퍼인지 알려주기 위해서 선언한 것
-			{ "TEXCOORD", 1,	 DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0,  D3D11_INPUT_PER_INSTANCE_DATA, 1},
-			{ "TEXCOORD", 2,	 DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1},
-			{ "TEXCOORD", 3,	 DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1},
-			{ "TEXCOORD", 4,	 DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			// 행렬을 던지기 위해서 만든 것으로 WORLD라는 시멘틱을 이용해 행렬을 던져줄 수가 있다
+			{ "WORLD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "WORLD", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "WORLD", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "WORLD", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 2, 0, D3D11_INPUT_PER_INSTANCE_DATA, 1},
 
 		};
-	}INST_VTXPOSTEX;
-
-	typedef struct tagLightDesc
-	{
-		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
-
-		TYPE			eType;				// 광원 타입
-		XMFLOAT4		vDirection;			// 광원의 룩 방향
-		XMFLOAT4		vPosition;			// 광원 위치
-		float			fRange;				// 광원 길이
-		XMFLOAT4		vDiffuse;			// 난반사
-		XMFLOAT4		vAmbient;			// 엠비언트 (반사광)
-		XMFLOAT4		vSpecular;			// 정반사
-	}LIGHT_DESC;
+	}VTXPOS_PARTICLE_INSTANCE;
 
 	typedef struct ENGINE_DLL tagInstancingVertex
 	{
@@ -174,6 +174,30 @@ namespace Engine
 		XMFLOAT4	vLook;
 		XMFLOAT4	vTranslation;
 	}INSTVTX;
+
+	typedef struct tagVertexParticle
+	{
+		XMFLOAT2 vLifeTime;
+	}VTXPARTICLE;
+
+	typedef struct ENGINE_DLL tagVertexPosTexParticleInstance
+	{
+		const static unsigned int iNumElements = 7;
+		constexpr const static D3D11_INPUT_ELEMENT_DESC ElementDesc[iNumElements] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+
+			// 행렬 정보를 TEXCOORD 시멘틱을 활용하여 hlsl에 던져주는 방법 또한 가능하다
+			{ "TEXCOORD", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "TEXCOORD", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "TEXCOORD", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+			{ "TEXCOORD", 4, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+
+			{ "TEXCOORD", 5, DXGI_FORMAT_R32G32_FLOAT, 2, 0, D3D11_INPUT_PER_INSTANCE_DATA, 1},
+		};
+		
+	}VTXPOSTEX_PARTICLE_INSTANCE;
 }
 
 

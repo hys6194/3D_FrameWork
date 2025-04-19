@@ -39,6 +39,7 @@ void CSnow::Priority_Update(_float fTimeDelta)
 
 void CSnow::Update(_float fTimeDelta)
 {
+    m_pVIBufferCom->Drop(fTimeDelta);
 }
 
 void CSnow::Late_Update(_float fTimeDelta)
@@ -64,15 +65,14 @@ HRESULT CSnow::Ready_Component()
 {
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Snow"),
         reinterpret_cast<CComponent**>(&m_pVIBufferCom), TEXT("Com_VIBuffer")), E_FAIL);
+
     /* Com_Shader */
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxRectParticle"),
-        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader"))))
-        return E_FAIL;
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxRectParticle"),
+        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")),E_FAIL) ;
 
     /* Com_Texture */
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Snow"),
-        reinterpret_cast<CComponent**>(&m_pTextureCom), TEXT("Com_Texture"))))
-        return E_FAIL;
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Snow"),
+        reinterpret_cast<CComponent**>(&m_pTextureCom), TEXT("Com_Texture")), E_FAIL);
 
     return S_OK;
 }
