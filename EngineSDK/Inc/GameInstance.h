@@ -134,6 +134,20 @@ public:
 	HRESULT							Secede_Update(class CBounding* pCollCom1, class CBounding* pCollCom2 = nullptr);
 #pragma endregion
 
+#pragma region Target_Manager
+	HRESULT							Add_RenderTarget(const _wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
+	HRESULT							Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
+	HRESULT							Begin_MRT(const _wstring& strMRTTag);
+	HRESULT							End_MRT();
+
+#ifdef _DEBUG
+	HRESULT							Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);
+	HRESULT							Render_RT_Debug(const _wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer);
+#endif
+
+
+#pragma endregion
+
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device			= { nullptr };
@@ -148,6 +162,7 @@ private:
 	class CFont_Manager*			m_pFont_Manager				= { nullptr };
 	class CImGui_Manager*			m_pImGui_Manager			= { nullptr };
 	class CCollision_Manager*		m_pCollision_Manager		= { nullptr };
+	class CTarget_Manager*			m_pTarget_Manager			= { nullptr };
 
 public:	
 	virtual void					Free() override;

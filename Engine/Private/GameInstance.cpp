@@ -12,6 +12,7 @@
 #include "Light_Manager.h"
 #include "Font_Manager.h"
 #include "ImGui_Manager.h"
+#include "Target_Manager.h"
 #include "CollisionManager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -41,6 +42,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	m_pObject_Manager = CObject_Manager::Create(EngineDesc.iNumLevels);
 	NULL_CHECK_RETURN(m_pObject_Manager, E_FAIL);
+
+	m_pTarget_Manager = CTarget_Manager::Create(*ppDevice, *ppContext);
+	NULL_CHECK_RETURN(m_pTarget_Manager, E_FAIL);
 
 	m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pRenderer, E_FAIL);
@@ -464,6 +468,42 @@ HRESULT CGameInstance::Secede_Update(class CBounding* pCollCom1, class CBounding
 }
 
 #pragma endregion
+
+#pragma region TARGET_MANAGER
+
+HRESULT CGameInstance::Add_RenderTarget(const _wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
+{
+	return m_pTarget_Manager->Add_RenderTarget(strTargetTag, iSizeX, iSizeY, ePixelFormat, vClearColor);
+}
+
+HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag)
+{
+	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
+}
+
+HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
+{
+	return m_pTarget_Manager->Begin_MRT(strMRTTag);
+}
+
+HRESULT CGameInstance::End_MRT()
+{
+	return m_pTarget_Manager->End_MRT();
+}
+
+#ifdef _DEBUG
+HRESULT CGameInstance::Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
+{
+	return m_pTarget_Manager->Ready_Debug(strTargetTag, fX, fY, fSizeX, fSizeY);
+}
+HRESULT CGameInstance::Render_RT_Debug(const _wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	return m_pTarget_Manager->Render(strMRTTag, pShader, pVIBuffer);
+}
+#endif
+
+#pragma endregion
+
 void CGameInstance::Release_Engine()
 {
 	Safe_Release(m_pGraphic_Device);
@@ -477,7 +517,9 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pCollision_Manager);
+	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pImGui_Manager);
+
 
 	CGameInstance::DestroyInstance();
 }

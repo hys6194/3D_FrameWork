@@ -207,13 +207,11 @@ static const std::wstring COM_COLL_AABB					= TEXT("Component_Collider_AABB");
 static const std::wstring COM_COLL_OBB					= TEXT("Component_Collider_OBB");
 static const std::wstring COM_COLL_SPHERE				= TEXT("Component_Collider_Sphere");
 
-
 static const std::wstring PRO_MODEL_RUIN_WALL_CNR_B		= TEXT("Prototype_Component_Model_Wall Cnr B");
 static const std::wstring PRO_MODEL_PILLAR_DECO_A		= TEXT("Prototype_Component_Model_Pillar Base Deco A");
 
 static const std::wstring PRO_OBJ_RUIN_WALL_CNR_B		= TEXT("Prototype_GameObject_Wall Cnr B");
 static const std::wstring PRO_OBJ_PILLAR_DECO_A			= TEXT("Prototype_GameObject_Pillar Base Deco A");
-
 
 
 

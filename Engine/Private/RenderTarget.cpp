@@ -1,5 +1,7 @@
 #include "RenderTarget.h"
 
+#include "GameInstance.h"
+
 CRenderTarget::CRenderTarget(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice{ pDevice }
 	, m_pContext{ pContext }
@@ -35,6 +37,42 @@ HRESULT CRenderTarget::Initialize(_uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixel
 
     return S_OK;
 }
+
+#ifdef _DEBUG
+
+HRESULT CRenderTarget::Ready_Debug(_float fX, _float fY, _float fSizeX, _float fSizeY)
+{
+	_uint           iNumViewports = { 1 };
+	D3D11_VIEWPORT  ViewportDesc = {};
+
+	m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
+
+	XMStoreFloat4x4(&m_matWorld, XMMatrixIdentity());
+
+	m_matWorld._11 = fSizeX;
+	m_matWorld._22 = fSizeY;
+
+	m_matWorld._41 = fX - ViewportDesc.Width * 0.5f;
+	m_matWorld._42 = -fY + ViewportDesc.Height * 0.5f;
+
+	return S_OK;
+
+}
+
+HRESULT CRenderTarget::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	FAILED_CHECK_RETURN(pShader->Bind_Matrix("g_WorldMatrix", &m_matWorld), E_FAIL);
+	FAILED_CHECK_RETURN(pShader->Bind_SRV("g_Texture", m_pSRV), E_FAIL);
+
+	pShader->Begin(0);
+
+	pVIBuffer->Bind_Input_Assembler();
+	pVIBuffer->Render();
+
+	return S_OK;
+}
+
+#endif
 
 CRenderTarget* CRenderTarget::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
 {
