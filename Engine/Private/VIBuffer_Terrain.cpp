@@ -90,11 +90,6 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath
 			pIndices[iNumIndices++] = iIndices[1];
 			pIndices[iNumIndices++] = iIndices[2];
 
-			// 인덱스에 해당하는 노말벡터를 구해서 빛 반사에 적용할 것
-
-			// 0 -> 1, 1->2 방향의 벡터를 구하고 이에 외적하는 벡터로 노말 벡터를 구한다
-			// 이를 각각 인덱스들에 더해준다 
-
 			vSourDir = XMLoadFloat3(&pVertices[iIndices[1]].vPosition) - XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
 			vDestDir = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) - XMLoadFloat3(&pVertices[iIndices[1]].vPosition);
 			vNormal = XMVector3Normalize(XMVector3Cross(vSourDir, vDestDir));
