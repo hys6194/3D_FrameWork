@@ -134,6 +134,12 @@ public:
 	HRESULT							Secede_Update(class CBounding* pCollCom1, class CBounding* pCollCom2 = nullptr);
 #pragma endregion
 
+#pragma region Target_Manager
+	//HRESULT							Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
+	//HRESULT							Regist_Update(class CBounding* pCollCom1, class CBounding* pCollCom2 = nullptr);
+	//HRESULT							Secede_Update(class CBounding* pCollCom1, class CBounding* pCollCom2 = nullptr);
+#pragma endregion
+
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device			= { nullptr };
@@ -148,6 +154,7 @@ private:
 	class CFont_Manager*			m_pFont_Manager				= { nullptr };
 	class CImGui_Manager*			m_pImGui_Manager			= { nullptr };
 	class CCollision_Manager*		m_pCollision_Manager		= { nullptr };
+	class CTarget_Manager*			m_pTarget_Manager			= { nullptr };
 
 public:	
 	virtual void					Free() override;

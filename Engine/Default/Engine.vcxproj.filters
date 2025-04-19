@@ -190,6 +190,12 @@
     <Filter Include="01.Utility\04. Component\Collider\Manager">
       <UniqueIdentifier>{a748c825-c7e5-4e43-8c30-58fd0ffab5ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\09.RenderTargets">
+      <UniqueIdentifier>{4787486c-f38e-400a-a269-e6491a640d4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\09.RenderTargets\Manager">
+      <UniqueIdentifier>{e03e2d01-1911-4092-a288-8c7665874012}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -426,6 +432,12 @@
     <ClInclude Include="..\Public\VIBuffer_Point_Instancing.h">
       <Filter>01.Utility\04. Component\VIBuffer\Instancing\Particle\Point</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RenderTarget.h">
+      <Filter>01.Utility\09.RenderTargets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Target_Manager.h">
+      <Filter>01.Utility\09.RenderTargets\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -634,6 +646,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Point_Instancing.cpp">
       <Filter>01.Utility\04. Component\VIBuffer\Instancing\Particle\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderTarget.cpp">
+      <Filter>01.Utility\09.RenderTargets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Target_Manager.cpp">
+      <Filter>01.Utility\09.RenderTargets\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
