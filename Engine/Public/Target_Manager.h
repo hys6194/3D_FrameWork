@@ -17,6 +17,8 @@ public:
 
 	HRESULT								Begin_MRT(const _wstring& strMRTTag);
 	HRESULT								End_MRT();
+	HRESULT								Bind_SR(class CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag);
+
 
 #ifdef _DEBUG
 public:

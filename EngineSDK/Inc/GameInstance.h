@@ -120,6 +120,7 @@ public:
 
 #pragma region Light_Manager
 	HRESULT							Add_Light(const LIGHT_DESC& pDesc);
+	HRESULT							Render_Light(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 	const LIGHT_DESC*				Get_LightDesc(_uint iLightIndex)const;
 #pragma endregion
 
@@ -137,6 +138,7 @@ public:
 #pragma region Target_Manager
 	HRESULT							Add_RenderTarget(const _wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
 	HRESULT							Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
+	HRESULT							Bind_RT_SR(class CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag);
 	HRESULT							Begin_MRT(const _wstring& strMRTTag);
 	HRESULT							End_MRT();
 

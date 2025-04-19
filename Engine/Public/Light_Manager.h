@@ -32,11 +32,12 @@ public:
 public:
 	HRESULT Initialize();
 	HRESULT Add_Light(const LIGHT_DESC& pDesc);
+	HRESULT Render(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
-	list<class Light*>			m_listLights;
+	list<class CLight*>			m_listLights;
 
 public:
 	static CLight_Manager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -35,7 +35,19 @@ HRESULT CRenderTarget::Initialize(_uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixel
 	// 텍스쳐에 대한 셰이더 리소스 뷰 생성
 	FAILED_CHECK_RETURN(m_pDevice->CreateShaderResourceView(m_pTexture2D, nullptr, &m_pSRV), E_FAIL);
 
-    return S_OK;
+	m_vClearColor = vClearColor;
+
+	return S_OK;
+}
+
+void CRenderTarget::Clear()
+{
+	m_pContext->ClearRenderTargetView(m_pRTV, &m_vClearColor.x);
+}
+
+HRESULT CRenderTarget::Bind_SR(CShader* pShader, const _char* pConstantName)
+{
+	return pShader->Bind_SRV(pConstantName, m_pSRV);
 }
 
 #ifdef _DEBUG

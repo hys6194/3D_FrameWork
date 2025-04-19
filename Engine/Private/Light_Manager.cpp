@@ -16,12 +16,22 @@ HRESULT CLight_Manager::Initialize()
 
 HRESULT CLight_Manager::Add_Light(const LIGHT_DESC& pDesc)
 {
-    Light* pLight = Light::Create(m_pDevice, m_pContext, pDesc);
+    CLight* pLight = CLight::Create(m_pDevice, m_pContext, pDesc);
 
     if (nullptr == pLight)
         return E_FAIL;
 
     m_listLights.push_back(pLight);
+
+    return S_OK;
+}
+
+HRESULT CLight_Manager::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+    for (auto& pLight : m_listLights)
+    {
+        FAILED_CHECK_RETURN(pLight->Render(pShader, pVIBuffer), E_FAIL);
+    }
 
     return S_OK;
 }

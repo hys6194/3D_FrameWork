@@ -32,10 +32,12 @@ HRESULT CRenderer::Initialize()
     FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_LIGHT, TARGET_SHAD), E_FAIL);
 
     // 셰이더에 던지기 위한 행렬 생성
+    // 월드 행렬에 정규화된 깊이값인 1을 넣어서 원근 투영할 수 있는 행렬을 생성
+    XMStoreFloat4x4(&m_matWorld, XMMatrixScaling(ViewPortsDesc.Width, ViewPortsDesc.Height, 1.f));
     XMStoreFloat4x4(&m_matView, XMMatrixIdentity());
     XMStoreFloat4x4(&m_matProj, XMMatrixOrthographicLH(
         ViewPortsDesc.Width, ViewPortsDesc.Height, 
-        ViewPortsDesc.MinDepth, ViewPortsDesc.MaxDepth));
+        0.f, 1.f));
 
     m_pVIBuffer = CVIBuffer_Rect::Create(m_pDevice, m_pContext);
     NULL_CHECK_RETURN(m_pVIBuffer, E_FAIL);
@@ -118,6 +120,21 @@ HRESULT CRenderer::Render_Priority()
     return S_OK;
 }
 
+HRESULT CRenderer::Render_NonLight()
+{
+    for (auto& pRenderObject : m_listRenderer[RENDER_NONLIGHT])
+    {
+        if (nullptr != pRenderObject)
+            pRenderObject->Render();
+
+        Safe_Release(pRenderObject);
+    }
+
+    m_listRenderer[RENDER_NONLIGHT].clear();
+
+    return S_OK;
+}
+
 HRESULT CRenderer::Render_NonBlend()
 {
     FAILED_CHECK_RETURN(m_pGameInstance->Begin_MRT(MRT_GAMEOBJ), E_FAIL);
@@ -161,6 +178,27 @@ HRESULT CRenderer::Render_UI()
     }
     m_listRenderer[RENDER_UI].clear();
 
+    return S_OK;
+}
+
+HRESULT CRenderer::Render_Lights()
+{
+    FAILED_CHECK_RETURN(m_pGameInstance->Begin_MRT(MRT_LIGHT), E_FAIL);
+
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_RT_SR(m_pShader, "g_NormalTexture", TARGET_NORM), E_FAIL);
+
+    m_pShader->Bind_Matrix("g_WorldMatrix", &m_matWorld);
+    m_pShader->Bind_Matrix("g_ViewMatrix", &m_matView);
+    m_pShader->Bind_Matrix("g_ProjMatrix", &m_matProj);
+
+
+    FAILED_CHECK_RETURN(m_pGameInstance->End_MRT(), E_FAIL);
+
+    return S_OK;
+}
+
+HRESULT CRenderer::Render_Deferred()
+{
     return S_OK;
 }
 

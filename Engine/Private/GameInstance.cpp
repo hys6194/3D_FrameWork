@@ -430,6 +430,10 @@ HRESULT CGameInstance::Add_Light(const LIGHT_DESC& pDesc)
 {
 	return m_pLight_Manager->Add_Light(pDesc);
 }
+HRESULT CGameInstance::Render_Light(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	return m_pLight_Manager->Render(pShader, pVIBuffer);
+}
 const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iLightIndex) const
 {
 	return m_pLight_Manager->Get_LightDesc(iLightIndex);
@@ -479,6 +483,11 @@ HRESULT CGameInstance::Add_RenderTarget(const _wstring& strTargetTag, _uint iSiz
 HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag)
 {
 	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
+}
+
+HRESULT CGameInstance::Bind_RT_SR(CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag)
+{
+	return m_pTarget_Manager->Bind_SR(pShader, pConstantName, strTargetTag);
 }
 
 HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
