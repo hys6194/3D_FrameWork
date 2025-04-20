@@ -1,21 +1,27 @@
 
 #include "Engine_Shader_Defines.hlsli"
 
-matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-texture2D g_Texture;
+matrix      g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
+matrix      g_ViewMatrixInv, g_ProjMatrixInv;
+texture2D   g_Texture;
 
-vector g_vLightDir;
-vector g_vLightDiffuse;
-vector g_vLightAmbient;
+vector      g_vLightDir;
+vector      g_vLightPos;
+float       g_fLightRange;
+vector      g_vLightDiffuse;
+vector      g_vLightAmbient;
+vector      g_vLightSpecular;
+texture2D   g_NormalTexture;
 
-texture2D g_NormalTexture;
+texture2D   g_DiffuseTexture;
+texture2D   g_ShadeTexture;
+texture2D   g_SpecularTexture;
+vector      g_vMtrlAmbient = vector(1.f, 1.f, 1.f, 1.f);
+vector      g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
-texture2D g_DiffuseTexture;
-texture2D g_ShadeTexture;
+vector      g_vCamPosition;
 
-vector g_vMtrlAmbient = vector(1.f, 1.f, 1.f, 1.f);
-
-vector g_vCamPosition;
+texture2D   g_DepthTexture;
 
 struct VS_IN
 {
@@ -79,7 +85,8 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     PS_OUT_LIGHT Out;
     
     float4 vNormalDesc = g_NormalTexture.Sample(PointSampler, In.vTexcoord);
-    
+    float4 vDepthDesc = g_DepthTexture.Sample(PointSampler, In.vTexcoord);
+    float fViewZ = vDepthDesc.y * 300.f;
     // 픽셀 포맷이 0과 1사이의 정규화된 값만 저장할 수 있어서
     // 노말 렌더 타겟을 그릴 때 0과 1의 사이의 값으로 저장했음
     // 이를 다시 -1과 1사이의 값으로ㄴ 보정해야 함
@@ -92,7 +99,77 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     Out.vShade = vShade * g_vLightDiffuse;
     
     vector vReflect = reflect(normalize(g_vLightDir), vNormal);
-    vector vLook = -g_vCamPosition;
+    vector vWorldPos;
+    
+    /* 투영공간상의 좌표를구했다.*/
+    vWorldPos.x = In.vTexcoord.x * 2.f - 1.f;
+    vWorldPos.y = In.vTexcoord.y * -2.f + 1.f;
+    vWorldPos.z = vDepthDesc.x; /* 0.0f ~ 1.f */
+    vWorldPos.w = 1.f;
+    
+    /* 뷰공간상의 좌표를구했다.*/
+    vWorldPos *= fViewZ;
+    vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+    
+    /* 월드공간상의 좌표를구했다.*/
+    vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+    
+    vector vLook = vWorldPos - g_vCamPosition;
+    
+    float fSpecular = pow(saturate(max(dot(normalize(vReflect) * -1.f, normalize(vLook)), 0.f)), 50.f);
+    
+    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
+    
+    return Out;
+}
+
+PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
+{
+    PS_OUT_LIGHT Out;
+    
+    float4 vNormalDesc = g_NormalTexture.Sample(PointSampler, In.vTexcoord);
+    float4 vDepthDesc = g_DepthTexture.Sample(PointSampler, In.vTexcoord);
+    float fViewZ = vDepthDesc.y * 300.f;
+    float4 vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
+    
+    vector vWorldPos;
+    
+    /* 투영공간상의 좌표를구했다.*/
+    vWorldPos.x = In.vTexcoord.x * 2.f - 1.f;
+    vWorldPos.y = In.vTexcoord.y * -2.f + 1.f;
+    
+    // 왜 x에 담겨져있는지 다시 고민
+    vWorldPos.z = vDepthDesc.x; /* 0.0f ~ 1.f */
+    vWorldPos.w = 1.f;
+    
+    /* 뷰공간상의 좌표를구했다.*/
+    vWorldPos *= fViewZ;
+    vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+    
+    /* 월드공간상의 좌표를구했다.*/
+    vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+    
+    
+    float4 vLightDir = vWorldPos - g_vLightPos;
+    
+    float fDistance = length(vLightDir);
+    
+    /* 1 ~ 0.f */
+    float fAtt = saturate((g_fLightRange - fDistance) / g_fLightRange);
+    
+    vector vShade = saturate(max(dot(normalize(vLightDir) * -1.f, normalize(vNormal)), 0.f) +
+        (g_vLightAmbient * g_vMtrlAmbient)) * fAtt;
+    
+    Out.vShade = vShade * g_vLightDiffuse;
+    
+    vector vReflect = reflect(normalize(vLightDir), vNormal);
+    
+  
+    vector vLook = vWorldPos - g_vCamPosition;
+    
+    float fSpecular = pow(saturate(max(dot(normalize(vReflect) * -1.f, normalize(vLook)), 0.f)), 50.f) * fAtt;
+    
+    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
     
     return Out;
 }
@@ -107,12 +184,12 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
         discard;
     
     float4 vShade = g_ShadeTexture.Sample(LinearSampler, In.vTexcoord);
+    float4 vSpecular = g_SpecularTexture.Sample(LinearSampler, In.vTexcoord);
     
-    Out.vColor = vDiffuse * vShade;
+    Out.vColor = vDiffuse * vShade + vSpecular;
     
     return Out;
 }
- 
 
 
 /* 하드웨어 장치의 지원여부에 따라 다른 버젼의 셰이더를 빌드할 수 있도록 추가적으로 테크니커를 만들수 있다.*/ 
@@ -137,7 +214,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_Blend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
@@ -148,11 +225,11 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_Blend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN_LIGHT_POINT();
     }
 
     pass Deferred

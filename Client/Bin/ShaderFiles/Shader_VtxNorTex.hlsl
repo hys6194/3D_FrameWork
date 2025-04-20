@@ -23,6 +23,7 @@ struct VS_OUT
     float4 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
+    float4 vProjPos : TEXCOORD2;
 };
 
 VS_OUT VS_MAIN(VS_IN In)
@@ -38,6 +39,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+    Out.vProjPos = Out.vPosition;
     
     return Out;
 }
@@ -49,6 +51,7 @@ struct PS_IN
     float4 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
+    float4 vProjPos : TEXCOORD2;
 };
 
 struct PS_OUT
@@ -139,6 +142,7 @@ PS_OUT PS_MAIN2(PS_IN In)
     // 노말 벡터는 -1도 정규화 된 데이터인데 Out.vNormal은 0과 1의 데이터에서 기록된다
     // 따라서 이를 보정해줘야 한다
     Out.vNormal = vector(In.vNormal.xyz * 0.5 + 0.5, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.f, 0.f, 0.f);
     
     return Out;
 }
@@ -160,7 +164,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
 
         VertexShader = compile vs_5_0 VS_MAIN();

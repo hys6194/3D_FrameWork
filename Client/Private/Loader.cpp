@@ -965,7 +965,6 @@ HRESULT CLoader::Loading_VIBuffers()
 	{
 		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		SnowDesc{};
 
-
 		SnowDesc.iNumInstances = 3000;
 		SnowDesc.vCenter = _float3(65.f, 10.f, 65.f);
 		SnowDesc.vRange = _float3(129.f, 1.f, 129.f);
