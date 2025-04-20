@@ -85,6 +85,8 @@ namespace Engine
 static const std::wstring TARGET_DIFF	= TEXT("Target_Diffuse");
 static const std::wstring TARGET_NORM	= TEXT("Target_Normal");
 static const std::wstring TARGET_SHAD	= TEXT("Target_Shade");
+static const std::wstring TARGET_DEPT	= TEXT("Target_Depth");
+static const std::wstring TARGET_SPEC	= TEXT("Target_Specular");
 
 
 static const std::wstring MRT_GAMEOBJ	= TEXT("MRT_GameObject");

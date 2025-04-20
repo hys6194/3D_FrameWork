@@ -68,6 +68,10 @@ void CFist_Left::Update(_float fTimeDelta)
 void CFist_Left::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+#ifdef _DEBUG
+    m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom);
+#endif
 }
 
 HRESULT CFist_Left::Render()

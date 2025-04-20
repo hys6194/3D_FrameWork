@@ -19,6 +19,13 @@ public:
 	void						Draw();
 	void						Clear();
 
+#ifdef _DEBUG
+	void Add_DebugComponent(class CComponent* pDebugComponent) {
+		m_DebugComponents.push_back(pDebugComponent);
+		Safe_AddRef(pDebugComponent);
+	}
+#endif
+
 
 private:
 	ID3D11Device*				m_pDevice = { nullptr };
@@ -34,6 +41,12 @@ private:
 	_float4x4					m_matWorld{}, m_matView{}, m_matProj{};
 	class CVIBuffer_Rect*		m_pVIBuffer = { nullptr };
 	class CShader*				m_pShader = { nullptr };
+
+#ifdef _DEBUG
+private:
+	list<class CComponent*>			m_DebugComponents;
+
+#endif
 
 private:
 	HRESULT						Render_Priority();

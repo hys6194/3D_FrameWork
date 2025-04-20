@@ -126,6 +126,16 @@ void CMonster::Late_Update(_float fTimeDelta)
 		m_pNavigationCom->Compute_Height(m_pTransformCom->Get_State(CTransform::STATE_POS)));
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+
+#ifdef _DEBUG
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom[i]);
+	}
+	m_pGameInstance->Add_Renderer_DebugComponent(m_pNavigationCom);
+
+#endif
 }
 
 HRESULT CMonster::Render()

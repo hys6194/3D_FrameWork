@@ -101,6 +101,7 @@ public:
 
 #pragma region RENDERER
 	HRESULT							Add_RenderObject(CRenderer::RENDERERGROUP eRenderGroupID, class CGameObject* pRenderObject);
+	void							Add_Renderer_DebugComponent(class CComponent* pDebugComponent);
 #pragma endregion
 
 #pragma region PIPELINE
