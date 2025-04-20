@@ -46,20 +46,16 @@ void CExplosion::Priority_Update(_float fTimeDelta)
 void CExplosion::Update(_float fTimeDelta)
 {
 	m_pVIBufferCom->Spread(fTimeDelta);
-
-
 }
 
 void CExplosion::Late_Update(_float fTimeDelta)
 {
-
-
-	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONLIGHT, this);
 }
 
 HRESULT CExplosion::Render()
 {
-	if (FAILED(Bind_ShaderResources()))
+	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
 	m_pShaderCom->Begin(0);
@@ -73,7 +69,7 @@ HRESULT CExplosion::Render()
 
 HRESULT CExplosion::Ready_Components()
 {
-	/* Com_VIBuffer */
+
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Explosion"),
 		reinterpret_cast<CComponent**>(&m_pVIBufferCom), TEXT("Com_VIBuffer"))))
 		return E_FAIL;
@@ -93,7 +89,7 @@ HRESULT CExplosion::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CExplosion::Bind_ShaderResources()
+HRESULT CExplosion::Bind_SR()
 {
 	if (FAILED(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom)))
 		return E_FAIL;
@@ -108,7 +104,6 @@ HRESULT CExplosion::Bind_ShaderResources()
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
 		return E_FAIL;
-
 
 
 	return S_OK;

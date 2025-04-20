@@ -108,6 +108,9 @@ HRESULT CLoader::Loading_Logo()
 	lstrcpy(m_szLoading, TEXT("텍스쳐를(을) 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Textures(), E_FAIL);
 
+	lstrcpy(m_szLoading, TEXT("버퍼를 로딩중입니다."));
+	FAILED_CHECK_RETURN(Loading_VIBuffers(), E_FAIL);
+
 	lstrcpy(m_szLoading, TEXT("모델를(을) 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Models(), E_FAIL);
 
@@ -131,6 +134,9 @@ HRESULT CLoader::Loading_Menu()
 	lstrcpy(m_szLoading, TEXT("텍스쳐를(을) 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Textures(), E_FAIL);
 
+	lstrcpy(m_szLoading, TEXT("버퍼를 로딩중입니다."));
+	FAILED_CHECK_RETURN(Loading_VIBuffers(), E_FAIL);
+
 	lstrcpy(m_szLoading, TEXT("모델를(을) 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Models(), E_FAIL);
 
@@ -153,6 +159,9 @@ HRESULT CLoader::Loading_GamePlay()
 
 	lstrcpy(m_szLoading, TEXT("텍스쳐를 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Textures(), E_FAIL);
+
+	lstrcpy(m_szLoading, TEXT("버퍼를 로딩중입니다."));
+	FAILED_CHECK_RETURN(Loading_VIBuffers(), E_FAIL);
 
 	lstrcpy(m_szLoading, TEXT("모델을 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Models(), E_FAIL);
@@ -242,32 +251,15 @@ HRESULT CLoader::Loading_Models()
 {	switch (m_eNextLevelID)
 	{
 	case LEVEL_MENU:
-	{
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, PRO_COM_VI_RECT,
-			CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-	}
 
 		break;
 	case LEVEL_LOGO:	
-	{
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_COM_VI_RECT,
-			CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-	}
 
 		break;
 	case LEVEL_GAMEPLAY:
 	{
 		// 지형 출력
 		/* For.Prototype_Component_VIBuffer_Terrain*/
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_TERRAIN,
-			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
-			return E_FAIL;
-
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_CUBE,
-			CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_FSM,
 			CFSM::Create(m_pDevice, m_pContext))))
@@ -281,33 +273,7 @@ HRESULT CLoader::Loading_Models()
 			CAttack::Create(m_pDevice, m_pContext)))) 
 			return E_FAIL;
 
-		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		SnowDesc{};
 
-		SnowDesc.iNumInstances = 3000;
-		SnowDesc.vCenter = _float3(65.f, 10.f, 65.f);
-		SnowDesc.vRange = _float3(129.f, 1.f, 129.f);
-		SnowDesc.vSpeed = _float2(2.f, 10.f);
-		SnowDesc.vLifeTime = _float2(1.f, 3.f);
-		SnowDesc.vSize = _float2(0.1f, 0.3f);
-
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Snow"),
-			CVIBuffer_Rect_Instancing::Create(m_pDevice, m_pContext, &SnowDesc))))
-			return E_FAIL;
-
-		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		ExploDesc{};
-
-		ExploDesc.iNumInstances = 300;
-		ExploDesc.vCenter = _float3(0.f, 0.f, 0.f);
-		ExploDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
-		ExploDesc.vSpeed = _float2(2.f, 10.f);
-		ExploDesc.vLifeTime = _float2(0.1f, 0.5f);
-		ExploDesc.vSize = _float2(0.1f, 0.3f);
-		ExploDesc.vPivot = _float3(0.f, -1.0f, 0.f);
-		ExploDesc.isLoop = true;
-
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Explosion"),
-			CVIBuffer_Point_Instancing::Create(m_pDevice, m_pContext, &ExploDesc))))
-			return E_FAIL;
 
 		_matrix		PreTransformMatrix = XMMatrixIdentity();
 
@@ -973,6 +939,74 @@ HRESULT CLoader::Loading_Navigation()
 			CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Navigation.dat")))))
 			return E_FAIL;
 	}
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_VIBuffers()
+{
+	switch (m_eNextLevelID)
+	{
+	case LEVEL_MENU:
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_COM_VI_RECT,
+			CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		break;
+	case LEVEL_LOGO:
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_COM_VI_RECT,
+			CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		break;
+	case LEVEL_GAMEPLAY:
+
+	{
+		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		SnowDesc{};
+
+
+		SnowDesc.iNumInstances = 3000;
+		SnowDesc.vCenter = _float3(65.f, 10.f, 65.f);
+		SnowDesc.vRange = _float3(129.f, 1.f, 129.f);
+		SnowDesc.vSpeed = _float2(2.f, 10.f);
+		SnowDesc.vLifeTime = _float2(1.f, 3.f);
+		SnowDesc.vSize = _float2(0.1f, 0.3f);
+		SnowDesc.isLoop = true;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Snow"),
+			CVIBuffer_Rect_Instancing::Create(m_pDevice, m_pContext, &SnowDesc))))
+			return E_FAIL;
+
+		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		ExploDesc{};
+
+		ExploDesc.iNumInstances = 300;
+		ExploDesc.vCenter = _float3(0.f, 0.f, 0.f);
+		ExploDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
+		ExploDesc.vSpeed = _float2(2.f, 10.f);
+		ExploDesc.vLifeTime = _float2(0.1f, 0.5f);
+		ExploDesc.vSize = _float2(0.1f, 0.3f);
+		ExploDesc.vPivot = _float3(0.f, -1.0f, 0.f);
+		ExploDesc.isLoop = true;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Explosion"),
+			CVIBuffer_Point_Instancing::Create(m_pDevice, m_pContext, &ExploDesc))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_TERRAIN,
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_CUBE,
+			CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+	}
+
+		break;
+	default:
+		break;
+	}
+
 	return S_OK;
 }
 

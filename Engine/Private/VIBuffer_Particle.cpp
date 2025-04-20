@@ -8,9 +8,11 @@ CVIBuffer_Particle::CVIBuffer_Particle(ID3D11Device* pDevice, ID3D11DeviceContex
 CVIBuffer_Particle::CVIBuffer_Particle(const CVIBuffer_Particle& Prototype)
 	:CVIBuffer_Instancing{ Prototype }
 	, m_pVBParticle{ Prototype.m_pVBParticle }
+	, m_vPivot{ Prototype.m_vPivot }
 	, m_pParticleSpeeds{ Prototype.m_pParticleSpeeds }
 	, m_iParticleInstanceStride{ Prototype.m_iParticleInstanceStride }
 	, m_pParticleInstanceVertices{ Prototype.m_pParticleInstanceVertices }
+	, m_isLoop{ Prototype.m_isLoop }
 {
 }
 
@@ -100,6 +102,8 @@ void CVIBuffer_Particle::Drop(_float fTimeDelta)
 	m_pContext->Unmap(m_pVBParticle, 0);
 	m_pContext->Unmap(m_pVBInstance, 0);
 
+	
+
 }
 
 void CVIBuffer_Particle::Spread(_float fTimeDelta)
@@ -129,6 +133,8 @@ void CVIBuffer_Particle::Spread(_float fTimeDelta)
 
 		_vector		vMoveDir = XMLoadFloat4(&pMatrices[i].vTranslation) - XMVectorSetW(XMLoadFloat3(&m_vPivot), 1.f);
 		XMStoreFloat4(&pMatrices[i].vTranslation, XMLoadFloat4(&pMatrices[i].vTranslation) + XMVector3Normalize(vMoveDir) * m_pParticleSpeeds[i] * fTimeDelta);
+
+
 	}
 
 	m_pContext->Unmap(m_pVBParticle, 0);

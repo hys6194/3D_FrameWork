@@ -2,13 +2,6 @@
 
 #include "Engine_Shader_Defines.hlsli"
 
-/* hlsl에서의 행렬타입 */
-// float2x2, float3x3, float4x4 == matrix, float1x4
-
-/* hlsl에서의 벡터타입 */
-// float2, float3, float4 == vector 
-
-/* 상수집합 == 컨스턴트테이블 */ 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D g_DiffuseTexture;
 
@@ -17,6 +10,8 @@ vector g_vCamPosition;
 struct VS_IN
 {
     float3 vPosition : POSITION;
+    
+    // 행 기준으로 행렬이 만들어 지는 것을 의미
     row_major float4x4 TransformMatrix : WORLD;
     float2 vLifeTime : TEXCOORD0;
 };

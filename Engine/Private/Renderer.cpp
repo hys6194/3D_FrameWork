@@ -21,7 +21,7 @@ HRESULT CRenderer::Initialize()
 
     m_pContext->RSGetViewports(&iNumViewPorts, &ViewPortsDesc);
 
-    FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_DIFF, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f)), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_DIFF, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(1.f, 1.f, 1.f, 0.f)), E_FAIL);
 
     // 노말은 8bit로 저장하게 되면 소수 정밀도가 떨어지게 됨 그래서 제대로 된 노말 표현이 안됨
     FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_NORM, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f)), E_FAIL);
@@ -76,6 +76,15 @@ void CRenderer::Draw()
         return;
 
     if (FAILED(Render_NonBlend()))
+        return;
+
+    if(FAILED(Render_Lights()))
+        return;
+
+    if (FAILED(Render_Deferred()))
+        return;
+
+    if (FAILED(Render_NonLight()))
         return;
 
     if (FAILED(Render_Blend()))
@@ -185,11 +194,19 @@ HRESULT CRenderer::Render_Lights()
 {
     FAILED_CHECK_RETURN(m_pGameInstance->Begin_MRT(MRT_LIGHT), E_FAIL);
 
-    FAILED_CHECK_RETURN(m_pGameInstance->Bind_RT_SR(m_pShader, "g_NormalTexture", TARGET_NORM), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_RT_ToShader(m_pShader, "g_NormalTexture", TARGET_NORM), E_FAIL);
 
     m_pShader->Bind_Matrix("g_WorldMatrix", &m_matWorld);
     m_pShader->Bind_Matrix("g_ViewMatrix", &m_matView);
     m_pShader->Bind_Matrix("g_ProjMatrix", &m_matProj);
+
+    m_pVIBuffer->Bind_Input_Assembler();
+
+    /* 빛들을 순회한다. */
+    /* 각 빛의 정보를 쉐이더로 던진다. */
+    /* 각 빛마다 사각형 버퍼를 그린다. */
+    /* 각 빛마다 쉐이드 타겟에 빛연산한 결과를 블렌딩하여 출력한다. */
+    m_pGameInstance->Render_Light(m_pShader, m_pVIBuffer);
 
 
     FAILED_CHECK_RETURN(m_pGameInstance->End_MRT(), E_FAIL);
@@ -199,6 +216,19 @@ HRESULT CRenderer::Render_Lights()
 
 HRESULT CRenderer::Render_Deferred()
 {
+    m_pShader->Bind_Matrix("g_WorldMatrix", &m_matWorld);
+    m_pShader->Bind_Matrix("g_ViewMatrix", &m_matView);
+    m_pShader->Bind_Matrix("g_ProjMatrix", &m_matProj);
+
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_RT_ToShader(m_pShader, "g_DiffuseTexture", TARGET_DIFF), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_RT_ToShader(m_pShader, "g_ShadeTexture", TARGET_SHAD), E_FAIL);
+
+    m_pShader->Begin(3);
+
+    m_pVIBuffer->Bind_Input_Assembler();
+    m_pVIBuffer->Render();
+
+
     return S_OK;
 }
 

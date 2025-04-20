@@ -72,6 +72,10 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     
     float4 vNormalDesc = g_NormalTexture.Sample(PointSampler, In.vTexcoord);
     
+    // 픽셀 포맷이 0과 1사이의 정규화된 값만 저장할 수 있어서
+    // 노말 렌더 타겟을 그릴 때 0과 1의 사이의 값으로 저장했음
+    // 이를 다시 -1과 1사이의 값으로ㄴ 보정해야 함
+    // 0 == -1, 1 == 1
     float4 vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
     
     float fShade = max(dot(normalize(g_vLightDir) * -1.f, normalize(vNormal)), 0.f);

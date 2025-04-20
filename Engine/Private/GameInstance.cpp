@@ -485,7 +485,7 @@ HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTar
 	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
 }
 
-HRESULT CGameInstance::Bind_RT_SR(CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag)
+HRESULT CGameInstance::Bind_RT_ToShader(CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag)
 {
 	return m_pTarget_Manager->Bind_SR(pShader, pConstantName, strTargetTag);
 }

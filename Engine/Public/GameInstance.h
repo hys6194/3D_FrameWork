@@ -138,7 +138,7 @@ public:
 #pragma region Target_Manager
 	HRESULT							Add_RenderTarget(const _wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
 	HRESULT							Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
-	HRESULT							Bind_RT_SR(class CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag);
+	HRESULT							Bind_RT_ToShader(class CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag);
 	HRESULT							Begin_MRT(const _wstring& strMRTTag);
 	HRESULT							End_MRT();
 
