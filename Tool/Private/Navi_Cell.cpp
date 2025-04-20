@@ -114,9 +114,9 @@ void CNavi_Cell::Modify_VertexPoint(_uint iVertexIndex, _vector vCoord)
 
     if (0 == iVertexIndex)
     {
-        pVertices[iVertexIndex].vPosition = _float3(fTest.x, fTest.y + 0.3f, fTest.z);
-        pVertices[iVertexIndex + 1].vPosition = _float3(fTest.x, fTest.y + 0.3f, fTest.z + 1);
-        pVertices[iVertexIndex + 2].vPosition = _float3(fTest.x + 1, fTest.y + 0.3f, fTest.z );
+        pVertices[iVertexIndex].vPosition = _float3(fTest.x, fTest.y, fTest.z);
+        pVertices[iVertexIndex + 1].vPosition = _float3(fTest.x, fTest.y, fTest.z + 1);
+        pVertices[iVertexIndex + 2].vPosition = _float3(fTest.x + 1, fTest.y, fTest.z );
 
         m_pVertices0.vPosition = pVertices[iVertexIndex].vPosition;
 
@@ -127,7 +127,7 @@ void CNavi_Cell::Modify_VertexPoint(_uint iVertexIndex, _vector vCoord)
     {
         for (size_t i = iVertexIndex; i < 3; i++)
         {
-            pVertices[i].vPosition = _float3(fTest.x, fTest.y + 0.3f, fTest.z);
+            pVertices[i].vPosition = _float3(fTest.x, fTest.y, fTest.z);
 
             if (i == 1)
                 m_pVertices1.vPosition = pVertices[i].vPosition;

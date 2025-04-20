@@ -32,10 +32,12 @@ HRESULT CRenderer::Initialize()
     FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_DEPT, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f, 1.f, 1.f)), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_SHAD, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f)), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_SPEC, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f)), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_PICK, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 0.f)), E_FAIL);
 
     FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_GAMEOBJ, TARGET_DIFF), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_GAMEOBJ, TARGET_NORM), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_GAMEOBJ, TARGET_DEPT), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_GAMEOBJ, TARGET_PICK), E_FAIL);
 
 
     FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_LIGHT, TARGET_SHAD), E_FAIL);
@@ -60,7 +62,7 @@ HRESULT CRenderer::Initialize()
     FAILED_CHECK_RETURN(m_pGameInstance->Ready_RT_Debug(TARGET_NORM, 100.0f, 300.0f, 200.f, 200.f), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Ready_RT_Debug(TARGET_DEPT, 100.0f, 500.0f, 200.f, 200.f), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Ready_RT_Debug(TARGET_SHAD, 350.0f, 150.0f, 300.f, 300.f), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Ready_RT_Debug(TARGET_SPEC, 350.0f, 450.0f, 300.f, 300.f), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Ready_RT_Debug(TARGET_PICK, 350.0f, 450.0f, 300.f, 300.f), E_FAIL);
 
     //FAILED_CHECK_RETURN(m_pGameInstance->Ready_RT_Debug(TARGET_DIFF, 50.f,50.f, 100.f, 100.f), E_FAIL);
     //FAILED_CHECK_RETURN(m_pGameInstance->Ready_RT_Debug(TARGET_NORM, 50.f,150.f, 100.f, 100.f), E_FAIL);

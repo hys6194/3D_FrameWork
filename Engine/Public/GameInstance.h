@@ -141,12 +141,17 @@ public:
 	HRESULT							Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
 	HRESULT							Bind_RT_ToShader(class CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag);
 	HRESULT							Begin_MRT(const _wstring& strMRTTag);
+	void							Copy_RenderTarget(const _wstring& strTargetTag, ID3D11Texture2D* pTexture2D);
 	HRESULT							End_MRT();
 
 #ifdef _DEBUG
 	HRESULT							Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);
 	HRESULT							Render_RT_Debug(const _wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer);
 #endif
+
+#pragma region PICKING
+	_bool							Picking(_float3* pOut);
+#pragma endregion
 
 
 #pragma endregion
@@ -166,6 +171,7 @@ private:
 	class CImGui_Manager*			m_pImGui_Manager			= { nullptr };
 	class CCollision_Manager*		m_pCollision_Manager		= { nullptr };
 	class CTarget_Manager*			m_pTarget_Manager			= { nullptr };
+	class CPicking*					m_pPicking					= { nullptr };
 
 public:	
 	virtual void					Free() override;

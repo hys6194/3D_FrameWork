@@ -14,6 +14,7 @@
 #include "ImGui_Manager.h"
 #include "Target_Manager.h"
 #include "CollisionManager.h"
+#include "Picking.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -63,6 +64,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	m_pCollision_Manager = CCollision_Manager::Create();
 	NULL_CHECK_RETURN(m_pCollision_Manager, E_FAIL);
+
+	m_pPicking = CPicking::Create(*ppDevice, *ppContext, EngineDesc.hWnd);
+	NULL_CHECK_RETURN(m_pPicking, E_FAIL);
 	
 	return S_OK;
 }
@@ -71,8 +75,10 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pImGui_Manager->SetUp_Render_ImGui();
 
+
 	m_pInput_Device->Update();
 
+	m_pPicking->Copy(TARGET_PICK);
 	// 여기에서 콜리젼 매니져를 통해 삭제처리가 되어야 하는 애들을 삭제 처리
 	// 혹은 렌더링 기능을 끄게 설정
 
@@ -503,6 +509,11 @@ HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
 	return m_pTarget_Manager->Begin_MRT(strMRTTag);
 }
 
+void CGameInstance::Copy_RenderTarget(const _wstring& strTargetTag, ID3D11Texture2D* pTexture2D)
+{
+	return m_pTarget_Manager->Copy_RenderTarget(strTargetTag, pTexture2D);
+}
+
 HRESULT CGameInstance::End_MRT()
 {
 	return m_pTarget_Manager->End_MRT();
@@ -516,6 +527,10 @@ HRESULT CGameInstance::Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _
 HRESULT CGameInstance::Render_RT_Debug(const _wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 {
 	return m_pTarget_Manager->Render(strMRTTag, pShader, pVIBuffer);
+}
+_bool CGameInstance::Picking(_float3* pOut)
+{
+	return m_pPicking->Picking(pOut);
 }
 #endif
 
@@ -535,6 +550,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pTarget_Manager);
+	Safe_Release(m_pPicking);
 	Safe_Release(m_pImGui_Manager);
 
 

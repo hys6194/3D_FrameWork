@@ -94,6 +94,15 @@ void CPlayer::Update(_float fTimeDelta)
 
 	m_pFSMCom->Update_State(fTimeDelta);
 
+	if (GetKeyState(VK_LBUTTON) & 0x8000)
+	{
+		_float3			vResult{};
+		if (true == m_pGameInstance->Picking(&vResult))
+		{
+			m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSetW(XMLoadFloat3(&vResult), 1.f));
+		}
+	}
+
 #ifdef _DEBUG
 	for (size_t i = 0; i < TYPE_END; i++)
 	{

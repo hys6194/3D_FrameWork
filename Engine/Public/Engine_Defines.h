@@ -87,6 +87,7 @@ static const std::wstring TARGET_NORM	= TEXT("Target_Normal");
 static const std::wstring TARGET_SHAD	= TEXT("Target_Shade");
 static const std::wstring TARGET_DEPT	= TEXT("Target_Depth");
 static const std::wstring TARGET_SPEC	= TEXT("Target_Specular");
+static const std::wstring TARGET_PICK	= TEXT("Target_PickDepth");
 
 
 static const std::wstring MRT_GAMEOBJ	= TEXT("MRT_GameObject");

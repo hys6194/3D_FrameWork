@@ -2,24 +2,26 @@
 #include "Engine_Shader_Defines.hlsli"
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-vector g_vColor = vector(0.f, 1.f, 0.f, 1.f);
+vector g_vColor;
+
+texture2D g_Texture;
 
 struct VS_IN
 {
     float3 vPosition : POSITION;
+    float2 vTexcoord : TEXCOORD0;
 };
 
 struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
+    float2 vTexcoord : TEXCOORD0;
 };
 
 
 VS_OUT VS_MAIN(VS_IN In)
 {
-   
     VS_OUT Out = (VS_OUT)0;
-    
 
     matrix matWV, matWVP;    
     
@@ -27,6 +29,7 @@ VS_OUT VS_MAIN(VS_IN In)
     matWVP = mul(matWV, g_ProjMatrix);
     
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP); 
+    Out.vTexcoord = In.vTexcoord;
     
     return Out;
 }
@@ -35,6 +38,7 @@ VS_OUT VS_MAIN(VS_IN In)
 struct PS_IN
 {
     float4 vPosition : SV_POSITION;
+    float2 vTexcoord : TEXCOORD0;
 };
 
 struct PS_OUT
@@ -48,21 +52,10 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = g_vColor;    
+    Out.vColor = g_Texture.Sample(LinearSampler, In.vTexcoord);
     
     return Out;
 }
-
-PS_OUT PS_MAIN1(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-    
-    Out.vColor = g_vColor;
-    
-    return Out;
-}
- 
-
 
 /* 하드웨어 장치의 지원여부에 따라 다른 버젼의 셰이더를 빌드할 수 있도록 추가적으로 테크니커를 만들수 있다.*/ 
 technique11 DefaultTechnique
@@ -78,21 +71,8 @@ technique11 DefaultTechnique
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
-
-    pass DefaultPass1
-    {
-        SetRasterizerState(RS_Cull_None);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN1();
-    }
-
 
 }
 
