@@ -127,6 +127,8 @@ void CMonster::Late_Update(_float fTimeDelta)
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
+	if (m_bIsDead)
+		return;
 
 #ifdef _DEBUG
 	for (size_t i = 0; i < TYPE_END; i++)
@@ -142,16 +144,6 @@ HRESULT CMonster::Render()
 {
 	if (m_bIsDead)
 		return E_ABORT;
-
-#ifdef _DEBUG
-	for (size_t i = 0; i < TYPE_END; i++)
-	{
-		if (nullptr == m_pColliderCom[i])
-			continue;
-
-		m_pColliderCom[i]->Render();
-	}
-#endif
 
 	if (FAILED(Bind_SR()))
 		return E_FAIL;

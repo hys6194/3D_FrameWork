@@ -66,6 +66,10 @@ void CBullet::Update(_float fTimeDelta)
 void CBullet::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+    if (m_bDisappear)
+        return;
+
 #ifdef _DEBUG
     m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom);
 #endif

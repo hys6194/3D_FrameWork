@@ -243,6 +243,20 @@ HRESULT CRenderer::Render_Deferred()
 
 HRESULT CRenderer::Render_Debug()
 {
+    // ㅈ댔네 이러면 콜라이더를 어떻게 따로 돌리게 하는ㄱ네
+    for (auto& pDebugCom : m_DebugComponents)
+    {
+        if (nullptr != pDebugCom)
+        {
+            
+            pDebugCom->Render();
+        }
+
+        Safe_Release(pDebugCom);
+    }
+
+    m_DebugComponents.clear();
+
     FAILED_CHECK_RETURN(m_pShader->Bind_Matrix("g_ViewMatrix", &m_matView), E_FAIL);
     FAILED_CHECK_RETURN(m_pShader->Bind_Matrix("g_ProjMatrix", &m_matProj), E_FAIL);
 

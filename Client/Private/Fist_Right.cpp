@@ -64,6 +64,9 @@ void CFist_Right::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
+    if (m_pOwner->Is_Dead())
+        return;
+
 #ifdef _DEBUG
     m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom);
 #endif

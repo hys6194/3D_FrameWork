@@ -133,17 +133,6 @@ void CPlayer::Late_Update(_float fTimeDelta)
 HRESULT CPlayer::Render()
 {
 
-#ifdef _DEBUG
-	for (size_t i = 0; i < TYPE_END; i++)
-	{
-		if (nullptr == m_pColliderCom[i])
-			continue;
-
-
-		m_pColliderCom[i]->Render();
-	}
-#endif
-
 	//m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
 	//
 	//if(m_fTotalTime >= 1.f)
