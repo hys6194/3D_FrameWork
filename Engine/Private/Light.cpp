@@ -25,7 +25,13 @@ HRESULT CLight::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 
         if (FAILED(pShader->Bind_RawValue("g_vLightDir", &m_LightDesc.vDirection, sizeof(_float4))))
             return E_FAIL;
+        
+        FAILED_CHECK_RETURN(pShader->Bind_RawValue("g_vLightDir", &m_LightDesc.vDirection, sizeof(_float4)), E_FAIL);
+        FAILED_CHECK_RETURN(pShader->Bind_RawValue("g_vLightDiffuse", &m_LightDesc.vDiffuse, sizeof(_float4)), E_FAIL);
+        FAILED_CHECK_RETURN(pShader->Bind_RawValue("g_vLightAmbient", &m_LightDesc.vAmbient, sizeof(_float4)), E_FAIL);
+
     }
+
     else
     {
         iPassIndex = 2;

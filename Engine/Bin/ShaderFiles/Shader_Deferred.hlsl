@@ -5,10 +5,17 @@ matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D g_Texture;
 
 vector g_vLightDir;
+vector g_vLightDiffuse;
+vector g_vLightAmbient;
+
 texture2D g_NormalTexture;
 
 texture2D g_DiffuseTexture;
 texture2D g_ShadeTexture;
+
+vector g_vMtrlAmbient = vector(1.f, 1.f, 1.f, 1.f);
+
+vector g_vCamPosition;
 
 struct VS_IN
 {
@@ -64,6 +71,7 @@ PS_OUT PS_MAIN(PS_IN In)
 struct PS_OUT_LIGHT
 {
     float4 vShade : SV_TARGET0;
+    float4 vSpecular : SV_TARGET1;
 };
 
 PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
@@ -78,9 +86,13 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     // 0 == -1, 1 == 1
     float4 vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
     
-    float fShade = max(dot(normalize(g_vLightDir) * -1.f, normalize(vNormal)), 0.f);
+    vector vShade = saturate(max(dot(normalize(g_vLightDir) * -1.f, normalize(vNormal)), 0.f) +
+        (g_vLightAmbient * g_vMtrlAmbient));
     
-    Out.vShade = fShade;
+    Out.vShade = vShade * g_vLightDiffuse;
+    
+    vector vReflect = reflect(normalize(g_vLightDir), vNormal);
+    vector vLook = -g_vCamPosition;
     
     return Out;
 }
