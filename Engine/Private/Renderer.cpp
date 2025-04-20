@@ -25,11 +25,18 @@ HRESULT CRenderer::Initialize()
 
     // 노말은 8bit로 저장하게 되면 소수 정밀도가 떨어지게 됨 그래서 제대로 된 노말 표현이 안됨
     FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_NORM, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f)), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_DEPT, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f)), E_FAIL);
+
     FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_SHAD, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f)), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_SPEC, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f)), E_FAIL);
 
     FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_GAMEOBJ, TARGET_DIFF), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_GAMEOBJ, TARGET_NORM), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_GAMEOBJ, TARGET_DEPT), E_FAIL);
+
+
     FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_LIGHT, TARGET_SHAD), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_LIGHT, TARGET_SPEC), E_FAIL);
 
     // 셰이더에 던지기 위한 행렬 생성
 
