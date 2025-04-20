@@ -2,7 +2,7 @@
 #include "Engine_Shader_Defines.hlsli"
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-vector g_vColor;
+vector g_vColor = vector(0.f, 1.f, 0.f, 1.f);
 
 struct VS_IN
 {
@@ -57,7 +57,7 @@ PS_OUT PS_MAIN1(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = float4(0.f, 1.f, 0.f, 0.f);
+    Out.vColor = g_vColor;
     
     return Out;
 }

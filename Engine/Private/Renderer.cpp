@@ -28,7 +28,7 @@ HRESULT CRenderer::Initialize()
     FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_DEPT, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f)), E_FAIL);
 
     FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_SHAD, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_SPEC, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f)), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_RenderTarget(TARGET_SPEC, ViewPortsDesc.Width, ViewPortsDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f)), E_FAIL);
 
     FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_GAMEOBJ, TARGET_DIFF), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_GAMEOBJ, TARGET_NORM), E_FAIL);
@@ -247,10 +247,7 @@ HRESULT CRenderer::Render_Debug()
     for (auto& pDebugCom : m_DebugComponents)
     {
         if (nullptr != pDebugCom)
-        {
-            
             pDebugCom->Render();
-        }
 
         Safe_Release(pDebugCom);
     }
