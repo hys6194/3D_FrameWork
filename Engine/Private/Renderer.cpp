@@ -32,7 +32,7 @@ HRESULT CRenderer::Initialize()
     FAILED_CHECK_RETURN(m_pGameInstance->Add_MRT(MRT_LIGHT, TARGET_SHAD), E_FAIL);
 
     // 셰이더에 던지기 위한 행렬 생성
-    // 월드 행렬에 정규화된 깊이값인 1을 넣어서 원근 투영할 수 있는 행렬을 생성
+
     XMStoreFloat4x4(&m_matWorld, XMMatrixScaling(ViewPortsDesc.Width, ViewPortsDesc.Height, 1.f));
     XMStoreFloat4x4(&m_matView, XMMatrixIdentity());
     XMStoreFloat4x4(&m_matProj, XMMatrixOrthographicLH(

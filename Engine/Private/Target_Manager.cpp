@@ -68,6 +68,7 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag)
 
 	for (auto& pRenderTarget : *pMRTList)
 	{
+		pRenderTarget->Clear();
 		RenderTargets[iNumRenderTargets++] = pRenderTarget->Get_RTV();
 	}
 

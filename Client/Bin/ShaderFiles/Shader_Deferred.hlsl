@@ -2,9 +2,13 @@
 #include "Engine_Shader_Defines.hlsli"
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-vector g_vColor;
-
 texture2D g_Texture;
+
+vector g_vLightDir;
+texture2D g_NormalTexture;
+
+texture2D g_DiffuseTexture;
+texture2D g_ShadeTexture;
 
 struct VS_IN
 {
@@ -21,14 +25,16 @@ struct VS_OUT
 
 VS_OUT VS_MAIN(VS_IN In)
 {
-    VS_OUT Out = (VS_OUT)0;
-
-    matrix matWV, matWVP;    
+   
+    VS_OUT Out = (VS_OUT) 0;
     
-    matWV = mul(g_WorldMatrix, g_ViewMatrix);    
+
+    matrix matWV, matWVP;
+    
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
     
-    Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP); 
+    Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
     Out.vTexcoord = In.vTexcoord;
     
     return Out;
@@ -46,8 +52,6 @@ struct PS_OUT
     float4 vColor : SV_TARGET0;
 };
 
-
-
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -57,6 +61,44 @@ PS_OUT PS_MAIN(PS_IN In)
     return Out;
 }
 
+struct PS_OUT_LIGHT
+{
+    float4 vShade : SV_TARGET0;
+};
+
+PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
+{
+    PS_OUT_LIGHT Out;
+    
+    float4 vNormalDesc = g_NormalTexture.Sample(PointSampler, In.vTexcoord);
+    
+    float4 vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
+    
+    float fShade = max(dot(normalize(g_vLightDir) * -1.f, normalize(vNormal)), 0.f);
+    
+    Out.vShade = fShade;
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_DEFERRED(PS_IN In)
+{
+    PS_OUT Out;
+    
+    float4 vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
+    
+    if (0.0f == vDiffuse.a)
+        discard;
+    
+    float4 vShade = g_ShadeTexture.Sample(LinearSampler, In.vTexcoord);
+    
+    Out.vColor = vDiffuse * vShade;
+    
+    return Out;
+}
+ 
+
+
 /* 하드웨어 장치의 지원여부에 따라 다른 버젼의 셰이더를 빌드할 수 있도록 추가적으로 테크니커를 만들수 있다.*/ 
 technique11 DefaultTechnique
 {
@@ -64,17 +106,51 @@ technique11 DefaultTechnique
     /* 이 패스에서 사용할 여러가지 셰이더의 진입점 함수를 지정한다. */
 
     /* 일반적으로 렌더링한다 : 빛연산 + 스펙큘러 + 림라이트 + 그림자 + ssao */ 
-    pass DefaultPass
+    pass Debug
     {
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_None, 0);
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
+    pass Light_Directional
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_LIGHT_DIRECTIONAL();
+    }
+
+    pass Light_Point
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
+    }
+
+    pass Deferred
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_DEFERRED();
+    }
+
+
+
 }
-
-
 
