@@ -102,12 +102,19 @@ PS_OUT PS_DISSOLVE(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
+    // 디퓨즈 색
     vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
+    
+    // 디졸브 마스크
     vector vDissolveMask = g_DissolveTexture.Sample(LinearSampler, In.vTexcoord);
     
+    //띠 두께
     float  fWidth = 0.05;
+    
+    // 띠 색깔
     float4 fColor = float4(1.f, 0.5f, 0.f, 1.f);
     
+    //시간 도달하면 Discard
     if (vDissolveMask.r < fTime)
         discard;
     
