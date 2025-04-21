@@ -97,12 +97,10 @@ void CMolochAttack_180::PriorityUpdate_State(_float fTimeDelta)
     }
     
     // 해당 각도가 되었을때 멈춰야 함
-    if (!m_bTurned)
+    // 크리스탈 생성하면 멈추게 하자
+    if (!m_bSpawn)
     {
-        _bool bTurn = Update_MonsterLook(fTimeDelta);
-
-        if (bTurn)
-            m_bTurned = bTurn;
+        Update_MonsterLook(fTimeDelta);
     }
 
     if(m_bAnimEnd)
@@ -121,7 +119,7 @@ void CMolochAttack_180::Update_State(_float fTimeDelta)
 {
     Update_Animation(fTimeDelta);
 
-    m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
+    m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)), -1.f);
 }
 
 void CMolochAttack_180::LateUpdate_State(_float fTimeDelta)
@@ -151,8 +149,8 @@ void CMolochAttack_180::Set_PreAnimation()
 
 void CMolochAttack_180::Update_Animation(_float fTimeDelta)
 {
-
     m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
+
 
     m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
 }

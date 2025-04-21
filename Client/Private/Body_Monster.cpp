@@ -40,6 +40,7 @@ HRESULT CBody_Monster::Initialize(void* pArg)
 	BODY_MONSTER_DESC* pDesc = static_cast<BODY_MONSTER_DESC*>(pArg);
 	m_pTargetState = *pDesc->pTargetState;
 	m_pOwner = pDesc->pOwner;
+	m_iPassIndex = 0;
 
 	FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
 
@@ -48,12 +49,51 @@ HRESULT CBody_Monster::Initialize(void* pArg)
 
 void CBody_Monster::Priority_Update(_float fTimeDelta)
 {
+
 }
 
 void CBody_Monster::Update(_float fTimeDelta)
 {
 	XMStoreFloat4x4(&m_CombinedWorldMatrix,
 		XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentMatrix));
+
+	if (m_pOwner->Is_Hit())
+	{
+		m_bHit = true;
+		m_fTotalTime = 0.f;
+	}
+
+	if (m_bHit)
+	{
+		m_fTotalTime += fTimeDelta * 5.f;
+
+		m_iPassIndex = 2;
+
+		if (m_fTotalTime >= 1.f)
+		{
+			m_fTotalTime = 0.f;
+			m_iPassIndex = 0;
+			m_bHit = false;
+			return;
+		}
+
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("fTime", &m_fTotalTime, sizeof(_float)), );
+	}
+
+	if (m_pOwner->Is_Dead())
+	{
+		m_iPassIndex = 1;
+
+		m_fTotalTime += fTimeDelta;
+
+		if (m_fTotalTime >= 1.f)
+			m_fTotalTime = 1.f;
+
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("fTime", &m_fTotalTime, sizeof(_float)), );
+	}
+
+
+
 }
 
 void CBody_Monster::Late_Update(_float fTimeDelta)
@@ -63,8 +103,8 @@ void CBody_Monster::Late_Update(_float fTimeDelta)
 
 HRESULT CBody_Monster::Render()
 {
-	if (m_pOwner->Is_Dead())
-		return E_ABORT;
+	//if (m_pOwner->Is_Dead())
+	//	return E_ABORT;
 
 	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
 
@@ -76,7 +116,7 @@ HRESULT CBody_Monster::Render()
 
 		m_pModelCom->Bind_BoneMatrix(m_pShaderCom, "g_BoneMatrices", i);
 
-		if (FAILED(m_pShaderCom->Begin(0)))
+		if (FAILED(m_pShaderCom->Begin(m_iPassIndex)))
 			return E_FAIL;
 
 		if (FAILED(m_pModelCom->Render(i)))
@@ -89,6 +129,10 @@ HRESULT CBody_Monster::Render()
 
 HRESULT CBody_Monster::Ready_Component()
 {
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, PRO_TEX_DISSOLVE,
+		reinterpret_cast<CComponent**>(&m_pTextureCom), TEXT("Com_Texture_Mask"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 

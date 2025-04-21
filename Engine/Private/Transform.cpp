@@ -189,6 +189,21 @@ HRESULT CTransform::Dash(_float4 fDelta, CNavigation* pNavigation, _float fMag)
     return S_OK;
 }
 
+HRESULT CTransform::BackDash(_float4 fDelta, CNavigation* pNavigation, _float fMag)
+{
+    _vector vPos = Get_State(STATE_POS);
+    _vector vLook = Get_State(STATE_LOOK);
+    _vector vDelta = XMVectorSet(fDelta.z * fMag, 0.f, fDelta.z * fMag, 0.f);
+
+    vPos -= XMVector4Normalize(vLook) * vDelta;
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
+
+    return S_OK;
+}
+
 HRESULT CTransform::Avoid(_float4 fDelta, CNavigation* pNavigation)
 {
     _vector vPos = Get_State(STATE_POS);

@@ -52,6 +52,9 @@ void CMonster::Priority_Update(_float fTimeDelta)
 		m_pGameInstance->Secede_Update(m_pColliderCom[COLL_SPHERE]->Get_Bounder());
 		m_iState = STATE_DEAD;
 		m_bRec = false;
+
+		// 여기에서 피가 0이 되면 터지는 파티클이 연출되어야 한다
+
 	}
 
 	// 이 부분을 따로 빼서 적용한다던가

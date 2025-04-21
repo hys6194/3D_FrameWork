@@ -238,6 +238,11 @@ HRESULT CLoader::Loading_Textures()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Snow"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Snow/Snow.png"), 1))))
 			return E_FAIL;
+
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_DISSOLVE,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/DissolveTex/T_DissolveMask_A.dds")))))
+			return E_FAIL;
 	}
 
 		break;

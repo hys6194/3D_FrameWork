@@ -159,11 +159,11 @@ HRESULT CMoloch::Ready_States()
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
     
     // 여기에서 다음과 같은 방식으로 공격 패턴에 관한 클래스를 계속 등록해줘야 함
-    pState = CMolochAttack_Swipe::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIPE_01, 12.f);
-    m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_SWIPE_01, static_cast<CAttack_Base*>(pState));
-
-    pState = CMolochAttack_Swing::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_SWING_01, 12.f);
+    pState = CMolochAttack_Swing::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_SWING_01, 3.f);
     m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_FULL_SWING_01, static_cast<CAttack_Base*>(pState));
+
+    pState = CMolochAttack_Swipe::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIPE_01, 3.f);
+    m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_SWIPE_01, static_cast<CAttack_Base*>(pState));
 
     pState = CMolochAttack_Geyser::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_GEYSER_START, 90.f);
     m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_FULL_GEYSER_START, static_cast<CAttack_Base*>(pState));

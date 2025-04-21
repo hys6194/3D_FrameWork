@@ -6,6 +6,7 @@
 BEGIN(Engine)
 class CShader;
 class CModel;
+class CTexture;
 END
 
 //추후 보스 몬스터 혹은 일반 몬스터가 무기를 들 수 있으므로
@@ -45,10 +46,17 @@ protected:
 	virtual HRESULT								Bind_SR() ;
 
 protected:
+	_bool										m_bHit					= { false };
+
 	_uint										m_pTargetState;
+	_uint										m_iPassIndex;
+
+
+	_float										m_fTotalTime			= 0.f;
 
 	class CShader*								m_pShaderCom			= { nullptr };
 	class CModel*								m_pModelCom				= { nullptr };
+	class CTexture*								m_pTextureCom			= { nullptr };
 
 	class CMonster*								m_pOwner = { nullptr };
 

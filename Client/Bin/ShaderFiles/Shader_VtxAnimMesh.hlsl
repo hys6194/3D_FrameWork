@@ -3,11 +3,14 @@
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
+float fTime;
+
 /* 모델 전체의 뼈정보(x) */
 /* 특정 메시에게 영향을 주는 뼈들의 정보(o) */
 matrix g_BoneMatrices[512];
 
 texture2D g_DiffuseTexture;
+texture2D g_DissolveTexture;
 
 struct VS_IN
 {
@@ -84,11 +87,59 @@ PS_OUT PS_MAIN(PS_IN In)
     vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
     
     if (vDiffuse.a < 0.3f)
-        discard; 
+        discard;
+    
     
     Out.vDiffuse = vDiffuse;
     Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.f, 0.f, 0.f);
+    
+    return Out;
+}
+
+// 디졸브
+PS_OUT PS_DISSOLVE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
+    vector vDissolveMask = g_DissolveTexture.Sample(LinearSampler, In.vTexcoord);
+    
+    vector vDissolve = vDissolveMask * vDiffuse * fTime;
+    float4 fColor = float4(1.f, 0.2f, 0.7f, 1.f);
+    float fPower = 1.f;
+    
+    vDissolve.rgb *= smoothstep(0.1f, 1.f, fColor * fPower);
+    
+    if (vDissolve.a < 0.3f)
+        discard;
+    
+    Out.vDiffuse = vDissolve;
+    Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.f, 0.f, 0.f);
+    
+    return Out;
+}
+
+// 피격
+PS_OUT PS_MAIN2(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
+    
+    float4 fColor = float4(0.7f, 1.f, 0.f, 1.f);
+    float fPower = 1.f;
+    
+    vDiffuse.r += fColor * (fPower - fTime);
+    vDiffuse.gb -= fColor * (fPower - fTime);
+    
+    if (vDiffuse.a < 0.3f)
+        discard;
+    
+    Out.vDiffuse = vDiffuse;
+    Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    //Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.f, 0.f, 0.f);
     
     return Out;
 }
@@ -104,6 +155,28 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
+    }
+
+    pass DefaultPass1
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_DISSOLVE();
+    }
+
+    pass DefaultPass2
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN2();
     }
 }
 
