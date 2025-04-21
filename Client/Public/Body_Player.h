@@ -17,6 +17,7 @@ public:
 	typedef struct tagBodyPlayerDesc : public CPartObject::PARTOBJ_DESC
 	{
 		const _uint* pTargetState = { nullptr };
+		class CPlayer* pOwner = { nullptr };
 	}BODY_PLAYER_DESC;
 
 private:
@@ -41,7 +42,14 @@ public:
 private:
 	CShader*									m_pShaderCom = { nullptr };
 	CModel*										m_pModelCom = { nullptr };
-	CGameObject*								m_pOwner = { nullptr };
+	CPlayer*									m_pOwner = { nullptr };
+
+	_bool										m_bHit = { false };
+	_uint										m_iPassIndex;
+
+	_float										m_fHitTime = 0.f;
+	_float										m_fDeadTime = 0.f;
+
 
 private:
 	const _uint*								m_pTargetState = { nullptr };				// 플레이어의 상태를 가져와서 애니메이션의 상태를 변경하려고 함

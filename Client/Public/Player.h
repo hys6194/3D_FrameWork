@@ -82,6 +82,11 @@ public:
 		m_bCanMove = bMove;
 	}
 
+	_bool					Is_Hit()
+	{
+		return m_bHit;
+	}
+
 public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize(void* pArg) override;
@@ -97,6 +102,7 @@ private:
 
 	_bool					m_bIsDashed			= { false };
 	_bool					m_bCanMove			= { true };
+	_bool					m_bHit				= { false };
 
 	_float					m_fTotalTime = { 0.f };
 

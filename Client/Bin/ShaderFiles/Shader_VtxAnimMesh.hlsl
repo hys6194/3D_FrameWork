@@ -105,18 +105,21 @@ PS_OUT PS_DISSOLVE(PS_IN In)
     vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
     vector vDissolveMask = g_DissolveTexture.Sample(LinearSampler, In.vTexcoord);
     
-    vector vDissolve = vDissolveMask * vDiffuse * fTime;
-    float4 fColor = float4(1.f, 0.2f, 0.7f, 1.f);
-    float fPower = 1.f;
+    float  fWidth = 0.05;
+    float4 fColor = float4(1.f, 0.5f, 0.f, 1.f);
     
-    vDissolve.rgb *= smoothstep(0.1f, 1.f, fColor * fPower);
-    
-    if (vDissolve.a < 0.3f)
+    if (vDissolveMask.r < fTime)
         discard;
     
-    Out.vDiffuse = vDissolve;
+    vector vDissolve = smoothstep(fTime, fTime + fWidth, vDissolveMask.g);
+    
+    float4 fGlow = vDissolve * fColor;
+    
+    vDiffuse.rgb = vDiffuse.rgb + fGlow.rgb;
+    
+    Out.vDiffuse = vDiffuse;
     Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.f, 0.f, 0.f);
+    //Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.f, 0.f, 0.f);
     
     return Out;
 }
@@ -161,7 +164,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_Blend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;

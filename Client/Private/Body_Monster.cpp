@@ -60,36 +60,36 @@ void CBody_Monster::Update(_float fTimeDelta)
 	if (m_pOwner->Is_Hit())
 	{
 		m_bHit = true;
-		m_fTotalTime = 0.f;
+		m_fHitTime = 0.f;
 	}
 
 	if (m_bHit)
 	{
-		m_fTotalTime += fTimeDelta * 5.f;
+		m_fHitTime += fTimeDelta * 5.f;
 
 		m_iPassIndex = 2;
 
-		if (m_fTotalTime >= 1.f)
+		if (m_fHitTime >= 1.f)
 		{
-			m_fTotalTime = 0.f;
+			m_fHitTime = 0.f;
 			m_iPassIndex = 0;
 			m_bHit = false;
 			return;
 		}
 
-		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("fTime", &m_fTotalTime, sizeof(_float)), );
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("fTime", &m_fHitTime, sizeof(_float)), );
 	}
 
 	if (m_pOwner->Is_Dead())
 	{
 		m_iPassIndex = 1;
 
-		m_fTotalTime += fTimeDelta;
+		m_fDeadTime += fTimeDelta / 2.f;
 
-		if (m_fTotalTime >= 1.f)
-			m_fTotalTime = 1.f;
+		if (m_fDeadTime >= 1.f)
+			m_fDeadTime = 1.f;
 
-		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("fTime", &m_fTotalTime, sizeof(_float)), );
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("fTime", &m_fDeadTime, sizeof(_float)), );
 	}
 
 

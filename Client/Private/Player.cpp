@@ -60,6 +60,13 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 	m_pFSMCom->Change_State(m_iState);
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
 
+	if (m_pColliderCom[COLL_OBB]->Is_Coll())
+	{
+		m_bHit = true;
+	}
+	else
+		m_bHit = false;
+
 
 	for (size_t i = 0; i < TYPE_END; i++)
 	{
@@ -94,21 +101,12 @@ void CPlayer::Update(_float fTimeDelta)
 
 	m_pFSMCom->Update_State(fTimeDelta);
 
-	/*if (GetKeyState(VK_LBUTTON) & 0x8000)
-	{
-		_float3			vResult{};
-		if (true == m_pGameInstance->Picking(&vResult))
-		{
-			m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSetW(XMLoadFloat3(&vResult), 1.f));
-		}
-	}*/
 
 #ifdef _DEBUG
 	for (size_t i = 0; i < TYPE_END; i++)
 	{
 		if (nullptr == m_pColliderCom[i])
 			continue;
-
 
 		m_pColliderCom[i]->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 	}
@@ -141,21 +139,6 @@ void CPlayer::Late_Update(_float fTimeDelta)
 
 HRESULT CPlayer::Render()
 {
-
-	//m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
-	//
-	//if(m_fTotalTime >= 1.f)
-	//{
-	//	_float4 fPos{};
-	//	XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
-	//	TCHAR debugMessage[256];
-	//	_stprintf_s(debugMessage, _T("PlayerPos: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
-	//		fPos.x, fPos.y, fPos.z, fPos.w);
-	//	OutputDebugString(debugMessage);
-	//
-	//	m_fTotalTime = 0.f;
-	//}
-
 	return S_OK;
 }
 
@@ -209,6 +192,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	CBody_Player::BODY_PLAYER_DESC		BodyDesc{};
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pTargetState = &m_iState;
+	BodyDesc.pOwner = this;
 	
 	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_BODY, PART_BODY, &BodyDesc), E_FAIL);
 

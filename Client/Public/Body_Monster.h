@@ -52,7 +52,8 @@ protected:
 	_uint										m_iPassIndex;
 
 
-	_float										m_fTotalTime			= 0.f;
+	_float										m_fHitTime			= 0.f;
+	_float										m_fDeadTime			= 0.f;
 
 	class CShader*								m_pShaderCom			= { nullptr };
 	class CModel*								m_pModelCom				= { nullptr };
