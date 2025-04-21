@@ -131,7 +131,7 @@ PS_OUT PS_MAIN2(PS_IN In)
     
     vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
     
-    float4 fColor = float4(0.7f, 1.f, 0.f, 1.f);
+    float4 fColor = float4(0.65f, 1.f, 0.f, 1.f);
     float fPower = 1.f;
     
     vDiffuse.r += fColor * (fPower - fTime);
