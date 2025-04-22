@@ -70,6 +70,11 @@ HRESULT CGhoul::Initialize(void* pArg)
 
 void CGhoul::Priority_Update(_float fTimeDelta)
 {
+    if (m_pGameInstance->Get_DIKeyState(DIK_2))
+    {
+        m_iState = STATE_DEAD;
+    }
+
     __super::Priority_Update(fTimeDelta);
 }
 

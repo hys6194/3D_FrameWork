@@ -538,7 +538,6 @@ _bool CGameInstance::Picking(_float3* pOut)
 
 void CGameInstance::Release_Engine()
 {
-	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pLevel_Manager);
@@ -552,6 +551,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pPicking);
 	Safe_Release(m_pImGui_Manager);
+	Safe_Release(m_pGraphic_Device);
 
 
 	CGameInstance::DestroyInstance();

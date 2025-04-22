@@ -48,7 +48,7 @@ void CGun_Left::Priority_Update(_float fTimeDelta)
         if(E_FAIL == Create_Bullet())
             return;
 
-        m_fCool += 0.2f;
+        m_fCool += 0.3f;
     }
 
     else if ((CPlayer::STATE_SHOOT & ~*m_pTargetState))
@@ -125,7 +125,7 @@ HRESULT CGun_Left::Create_Bullet()
 {
     _matrix matHand = XMMatrixMultiply(XMLoadFloat4x4(m_pHandMatrix), XMLoadFloat4x4(m_pParentMatrix));
     CBullet::BULLET_DESC Desc{};
-    Desc.fSpeedPerSec = 0.5f;
+    Desc.fSpeedPerSec = 1.f;
     lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Player_Bullet "));
 
 

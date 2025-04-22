@@ -5,6 +5,7 @@
 #include "Body_FallenDog.h"
 #include "Test_Monster.h"
 #include "Moloch_Sword.h"
+//#include "Normal_Trail.h"
 #include "Body_Moloch.h"
 #include "Body_Player.h"
 #include "Camera_Free.h"
@@ -329,10 +330,10 @@ HRESULT CLoader::Loading_Models()
 		// 
 		//  새로운 논애니메이션 모델 저장용
 		//PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
-		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_CRYSTAL_A,
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_BULLET,
 		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-		//		"../Bin/Resources/Models/NonAnimModel/Crystal/TremorCrystal_A.fbx",
-		//		"../Bin/DataFiles/Nonanim/AttackObject/TremorCrystal_A.bin",
+		//		"../Bin/Resources/Models/NonAnimModel/Bullet/Bullet.fbx",
+		//		"../Bin/DataFiles/Nonanim/AttackObject/Bullet.bin",
 		//		PreTransformMatrix))))
 		//	return E_FAIL;
 		//
@@ -393,6 +394,11 @@ HRESULT CLoader::Loading_Models()
 		PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/ForkLift.bin", PreTransformMatrix))))
+			return E_FAIL;
+
+		PreTransformMatrix = XMMatrixScaling(0.5f, 0.5f, 0.5f) * XMMatrixRotationZ(XMConvertToRadians(270.f));
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_BULLET,
+			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/AttackObject/Bullet.bin", PreTransformMatrix))))
 			return E_FAIL;
 
 		PreTransformMatrix = XMMatrixScaling(0.0018f, 0.0018f, 0.0018f);

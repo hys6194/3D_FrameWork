@@ -4,6 +4,7 @@
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 float fTime;
+float g_fDissolveTime;
 
 /* 모델 전체의 뼈정보(x) */
 /* 특정 메시에게 영향을 주는 뼈들의 정보(o) */
@@ -106,27 +107,29 @@ PS_OUT PS_DISSOLVE(PS_IN In)
     vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
     
     // 디졸브 마스크
-    vector vDissolveMask = g_DissolveTexture.Sample(LinearSampler, In.vTexcoord);
+    vector vDissolveMask = g_DissolveTexture.Sample(PointSampler, In.vTexcoord);
     
     //띠 두께
-    float  fWidth = 0.05;
+    float  fWidth = 0.5;
     
     // 띠 색깔
-    float4 fColor = float4(1.f, 0.5f, 0.f, 1.f);
+    float4 vColor = float4(1.f, 0.5f, 0.f, 1.f);
+    // 띠 범위 보간
+    float vEdge = smoothstep(g_fDissolveTime, g_fDissolveTime + fWidth, vDissolveMask.g);
+    
+    float4 vGlow = vEdge * vColor;
+    
+    vDiffuse += vGlow;
     
     //시간 도달하면 Discard
-    if (vDissolveMask.r < fTime)
-        discard;
-    
-    vector vDissolve = smoothstep(fTime, fTime + fWidth, vDissolveMask.g);
-    
-    float4 fGlow = vDissolve * fColor;
-    
-    vDiffuse.rgb = vDiffuse.rgb + fGlow.rgb;
+    if (vDissolveMask.r < g_fDissolveTime)
+        clip(vDiffuse.rgb - g_fDissolveTime);
     
     Out.vDiffuse = vDiffuse;
+    //vDiffuse.a = vDissolveMask.a;
+    //vDiffuse.a = vGlow.a;
     Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
-    //Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.f, 0.f, 0.f);
     
     return Out;
 }
@@ -171,7 +174,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Blend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;

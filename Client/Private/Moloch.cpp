@@ -219,7 +219,8 @@ HRESULT CMoloch::Ready_Components()
     
     CStatus::STATUS_DESC StatusDesc{};
     StatusDesc.iAttack = 2;
-    StatusDesc.iHP = 500;
+    //StatusDesc.iHP = 500;
+    StatusDesc.iHP = 1;
     StatusDesc.pOwner = this;
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_STATUS,

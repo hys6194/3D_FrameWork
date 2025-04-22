@@ -59,6 +59,7 @@ static const std::wstring PRO_COM_COLL_SPHERE			= TEXT("Prototype_Component_Coll
 
 /* Model */
 static const std::wstring PRO_MODEL_STRIFE				= TEXT("Prototype_Component_Model_Test");
+static const std::wstring PRO_MODEL_BULLET				= TEXT("Prototype_Component_Model_Bullet");
 static const std::wstring PRO_MODEL_FIONA				= TEXT("Prototype_Component_Model_Fiona");
 static const std::wstring PRO_MODEL_GHOUL				= TEXT("Prototype_Component_Model_Ghoul"); 
 static const std::wstring PRO_MODEL_FALLEN_GHOUL		= TEXT("Prototype_Component_Model_Fallen_Ghoul"); 

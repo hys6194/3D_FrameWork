@@ -9,5 +9,6 @@ namespace Engine
 	enum class MOUSEMOVESTATE { DIMS_X, DIMS_Y, DIMS_Z };
 	enum TYPE { TYPE_SPHERE, TYPE_AABB, TYPE_OBB, TYPE_END };
 	enum COLL_OPT { OP_IMPACT, OP_TARGET, OP_DETECT, OP_END };
+	enum TRAIL_TYPE { TR_NORMAL, TR_SWORD, TR_MOTION, TR_END };
 }
 #endif // Engine_Enum_h__

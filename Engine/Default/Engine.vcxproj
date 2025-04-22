@@ -218,6 +218,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\Model.h" />
     <ClInclude Include="..\Public\MyFont.h" />
     <ClInclude Include="..\Public\Navigation.h" />
+    <ClInclude Include="..\Public\Normal_Trail.h" />
     <ClInclude Include="..\Public\Object_Manager.h" />
     <ClInclude Include="..\Public\PartObject.h" />
     <ClInclude Include="..\Public\Picking.h" />
@@ -231,6 +232,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\Texture.h" />
     <ClInclude Include="..\Public\Timer.h" />
     <ClInclude Include="..\Public\Timer_Manager.h" />
+    <ClInclude Include="..\Public\Trail.h" />
     <ClInclude Include="..\Public\Transform.h" />
     <ClInclude Include="..\Public\UIObject.h" />
     <ClInclude Include="..\Public\VIBuffer.h" />
@@ -243,6 +245,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Public\VIBuffer_Rect.h" />
     <ClInclude Include="..\public\VIBuffer_Rect_Instancing.h" />
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
+    <ClInclude Include="..\Public\VIBuffer_Trail.h" />
     <ClInclude Include="클래스 정의.h" />
   </ItemGroup>
   <ItemGroup>
@@ -278,6 +281,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\Model.cpp" />
     <ClCompile Include="..\Private\MyFont.cpp" />
     <ClCompile Include="..\Private\Navigation.cpp" />
+    <ClCompile Include="..\Private\Normal_Trail.cpp" />
     <ClCompile Include="..\Private\Object_Manager.cpp" />
     <ClCompile Include="..\Private\PartObject.cpp" />
     <ClCompile Include="..\Private\Picking.cpp" />
@@ -291,6 +295,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\Texture.cpp" />
     <ClCompile Include="..\Private\Timer.cpp" />
     <ClCompile Include="..\Private\Timer_Manager.cpp" />
+    <ClCompile Include="..\Private\Trail.cpp" />
     <ClCompile Include="..\Private\Transform.cpp" />
     <ClCompile Include="..\Private\UIObject.cpp" />
     <ClCompile Include="..\Private\VIBuffer.cpp" />
@@ -303,6 +308,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect_Instancing.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Trail.cpp" />
     <ClCompile Include="..\Public\ImGui\GraphEditor.cpp" />
     <ClCompile Include="..\Public\ImGui\ImCurveEdit.cpp" />
     <ClCompile Include="..\Public\ImGui\ImGradient.cpp" />

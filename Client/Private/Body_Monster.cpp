@@ -14,9 +14,10 @@ CBody_Monster::CBody_Monster(const CBody_Monster& Prototype)
 	//, m_pShaderCom { Prototype.m_pShaderCom }
 	//, m_pModelCom{ Prototype.m_pModelCom }
 	, m_mapSocketmat{ Prototype.m_mapSocketmat }
+	, m_fDeadTime { Prototype.m_fDeadTime }
 {
 	Safe_AddRef(m_pShaderCom);
-	Safe_AddRef(m_pModelCom);
+	Safe_AddRef(m_pModelCom); 
 }
 
 const _float4x4* CBody_Monster::Get_f4SocketMatrix(const _wstring& strSocketName)
@@ -74,7 +75,7 @@ void CBody_Monster::Update(_float fTimeDelta)
 			m_fHitTime = 0.f;
 			m_iPassIndex = 0;
 			m_bHit = false;
-			return;
+			return; 
 		}
 
 		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("fTime", &m_fHitTime, sizeof(_float)), );
@@ -84,12 +85,15 @@ void CBody_Monster::Update(_float fTimeDelta)
 	{
 		m_iPassIndex = 1;
 
-		m_fDeadTime += fTimeDelta / 2.f;
+		m_fDeadTime += fTimeDelta / 3.f;
 
 		if (m_fDeadTime >= 1.f)
+		{
+		
 			m_fDeadTime = 1.f;
+		}
 
-		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("fTime", &m_fDeadTime, sizeof(_float)), );
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_fDissolveTime", &m_fDeadTime, sizeof(_float)), );
 	}
 
 
@@ -103,8 +107,8 @@ void CBody_Monster::Late_Update(_float fTimeDelta)
 
 HRESULT CBody_Monster::Render()
 {
-	//if (m_pOwner->Is_Dead())
-	//	return E_ABORT;
+	if (m_fDeadTime >= 1.f)
+		return E_ABORT;
 
 	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
 

@@ -199,6 +199,24 @@
     <Filter Include="01.Utility\10. Picking">
       <UniqueIdentifier>{80897b3d-c094-4087-969e-886018dc2f6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\11.Effect">
+      <UniqueIdentifier>{ce4fef9a-0d10-49da-8da4-1cdb463d6649}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\11.Effect\Trail">
+      <UniqueIdentifier>{654a1069-8bf7-4bf6-9269-f185c99736d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\11.Effect\Trail\Motion_Trail">
+      <UniqueIdentifier>{c87c6e41-07e7-4eb5-90ee-145ff5bda992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\11.Effect\Trail\Sword_Trail">
+      <UniqueIdentifier>{cd3cb375-15d8-4e52-a464-00b0c056dec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\11.Effect\Trail\Normal_Trail">
+      <UniqueIdentifier>{d957881f-6166-417b-8ec8-0bf4c494d02e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. Component\VIBuffer\Trail">
+      <UniqueIdentifier>{9a18a8fc-707a-453f-9eca-ddcacb237cbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -444,6 +462,15 @@
     <ClInclude Include="..\Public\Picking.h">
       <Filter>01.Utility\10. Picking</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Trail.h">
+      <Filter>01.Utility\11.Effect\Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Normal_Trail.h">
+      <Filter>01.Utility\11.Effect\Trail\Normal_Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Trail.h">
+      <Filter>01.Utility\04. Component\VIBuffer\Trail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -661,6 +688,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Picking.cpp">
       <Filter>01.Utility\10. Picking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Trail.cpp">
+      <Filter>01.Utility\11.Effect\Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Normal_Trail.cpp">
+      <Filter>01.Utility\11.Effect\Trail\Normal_Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Trail.cpp">
+      <Filter>01.Utility\04. Component\VIBuffer\Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -30,7 +30,7 @@ HRESULT CBullet::Initialize(void* pArg)
     FAILED_CHECK_RETURN(Ready_Component(), E_FAIL)
 
     m_pTransformCom->Set_Matrix(&m_matHand);
-    m_pTransformCom->SetUp_Scaled(3.f, 3.f, 3.f);
+    m_pTransformCom->SetUp_Scaled(2.f, 2.f, 2.f);
 
     return S_OK;
 }
@@ -71,7 +71,7 @@ void CBullet::Late_Update(_float fTimeDelta)
         return;
 
 #ifdef _DEBUG
-    m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom);
+    //m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom);
 #endif
 }
 
@@ -99,7 +99,7 @@ HRESULT CBullet::Render()
     }
 
 #ifdef _DEBUG
-    m_pColliderCom->Render();
+    //m_pColliderCom->Render();
 #endif 
 
     return S_OK;
@@ -108,7 +108,7 @@ HRESULT CBullet::Render()
 HRESULT CBullet::Ready_Component()
 {
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_BULLET,
         reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
