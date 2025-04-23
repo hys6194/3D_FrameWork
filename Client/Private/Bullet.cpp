@@ -112,12 +112,11 @@ HRESULT CBullet::Ready_Component()
         reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
-        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL)
-        ;
+        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
     SphereDesc.fRadius      = 0.2f;
     SphereDesc.vCenter      = _float3(0.f, 0.f, 0.f);
-    //SphereDesc.strCollTag   = Get_Name() + std::to_wstring(m_iIndex);
     SphereDesc.strCollTag   = Get_Name();
     SphereDesc.iOption      = COLL_OPT::OP_IMPACT;
     SphereDesc.eType =      TYPE::TYPE_SPHERE;
@@ -126,9 +125,6 @@ HRESULT CBullet::Ready_Component()
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc)))
         return E_FAIL;
 
-    // 근데 좀 별로다 몸은 자동으로 등록하는데 총알이나 공격 부류는 내가 선언해야 등록되는거
-    // 아닌데? 의도한대로 되긴했는데? 불편한거 아닌가?
-    // 불편한거네 근데 이게 더 낫긴해
     m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
 
     return S_OK;

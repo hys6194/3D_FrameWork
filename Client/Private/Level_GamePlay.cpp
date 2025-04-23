@@ -65,6 +65,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
 		LEVEL_GAMEPLAY, pLayerTag)))
 		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_SKY,
 		LEVEL_GAMEPLAY, pLayerTag)))
 		return E_FAIL;

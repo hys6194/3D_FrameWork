@@ -154,6 +154,11 @@ HRESULT CMonster::Render()
 	return S_OK;
 }
 
+HRESULT CMonster::Ready_UI_HP()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CMonster::Ready_Components()
 {
 	CNavigation::NAVIGATION_DESC		NaviDesc{};

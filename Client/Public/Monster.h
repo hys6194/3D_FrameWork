@@ -31,6 +31,7 @@ public:
 		_float fNoticeDistance = { 15.f };	//  쓰고싶은데 못쓰고 있는중
 
 		_wstring strMonsterName = {};
+		_wstring strHPFramgeTag= {};
 
 	}MONSTER_DESC;
 
@@ -79,6 +80,7 @@ public:
 
 public:
 	virtual HRESULT							Ready_PartObjects()							= 0;
+	virtual HRESULT							Ready_UI_HP();
 	virtual HRESULT							Ready_Components();
 
 protected:

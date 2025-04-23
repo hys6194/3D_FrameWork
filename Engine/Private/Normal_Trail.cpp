@@ -1,4 +1,7 @@
 #include "Normal_Trail.h"
+#include "VIBuffer_Trail.h"
+
+#include "GameInstance.h"
 
 CNormal_Trail::CNormal_Trail(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CTrail { pDevice , pContext }
@@ -7,7 +10,9 @@ CNormal_Trail::CNormal_Trail(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 
 CNormal_Trail::CNormal_Trail(const CNormal_Trail& Prototype)
     : CTrail{ Prototype }
+    , m_pVIBufferCom { Prototype.m_pVIBufferCom }
 {
+    Safe_AddRef(m_pVIBufferCom);
 }
 
 HRESULT CNormal_Trail::Initialize_Prototype()
@@ -18,7 +23,6 @@ HRESULT CNormal_Trail::Initialize_Prototype()
 HRESULT CNormal_Trail::Initialize(void* pArg)
 {
     //뭐 추가적으로 넣을 거 있으면 알아서 하고
-
 
     FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
 
@@ -45,11 +49,10 @@ HRESULT CNormal_Trail::Render()
 HRESULT CNormal_Trail::Bind_SR()
 {
 
-    // 아...어떻게 할 수가 없는건가?
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_FALLEN_GHOUL,
+    FAILED_CHECK_RETURN(__super::Add_Component(m_iLevelIndex, m_strVIBufferTag,
         reinterpret_cast<CComponent**>(&m_pVIBufferCom), TEXT("Com_Model")), E_FAIL);
     
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
+    FAILED_CHECK_RETURN(__super::Add_Component(m_iLevelIndex, m_strShaderTag,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 
     return S_OK;
@@ -68,7 +71,7 @@ CNormal_Trail* CNormal_Trail::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
     return pInstance;
 }
 
-CComponent* CNormal_Trail::Clone(void* pArg)
+CGameObject* CNormal_Trail::Clone(void* pArg)
 {
     CNormal_Trail* pInstance = new CNormal_Trail(*this);
 
@@ -84,4 +87,6 @@ CComponent* CNormal_Trail::Clone(void* pArg)
 void CNormal_Trail::Free()
 {
     __super::Free();
+
+    Safe_Release(m_pVIBufferCom);
 }

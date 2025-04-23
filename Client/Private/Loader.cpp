@@ -18,11 +18,13 @@
 #include "Fist_Left.h"
 #include "TP_Camera.h"
 #include "Gun_Right.h"
+#include "HP_Frame.h"
 #include "Gun_Left.h"
 #include "Crystal.h"
 #include "Terrain.h"
 #include "Attack.h"
 #include "Bullet.h"
+#include "HP_Bar.h"
 #include "Moloch.h"
 #include "Player.h"
 #include "Status.h"
@@ -240,10 +242,54 @@ HRESULT CLoader::Loading_Textures()
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Snow/Snow.png"), 1))))
 			return E_FAIL;
 
-
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_DISSOLVE,
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/DissolveTex/T_DissolveMask_A.dds")))))
 			return E_FAIL;
+
+
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_PLAYER_HP_FRAME,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_style2_PowerMeterBase1SynergyBG.dds")))))
+			return E_FAIL;
+
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_MOSNTER_HP_FRAME,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_style2_HealthBase2.dds")))))
+			return E_FAIL;
+
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_BOSS_HP_FRAME,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_enemyHealthFrame_Elite1.dds")))))
+			return E_FAIL;
+
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_HP_BAR,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/HUD_UnitFrame_Sub_HealthMeterFill.dds")))))
+			return E_FAIL;
+
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_UI_FRAME,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_HUD_GearSelectionBacking_New.dds")))))
+			return E_FAIL;
+
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_POTION,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_Bottle_HealthA_64.dds")))))
+			return E_FAIL;
+
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_GHOST_HOOK,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_Gear_GhostHook_128.dds")))))
+			return E_FAIL;
+
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_PARTICLE_BLOOD,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_particle_circleSoftEdge1.dds")))))
+			return E_FAIL;
+
+		
+
+
 	}
 
 		break;
@@ -620,6 +666,10 @@ HRESULT CLoader::Loading_Shaders()
 	case LEVEL_GAMEPLAY:	
 	{
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_SHADER_POS,
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
+			return E_FAIL;
+
 		/* For.Prototype_Component_Shader_VtxNorTex */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_SHADER_NOR,
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::ElementDesc, VTXNORTEX::iNumElements))))
@@ -901,6 +951,16 @@ HRESULT CLoader::Loading_Prototype()
 			CExplosion::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_HP_FRAME,
+		//	CHP_Frame::Create(m_pDevice, m_pContext))))
+		//	return E_FAIL;
+		//
+		//
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_HP_BAR,
+		//	CHP_Bar::Create(m_pDevice, m_pContext))))
+		//	return E_FAIL;
+		//
 	}
 
 
@@ -1009,6 +1069,10 @@ HRESULT CLoader::Loading_VIBuffers()
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_CUBE,
 			CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_RECT,
+			CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 

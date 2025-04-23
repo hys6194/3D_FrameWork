@@ -110,24 +110,25 @@ PS_OUT PS_DISSOLVE(PS_IN In)
     vector vDissolveMask = g_DissolveTexture.Sample(PointSampler, In.vTexcoord);
     
     //¶ì µÎ²²
-    float  fWidth = 0.5;
+    float  fWidth = 0.05;
     
     // ¶ì »ö±ò
     float4 vColor = float4(1.f, 0.5f, 0.f, 1.f);
+    
     // ¶ì ¹üÀ§ º¸°£
-    float vEdge = smoothstep(g_fDissolveTime, g_fDissolveTime + fWidth, vDissolveMask.g);
+    float vEdge = smoothstep(g_fDissolveTime, g_fDissolveTime + fWidth, vDissolveMask.r);
     
     float4 vGlow = vEdge * vColor;
     
-    vDiffuse += vGlow;
+    // ¶ì´Â ¹ö¸®ÀÚ
+    //if (vDissolveMask.r < g_fDissolveTime - 0.1f)
+    //    vDiffuse *= vGlow;
     
     //½Ã°£ µµ´ÞÇÏ¸é Discard
     if (vDissolveMask.r < g_fDissolveTime)
         clip(vDiffuse.rgb - g_fDissolveTime);
     
     Out.vDiffuse = vDiffuse;
-    //vDiffuse.a = vDissolveMask.a;
-    //vDiffuse.a = vGlow.a;
     Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.f, 0.f, 0.f);
     

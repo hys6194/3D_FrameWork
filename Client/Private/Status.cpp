@@ -36,10 +36,6 @@ void CStatus::Take_Damage(_int iDamage)
         m_bIsDamaged = true;
 }
 
-void CStatus::Calculate_StatusInfo(_int iAttack)
-{
-    // 여기에서 피격처리 하는 것이 좋아보이긴 함
-}
 
 CStatus* CStatus::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

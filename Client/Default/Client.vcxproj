@@ -173,6 +173,8 @@
     <ClInclude Include="..\Public\GhoulAttack_Leaf.h" />
     <ClInclude Include="..\Public\Gun_Left.h" />
     <ClInclude Include="..\Public\Gun_Right.h" />
+    <ClInclude Include="..\Public\HP_Bar.h" />
+    <ClInclude Include="..\Public\HP_Frame.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
@@ -241,6 +243,8 @@
     <ClCompile Include="..\Private\GhoulAttack_Leaf.cpp" />
     <ClCompile Include="..\Private\Gun_Left.cpp" />
     <ClCompile Include="..\Private\Gun_Right.cpp" />
+    <ClCompile Include="..\Private\HP_Bar.cpp" />
+    <ClCompile Include="..\Private\HP_Frame.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />

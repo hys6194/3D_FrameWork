@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CFSM;
 class CNavigation;
 class CCollider;
+class CTexture; 
 END
 
 BEGIN(Client)
@@ -110,15 +111,16 @@ private:
 	CFSM*					m_pFSMCom					= { nullptr };
 	CCollider*				m_pColliderCom[COLL_END]	= { nullptr };
 	CNavigation*			m_pNavigationCom			= { nullptr };
+	//CTexture*				m_pTextureCom[HP_END]		= { nullptr };
 	class CStatus*			m_pStatusCom				= { nullptr };
+
 
 private:
 	HRESULT					Ready_Components();
 	HRESULT					Ready_PartObjects();
 	HRESULT					Ready_States();
+	HRESULT					Ready_UI_HP();
 	HRESULT					Bind_SR();
-
-	void					Calculate_StatusInfo();
 
 private:
 	void					Input_Keys();

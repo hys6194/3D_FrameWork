@@ -6,6 +6,12 @@ BEGIN(Engine)
 
 class CNormal_Trail final: public CTrail
 {
+public:
+	typedef struct tagNormalTrailDesc : public CTrail::TRAIL_DESC
+	{
+
+	}NORMALTRAIL_DESC;
+
 private:
 	CNormal_Trail(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CNormal_Trail(const CNormal_Trail& Prototype);
@@ -21,6 +27,8 @@ public:
 
 	virtual HRESULT			Bind_SR() override ;
 
+private:
+	class CVIBuffer_Trail*  m_pVIBufferCom = { nullptr };
 
 public:
 	static  CNormal_Trail*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

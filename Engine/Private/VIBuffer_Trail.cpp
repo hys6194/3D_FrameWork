@@ -1,5 +1,9 @@
 #include "VIBuffer_Trail.h"
 
+#include "Normal_Trail.h"
+//#include "Sword_Trail.h"
+//#include "Motion_Trail.h"
+
 CVIBuffer_Trail::CVIBuffer_Trail(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CVIBuffer{ pDevice, pContext }
 {
@@ -90,11 +94,40 @@ HRESULT CVIBuffer_Trail::Initialize(void* pArg)
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Trail::Trail(void* pArg)
+HRESULT CVIBuffer_Trail::Sword_Trail(_float fTimeDelta, void* pArg)
 {
-	// 0,3 번 은 해당 객체의 중심 기준으로 +- size.y/2 한거 만큼
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Trail::Motion_Trail(_float fTimeDelta, void* pArg)
+{
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Trail::Trail(_float fTimeDelta, void* pArg)
+{
+	CNormal_Trail::NORMALTRAIL_DESC* pDesc = static_cast<CNormal_Trail::NORMALTRAIL_DESC*>(pArg);
+
+	// 0,3 번은 해당 객체의 중심 기준으로 +- size.y/2 한거 만큼
 	// 1,2 번은 버퍼가 생성될 때 마다 0,3번의 정점을 받아야 함
 
+	D3D11_MAPPED_SUBRESOURCE SubResourceDesc{};
+
+	m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResourceDesc);
+
+	// 셰이더로 색상을 정할 것이니 정점이 어떻게 움직이는지에 대해서만 생각하자
+	VTXPOS* pVertices = (VTXPOS*)SubResourceDesc.pData;
+
+	m_fTotalTime += fTimeDelta;
+
+	pVertices[0].vPosition.y = -pDesc->fPos.y / pDesc->fTime.y;
+	//pVertices[1].vPosition.y = 
+	//pVertices[2].vPosition.y =
+	pVertices[3].vPosition.y = pDesc->fPos.y / pDesc->fTime.y;
+
+
+
+	m_pContext->Unmap(m_pVB,0);
 
 	return S_OK;
 }

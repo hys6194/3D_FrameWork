@@ -188,7 +188,7 @@ void CCell_Guide::Correct_CellPoint(_vector vCoord)
     if (m_vecCellPos.empty())
         m_vPoint[m_iIndex];
 
-    _vector vDistance = { 0.5f, 0.5f, 0.5f, 1.f };
+    _vector vDistance = { 1.f, 1.f, 1.f, 1.f };
 
     for (auto iter = m_vecCellPos.rbegin();
         iter != m_vecCellPos.rend();

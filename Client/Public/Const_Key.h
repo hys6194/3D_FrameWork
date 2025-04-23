@@ -38,6 +38,14 @@ static const std::wstring PRO_TEX_LOGO2					= TEXT("Prototype_Component_Texture_
 static const std::wstring PRO_TEX_TERRAIN				= TEXT("Prototype_Component_Texture_Terrain");
 static const std::wstring PRO_TEX_DISSOLVE				= TEXT("Prototype_Component_Texture_Dissolve");
 static const std::wstring PRO_TEX_BACKGROUND			= TEXT("Prototype_Component_Texture_BackGround");
+static const std::wstring PRO_TEX_PLAYER_HP_FRAME		= TEXT("Prototype_Component_Texture_Player_HP_Frame");
+static const std::wstring PRO_TEX_MOSNTER_HP_FRAME		= TEXT("Prototype_Component_Texture_Monster_HP_Frame");
+static const std::wstring PRO_TEX_BOSS_HP_FRAME			= TEXT("Prototype_Component_Texture_BOSS_HP_Frame");
+static const std::wstring PRO_TEX_HP_BAR				= TEXT("Prototype_Component_Texture_HP_Bar");
+static const std::wstring PRO_TEX_UI_FRAME				= TEXT("Prototype_Component_Texture_UI_Frame");
+static const std::wstring PRO_TEX_POTION				= TEXT("Prototype_Component_Texture_Potion");
+static const std::wstring PRO_TEX_GHOST_HOOK			= TEXT("Prototype_Component_Texture_Ghost_Hook");
+static const std::wstring PRO_TEX_PARTICLE_BLOOD		= TEXT("Prototype_Component_Texture_Particle");
 
 
 /* Component */
@@ -145,6 +153,8 @@ static const std::wstring PRO_OBJ_TEST_MONSTER			= TEXT("Prototype_GameObject_TE
 static const std::wstring PRO_OBJ_MOLOCH_BODY 			= TEXT("Prototype_GameObject_Moloch Body");
 static const std::wstring PRO_OBJ_MOLOCH_SWORD			= TEXT("Prototype_GameObject_Moloch Sword");
 static const std::wstring PRO_OBJ_CRYSTAL				= TEXT("Prototype_GameObject_Crystal");
+static const std::wstring PRO_OBJ_HP_FRAME				= TEXT("Prototype_GameObject_HP_Frame");
+static const std::wstring PRO_OBJ_HP_BAR				= TEXT("Prototype_GameObject_HP_Bar");
 
 static const std::wstring PRO_OBJ_GROUND_DECAL			= TEXT("Prototype_GameObject_GroundDecal LG A");
 static const std::wstring PRO_OBJ_DAM_END				= TEXT("Prototype_GameObject_Dam EndCap A");
@@ -258,4 +268,8 @@ enum PLAYER_ANIMLIST
 	SWAP_IDLE,
 	SWAP_START,
 	ANIM_END
+};
+enum HP_TEXTURELIST
+{
+	HP_FRAME, HP_BAR, HP_END
 };
