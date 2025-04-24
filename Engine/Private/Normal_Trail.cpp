@@ -25,6 +25,8 @@ HRESULT CNormal_Trail::Initialize(void* pArg)
     //뭐 추가적으로 넣을 거 있으면 알아서 하고
 
     FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
+    FAILED_CHECK_RETURN(Ready_Component(), E_FAIL);
+
 
 	return S_OK;
 }
@@ -43,15 +45,32 @@ void CNormal_Trail::Late_Update(_float fTimeDelta)
 
 HRESULT CNormal_Trail::Render()
 {
+    FAILED_CHECK_RETURN(Bind_SR(), E_FAIL);
+
+    if (nullptr != m_pVIBufferCom)
+    {
+        m_pVIBufferCom->Bind_Input_Assembler();
+        m_pVIBufferCom->Render();
+    }
+
 	return S_OK;
 }
 
 HRESULT CNormal_Trail::Bind_SR()
 {
+    // 행렬을 던지던가 뭘하던가 해야함
+    FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldMatrix_Ptr()), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
+    FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
 
+    return S_OK;
+}
+
+HRESULT CNormal_Trail::Ready_Component()
+{
     FAILED_CHECK_RETURN(__super::Add_Component(m_iLevelIndex, m_strVIBufferTag,
         reinterpret_cast<CComponent**>(&m_pVIBufferCom), TEXT("Com_Model")), E_FAIL);
-    
+
     FAILED_CHECK_RETURN(__super::Add_Component(m_iLevelIndex, m_strShaderTag,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
 

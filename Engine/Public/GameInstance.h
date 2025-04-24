@@ -39,6 +39,8 @@ public:
 	string							WstrToStr(const wstring& wide_str);
 	wstring							StrToWstr(const string& wide_str);
 
+	_float3							Convert_ColorCodes(_uint iR, _uint iG, _uint iB);
+
 #pragma region GRAPHIC_DEVICE
 	HRESULT							Clear_BackBuffer_View(_float4 vClearColor);	
 	HRESULT							Clear_DepthStencil_View();

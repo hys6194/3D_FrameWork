@@ -954,6 +954,10 @@ HRESULT CLoader::Loading_Prototype()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_HP_BAR,
 			CHP_Bar::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_NORMAL_TRAIL,
+			CNormal_Trail::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 		
 	}
 

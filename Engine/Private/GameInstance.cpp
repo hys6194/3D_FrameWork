@@ -201,6 +201,11 @@ wstring CGameInstance::StrToWstr(const string& narrow_str)
 	return wide_str;
 }
 
+_float3 CGameInstance::Convert_ColorCodes(_uint iR, _uint iG, _uint iB)
+{
+	return _float3(iR / 255, iG / 255, iB /255);
+}
+
 #pragma region GRAPHIC_DEVICE
 
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)

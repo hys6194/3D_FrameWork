@@ -32,6 +32,14 @@ HRESULT CBullet::Initialize(void* pArg)
     m_pTransformCom->Set_Matrix(&m_matHand);
     m_pTransformCom->SetUp_Scaled(2.f, 2.f, 2.f);
 
+
+    CNormal_Trail::NORMALTRAIL_DESC Desc{};
+    _float3 fColorBase =  m_pGameInstance->Convert_ColorCodes(138, 43, 226);
+    Desc.fColor = _float4(fColorBase.x, fColorBase.y, fColorBase.z, 1.f);
+
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_NORMAL_TRAIL, 
+        LEVEL_GAMEPLAY, TEXT("GameObject_Normal_Trail"), &Desc), E_FAIL);
+
     return S_OK;
 }
 

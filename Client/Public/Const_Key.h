@@ -155,6 +155,8 @@ static const std::wstring PRO_OBJ_MOLOCH_SWORD			= TEXT("Prototype_GameObject_Mo
 static const std::wstring PRO_OBJ_CRYSTAL				= TEXT("Prototype_GameObject_Crystal");
 static const std::wstring PRO_OBJ_HP_FRAME				= TEXT("Prototype_GameObject_HP_Frame");
 static const std::wstring PRO_OBJ_HP_BAR				= TEXT("Prototype_GameObject_HP_Bar");
+static const std::wstring PRO_OBJ_NORMAL_TRAIL			= TEXT("Prototype_GameObject_Normal_Trail");
+//static const std::wstring PRO_OBJ_HP_BAR				= TEXT("Prototype_GameObject_HP_Bar");
 
 static const std::wstring PRO_OBJ_GROUND_DECAL			= TEXT("Prototype_GameObject_GroundDecal LG A");
 static const std::wstring PRO_OBJ_DAM_END				= TEXT("Prototype_GameObject_Dam EndCap A");

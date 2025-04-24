@@ -36,6 +36,7 @@ public:
 	virtual HRESULT			Render() = 0;
 
 	virtual HRESULT			Bind_SR() = 0;
+	virtual HRESULT			Ready_Component() = 0;
 
 protected:
 	TRAIL_TYPE				m_eType			 = {};

@@ -26,6 +26,7 @@ public:
 	virtual HRESULT			Render() override;
 
 	virtual HRESULT			Bind_SR() override ;
+	virtual HRESULT			Ready_Component() override ;
 
 private:
 	class CVIBuffer_Trail*  m_pVIBufferCom = { nullptr };
