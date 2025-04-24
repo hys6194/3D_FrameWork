@@ -46,6 +46,8 @@ HRESULT CMonster::Initialize(void* pArg)
 	m_fDetectDistance = pMonsterDesc->fDetectDistance;
 	m_fAttackDistance = pMonsterDesc->fAttackDistance;
 	m_fAttackCoolTime = pMonsterDesc->fAttackCoolTime;
+	m_vPos = pMonsterDesc->vPos;
+	m_iCellIndex = pMonsterDesc->iCellIndex;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -166,7 +168,7 @@ HRESULT CMonster::Render()
 HRESULT CMonster::Ready_Components()
 {
 	CNavigation::NAVIGATION_DESC		NaviDesc{};
-	NaviDesc.iCellIndex = 0;
+	NaviDesc.iCellIndex = m_iCellIndex;
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_ATTACK,
 		reinterpret_cast<CComponent**>(&m_pAttackCom), COM_ATTACK), E_FAIL);

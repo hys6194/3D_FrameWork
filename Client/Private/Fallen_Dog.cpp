@@ -45,12 +45,7 @@ HRESULT CFallen_Dog::Initialize(void* pArg)
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
 
-    // Àá±ñ ·£´ı »ı¼º½ÃÅ°±â
-    m_pTransformCom->Set_State(CTransform::STATE_POS,
-        XMVectorSet(m_pGameInstance->Random(0.f, 10.f), 2.f, m_pGameInstance->Random(0.f, 10.f), 1.f));
-
-
-    //m_pTransformCom->Set_State(CTransform::STATE_POS, pMonsterDesc->vPos);
+    m_pTransformCom->Set_State(CTransform::STATE_POS, m_vPos);
     m_pFSMCom->Change_State(m_iState);
 
     return S_OK;

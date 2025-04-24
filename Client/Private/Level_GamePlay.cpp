@@ -156,26 +156,36 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 	Desc.fAttackDistance = 4.f;
 	Desc.fHitPersent = 15.f;
 
-	//Desc.vPos = 
+	Desc.vPos = XMVectorSet(-31.652328, -4.921481, -21.566696, 1.f);
+	Desc.iCellIndex = 87;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
 
+	Desc.vPos = XMVectorSet(13.329205f, -4.509197f, -39.605682f, 1.000000f);
+	Desc.iCellIndex = 522;
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	Desc.vPos = XMVectorSet(-1.795749, -4.771991, -29.072830, 1.f);
+	Desc.iCellIndex = 386;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	Desc.vPos = XMVectorSet(5.625879, -5.645026, -52.225605, 1.f);
+	Desc.iCellIndex = 364;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	//
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	//
 	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
 	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
 	
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
-	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
-	//
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
-	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
-	//
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
-	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
-	//
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
-	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
-	//
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
-	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
-
 	// FallenDog
 	Desc.bBoss = false;
 	Desc.bWave = false;
@@ -187,9 +197,37 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 	Desc.fAttackCoolTime = 3.f;
 	Desc.fAttackDistance = 4.f;
 	Desc.fHitPersent = 15.f;
+	
+	Desc.vPos = XMVectorSet(33.088619f, -4.356323f, -9.989949f, 1.000000f);
+	Desc.iCellIndex = 493;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	Desc.vPos = XMVectorSet(47.194363f, -4.137296f, -22.021006f, 1.000000f);
+	Desc.iCellIndex = 450;
 
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
-	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	Desc.vPos = XMVectorSet(31.457439f, -4.075185f, -45.014366f, 1.000000f);
+	Desc.iCellIndex = 525;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	
+	Desc.vPos = XMVectorSet(23.707235, -4.471273, -48.808155, 1.f);
+	Desc.iCellIndex = 530;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+
+	Desc.vPos = XMVectorSet(-29.588865f, -6.323592f, -43.536289f, 1.000000f);
+	Desc.iCellIndex = 78;
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
 
 
 	return S_OK;
