@@ -31,16 +31,11 @@ void CStrifeState_Shoot::PriorityUpdate_State(_float fTimeDelta)
 		Apply_ShootAnimation();
 		
 	}
-
-	else if (m_iKeyState & CPlayer::KEY_RB)
-	{
-		// 카메라 이동하면서 총 쏘는 걸로
-	}
-
 	// 안 쏜다
 	else
 	{
 		dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(CPlayer::STATE_IDLE);
+		m_pGameInstance->Stop_Sound(SOUND_PLAYER_MOVE);
 	}
 
 }
@@ -58,6 +53,9 @@ void CStrifeState_Shoot::LateUpdate_State(_float fTimeDelta)
 HRESULT CStrifeState_Shoot::Exit_State()
 {
 	Set_PreAnimation();
+
+
+	m_pGameInstance->Stop_Sound(SOUND_PLAYER_MOVE);
 
 	return S_OK;
 }
@@ -85,6 +83,14 @@ void CStrifeState_Shoot::Set_CurAnimation()
 
 void CStrifeState_Shoot::Player_ShootMove(_float fTimeDelta)
 {
+	if (9 < m_pModelCom->Get_CurKeyFrameIndex() ||
+		11 > m_pModelCom->Get_CurKeyFrameIndex())
+	{
+		_uint iNum = m_pGameInstance->Draw_RandomNum(14);
+		wstring strSoundName = TEXT("Strife_foot_") + to_wstring(iNum);
+		m_pGameInstance->Play_Sound(strSoundName, SOUND_PLAYER_MOVE, 0.1f, true);
+	}
+
     switch (m_iKeyState)
     {
 	case CPlayer::KEY_LEFT | CPlayer::KEY_UP | CPlayer::KEY_LB:

@@ -55,7 +55,13 @@ void CGun_Right::Priority_Update(_float fTimeDelta)
 
     if ((CPlayer::STATE_SHOOT & *m_pTargetState) && m_fCool < m_fTotalTime)
     {
+        m_pGameInstance->Stop_Sound(SOUND_PLAYER_SHOOT);
+
         Create_Bullet();
+
+        _uint iNum = m_pGameInstance->Draw_RandomNum(4);
+        wstring strSoundName = TEXT("Strife_gunfire_") + to_wstring(iNum);
+        m_pGameInstance->Play_Sound(strSoundName, SOUND_PLAYER_SHOOT, 0.02f, false);
 
         m_fCool += 0.3f;
     }
