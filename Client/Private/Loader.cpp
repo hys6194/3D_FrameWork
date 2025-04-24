@@ -181,6 +181,9 @@ HRESULT CLoader::Loading_GamePlay()
 	lstrcpy(m_szLoading, TEXT("네비게이션을 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Navigation(), E_FAIL);
 
+	lstrcpy(m_szLoading, TEXT("사운드를 로딩중입니다."));
+	FAILED_CHECK_RETURN(Loading_Sounds(), E_FAIL);
+
 	lstrcpy(m_szLoading, TEXT("로딩 완료."));
 
 	m_IsFin = true;
@@ -246,42 +249,33 @@ HRESULT CLoader::Loading_Textures()
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/DissolveTex/T_DissolveMask_A.dds")))))
 			return E_FAIL;
 
-
-
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_PLAYER_HP_FRAME,
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_style2_PowerMeterBase1SynergyBG.dds")))))
 			return E_FAIL;
 
-
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_MOSNTER_HP_FRAME,
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_MONSTER_HP_FRAME,
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_style2_HealthBase2.dds")))))
 			return E_FAIL;
-
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_BOSS_HP_FRAME,
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_enemyHealthFrame_Elite1.dds")))))
 			return E_FAIL;
 
-
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_HP_BAR,
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/HUD_UnitFrame_Sub_HealthMeterFill.dds")))))
 			return E_FAIL;
-
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_UI_FRAME,
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_HUD_GearSelectionBacking_New.dds")))))
 			return E_FAIL;
 
-
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_POTION,
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_Bottle_HealthA_64.dds")))))
 			return E_FAIL;
 
-
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_GHOST_HOOK,
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_Gear_GhostHook_128.dds")))))
 			return E_FAIL;
-
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_PARTICLE_BLOOD,
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_particle_circleSoftEdge1.dds")))))
@@ -1080,6 +1074,29 @@ HRESULT CLoader::Loading_VIBuffers()
 	default:
 		break;
 	}
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_Sounds()
+{
+	switch (m_eNextLevelID)
+	{
+	case LEVEL_MENU:
+
+		break;
+	case LEVEL_LOGO:
+
+		break;
+	case LEVEL_GAMEPLAY:
+		FAILED_CHECK_RETURN(m_pGameInstance->Load_SoundFile(m_pGameInstance->WstrToStr(PATH_SOUND)), E_FAIL);
+
+
+		break;
+	default:
+		break;
+	}
+
 
 	return S_OK;
 }

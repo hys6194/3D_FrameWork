@@ -80,7 +80,7 @@ public:
 
 public:
 	virtual HRESULT							Ready_PartObjects()							= 0;
-	virtual HRESULT							Ready_UI_HP();
+	virtual HRESULT							Ready_UI_HP()								= 0;
 	virtual HRESULT							Ready_Components();
 
 protected:

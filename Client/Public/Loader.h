@@ -59,6 +59,7 @@ private:
 	HRESULT Loading_Collider();
 	HRESULT Loading_Navigation();
 	HRESULT Loading_VIBuffers();
+	HRESULT Loading_Sounds();
 
 
 

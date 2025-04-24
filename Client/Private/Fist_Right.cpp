@@ -11,6 +11,7 @@ CFist_Right::CFist_Right(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CFist_Right::CFist_Right(const CFist_Right& Prototype)
     : CPartObject{ Prototype }
+    , m_pOwner{ Prototype.m_pOwner }
 {
 }
 
@@ -64,7 +65,7 @@ void CFist_Right::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
-    if (m_pOwner->Is_Dead())
+    if (static_cast<CMonster*>(m_pOwner)->Is_Dead())
         return;
 
 #ifdef _DEBUG
@@ -75,7 +76,7 @@ void CFist_Right::Late_Update(_float fTimeDelta)
 
 HRESULT CFist_Right::Render()
 {
-    if (m_pOwner->Is_Dead())
+    if (static_cast<CMonster*>(m_pOwner)->Is_Dead())
         return S_OK;
 
 #ifdef _DEBUG
@@ -93,6 +94,7 @@ HRESULT CFist_Right::Ready_Components()
     SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Right ");
     SphereDesc.iOption = COLL_OPT::OP_IMPACT;
     SphereDesc.eType = TYPE::TYPE_SPHERE;
+    SphereDesc.pOwner = m_pOwner;
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc), E_FAIL);

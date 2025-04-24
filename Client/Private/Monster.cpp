@@ -3,6 +3,7 @@
 #include "Status.h"
 #include "Attack.h"
 
+
 #include "GameInstance.h"
 #include "Body_Monster.h"
 
@@ -153,10 +154,6 @@ HRESULT CMonster::Render()
 	return S_OK;
 }
 
-HRESULT CMonster::Ready_UI_HP()
-{
-	return E_NOTIMPL;
-}
 
 HRESULT CMonster::Ready_Components()
 {

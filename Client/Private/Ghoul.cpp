@@ -2,6 +2,8 @@
 #include "Monster.h"
 #include "Status.h"
 #include "Attack.h"
+#include "HP_Frame.h"
+#include "HP_Bar.h"
 
 #include "Fist_Left.h"
 #include "Fist_Right.h"
@@ -58,6 +60,7 @@ HRESULT CGhoul::Initialize(void* pArg)
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
+    FAILED_CHECK_RETURN(Ready_UI_HP(), E_FAIL);
 
     // Àá±ñ ·£´ý »ý¼º½ÃÅ°±â
     m_pTransformCom->Set_State(CTransform::STATE_POS,
@@ -205,6 +208,39 @@ HRESULT CGhoul::Ready_Components()
     
     return S_OK;
 }
+
+HRESULT CGhoul::Ready_UI_HP()
+{
+    //CHP_Frame::HPFRAME_DESC FrameDesc{};
+    //FrameDesc.fX = m_pTransformCom->Get_State(CTransform::STATE_POS).m128_f32[0];
+    //FrameDesc.fY = m_pTransformCom->Get_State(CTransform::STATE_POS).m128_f32[1];
+    //FrameDesc.fSizeX = 150;
+    //FrameDesc.fSizeY = 50;
+    //FrameDesc.strFrameTag = PRO_TEX_MONSTER_HP_FRAME;
+    //FrameDesc.iPass = 1;
+    //
+    //FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_FRAME,
+    //	LEVEL_GAMEPLAY, TEXT("GameObject_Monster_HP_Frame "), &FrameDesc), E_FAIL);
+
+    CHP_Bar::HPBAR_DESC BarDesc{};
+    BarDesc.pOwner = this;
+
+    _float4 fPos{};
+    XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
+    BarDesc.fX = fPos.x;
+    BarDesc.fY = fPos.y;
+    BarDesc.fSizeX = 200;
+    BarDesc.fSizeY = 40;
+    BarDesc.iPass = 1;
+    BarDesc.pOwner = this;
+
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_BAR,
+        LEVEL_GAMEPLAY, TEXT("GameObject_Monster_HP_Bar "), &BarDesc), E_FAIL);
+
+    return S_OK;
+}
+
+
 
 CGhoul* CGhoul::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

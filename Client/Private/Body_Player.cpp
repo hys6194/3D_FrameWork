@@ -113,6 +113,7 @@ HRESULT CBody_Player::Ready_Components()
 {
     CModel::MODEL_DESC Desc{};
 
+    // 결국 쓸모없어졌다.....
     Desc.strRootBoneTag = TEXT("Bone_Strife_Root");
     Desc.fAngles = _float3(90.f, 0.f, 0.f);
 

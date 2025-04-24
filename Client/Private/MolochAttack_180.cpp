@@ -160,17 +160,22 @@ void CMolochAttack_180::Set_CurAnimation()
     _bool bCheck = Check_PlayerLeft();
 
     if (bCheck)
+    {
         m_iAnimIndex = CMoloch::MOLOCH_ATK_180_L;
+    }
 
     else
     {
         _uint iNum = m_pGameInstance->Draw_RandomNum(2);
 
         if (1 == iNum)
+        {
             m_iAnimIndex = CMoloch::MOLOCH_ATK_180_R;
+        }
         else
-
+        {
             m_iAnimIndex = CMoloch::MOLOCH_ATK_FULL_180_R;
+        }
     }
 
     m_pModelCom->Set_AnimationIndex(m_iAnimIndex);

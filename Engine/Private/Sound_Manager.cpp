@@ -17,11 +17,11 @@ HRESULT CSound_Manager::Initialize()
     return S_OK;
 }
 
-void CSound_Manager::Load_SoundFile(const string& sPath)
+HRESULT CSound_Manager::Load_SoundFile(const string& sPath)
 {
 	for (const auto& entry : fs::directory_iterator(sPath))
 	{
-		if (!entry.is_regular_file() || entry.path().extension() != ".wav")
+		if (!entry.is_regular_file() || entry.path().extension() != ".ogg")
 			continue;
 
 		FMOD::Sound* pSound = nullptr;
@@ -36,6 +36,8 @@ void CSound_Manager::Load_SoundFile(const string& sPath)
 
 		m_mapSound.insert({ wsKey, pSound });
 	}
+
+	return S_OK;
 }
 
 void CSound_Manager::Play_Sound(const wstring& pSoundKey, _uint iSoundIndex, float fVolume, bool bLoop)

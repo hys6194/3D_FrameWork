@@ -221,6 +221,8 @@ _bool CCollision_Manager::Update_Impactor(_float fTimeDelta)
 						if (TYPE_SPHERE == *pBounding1->Get_Type())
 							continue;
 
+						pBounding1->Get_Collider()->Set_TargetColl(pBounding2);
+
 						pBounding1->Get_Collider()->Set_Coll(true);
 						pBounding2->Get_Collider()->Set_Coll(true);
 					}

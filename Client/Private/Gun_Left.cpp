@@ -48,6 +48,8 @@ void CGun_Left::Priority_Update(_float fTimeDelta)
         if(E_FAIL == Create_Bullet())
             return;
 
+        //m_pGameInstance->Play_Sound(TEXT("char_strife_gunfire_01"),);
+
         m_fCool += 0.3f;
     }
 

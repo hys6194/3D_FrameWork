@@ -66,6 +66,24 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
+VS_OUT VS_MAIN1(VS_IN In)
+{
+    /* 받아온 정점정보를 가지고 필요한 연산을 수행해 나간다 */
+    VS_OUT Out = (VS_OUT) 0;
+    
+    matrix matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    //float4 vTest = mul(vector(In.vPosition, 1.f), matWV);
+    matrix matW = g_WorldMatrix;
+    
+    
+    
+    //Out.vPosition = matW;
+    Out.vPosition = mul(vector(In.vPosition, 1.f), matW);
+    Out.vTexcoord = In.vTexcoord;
+    
+    return Out;
+}
+
 // w나누기 연산을 수행하는 함수
 // w 나누기를 하면서 2차원 투영 스페이스로 변환되고, 뷰 포트로 변환한다
 // 그 후, 래스터라이즈를 통해 픽셀을 생성한다.
@@ -130,7 +148,7 @@ technique11 DefaultTechnique
            특수한 상황에 쉐이더 기법을 사용할 때 쓰는 pass*/
         /*vs_5_0 : 쉐이더 5.0 버전임을 의미*/
 
-        VertexShader = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN1();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }

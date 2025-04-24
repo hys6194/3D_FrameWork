@@ -62,10 +62,9 @@ HRESULT CMoloch::Initialize(void* pArg)
 
 
     //m_pTransformCom->SetUp_Scaled(1.85f, 1.85f, 1.85f);
-
     // 수정할 필요가 있어보임
     m_pTransformCom->Set_State(CTransform::STATE_POS,
-        XMVectorSet(16.459108f, 16.321875f, 146.170197f, 1.000000f));
+        XMVectorSet(16.054913f, 15.933666f, 155.276825f, 1.000000f));
 
     //m_pTransformCom->Set_State(CTransform::STATE_POS,
     //    XMVectorSet(0,0,0, 1.000000f));
@@ -183,7 +182,7 @@ HRESULT CMoloch::Ready_States()
 HRESULT CMoloch::Ready_Components()
 {
     CNavigation::NAVIGATION_DESC		NaviDesc{};
-    NaviDesc.iCellIndex = 446;
+    NaviDesc.iCellIndex = 278;
     //NaviDesc.iCellIndex = 0;
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_NAVI,
@@ -227,6 +226,11 @@ HRESULT CMoloch::Ready_Components()
         reinterpret_cast<CComponent**>(&m_pStatusCom), COM_STATUS, &StatusDesc), E_FAIL);
 
     return S_OK;
+}
+
+HRESULT CMoloch::Ready_UI_HP()
+{
+    return E_NOTIMPL;
 }
 
 CMoloch* CMoloch::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

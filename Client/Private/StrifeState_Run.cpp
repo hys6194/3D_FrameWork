@@ -14,6 +14,8 @@ HRESULT CStrifeState_Run::Enter_State()
 {
     Set_CurAnimation();
 
+    m_pGameInstance->Play_Sound(TEXT("Strife_foot_01"), SOUND_PLAYER_MOVE, 0.3f, true);
+
     return S_OK;
 }
 
@@ -51,6 +53,7 @@ void CStrifeState_Run::LateUpdate_State(_float fTimeDelta)
 HRESULT CStrifeState_Run::Exit_State()
 {
     Set_PreAnimation();
+    m_pGameInstance->Stop_Sound(SOUND_PLAYER_MOVE);
     return S_OK;
 }
 

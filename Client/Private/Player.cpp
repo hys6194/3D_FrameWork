@@ -66,6 +66,15 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 	if (m_pColliderCom[COLL_OBB]->Is_Coll())
 	{
 		m_bHit = true;
+
+		if (nullptr == m_pColliderCom[COLL_OBB]->Get_TargetBounder())
+			return;
+
+		CMonster* pMonster = static_cast<CMonster*>(m_pColliderCom[COLL_OBB]->Get_TargetBounder()->Get_Info()->pOwner);
+
+		CStatus* pMonsterStatus = static_cast<CStatus*>(pMonster->Get_Component(COM_STATUS));
+
+		m_pStatusCom->Take_Damage(pMonsterStatus->Get_StatusDesc().iAttack * 0.4f);
 	}
 	else
 		m_bHit = false;
@@ -93,6 +102,8 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 	{
 		m_pTransformCom->Set_Speed(10.f);
 	}
+
+	
 
 
 	__super::Priority_Update(fTimeDelta);
@@ -136,6 +147,25 @@ void CPlayer::Late_Update(_float fTimeDelta)
 	m_pGameInstance->Add_Renderer_DebugComponent(m_pNavigationCom);
 
 #endif
+
+	if (m_pGameInstance->Get_DIKeyState(DIK_F7))
+	{
+		_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_POS);
+
+		//float4 µð¹ö±ë
+		_float4 fDebug{};
+		XMStoreFloat4(&fDebug, vPos);
+		TCHAR debugMessage[256];
+		_stprintf_s(debugMessage, _T("PlayerPos: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
+			fDebug.x, fDebug.y, fDebug.z, fDebug.w);
+		OutputDebugString(debugMessage);
+
+		TCHAR debugMessage1[256];
+		_stprintf_s(debugMessage1, _T("CellIndex: %d,\n"),
+			m_pNavigationCom->Get_CellIndex());
+		OutputDebugString(debugMessage1);
+
+	}
 
 
 }
@@ -254,17 +284,24 @@ HRESULT CPlayer::Ready_States()
 
 HRESULT CPlayer::Ready_UI_HP()
 {
-	CHP_Frame::HPFRAME_DESC FrameDesc{};
-	FrameDesc.fX = 100;
-	FrameDesc.fY = 100;
-	FrameDesc.fSizeX = 150;
-	FrameDesc.fSizeY = 50;
-	FrameDesc.strFrameTag = PRO_TEX_PLAYER_HP_FRAME;
+	//CHP_Frame::HPFRAME_DESC FrameDesc{};
+	//FrameDesc.fX = m_pTransformCom->Get_State(CTransform::STATE_POS).m128_f32[0];
+	//FrameDesc.fY = m_pTransformCom->Get_State(CTransform::STATE_POS).m128_f32[1];
+	//FrameDesc.fSizeX = 150;
+	//FrameDesc.fSizeY = 50;
+	//FrameDesc.strFrameTag = PRO_TEX_PLAYER_HP_FRAME;
+	//FrameDesc.iPass = 1;
+	//
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_FRAME,
+	//	LEVEL_GAMEPLAY, TEXT("GameObject_Player_HP_Frame "), &FrameDesc), E_FAIL);
 	
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_FRAME,
-		LEVEL_GAMEPLAY, TEXT("GameObject_Player_HP_Frame "), &FrameDesc), E_FAIL);
-	
-	CHP_Bar::UIOBJECT_DESC BarDesc{};
+	CHP_Bar::HPBAR_DESC BarDesc{};
+	BarDesc.pOwner = this;
+	BarDesc.fX = 100;
+	BarDesc.fY = 100;
+	BarDesc.fSizeX = 200;
+	BarDesc.fSizeY = 40;
+	BarDesc.iPass = 0;
 	BarDesc.pOwner = this;
 	
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_BAR,

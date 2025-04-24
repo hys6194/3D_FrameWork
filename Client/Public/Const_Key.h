@@ -27,7 +27,7 @@
 
 #define		VK_MAX		0xff
 
-
+static const std::wstring PATH_SOUND					=TEXT("../Bin/Resources/Sounds");
 
 /* Texture */
 static const std::wstring PRO_TEX_SKY					= TEXT("Prototype_Component_Texture_Sky");
@@ -39,7 +39,7 @@ static const std::wstring PRO_TEX_TERRAIN				= TEXT("Prototype_Component_Texture
 static const std::wstring PRO_TEX_DISSOLVE				= TEXT("Prototype_Component_Texture_Dissolve");
 static const std::wstring PRO_TEX_BACKGROUND			= TEXT("Prototype_Component_Texture_BackGround");
 static const std::wstring PRO_TEX_PLAYER_HP_FRAME		= TEXT("Prototype_Component_Texture_Player_HP_Frame");
-static const std::wstring PRO_TEX_MOSNTER_HP_FRAME		= TEXT("Prototype_Component_Texture_Monster_HP_Frame");
+static const std::wstring PRO_TEX_MONSTER_HP_FRAME		= TEXT("Prototype_Component_Texture_Monster_HP_Frame");
 static const std::wstring PRO_TEX_BOSS_HP_FRAME			= TEXT("Prototype_Component_Texture_BOSS_HP_Frame");
 static const std::wstring PRO_TEX_HP_BAR				= TEXT("Prototype_Component_Texture_HP_Bar");
 static const std::wstring PRO_TEX_UI_FRAME				= TEXT("Prototype_Component_Texture_UI_Frame");
@@ -272,4 +272,12 @@ enum PLAYER_ANIMLIST
 enum HP_TEXTURELIST
 {
 	HP_FRAME, HP_BAR, HP_END
+};
+enum SOUNDLIST
+{
+	SOUND_BGM,
+	SOUND_PLAYER_SHOOT,
+	SOUND_PLAYER_MOVE,
+	SOUND_PLAYER_DASH,
+	SOUND_PLAYER_
 };

@@ -1,4 +1,5 @@
 #include "HP_Bar.h"
+#include "Status.h"
 
 #include "GameInstance.h"
 
@@ -33,9 +34,15 @@ HRESULT CHP_Bar::Initialize(void* pArg)
 	// 어디에서? -> Loader클래스에서
 	// 부모 클래스인 UIObject에서 구조체 값을 채워갈 예정
 
-	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
-
+	HPBAR_DESC* pDesc = static_cast<HPBAR_DESC*>(pArg);
+	m_iPassIndex = pDesc->iPass;
 	m_pOwner = pDesc->pOwner;
+
+	CStatus* pStatus = static_cast<CStatus*>(m_pOwner->Get_Component(COM_STATUS));
+
+	m_fOriginfX = pStatus->Get_StatusDesc().iHP;
+	m_fOriginfSizeX = pStatus->Get_MaxStatusDesc().iHP / 1.2f;
+
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -48,11 +55,31 @@ HRESULT CHP_Bar::Initialize(void* pArg)
 
 void CHP_Bar::Priority_Update(_float fTimeDelta)
 {
+	CStatus* pStatus = static_cast<CStatus*>(m_pOwner->Get_Component(COM_STATUS));
+
+	_float fRatio = pStatus->Get_StatusDesc().iHP / pStatus->Get_MaxStatusDesc().iHP;
+	m_fSizeX = m_fOriginfSizeX * fRatio;
+
+	m_fX = m_fOriginfX - m_fOriginfSizeX + (m_fSizeX / 2);
+
+	D3D11_VIEWPORT			ViewportDesc{};
+	_uint					iNumViewports = { 1 };
+
+	m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
+
+	m_pTransformCom->SetUp_Scaled(m_fSizeX, m_fSizeY, 1.f);
+	m_pTransformCom->Set_State(CTransform::STATE_POS,
+		XMVectorSet(m_fX - ViewportDesc.Width * 0.5f, -m_fY + ViewportDesc.Height * 0.5f, 0.f, 1.f));
+
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.f, 1.f));
+
 	int a = 10;
 }
 
 void CHP_Bar::Update(_float fTimeDelta)
 {
+
 }
 
 void CHP_Bar::Late_Update(_float fTimeDelta)
@@ -65,7 +92,7 @@ HRESULT CHP_Bar::Render()
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(0)))
+	if (FAILED(m_pShaderCom->Begin(m_iPassIndex)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))

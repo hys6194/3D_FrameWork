@@ -177,6 +177,30 @@ _uint CGameInstance::Draw_RandomNum(_uint iNumber)
 	return iIndex;
 }
 
+string CGameInstance::WstrToStr(const wstring& wide_str)
+{
+	string narrow_str;
+
+	int size_needed = WideCharToMultiByte(CP_ACP, 0, wide_str.c_str(), -1, NULL, 0, NULL, NULL);
+	if (size_needed > 0)
+	{
+		narrow_str.resize(size_needed - 1);
+		WideCharToMultiByte(CP_ACP, 0, wide_str.c_str(), -1, &narrow_str[0], size_needed, NULL, NULL);
+	}
+
+	return narrow_str;
+}
+
+wstring CGameInstance::StrToWstr(const string& narrow_str)
+{
+	wstring wide_str(narrow_str.length() + 1, L'\0');
+	size_t converted_chars = 0;
+
+	mbstowcs_s(&converted_chars, &wide_str[0], wide_str.size(), narrow_str.c_str(), narrow_str.length());
+
+	return wide_str;
+}
+
 #pragma region GRAPHIC_DEVICE
 
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
@@ -545,7 +569,7 @@ _bool CGameInstance::Picking(_float3* pOut)
 
 void CGameInstance::Play_Sound(const wstring& pSoundKey, _uint iSoundIndex, float fVolume, bool bLoop)
 {
-	return	m_pSound_Manager->Play_Sound(pSoundKey, iSoundIndex, fVolume);
+	return	m_pSound_Manager->Play_Sound(pSoundKey, iSoundIndex, fVolume, bLoop);
 }
 void CGameInstance::Play_BGM(const wstring& pSoundKey, _uint iSoundIndex, float fVolume)
 {
@@ -562,6 +586,10 @@ void CGameInstance::Stop_All()
 void CGameInstance::Set_ChannelVolume(_uint iSoundIndex, float fVolume)
 {
 	return	m_pSound_Manager->Set_ChannelVolume(iSoundIndex, fVolume);
+}
+HRESULT CGameInstance::Load_SoundFile(const _string& sPath)
+{
+	return m_pSound_Manager->Load_SoundFile(sPath);
 }
 void CGameInstance::Set_BGMVolume(_uint iSoundIndex, _float fVolume)
 {

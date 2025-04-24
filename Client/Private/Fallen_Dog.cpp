@@ -196,6 +196,11 @@ HRESULT CFallen_Dog::Ready_Components()
     return S_OK;
 }
 
+HRESULT CFallen_Dog::Ready_UI_HP()
+{
+    return E_NOTIMPL;
+}
+
 CFallen_Dog* CFallen_Dog::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     CFallen_Dog* pInstance = new CFallen_Dog(pDevice, pContext);

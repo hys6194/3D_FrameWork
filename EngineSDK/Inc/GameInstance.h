@@ -36,7 +36,8 @@ public:
 	_uint							Draw_RandomNum(_uint iNumber);
 	//_uint							Draw_RandomNum();
 
-
+	string							WstrToStr(const wstring& wide_str);
+	wstring							StrToWstr(const string& wide_str);
 
 #pragma region GRAPHIC_DEVICE
 	HRESULT							Clear_BackBuffer_View(_float4 vClearColor);	
@@ -158,6 +159,7 @@ public:
 	void Stop_Sound(_uint iSoundIndex);
 	void Stop_All();
 	void Set_ChannelVolume(_uint iSoundIndex, float fVolume);
+	HRESULT Load_SoundFile(const string& sPath);
 
 	void Set_BGMVolume(_uint iSoundIndex, _float fVolume);
 	void Set_AllEffectVolume(_float fVolume);

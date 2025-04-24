@@ -41,6 +41,8 @@ public:
 public:
 	virtual HRESULT							Ready_PartObjects();
 	virtual HRESULT							Ready_Components();
+	virtual HRESULT							Ready_UI_HP() override;
+
 
 public:
 	HRESULT									Ready_States();

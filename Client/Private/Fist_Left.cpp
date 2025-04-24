@@ -11,6 +11,7 @@ CFist_Left::CFist_Left(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CFist_Left::CFist_Left(const CFist_Left& Prototype)
     : CPartObject{ Prototype }
+    , m_pOwner { Prototype.m_pOwner }
 {
 }
 
@@ -69,7 +70,7 @@ void CFist_Left::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
-    if (m_pOwner->Is_Dead())
+    if (static_cast<CMonster*>(m_pOwner)->Is_Dead())
         return;
 
 #ifdef _DEBUG
@@ -79,7 +80,7 @@ void CFist_Left::Late_Update(_float fTimeDelta)
 
 HRESULT CFist_Left::Render()
 {
-    if (m_pOwner->Is_Dead())
+    if (static_cast<CMonster*>(m_pOwner)->Is_Dead())
         return S_OK;
 
 #ifdef _DEBUG
@@ -97,6 +98,7 @@ HRESULT CFist_Left::Ready_Components()
     SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Left");
     SphereDesc.iOption = COLL_OPT::OP_IMPACT;
     SphereDesc.eType = TYPE::TYPE_SPHERE;
+    SphereDesc.pOwner = m_pOwner;
 
 
     // ¿Ã πÊΩƒ¿Ã »Œ ≥¥±‰«œ¥Ÿ

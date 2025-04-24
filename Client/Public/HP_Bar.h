@@ -15,7 +15,11 @@ BEGIN(Client)
 
 class CHP_Bar final : public CUIObject
 {
-
+public:
+	typedef struct tagHPBarDesc : public UIOBJECT_DESC
+	{
+		_uint iPass;
+	}HPBAR_DESC;
 private:
 	CHP_Bar(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CHP_Bar(const CHP_Bar& Prototype);
@@ -34,6 +38,11 @@ private:
 	CShader*				m_pShaderCom = { nullptr };
 	CVIBuffer_Rect*			m_pVIBufferCom = { nullptr };
 
+private:
+	_uint					m_iPassIndex;
+
+	_float					m_fOriginfX;
+	_float					m_fOriginfSizeX;
 
 private:
 	HRESULT Ready_Component();

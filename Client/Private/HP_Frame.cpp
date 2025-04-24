@@ -26,6 +26,7 @@ HRESULT CHP_Frame::Initialize_Prototype()
 HRESULT CHP_Frame::Initialize(void* pArg)
 {
 	HPFRAME_DESC* pDesc = static_cast<HPFRAME_DESC*>(pArg);
+	m_iPassIndex = pDesc->iPass;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -38,6 +39,8 @@ HRESULT CHP_Frame::Initialize(void* pArg)
 
 void CHP_Frame::Priority_Update(_float fTimeDelta)
 {
+	_vector vTes = m_pTransformCom->Get_State(CTransform::STATE_POS);
+
 	int a = 10;
 }
 
@@ -56,7 +59,7 @@ HRESULT CHP_Frame::Render()
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(0)))
+	if (FAILED(m_pShaderCom->Begin(m_iPassIndex)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Input_Assembler()))

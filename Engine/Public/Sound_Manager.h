@@ -13,7 +13,7 @@ private:
 
 public:
 	HRESULT					Initialize();
-	void					Load_SoundFile(const string& sPath = "");
+	HRESULT					Load_SoundFile(const string& sPath = "");
 
 public:
 	void					Play_Sound(const wstring& pSoundKey, _uint iSoundIndex, float fVolume, bool bLoop = true);
