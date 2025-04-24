@@ -172,7 +172,7 @@ HRESULT CFallen_Dog::Ready_Components()
     	reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_AABB]), COM_COLL_AABB, &ColliderDesc), E_FAIL);
     
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
-    SphereDesc.fRadius = 1.f;
+    SphereDesc.fRadius = 2.f;
     SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
     SphereDesc.strCollTag = Get_Name() + TEXT("_Body_Detect");
     SphereDesc.iOption = COLL_OPT::OP_DETECT;
