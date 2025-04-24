@@ -25,6 +25,9 @@ public:
 	HRESULT								Ready_Layer_Object(const _tchar* pLayerTag);
 	HRESULT								Ready_Lights();
 
+private:
+	_bool								m_bCheck = false;
+
 public:
 	static CLevel_GamePlay*				Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void						Free() override;

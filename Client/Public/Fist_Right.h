@@ -20,7 +20,7 @@ public:
 		const _float4x4* pSocketMatrix;
 		const _float4x4* pHandMatrix;
 		const _uint* pTargetState = { nullptr };
-		class CMonster* pOwner = { nullptr };
+		class CGameObject* pOwner = { nullptr };
 	}FIST_RIGHT_DESC;
 
 private:
@@ -46,7 +46,7 @@ private:
 
 	const _uint*				m_pTargetState = { nullptr };		//플레이어의 상태를 가져와서 애니메이션의 상태를 변경하려고 함
 
-	class CMonster*				m_pOwner = { nullptr };
+	class CGameObject*				m_pOwner = { nullptr };
 
 
 	_float						m_fCool = {};

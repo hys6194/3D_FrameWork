@@ -14,6 +14,7 @@ public:
 	{
 		// 화면에 띄울 좌표와 텍스쳐의 사이즈 x,y값
 		_float		fX, fY, fSizeX, fSizeY;
+		CGameObject* pOwner;
 	}UIOBJECT_DESC;
 
 protected:
@@ -24,9 +25,9 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
-	virtual void Priority_Update(_float fTimeDelta) override;
-	virtual void Update(_float fTimeDelta) override;
-	virtual void Late_Update(_float fTimeDelta) override;
+	virtual void	Priority_Update(_float fTimeDelta) override;
+	virtual void	Update(_float fTimeDelta) override;
+	virtual void	Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
 protected:
@@ -36,6 +37,8 @@ protected:
 
 	// 직교투영을 위한 뷰행렬과 투영행렬을 선언
 	_float4x4				m_ViewMatrix{}, m_ProjMatrix{};
+
+	CGameObject* m_pOwner = { nullptr };
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

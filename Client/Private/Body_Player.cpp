@@ -33,6 +33,8 @@ HRESULT CBody_Player::Initialize(void* pArg)
 
     BODY_PLAYER_DESC* pDesc = static_cast<BODY_PLAYER_DESC*>(pArg);
     m_pTargetState = pDesc->pTargetState;
+    m_iPassIndex = 0;
+    m_pOwner = pDesc->pOwner;
 
     FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
@@ -50,6 +52,30 @@ void CBody_Player::Update(_float fTimeDelta)
     //파츠들의 매트릭스를 부모 매트릭스에 곱하여 고정시킨다
     XMStoreFloat4x4(&m_CombinedWorldMatrix,
         XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentMatrix));
+
+    if (m_pOwner->Is_Hit())
+    {
+        m_bHit = true;
+        m_fHitTime = 0.f;
+    }
+
+
+    if (m_bHit)
+    {
+        m_fHitTime += fTimeDelta * 5.f;
+
+        m_iPassIndex = 2;
+
+        if (m_fHitTime >= 1.f)
+        {
+            m_fHitTime = 0.f;
+            m_iPassIndex = 0;
+            m_bHit = false;
+            return;
+        }
+
+        FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("fTime", &m_fHitTime, sizeof(_float)), );
+    }
 
 }
 
@@ -73,7 +99,7 @@ HRESULT CBody_Player::Render()
 
         m_pModelCom->Bind_BoneMatrix(m_pShaderCom, "g_BoneMatrices", i);
 
-        if (FAILED(m_pShaderCom->Begin(0)))
+        if (FAILED(m_pShaderCom->Begin(m_iPassIndex)))
             return E_FAIL;
 
         if (FAILED(m_pModelCom->Render(i)))
@@ -85,8 +111,14 @@ HRESULT CBody_Player::Render()
 
 HRESULT CBody_Player::Ready_Components()
 {
+    CModel::MODEL_DESC Desc{};
+
+    // 결국 쓸모없어졌다.....
+    Desc.strRootBoneTag = TEXT("Bone_Strife_Root");
+    Desc.fAngles = _float3(90.f, 0.f, 0.f);
+
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
-        reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model"), &Desc), E_FAIL);
 
      FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);

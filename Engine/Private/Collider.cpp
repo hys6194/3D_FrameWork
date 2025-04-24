@@ -166,6 +166,7 @@ void CCollider::Check_CollisionHit()
 
 HRESULT CCollider::Render()
 {
+    // 지오메트리셰이더를 그릴 때 
     m_pContext->GSSetShader(nullptr, nullptr, 0);
 
     m_pContext->IASetInputLayout(m_pInputLayout);

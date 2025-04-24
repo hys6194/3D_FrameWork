@@ -19,6 +19,9 @@ HRESULT CGhoulAttack_Leaf::Enter_State()
     m_bAttack = true;
     m_pMonster->Set_Attack(m_bAttack);
 
+    Set_RandomSound(3, TEXT("Ghoul_atk_leap_"), SOUND_GHOUL_LEAF, 0.05f, false);
+    Set_RandomSound(3, TEXT("Ghoul_atk_leap_vo_"), SOUND_GHOUL_LEAF_VOICE, 0.05f, false);
+
     return S_OK;
 }
 
@@ -39,7 +42,6 @@ void CGhoulAttack_Leaf::PriorityUpdate_State(_float fTimeDelta)
         m_bRegisted = false;
         m_bSeceded = false;
         m_fTotalTime = 0.f;
-
 
         return;
     }
@@ -76,6 +78,9 @@ HRESULT CGhoulAttack_Leaf::Exit_State()
 {
     Set_PreAnimation();
     Secede_PartCollUpdate();
+
+    m_pGameInstance->Stop_Sound(SOUND_GHOUL_LEAF);
+    m_pGameInstance->Stop_Sound(SOUND_GHOUL_LEAF_VOICE);
 
     m_fElapseTime = 0.f;
     m_bAttack = false;

@@ -19,6 +19,9 @@ HRESULT CMolochAttack_Geyser::Enter_State()
     m_bAttack = true;
     m_pMonster->Set_Attack(m_bAttack);
 
+    Set_Sound(TEXT("Moloch_atk_full_geyser_start"), SOUND_MOLOCH_GEYSER, 0.1f, false);
+    Set_RandomSound(3, TEXT("Moloch_Geyser_"), SOUND_MOLOCH_GEYSER_VOICE, 0.1f, false);
+
     return S_OK;
 }
 
@@ -32,9 +35,16 @@ void CMolochAttack_Geyser::PriorityUpdate_State(_float fTimeDelta)
         case CMoloch::MOLOCH_ATK_FULL_GEYSER_START:
             if (m_bAnimEnd)
             {
+                m_pGameInstance->Stop_Sound(SOUND_MOLOCH_GEYSER);
+                m_pGameInstance->Stop_Sound(SOUND_MOLOCH_GEYSER_VOICE);
+
                 m_pModelCom->Set_AnimationIndex(CMoloch::MOLOCH_ATK_FULL_GEYSER);
                 m_iAnimIndex = CMoloch::MOLOCH_ATK_FULL_GEYSER;
                 m_bAnimEnd = false;
+
+                Set_RandomSound(3, TEXT("Moloch_atk_full_geyser_"), SOUND_MOLOCH_GEYSER, 0.1f, false);
+                //Set_RandomSound(3, TEXT("Moloch_Geyser_"), SOUND_MOLOCH_GEYSER_VOICE, 0.2f, false);
+
             }
             break;
         case CMoloch::MOLOCH_ATK_FULL_GEYSER:
@@ -42,7 +52,6 @@ void CMolochAttack_Geyser::PriorityUpdate_State(_float fTimeDelta)
             Regist_CollUpdate(0, 56);
             Secede_CollUpdate(0, 56);
 
-            // 운이 좋았던 것 같은데 
             if(11.f <= m_pModelCom->Get_CurAnimationTrackPosition() && 
                 !m_bSpawn)
             {
@@ -52,15 +61,18 @@ void CMolochAttack_Geyser::PriorityUpdate_State(_float fTimeDelta)
 
             if (m_bAnimEnd)
             {
+                m_pGameInstance->Stop_Sound(SOUND_MOLOCH_GEYSER);
+
                 m_pModelCom->Set_AnimationIndex(CMoloch::MOLOCH_ATK_FULL_GEYSER_02);
                 m_iAnimIndex = CMoloch::MOLOCH_ATK_FULL_GEYSER_02;
                 m_bAnimEnd = false;
                 m_bSpawn = false;
 
+                Set_Sound(TEXT("Moloch_atk_full_geyser_jump"), SOUND_MOLOCH_GEYSER, 0.1f, false);
+                Set_RandomSound(6, TEXT("Moloch_Laughs_"), SOUND_MOLOCH_GEYSER_VOICE, 0.15f, false);
+
             }
         }
-
-            // 여기에서 크리스탈 생성 코드 로직을 짜야 함
 
             break;
         case CMoloch::MOLOCH_ATK_FULL_GEYSER_02:
@@ -69,6 +81,9 @@ void CMolochAttack_Geyser::PriorityUpdate_State(_float fTimeDelta)
 
             if (m_bAnimEnd)
             {
+                m_pGameInstance->Stop_Sound(SOUND_MOLOCH_GEYSER);
+                m_pGameInstance->Stop_Sound(SOUND_MOLOCH_GEYSER_VOICE);
+
                 m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
                 m_bAnimEnd = false;
             }
@@ -163,6 +178,7 @@ HRESULT CMolochAttack_Geyser::Create_Crystals()
     Desc.vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
     Desc.strModelTag = PRO_MODEL_MOLOCH_CRYSTAL_A;
     Desc.pOwner = dynamic_cast<CMoloch*>(m_pMonster);
+    Desc.fLifeTime = 4.f;
 
     _float4 fMonsterPos{};
     XMStoreFloat4(&fMonsterPos, m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS));

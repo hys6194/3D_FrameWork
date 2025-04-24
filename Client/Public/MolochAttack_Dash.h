@@ -32,6 +32,7 @@ private:
 
 private:
 	_bool									m_bSpawn = { false };
+	_bool									m_bSequenced = { false };
 
 public:
 	static CMolochAttack_Dash*				Create(CGameObject* pOwner, CGameObject* pAnimOwner, _uint iAnimIndex, _float fCoolTime);

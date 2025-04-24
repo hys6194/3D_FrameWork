@@ -35,7 +35,7 @@ public:
 public:
 	void									Set_Coll(_bool bToogle)	{ m_isColl = bToogle; }
 	void									Set_TargetColl(CBounding* pTargetBounding) { m_pTargetBounding = pTargetBounding; }
-// 이 함수들은 매니저로 옮겨야 할 수도 있다
+
 public:
 	void									Update(_fmatrix WorldMatrix);
 	_bool									Intersect(CCollider* pTargetCollider);

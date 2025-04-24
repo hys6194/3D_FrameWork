@@ -35,6 +35,40 @@ void CMonsterState_Base::Update_Animation(_float fTimeDelta)
 		m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta);
 }
 
+void CMonsterState_Base::Set_AnimSound(_float2 fKeyFrames, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop)
+{
+	if (fKeyFrames.x < m_pModelCom->Get_CurKeyFrameIndex() ||
+		fKeyFrames.y > m_pModelCom->Get_CurKeyFrameIndex())
+	{
+
+		wstring strSoundName = strAnimTag;
+		m_pGameInstance->Play_Sound(strSoundName, eType, fVolume, IsLoop);
+	}
+}
+
+void CMonsterState_Base::Set_RandomAnimSound(_float2 fKeyFrames, _uint iRandomNum, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop)
+{
+	if (fKeyFrames.x < m_pModelCom->Get_CurKeyFrameIndex() ||
+		fKeyFrames.y > m_pModelCom->Get_CurKeyFrameIndex())
+	{
+		_uint iNum = m_pGameInstance->Draw_RandomNum(iRandomNum);
+		wstring strSoundName = strAnimTag + to_wstring(iNum);
+		m_pGameInstance->Play_Sound(strSoundName, eType, fVolume, IsLoop);
+	}
+}
+
+void CMonsterState_Base::Set_Sound(const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop)
+{
+	m_pGameInstance->Play_Sound(strAnimTag, eType, fVolume, IsLoop);
+}
+
+void CMonsterState_Base::Set_RandomSound(_uint iRandomNum, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop)
+{
+	_uint iNum = m_pGameInstance->Draw_RandomNum(iRandomNum);
+	wstring strSoundName = strAnimTag + to_wstring(iNum);
+	m_pGameInstance->Play_Sound(strSoundName, eType, fVolume, IsLoop);
+}
+
 _vector CMonsterState_Base::Calculate_MonsterDir(_vector vTargetPos)
 {
 	// 상속시켜서 다른 함수에서도 사용하게 하자 쓰기 편하게

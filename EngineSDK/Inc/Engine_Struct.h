@@ -198,6 +198,7 @@ namespace Engine
 		};
 		
 	}VTXPOSTEX_PARTICLE_INSTANCE;
+
 }
 
 

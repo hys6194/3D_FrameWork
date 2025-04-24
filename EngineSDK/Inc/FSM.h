@@ -39,7 +39,7 @@ private:
 
 
 public:
-	static CFSM* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static  CFSM* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent* Clone(void* pArg = nullptr);
 	virtual void Free() override;
 

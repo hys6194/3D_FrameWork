@@ -3,6 +3,7 @@
 #include "Status.h"
 #include "Attack.h"
 
+
 #include "GameInstance.h"
 #include "Body_Monster.h"
 
@@ -38,6 +39,16 @@ HRESULT CMonster::Initialize(void* pArg)
 	pDesc->iNumPartObjects = PART_END;
 	lstrcpy(pDesc->szGameObjectTag, strMonsterTag.c_str());
 
+	m_bWave  = pMonsterDesc->bWave;
+	m_iState = pMonsterDesc->iState;
+	m_bIsBoss = pMonsterDesc->bBoss;
+	m_fHitPersent = pMonsterDesc->fHitPersent;
+	m_fDetectDistance = pMonsterDesc->fDetectDistance;
+	m_fAttackDistance = pMonsterDesc->fAttackDistance;
+	m_fAttackCoolTime = pMonsterDesc->fAttackCoolTime;
+	m_vPos = pMonsterDesc->vPos;
+	m_iCellIndex = pMonsterDesc->iCellIndex;
+
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
@@ -52,6 +63,9 @@ void CMonster::Priority_Update(_float fTimeDelta)
 		m_pGameInstance->Secede_Update(m_pColliderCom[COLL_SPHERE]->Get_Bounder());
 		m_iState = STATE_DEAD;
 		m_bRec = false;
+
+		// 여기에서 피가 0이 되면 터지는 파티클이 연출되어야 한다
+
 	}
 
 	// 이 부분을 따로 빼서 적용한다던가
@@ -109,7 +123,6 @@ void CMonster::Update(_float fTimeDelta)
 		if (nullptr == m_pColliderCom[i])
 			continue;
 
-
 		m_pColliderCom[i]->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 	}
 #endif
@@ -126,6 +139,18 @@ void CMonster::Late_Update(_float fTimeDelta)
 		m_pNavigationCom->Compute_Height(m_pTransformCom->Get_State(CTransform::STATE_POS)));
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+	if (m_bIsDead)
+		return;
+
+#ifdef _DEBUG
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom[i]);
+	}
+	m_pGameInstance->Add_Renderer_DebugComponent(m_pNavigationCom);
+
+#endif
 }
 
 HRESULT CMonster::Render()
@@ -133,26 +158,17 @@ HRESULT CMonster::Render()
 	if (m_bIsDead)
 		return E_ABORT;
 
-#ifdef _DEBUG
-	for (size_t i = 0; i < TYPE_END; i++)
-	{
-		if (nullptr == m_pColliderCom[i])
-			continue;
-
-		m_pColliderCom[i]->Render();
-	}
-#endif
-
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
 	return S_OK;
 }
 
+
 HRESULT CMonster::Ready_Components()
 {
 	CNavigation::NAVIGATION_DESC		NaviDesc{};
-	NaviDesc.iCellIndex = 0;
+	NaviDesc.iCellIndex = m_iCellIndex;
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_ATTACK,
 		reinterpret_cast<CComponent**>(&m_pAttackCom), COM_ATTACK), E_FAIL);

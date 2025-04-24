@@ -59,8 +59,14 @@ HRESULT CBody_Moloch::Render()
 
 HRESULT CBody_Moloch::Ready_Component()
 {
+	CModel::MODEL_DESC Desc{};
+
+	Desc.strRootBoneTag = TEXT("Moloch_Mesh");
+	Desc.fAngles = _float3(90.f, 0.f, 90.f);
+
+
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH,
-		reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+		reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model"), &Desc), E_FAIL);
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
 		reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);

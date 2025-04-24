@@ -34,7 +34,7 @@ struct PS_IN
 struct PS_OUT
 {
     //float4 vColor : COLOR;
-    float4 vColor : SV_TARGET0;
+    float4 vDiffuse : SV_TARGET0;
     // 렌더타겟 뷰를 선언한 녀석이 있다, 렌더타겟은 
     //그래픽 디바이스 초기화 할 때, 백 버퍼를 생성해서 이를 통해 renderer를 그린다
     //따라서 SV_TARGET이 옳다
@@ -66,6 +66,24 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
+VS_OUT VS_MAIN1(VS_IN In)
+{
+    /* 받아온 정점정보를 가지고 필요한 연산을 수행해 나간다 */
+    VS_OUT Out = (VS_OUT) 0;
+    
+    matrix matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    //float4 vTest = mul(vector(In.vPosition, 1.f), matWV);
+    matrix matW = g_WorldMatrix;
+    
+    
+    
+    //Out.vPosition = matW;
+    Out.vPosition = mul(vector(In.vPosition, 1.f), matW);
+    Out.vTexcoord = In.vTexcoord;
+    
+    return Out;
+}
+
 // w나누기 연산을 수행하는 함수
 // w 나누기를 하면서 2차원 투영 스페이스로 변환되고, 뷰 포트로 변환한다
 // 그 후, 래스터라이즈를 통해 픽셀을 생성한다.
@@ -78,7 +96,13 @@ PS_OUT PS_MAIN(PS_IN In)
     
     // sampling 할 때 텍스쳐를 가로 세로로 얼만큼 할 것인지 정하고 위에서 정한 sampling 옵션으로 픽셀의 값 결정
     //Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
-    Out.vColor = g_Texture.Sample(LinearSampler, In.vTexcoord);
+    
+    float4 vDiffuse = g_Texture.Sample(LinearSampler, In.vTexcoord);
+    
+    if (vDiffuse.a < 0.1f)
+        discard;
+        
+    Out.vDiffuse = vDiffuse;
     
     //Out.vColor = In.vTexcoord.y;
     
@@ -124,7 +148,7 @@ technique11 DefaultTechnique
            특수한 상황에 쉐이더 기법을 사용할 때 쓰는 pass*/
         /*vs_5_0 : 쉐이더 5.0 버전임을 의미*/
 
-        VertexShader = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN1();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }

@@ -135,18 +135,37 @@ _vector CNavigation::Compute_Height(_fvector vPosition)
 #ifdef _DEBUG
 HRESULT CNavigation::Render()
 {
-    if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", m_pWorldMatrix)))
-        return E_FAIL;
+    _float4x4       WorldMatrix = *m_pWorldMatrix;
 
     if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShader, CPipeLine::D3DTS_VIEW)))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShader, CPipeLine::D3DTS_PROJ)))
         return E_FAIL;
 
-    m_pShader->Begin(1);
+    _float4         vColor = {};
 
-    for (auto& pCell : m_Cells)
-        pCell->Render();
+    if (-1 == m_iCurrentCellIndex)
+    {
+        if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
+            return E_FAIL;
+        vColor = _float4(0.f, 1.f, 0.f, 1.f);
+        m_pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4));
+        m_pShader->Begin(0);
+
+        for (auto& pCell : m_Cells)
+            pCell->Render();
+    }
+    else
+    {
+        WorldMatrix._42 += 0.1f;
+        if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
+            return E_FAIL;
+        vColor = _float4(1.f, 0.f, 0.f, 1.f);
+        m_pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4));
+        m_pShader->Begin(0);
+
+        m_Cells[m_iCurrentCellIndex]->Render();
+    }
 
     return S_OK;
 }

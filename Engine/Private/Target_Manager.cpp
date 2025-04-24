@@ -68,6 +68,7 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag)
 
 	for (auto& pRenderTarget : *pMRTList)
 	{
+		pRenderTarget->Clear();
 		RenderTargets[iNumRenderTargets++] = pRenderTarget->Get_RTV();
 	}
 
@@ -95,6 +96,15 @@ HRESULT CTarget_Manager::Bind_SR(CShader* pShader, const _char* pConstantName, c
 		return E_FAIL;
 
 	return pRenderTarget->Bind_SR(pShader, pConstantName);
+}
+
+void CTarget_Manager::Copy_RenderTarget(const _wstring& strTargetTag, ID3D11Texture2D* pTexture2D)
+{
+	CRenderTarget* pRenderTarget = Find_RenderTarget(strTargetTag);
+	if (nullptr == pRenderTarget)
+		return;
+
+	pRenderTarget->Copy_Resource(pTexture2D);
 }
 
 HRESULT CTarget_Manager::Ready_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
@@ -126,6 +136,7 @@ CRenderTarget* CTarget_Manager::Find_RenderTarget(const _wstring& strTargetTag)
 
 	return iter->second;
 }
+
 
 list<class CRenderTarget*>* CTarget_Manager::Find_MRT(const _wstring& strMRTTag)
 {

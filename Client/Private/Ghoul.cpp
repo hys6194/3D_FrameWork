@@ -2,6 +2,8 @@
 #include "Monster.h"
 #include "Status.h"
 #include "Attack.h"
+#include "HP_Frame.h"
+#include "HP_Bar.h"
 
 #include "Fist_Left.h"
 #include "Fist_Right.h"
@@ -38,31 +40,15 @@ HRESULT CGhoul::Initialize_Prototype()
 
 HRESULT CGhoul::Initialize(void* pArg)
 {
-    MONSTER_DESC Desc{};
+    MONSTER_DESC* pMonsterDesc = static_cast<MONSTER_DESC*>(pArg);
 
-    Desc.bBoss = false;
-    Desc.bWave = false;
-    Desc.fSpeedPerSec = 10.f;
-    Desc.fRotationPerSec = XMConvertToRadians(90.f);
-    Desc.iState = STATE_IDLE;
-    Desc.strMonsterName = TEXT("_Ghoul");
-    m_iState = Desc.iState;
-
-
-    m_fDetectDistance = 15.f;
-    m_fAttackDistance = 4.f;
-    m_fHitPersent = 15.f;
-    m_fAttackCoolTime = 3.f;
-
-    FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
+    FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
+    FAILED_CHECK_RETURN(Ready_UI_HP(), E_FAIL);
 
-    // Àá±ñ ·£´ý »ý¼º½ÃÅ°±â
-    m_pTransformCom->Set_State(CTransform::STATE_POS,
-        XMVectorSet(m_pGameInstance->Random(0.f, 10.f), 2.f, m_pGameInstance->Random(0.f, 10.f), 1.f));
-
+    m_pTransformCom->Set_State(CTransform::STATE_POS, m_vPos);
     m_pFSMCom->Change_State(m_iState);
 
     return S_OK;
@@ -190,6 +176,7 @@ HRESULT CGhoul::Ready_Components()
     CStatus::STATUS_DESC StatusDesc{};
     StatusDesc.iAttack = 2;
     StatusDesc.iHP = 100;
+    //StatusDesc.iHP = 1;
     StatusDesc.pOwner = this;
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_STATUS,
@@ -199,6 +186,39 @@ HRESULT CGhoul::Ready_Components()
     
     return S_OK;
 }
+
+HRESULT CGhoul::Ready_UI_HP()
+{
+    //CHP_Frame::HPFRAME_DESC FrameDesc{};
+    //FrameDesc.fX = m_pTransformCom->Get_State(CTransform::STATE_POS).m128_f32[0];
+    //FrameDesc.fY = m_pTransformCom->Get_State(CTransform::STATE_POS).m128_f32[1];
+    //FrameDesc.fSizeX = 150;
+    //FrameDesc.fSizeY = 50;
+    //FrameDesc.strFrameTag = PRO_TEX_MONSTER_HP_FRAME;
+    //FrameDesc.iPass = 1;
+    //
+    //FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_FRAME,
+    //	LEVEL_GAMEPLAY, TEXT("GameObject_Monster_HP_Frame "), &FrameDesc), E_FAIL);
+
+    CHP_Bar::HPBAR_DESC BarDesc{};
+    BarDesc.pOwner = this;
+
+    _float4 fPos{};
+    XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
+    BarDesc.fX = fPos.x;
+    BarDesc.fY = fPos.y;
+    BarDesc.fSizeX = 200;
+    BarDesc.fSizeY = 40;
+    BarDesc.iPass = 1;
+    BarDesc.pOwner = this;
+
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_BAR,
+        LEVEL_GAMEPLAY, TEXT("GameObject_Monster_HP_Bar "), &BarDesc), E_FAIL);
+
+    return S_OK;
+}
+
+
 
 CGhoul* CGhoul::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

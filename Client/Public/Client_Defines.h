@@ -10,9 +10,8 @@
 
 #include <io.h>
 
-#include "../Bin/fmod/fmod.h"
-#include "../Bin/fmod/fmod.hpp"
-#pragma comment(lib, "../Bin/fmod/fmodex_vc.lib")
+#include "../../EngineSDK/Inc/fmod/fmod.h"
+#include "../../EngineSDK/Inc/fmod/fmod.hpp"
 
 #include "Const_Key.h"
 

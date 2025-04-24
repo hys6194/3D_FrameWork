@@ -28,6 +28,8 @@ public:
 private:
 	_float						m_fMouseSensor = {};
 	_float3						m_vCamEye = { 0.f, 40.f, -40.f };
+
+	_bool						m_bChange = false;
 	//0.f, 30.f, -50.f
 	//_float3					m_vCamEye = { 0.f, 15.f , 0.f };
 

@@ -221,6 +221,8 @@ _bool CCollision_Manager::Update_Impactor(_float fTimeDelta)
 						if (TYPE_SPHERE == *pBounding1->Get_Type())
 							continue;
 
+						pBounding1->Get_Collider()->Set_TargetColl(pBounding2);
+
 						pBounding1->Get_Collider()->Set_Coll(true);
 						pBounding2->Get_Collider()->Set_Coll(true);
 					}
@@ -296,32 +298,30 @@ _bool CCollision_Manager::Update_TargetBody(_float fTimeDelta)
 
 			for (auto iter : *Pair.second)
 			{
-				for (auto iter2 : *Pair.second)
+				for (auto& Pair2 : *m_mapColliders[OP_TARGET])
 				{
-					if (iter == iter2)
-						continue;
 
-					if (Detect_Collision(iter, iter2))
+					if(Pair2.first.find(TEXT("Monster")) != string::npos)
 					{
-						Detrude_Colliders(iter, iter2);
+						if (Pair2.second->empty())
+							continue;
+
+						for (auto iter2 : *Pair2.second)
+						{
+							if (iter == iter2)
+								continue;
+
+							if (Detect_Collision(iter, iter2))
+							{
+								Detrude_Colliders(iter, iter2);
+							}
+						}
 					}
+
 				}
+
 			}
 
-
-			//for (auto iter = Pair.second->begin(); next(iter) != Pair.second->end(); ++iter)
-			//{
-			//	CBounding* pNextBounding = *next(iter);
-			//
-			//	if (*iter == nullptr || pNextBounding == nullptr)
-			//		continue;
-			//
-			//	// 비교 처리
-			//	if (Detect_Collision(*iter, pNextBounding))
-			//	{
-			//		Detrude_Colliders(*iter, pNextBounding);
-			//	}
-			//}
 		}
 
 	}

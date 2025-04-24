@@ -27,6 +27,8 @@ HRESULT CMoloch_Sword::Initialize(void* pArg)
     m_pTargetState = pDesc->pTargetState;
     m_pHandMatrix = pDesc->pHandMatrix;
     m_pOwner = pDesc->pOwner;
+    m_iPassIndex = 0;
+    m_fDeadTime = 0;
 
     FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
@@ -41,6 +43,22 @@ void CMoloch_Sword::Priority_Update(_float fTimeDelta)
     //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
 
     //m_pTransformCom->SetUp_Scaled(10.f, 10.f, 10.f);
+
+    if (m_pOwner->Is_Dead())
+    {
+        m_iPassIndex = 1;
+
+        m_fDeadTime += fTimeDelta / 3.f;
+
+        if (m_fDeadTime >= 1.f)
+        {
+            m_fDeadTime = 1.f;
+        }
+
+        FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_fDissolveTime", &m_fDeadTime, sizeof(_float)), );
+    }
+
+
 
     m_pColliderCom->Reset();
     //dynamic_cast<CBounding_OBB*>(m_pColliderCom->Get_Bounder())
@@ -66,13 +84,22 @@ void CMoloch_Sword::Update(_float fTimeDelta)
 
 void CMoloch_Sword::Late_Update(_float fTimeDelta)
 {
+    if (m_fDeadTime >= 1.f)
+        return;
+
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
+    if (m_pOwner->Is_Dead())
+        return;
+
+#ifdef _DEBUG
+    m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom); 
+#endif
 }
 
 HRESULT CMoloch_Sword::Render()
 {
-    if (m_pOwner->Is_Dead())
+    if (m_fDeadTime >= 1.f)
         return E_ABORT;
 
     if (FAILED(Bind_SR()))
@@ -86,9 +113,7 @@ HRESULT CMoloch_Sword::Render()
             aiTextureType_DIFFUSE, i, 0)))
             return E_FAIL;
 
-        //m_pModelCom->Bind_BoneMatrix(m_pShaderCom, "g_BoneMatrices", i);
-
-        if (FAILED(m_pShaderCom->Begin(0)))
+        if (FAILED(m_pShaderCom->Begin(m_iPassIndex)))
             return E_FAIL;
 
         if (FAILED(m_pModelCom->Render(i)))
@@ -116,6 +141,7 @@ HRESULT CMoloch_Sword::Ready_Components()
     OBBDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Moloch_Sword ");
     OBBDesc.iOption = COLL_OPT::OP_IMPACT;
     OBBDesc.eType = TYPE::TYPE_OBB;
+    OBBDesc.pOwner = m_pOwner;
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &OBBDesc), E_FAIL);
@@ -128,16 +154,7 @@ HRESULT CMoloch_Sword::Bind_SR()
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
-
-    const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
-    NULL_CHECK_RETURN(pLightDesc, E_FAIL);
-
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)), E_FAIL);
-
+    //FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 
     return S_OK;
 }

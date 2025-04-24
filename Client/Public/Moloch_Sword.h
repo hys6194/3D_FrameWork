@@ -47,6 +47,9 @@ private:
 	class CMonster*				m_pOwner			= { nullptr };
 
 	_float						m_fTotalTime		= { 0.f };
+	_float						m_fDeadTime			= { 0.f };
+
+	_uint						m_iPassIndex;
 
 private:
 	HRESULT						Bind_SR();

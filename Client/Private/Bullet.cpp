@@ -30,7 +30,15 @@ HRESULT CBullet::Initialize(void* pArg)
     FAILED_CHECK_RETURN(Ready_Component(), E_FAIL)
 
     m_pTransformCom->Set_Matrix(&m_matHand);
-    m_pTransformCom->SetUp_Scaled(3.f, 3.f, 3.f);
+    m_pTransformCom->SetUp_Scaled(2.f, 2.f, 2.f);
+
+
+    CNormal_Trail::NORMALTRAIL_DESC Desc{};
+    _float3 fColorBase =  m_pGameInstance->Convert_ColorCodes(138, 43, 226);
+    Desc.fColor = _float4(fColorBase.x, fColorBase.y, fColorBase.z, 1.f);
+
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_NORMAL_TRAIL, 
+        LEVEL_GAMEPLAY, TEXT("GameObject_Normal_Trail"), &Desc), E_FAIL);
 
     return S_OK;
 }
@@ -66,6 +74,13 @@ void CBullet::Update(_float fTimeDelta)
 void CBullet::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+    if (m_bDisappear)
+        return;
+
+#ifdef _DEBUG
+    //m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom);
+#endif
 }
 
 HRESULT CBullet::Render()
@@ -92,7 +107,7 @@ HRESULT CBullet::Render()
     }
 
 #ifdef _DEBUG
-    m_pColliderCom->Render();
+    //m_pColliderCom->Render();
 #endif 
 
     return S_OK;
@@ -101,16 +116,15 @@ HRESULT CBullet::Render()
 HRESULT CBullet::Ready_Component()
 {
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_BULLET,
         reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
-        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL)
-        ;
+        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
     SphereDesc.fRadius      = 0.2f;
     SphereDesc.vCenter      = _float3(0.f, 0.f, 0.f);
-    //SphereDesc.strCollTag   = Get_Name() + std::to_wstring(m_iIndex);
     SphereDesc.strCollTag   = Get_Name();
     SphereDesc.iOption      = COLL_OPT::OP_IMPACT;
     SphereDesc.eType =      TYPE::TYPE_SPHERE;
@@ -119,9 +133,6 @@ HRESULT CBullet::Ready_Component()
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc)))
         return E_FAIL;
 
-    // 근데 좀 별로다 몸은 자동으로 등록하는데 총알이나 공격 부류는 내가 선언해야 등록되는거
-    // 아닌데? 의도한대로 되긴했는데? 불편한거 아닌가?
-    // 불편한거네 근데 이게 더 낫긴해
     m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
 
     return S_OK;

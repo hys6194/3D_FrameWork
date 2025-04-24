@@ -14,6 +14,8 @@
 #include "ImGui_Manager.h"
 #include "Target_Manager.h"
 #include "CollisionManager.h"
+#include "Picking.h"
+#include "Sound_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -63,6 +65,12 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	m_pCollision_Manager = CCollision_Manager::Create();
 	NULL_CHECK_RETURN(m_pCollision_Manager, E_FAIL);
+
+	m_pPicking = CPicking::Create(*ppDevice, *ppContext, EngineDesc.hWnd);
+	NULL_CHECK_RETURN(m_pPicking, E_FAIL);
+
+	m_pSound_Manager = CSound_Manager::Create();
+	NULL_CHECK_RETURN(m_pSound_Manager, E_FAIL);
 	
 	return S_OK;
 }
@@ -71,8 +79,10 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pImGui_Manager->SetUp_Render_ImGui();
 
+
 	m_pInput_Device->Update();
 
+	m_pPicking->Copy(TARGET_PICK);
 	// 여기에서 콜리젼 매니져를 통해 삭제처리가 되어야 하는 애들을 삭제 처리
 	// 혹은 렌더링 기능을 끄게 설정
 
@@ -165,6 +175,35 @@ _uint CGameInstance::Draw_RandomNum(_uint iNumber)
 	_uint iIndex = (_uint)Index(gen1);
 
 	return iIndex;
+}
+
+string CGameInstance::WstrToStr(const wstring& wide_str)
+{
+	string narrow_str;
+
+	int size_needed = WideCharToMultiByte(CP_ACP, 0, wide_str.c_str(), -1, NULL, 0, NULL, NULL);
+	if (size_needed > 0)
+	{
+		narrow_str.resize(size_needed - 1);
+		WideCharToMultiByte(CP_ACP, 0, wide_str.c_str(), -1, &narrow_str[0], size_needed, NULL, NULL);
+	}
+
+	return narrow_str;
+}
+
+wstring CGameInstance::StrToWstr(const string& narrow_str)
+{
+	wstring wide_str(narrow_str.length() + 1, L'\0');
+	size_t converted_chars = 0;
+
+	mbstowcs_s(&converted_chars, &wide_str[0], wide_str.size(), narrow_str.c_str(), narrow_str.length());
+
+	return wide_str;
+}
+
+_float3 CGameInstance::Convert_ColorCodes(_uint iR, _uint iG, _uint iB)
+{
+	return _float3(iR / 255, iG / 255, iB /255);
 }
 
 #pragma region GRAPHIC_DEVICE
@@ -361,6 +400,14 @@ HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERERGROUP eRenderGroupID,
 	return m_pRenderer->Add_RenderObject(eRenderGroupID, pRenderObject);
 }
 
+#ifdef _DEBUG
+void CGameInstance::Add_Renderer_DebugComponent(CComponent* pDebugComponent)
+{
+	return m_pRenderer->Add_DebugComponent(pDebugComponent);
+}
+
+#endif
+
 #pragma endregion
 
 #pragma region PIPELINE
@@ -485,7 +532,7 @@ HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTar
 	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
 }
 
-HRESULT CGameInstance::Bind_RT_SR(CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag)
+HRESULT CGameInstance::Bind_RT_ToShader(CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag)
 {
 	return m_pTarget_Manager->Bind_SR(pShader, pConstantName, strTargetTag);
 }
@@ -493,6 +540,11 @@ HRESULT CGameInstance::Bind_RT_SR(CShader* pShader, const _char* pConstantName, 
 HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
 {
 	return m_pTarget_Manager->Begin_MRT(strMRTTag);
+}
+
+void CGameInstance::Copy_RenderTarget(const _wstring& strTargetTag, ID3D11Texture2D* pTexture2D)
+{
+	return m_pTarget_Manager->Copy_RenderTarget(strTargetTag, pTexture2D);
 }
 
 HRESULT CGameInstance::End_MRT()
@@ -509,13 +561,54 @@ HRESULT CGameInstance::Render_RT_Debug(const _wstring& strMRTTag, CShader* pShad
 {
 	return m_pTarget_Manager->Render(strMRTTag, pShader, pVIBuffer);
 }
+_bool CGameInstance::Picking(_float3* pOut)
+{
+	return m_pPicking->Picking(pOut);
+}
+
 #endif
 
 #pragma endregion
 
+#pragma region SOUND_MANAGER
+
+void CGameInstance::Play_Sound(const wstring& pSoundKey, _uint iSoundIndex, float fVolume, bool bLoop)
+{
+	return	m_pSound_Manager->Play_Sound(pSoundKey, iSoundIndex, fVolume, bLoop);
+}
+void CGameInstance::Play_BGM(const wstring& pSoundKey, _uint iSoundIndex, float fVolume)
+{
+	return	m_pSound_Manager->Play_BGM(pSoundKey, iSoundIndex, fVolume);
+}
+void CGameInstance::Stop_Sound(_uint iSoundIndex)
+{
+	return	m_pSound_Manager->Stop_Sound(iSoundIndex);
+}
+void CGameInstance::Stop_All()
+{
+	return	m_pSound_Manager->Stop_All();
+}
+void CGameInstance::Set_ChannelVolume(_uint iSoundIndex, float fVolume)
+{
+	return	m_pSound_Manager->Set_ChannelVolume(iSoundIndex, fVolume);
+}
+HRESULT CGameInstance::Load_SoundFile(const _string& sPath)
+{
+	return m_pSound_Manager->Load_SoundFile(sPath);
+}
+void CGameInstance::Set_BGMVolume(_uint iSoundIndex, _float fVolume)
+{
+	 return	m_pSound_Manager->Set_BGMVolume(iSoundIndex, fVolume);
+}
+void CGameInstance::Set_AllEffectVolume(_float fVolume)
+{
+	return m_pSound_Manager->Set_AllEffectVolume(fVolume);
+}
+
+#pragma endregion SOUND_MANAGER
+
 void CGameInstance::Release_Engine()
 {
-	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pLevel_Manager);
@@ -527,7 +620,10 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pTarget_Manager);
+	Safe_Release(m_pPicking);
 	Safe_Release(m_pImGui_Manager);
+	Safe_Release(m_pSound_Manager);
+	Safe_Release(m_pGraphic_Device);
 
 
 	CGameInstance::DestroyInstance();

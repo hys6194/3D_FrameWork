@@ -27,7 +27,7 @@
 
 #define		VK_MAX		0xff
 
-
+static const std::wstring PATH_SOUND					=TEXT("../Bin/Resources/Sounds");
 
 /* Texture */
 static const std::wstring PRO_TEX_SKY					= TEXT("Prototype_Component_Texture_Sky");
@@ -36,7 +36,16 @@ static const std::wstring PRO_TEX_BRUSH					= TEXT("Prototype_Component_Texture_
 static const std::wstring PRO_TEX_LOGO1					= TEXT("Prototype_Component_Texture_Logo1");
 static const std::wstring PRO_TEX_LOGO2					= TEXT("Prototype_Component_Texture_Logo2");
 static const std::wstring PRO_TEX_TERRAIN				= TEXT("Prototype_Component_Texture_Terrain");
+static const std::wstring PRO_TEX_DISSOLVE				= TEXT("Prototype_Component_Texture_Dissolve");
 static const std::wstring PRO_TEX_BACKGROUND			= TEXT("Prototype_Component_Texture_BackGround");
+static const std::wstring PRO_TEX_PLAYER_HP_FRAME		= TEXT("Prototype_Component_Texture_Player_HP_Frame");
+static const std::wstring PRO_TEX_MONSTER_HP_FRAME		= TEXT("Prototype_Component_Texture_Monster_HP_Frame");
+static const std::wstring PRO_TEX_BOSS_HP_FRAME			= TEXT("Prototype_Component_Texture_BOSS_HP_Frame");
+static const std::wstring PRO_TEX_HP_BAR				= TEXT("Prototype_Component_Texture_HP_Bar");
+static const std::wstring PRO_TEX_UI_FRAME				= TEXT("Prototype_Component_Texture_UI_Frame");
+static const std::wstring PRO_TEX_POTION				= TEXT("Prototype_Component_Texture_Potion");
+static const std::wstring PRO_TEX_GHOST_HOOK			= TEXT("Prototype_Component_Texture_Ghost_Hook");
+static const std::wstring PRO_TEX_PARTICLE_BLOOD		= TEXT("Prototype_Component_Texture_Particle");
 
 
 /* Component */
@@ -58,6 +67,7 @@ static const std::wstring PRO_COM_COLL_SPHERE			= TEXT("Prototype_Component_Coll
 
 /* Model */
 static const std::wstring PRO_MODEL_STRIFE				= TEXT("Prototype_Component_Model_Test");
+static const std::wstring PRO_MODEL_BULLET				= TEXT("Prototype_Component_Model_Bullet");
 static const std::wstring PRO_MODEL_FIONA				= TEXT("Prototype_Component_Model_Fiona");
 static const std::wstring PRO_MODEL_GHOUL				= TEXT("Prototype_Component_Model_Ghoul"); 
 static const std::wstring PRO_MODEL_FALLEN_GHOUL		= TEXT("Prototype_Component_Model_Fallen_Ghoul"); 
@@ -143,6 +153,10 @@ static const std::wstring PRO_OBJ_TEST_MONSTER			= TEXT("Prototype_GameObject_TE
 static const std::wstring PRO_OBJ_MOLOCH_BODY 			= TEXT("Prototype_GameObject_Moloch Body");
 static const std::wstring PRO_OBJ_MOLOCH_SWORD			= TEXT("Prototype_GameObject_Moloch Sword");
 static const std::wstring PRO_OBJ_CRYSTAL				= TEXT("Prototype_GameObject_Crystal");
+static const std::wstring PRO_OBJ_HP_FRAME				= TEXT("Prototype_GameObject_HP_Frame");
+static const std::wstring PRO_OBJ_HP_BAR				= TEXT("Prototype_GameObject_HP_Bar");
+static const std::wstring PRO_OBJ_NORMAL_TRAIL			= TEXT("Prototype_GameObject_Normal_Trail");
+//static const std::wstring PRO_OBJ_HP_BAR				= TEXT("Prototype_GameObject_HP_Bar");
 
 static const std::wstring PRO_OBJ_GROUND_DECAL			= TEXT("Prototype_GameObject_GroundDecal LG A");
 static const std::wstring PRO_OBJ_DAM_END				= TEXT("Prototype_GameObject_Dam EndCap A");
@@ -256,4 +270,55 @@ enum PLAYER_ANIMLIST
 	SWAP_IDLE,
 	SWAP_START,
 	ANIM_END
+};
+enum HP_TEXTURELIST
+{
+	HP_FRAME, HP_BAR, HP_END
+};
+enum SOUNDLIST
+{
+	SOUND_BGM,
+	SOUND_PLAYER_SHOOT,
+	SOUND_PLAYER_MOVE,
+	SOUND_PLAYER_DASH,
+	SOUND_MONSTER_HIT,
+	SOUND_MONSTER_HIT_VOICE,
+	SOUND_MOSNTER_ATTACK,
+	SOUND_MOSNTER_ATTACK_VOICE,
+	SOUND_MONSTER_FOOT,
+	SOUND_MONSTER_HAND,
+	SOUND_MONSTER_TURN,
+	SOUND_MONSTER_TURN_VOICE,		// 보스 용도 -> 데미지 입혔으면 SEARCH할때 웃는다?
+	SOUND_MONSTER_TURN_ATTACK,
+	SOUND_MOSNTER_DEAD,
+	SOUND_MOSNTER_DEAD_VOICE,
+	SOUND_DOG_SLASH,
+	SOUND_DOG_SLASH_VOICE,
+	SOUND_DOG_GOUND,
+	SOUND_DOG_GOUND_VOICE,
+	SOUND_DOG_3HIT,
+	SOUND_DOG_3HIT_VOICE,
+	SOUND_DOG_HIT,
+	SOUND_DOG_HIT_VOICE,
+	SOUND_GHOUL_HIT,
+	SOUND_GHOUL_HIT_VOICE,
+	SOUND_GHOUL_LEAF,
+	SOUND_GHOUL_LEAF_VOICE,
+	SOUND_GHOUL_DOUBLELEAF,
+	SOUND_GHOUL_DOUBLELEAF_VOICE,
+	SOUND_GHOUL_FLURRY,
+	SOUND_GHOUL_FLURRY_VOICE,
+	SOUND_MOLOCH_CRYSTALSPAWN,
+	SOUND_MOLOCH_180,
+	SOUND_MOLOCH_180_VOICE,
+	SOUND_MOLOCH_SWIPE,
+	SOUND_MOLOCH_SWIPE_VOICE,
+	SOUND_MOLOCH_SWING,
+	SOUND_MOLOCH_SWING_VOICE,
+	SOUND_MOLOCH_DASH,
+	SOUND_MOLOCH_DASH_VOICE,
+	SOUND_MOLOCH_GEYSER,
+	SOUND_MOLOCH_GEYSER_VOICE,
+
+
 };

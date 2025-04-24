@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CFSM;
 class CNavigation;
 class CCollider;
+class CTexture; 
 END
 
 BEGIN(Client)
@@ -82,6 +83,11 @@ public:
 		m_bCanMove = bMove;
 	}
 
+	_bool					Is_Hit()
+	{
+		return m_bHit;
+	}
+
 public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize(void* pArg) override;
@@ -97,6 +103,7 @@ private:
 
 	_bool					m_bIsDashed			= { false };
 	_bool					m_bCanMove			= { true };
+	_bool					m_bHit				= { false };
 
 	_float					m_fTotalTime = { 0.f };
 
@@ -104,15 +111,16 @@ private:
 	CFSM*					m_pFSMCom					= { nullptr };
 	CCollider*				m_pColliderCom[COLL_END]	= { nullptr };
 	CNavigation*			m_pNavigationCom			= { nullptr };
+	//CTexture*				m_pTextureCom[HP_END]		= { nullptr };
 	class CStatus*			m_pStatusCom				= { nullptr };
+
 
 private:
 	HRESULT					Ready_Components();
 	HRESULT					Ready_PartObjects();
 	HRESULT					Ready_States();
+	HRESULT					Ready_UI_HP();
 	HRESULT					Bind_SR();
-
-	void					Calculate_StatusInfo();
 
 private:
 	void					Input_Keys();

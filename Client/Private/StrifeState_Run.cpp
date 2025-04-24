@@ -14,6 +14,8 @@ HRESULT CStrifeState_Run::Enter_State()
 {
     Set_CurAnimation();
 
+    //m_pGameInstance->Play_Sound(TEXT("Strife_foot_01"), SOUND_PLAYER_MOVE, 0.3f, true);
+
     return S_OK;
 }
 
@@ -33,6 +35,16 @@ void CStrifeState_Run::PriorityUpdate_State(_float fTimeDelta)
         return;
     }
 
+    // 야 랜덤 만든 나 ㅈㄴ 칭찬해 개신박하네 이거
+    if (9 < m_pModelCom->Get_CurKeyFrameIndex() ||
+        11 > m_pModelCom->Get_CurKeyFrameIndex())
+    {
+        _uint iNum = m_pGameInstance->Draw_RandomNum(4);
+        wstring strSoundName = TEXT("Strife_foot_") + to_wstring(iNum);
+        m_pGameInstance->Play_Sound(strSoundName, SOUND_PLAYER_MOVE, 0.1f, true);
+    }
+
+
     PlayerMove(fTimeDelta);
   
 }
@@ -51,6 +63,7 @@ void CStrifeState_Run::LateUpdate_State(_float fTimeDelta)
 HRESULT CStrifeState_Run::Exit_State()
 {
     Set_PreAnimation();
+    m_pGameInstance->Stop_Sound(SOUND_PLAYER_MOVE);
     return S_OK;
 }
 

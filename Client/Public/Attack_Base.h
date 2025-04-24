@@ -46,7 +46,7 @@ protected:
 	_float									m_fDistance = {};
 	_float									m_fTotalTime = {};
 	_float									m_fCoolTime = {};			// 패턴 자체가 가지는 쿨타임
-	_float									m_fElapseTime = { 999.f };	// 처음 경과시간은 큰 값으로 시작해 바로 몬스터가 공격할 수 있도록 설정
+	_float									m_fElapseTime = { 0.f };	// 처음 경과시간은 큰 값으로 시작해 바로 몬스터가 공격할 수 있도록 설정
 
 public:
 	virtual void							Free() override;

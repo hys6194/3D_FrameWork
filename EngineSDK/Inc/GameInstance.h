@@ -1,11 +1,10 @@
 #pragma once
 
+#include "Engine_Defines.h"
 #include "Renderer.h"
 #include "PipeLine.h"
 #include "Prototype.h"
 #include "CollisionManager.h"
-
-
 
 /* GameInstance */
 /* 엔진이 제공해주는 대부분의 기능을 모아둔다. */
@@ -37,7 +36,10 @@ public:
 	_uint							Draw_RandomNum(_uint iNumber);
 	//_uint							Draw_RandomNum();
 
+	string							WstrToStr(const wstring& wide_str);
+	wstring							StrToWstr(const string& wide_str);
 
+	_float3							Convert_ColorCodes(_uint iR, _uint iG, _uint iB);
 
 #pragma region GRAPHIC_DEVICE
 	HRESULT							Clear_BackBuffer_View(_float4 vClearColor);	
@@ -101,6 +103,7 @@ public:
 
 #pragma region RENDERER
 	HRESULT							Add_RenderObject(CRenderer::RENDERERGROUP eRenderGroupID, class CGameObject* pRenderObject);
+	void							Add_Renderer_DebugComponent(class CComponent* pDebugComponent);
 #pragma endregion
 
 #pragma region PIPELINE
@@ -138,8 +141,9 @@ public:
 #pragma region Target_Manager
 	HRESULT							Add_RenderTarget(const _wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
 	HRESULT							Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
-	HRESULT							Bind_RT_SR(class CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag);
+	HRESULT							Bind_RT_ToShader(class CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag);
 	HRESULT							Begin_MRT(const _wstring& strMRTTag);
+	void							Copy_RenderTarget(const _wstring& strTargetTag, ID3D11Texture2D* pTexture2D);
 	HRESULT							End_MRT();
 
 #ifdef _DEBUG
@@ -147,7 +151,20 @@ public:
 	HRESULT							Render_RT_Debug(const _wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer);
 #endif
 
+#pragma region PICKING
+	_bool							Picking(_float3* pOut);
+#pragma endregion
 
+#pragma region SOUND_MANAGER
+	void							Play_Sound(const wstring& pSoundKey, _uint iSoundIndex, float fVolume, bool bLoop = true);
+	void							Play_BGM(const wstring& pSoundKey, _uint iSoundIndex, float fVolume);
+	void							Stop_Sound(_uint iSoundIndex);
+	void							Stop_All();
+	void							Set_ChannelVolume(_uint iSoundIndex, float fVolume);
+	HRESULT							Load_SoundFile(const string& sPath);
+
+	void							Set_BGMVolume(_uint iSoundIndex, _float fVolume);
+	void							Set_AllEffectVolume(_float fVolume);
 #pragma endregion
 
 
@@ -165,6 +182,8 @@ private:
 	class CImGui_Manager*			m_pImGui_Manager			= { nullptr };
 	class CCollision_Manager*		m_pCollision_Manager		= { nullptr };
 	class CTarget_Manager*			m_pTarget_Manager			= { nullptr };
+	class CPicking*					m_pPicking					= { nullptr };
+	class CSound_Manager*			m_pSound_Manager			= { nullptr };
 
 public:	
 	virtual void					Free() override;

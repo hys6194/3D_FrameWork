@@ -14,8 +14,8 @@ class CStatus final : public CComponent
 public:
 	typedef struct tagStatusDesc
 	{
-		_int iHP;
-		_int iAttack;
+		_float iHP;
+		_float iAttack;
 		class CGameObject* pOwner; // 일단 들고있게 하자
 	}STATUS_DESC;
 
@@ -39,8 +39,8 @@ public:
 	_bool				Is_Damaged() const { return m_bIsDamaged; }
 	void				Reset_Damaged() { m_bIsDamaged = false; }
 
-	void				Take_Damage(_int iDamage);
-	void				Take_Heal(_int iHeal) { m_tDesc.iHP = Clamp(m_tDesc.iHP + iHeal, 0, 100); }
+	void				Take_Damage(_float iDamage);
+	void				Take_Heal(_float iHeal) { m_tDesc.iHP = Clamp(m_tDesc.iHP + iHeal, 0.f, m_tMaxDesc.iHP); }
 
 public:
 	void				Calculate_StatusInfo(_int iAttack);

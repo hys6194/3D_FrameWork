@@ -33,6 +33,9 @@ void CLayer::Late_Update(_float fTimeDelta)
 
 CGameObject* CLayer::Find_Object(const _tchar* strObjectTag)
 {
+	if (nullptr == &m_GameObjects)
+		return nullptr;
+
 	for (auto& iter : m_GameObjects)
 	{
 		if(true == iter->Compare_Name(strObjectTag))

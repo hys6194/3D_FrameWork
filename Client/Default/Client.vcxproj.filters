@@ -241,6 +241,18 @@
     <Filter Include="02.GameObjects\Instancing\Explosion">
       <UniqueIdentifier>{1f2a7a1f-7ce3-42c7-93d3-a4f657b353df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI">
+      <UniqueIdentifier>{280484d5-a887-489d-9ff4-bf3b177843cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\HP">
+      <UniqueIdentifier>{04836328-2acb-47a1-bae8-ee94ab854442}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\HP\HP_Frame">
+      <UniqueIdentifier>{5d83ac44-3dce-49d2-9a54-f626a6753326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\HP\HP_Bar">
+      <UniqueIdentifier>{09efded6-38cb-4689-aa87-d92d7594763d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -447,6 +459,12 @@
     <ClInclude Include="..\Public\Explosion.h">
       <Filter>02.GameObjects\Instancing\Explosion</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\HP_Bar.h">
+      <Filter>02.GameObjects\UI\HP\HP_Bar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HP_Frame.h">
+      <Filter>02.GameObjects\UI\HP\HP_Frame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -651,6 +669,12 @@
     <ClCompile Include="..\Private\Explosion.cpp">
       <Filter>02.GameObjects\Instancing\Explosion</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\HP_Frame.cpp">
+      <Filter>02.GameObjects\UI\HP\HP_Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HP_Bar.cpp">
+      <Filter>02.GameObjects\UI\HP\HP_Bar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">
@@ -680,6 +704,12 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosParticle.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosUI.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectUI.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

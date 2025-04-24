@@ -16,9 +16,6 @@ HRESULT CMolochAttack_180::Enter_State()
     Setting_PlayerInfo();
     Set_CurAnimation();
 
-    m_bAnimEnd = false;
-
-    // 여기에서 몬스터가 회전을 할텐데 회전 속도를 먼저 부여해야 할 듯 하다
     Update_MonsterTurnSpeed();
 
     m_bAttack = true;
@@ -32,6 +29,9 @@ void CMolochAttack_180::PriorityUpdate_State(_float fTimeDelta)
 {
     if (FAILED(Check_Dead(fTimeDelta)))
         return;
+
+    _vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
+    _bool bTurn = m_pMonster->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, vTargetPos);
 
     CCrystal::CRYSTAL_DESC Desc{};
     Desc.vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
@@ -61,7 +61,6 @@ void CMolochAttack_180::PriorityUpdate_State(_float fTimeDelta)
             _float fCount = 9.f;
             _float fOffset = 4.5f;
 
-            // 원뿔 형태로 만들어야 함
             if(22.f <= m_pModelCom->Get_CurAnimationTrackPosition() && !m_bSpawn)
             {
                 Desc.strModelTag = PRO_MODEL_MOLOCH_CRYSTAL_B;
@@ -82,6 +81,8 @@ void CMolochAttack_180::PriorityUpdate_State(_float fTimeDelta)
                 }
             }
 
+            //Set_RandomSound(3, TEXT("Moloch_atk_cluster_appear_"), SOUND_MOLOCH_CRYSTALSPAWN, 0.1f, false);
+
         }
         break;
         
@@ -89,21 +90,19 @@ void CMolochAttack_180::PriorityUpdate_State(_float fTimeDelta)
         {
             Regist_CollUpdate(22, 63);
             Secede_CollUpdate(22, 63);
-
-           
-
         }
         break;
     }
     
     // 해당 각도가 되었을때 멈춰야 함
-    if (!m_bTurned)
+    // 크리스탈 생성하면 멈추게 하자
+    if (!m_bSpawn)
     {
-        _bool bTurn = Update_MonsterLook(fTimeDelta);
-
-        if (bTurn)
-            m_bTurned = bTurn;
+        Update_MonsterLook(fTimeDelta);
     }
+
+    if (bTurn)
+        Update_MonsterTurnSpeed(0.f);
 
     if(m_bAnimEnd)
     {
@@ -120,8 +119,6 @@ void CMolochAttack_180::PriorityUpdate_State(_float fTimeDelta)
 void CMolochAttack_180::Update_State(_float fTimeDelta)
 {
     Update_Animation(fTimeDelta);
-
-    m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
 }
 
 void CMolochAttack_180::LateUpdate_State(_float fTimeDelta)
@@ -133,6 +130,10 @@ HRESULT CMolochAttack_180::Exit_State()
 {
     Set_PreAnimation();
     Secede_PartCollUpdate();
+
+    m_pGameInstance->Stop_Sound(SOUND_MOLOCH_CRYSTALSPAWN);
+    m_pGameInstance->Stop_Sound(SOUND_MOLOCH_180);
+    m_pGameInstance->Stop_Sound(SOUND_MOLOCH_180_VOICE);
 
     m_fElapseTime = 0.f;
     m_bAttack = false;
@@ -151,10 +152,13 @@ void CMolochAttack_180::Set_PreAnimation()
 
 void CMolochAttack_180::Update_Animation(_float fTimeDelta)
 {
-
     m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
 
-    m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));
+    if(m_iAnimIndex == CMoloch::MOLOCH_ATK_180_L)
+        m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)), -1);
+
+    else
+        m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)), -1);
 }
 
 void CMolochAttack_180::Set_CurAnimation()
@@ -162,17 +166,31 @@ void CMolochAttack_180::Set_CurAnimation()
     _bool bCheck = Check_PlayerLeft();
 
     if (bCheck)
+    {
         m_iAnimIndex = CMoloch::MOLOCH_ATK_180_L;
+        Set_Sound(TEXT("Moloch_atk_180"), SOUND_MOLOCH_180, 0.1f, false);
+        Set_RandomSound(8, TEXT("Moloch_Sword_"), SOUND_MOLOCH_180_VOICE, 0.1f, false);
+
+    }
 
     else
     {
         _uint iNum = m_pGameInstance->Draw_RandomNum(2);
 
         if (1 == iNum)
+        {
             m_iAnimIndex = CMoloch::MOLOCH_ATK_180_R;
-        else
+            Set_Sound(TEXT("Moloch_atk_180"), SOUND_MOLOCH_180, 0.1f, false);
+            Set_RandomSound(8, TEXT("Moloch_Sword_"), SOUND_MOLOCH_180_VOICE, 0.1f, false);
 
+        }
+        else
+        {
             m_iAnimIndex = CMoloch::MOLOCH_ATK_FULL_180_R;
+            Set_Sound(TEXT("Moloch_atk_full_180"), SOUND_MOLOCH_180, 0.1f, false);
+            Set_RandomSound(8, TEXT("Moloch_Sword_"), SOUND_MOLOCH_180_VOICE, 0.1f, false);
+
+        }
     }
 
     m_pModelCom->Set_AnimationIndex(m_iAnimIndex);

@@ -5,6 +5,7 @@
 #include "Body_FallenDog.h"
 #include "Test_Monster.h"
 #include "Moloch_Sword.h"
+//#include "Normal_Trail.h"
 #include "Body_Moloch.h"
 #include "Body_Player.h"
 #include "Camera_Free.h"
@@ -17,11 +18,13 @@
 #include "Fist_Left.h"
 #include "TP_Camera.h"
 #include "Gun_Right.h"
+#include "HP_Frame.h"
 #include "Gun_Left.h"
 #include "Crystal.h"
 #include "Terrain.h"
 #include "Attack.h"
 #include "Bullet.h"
+#include "HP_Bar.h"
 #include "Moloch.h"
 #include "Player.h"
 #include "Status.h"
@@ -108,6 +111,9 @@ HRESULT CLoader::Loading_Logo()
 	lstrcpy(m_szLoading, TEXT("텍스쳐를(을) 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Textures(), E_FAIL);
 
+	lstrcpy(m_szLoading, TEXT("버퍼를 로딩중입니다."));
+	FAILED_CHECK_RETURN(Loading_VIBuffers(), E_FAIL);
+
 	lstrcpy(m_szLoading, TEXT("모델를(을) 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Models(), E_FAIL);
 
@@ -130,6 +136,9 @@ HRESULT CLoader::Loading_Menu()
 
 	lstrcpy(m_szLoading, TEXT("텍스쳐를(을) 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Textures(), E_FAIL);
+
+	lstrcpy(m_szLoading, TEXT("버퍼를 로딩중입니다."));
+	FAILED_CHECK_RETURN(Loading_VIBuffers(), E_FAIL);
 
 	lstrcpy(m_szLoading, TEXT("모델를(을) 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Models(), E_FAIL);
@@ -154,6 +163,9 @@ HRESULT CLoader::Loading_GamePlay()
 	lstrcpy(m_szLoading, TEXT("텍스쳐를 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Textures(), E_FAIL);
 
+	lstrcpy(m_szLoading, TEXT("버퍼를 로딩중입니다."));
+	FAILED_CHECK_RETURN(Loading_VIBuffers(), E_FAIL);
+
 	lstrcpy(m_szLoading, TEXT("모델을 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Models(), E_FAIL);
 
@@ -168,6 +180,9 @@ HRESULT CLoader::Loading_GamePlay()
 
 	lstrcpy(m_szLoading, TEXT("네비게이션을 로딩중입니다."));
 	FAILED_CHECK_RETURN(Loading_Navigation(), E_FAIL);
+
+	lstrcpy(m_szLoading, TEXT("사운드를 로딩중입니다."));
+	FAILED_CHECK_RETURN(Loading_Sounds(), E_FAIL);
 
 	lstrcpy(m_szLoading, TEXT("로딩 완료."));
 
@@ -229,6 +244,46 @@ HRESULT CLoader::Loading_Textures()
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Snow"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Snow/Snow.png"), 1))))
 			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_DISSOLVE,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/DissolveTex/T_DissolveMask_A.dds")))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_PLAYER_HP_FRAME,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_style2_PowerMeterBase1SynergyBG.dds")))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_MONSTER_HP_FRAME,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_style2_HealthBase2.dds")))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_BOSS_HP_FRAME,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_enemyHealthFrame_Elite1.dds")))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_HP_BAR,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/HUD_UnitFrame_Sub_HealthMeterFill.dds")))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_UI_FRAME,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_HUD_GearSelectionBacking_New.dds")))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_POTION,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_Bottle_HealthA_64.dds")))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_GHOST_HOOK,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_Gear_GhostHook_128.dds")))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_TEX_PARTICLE_BLOOD,
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/UI_particle_circleSoftEdge1.dds")))))
+			return E_FAIL;
+
+		
+
+
 	}
 
 		break;
@@ -242,32 +297,15 @@ HRESULT CLoader::Loading_Models()
 {	switch (m_eNextLevelID)
 	{
 	case LEVEL_MENU:
-	{
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MENU, PRO_COM_VI_RECT,
-			CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-	}
 
 		break;
 	case LEVEL_LOGO:	
-	{
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_COM_VI_RECT,
-			CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-	}
 
 		break;
 	case LEVEL_GAMEPLAY:
 	{
 		// 지형 출력
 		/* For.Prototype_Component_VIBuffer_Terrain*/
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_TERRAIN,
-			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
-			return E_FAIL;
-
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_CUBE,
-			CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_FSM,
 			CFSM::Create(m_pDevice, m_pContext))))
@@ -281,33 +319,7 @@ HRESULT CLoader::Loading_Models()
 			CAttack::Create(m_pDevice, m_pContext)))) 
 			return E_FAIL;
 
-		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		SnowDesc{};
 
-		SnowDesc.iNumInstances = 3000;
-		SnowDesc.vCenter = _float3(65.f, 10.f, 65.f);
-		SnowDesc.vRange = _float3(129.f, 1.f, 129.f);
-		SnowDesc.vSpeed = _float2(2.f, 10.f);
-		SnowDesc.vLifeTime = _float2(1.f, 3.f);
-		SnowDesc.vSize = _float2(0.1f, 0.3f);
-
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Snow"),
-			CVIBuffer_Rect_Instancing::Create(m_pDevice, m_pContext, &SnowDesc))))
-			return E_FAIL;
-
-		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		ExploDesc{};
-
-		ExploDesc.iNumInstances = 300;
-		ExploDesc.vCenter = _float3(0.f, 0.f, 0.f);
-		ExploDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
-		ExploDesc.vSpeed = _float2(2.f, 10.f);
-		ExploDesc.vLifeTime = _float2(0.1f, 0.5f);
-		ExploDesc.vSize = _float2(0.1f, 0.3f);
-		ExploDesc.vPivot = _float3(0.f, -1.0f, 0.f);
-		ExploDesc.isLoop = true;
-
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Explosion"),
-			CVIBuffer_Point_Instancing::Create(m_pDevice, m_pContext, &ExploDesc))))
-			return E_FAIL;
 
 		_matrix		PreTransformMatrix = XMMatrixIdentity();
 
@@ -358,10 +370,10 @@ HRESULT CLoader::Loading_Models()
 		// 
 		//  새로운 논애니메이션 모델 저장용
 		//PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(-90.f));
-		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_MOLOCH_CRYSTAL_A,
+		//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_BULLET,
 		//	CModel::Create(m_pDevice, m_pContext, MODELTYPE::TYPE_NONANIM,
-		//		"../Bin/Resources/Models/NonAnimModel/Crystal/TremorCrystal_A.fbx",
-		//		"../Bin/DataFiles/Nonanim/AttackObject/TremorCrystal_A.bin",
+		//		"../Bin/Resources/Models/NonAnimModel/Bullet/Bullet.fbx",
+		//		"../Bin/DataFiles/Nonanim/AttackObject/Bullet.bin",
 		//		PreTransformMatrix))))
 		//	return E_FAIL;
 		//
@@ -422,6 +434,11 @@ HRESULT CLoader::Loading_Models()
 		PreTransformMatrix = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
 			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/PartObject/ForkLift.bin", PreTransformMatrix))))
+			return E_FAIL;
+
+		PreTransformMatrix = XMMatrixScaling(0.5f, 0.5f, 0.5f) * XMMatrixRotationZ(XMConvertToRadians(270.f));
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_MODEL_BULLET,
+			CModel::Create(m_pDevice, m_pContext, "../Bin/DataFiles/Nonanim/AttackObject/Bullet.bin", PreTransformMatrix))))
 			return E_FAIL;
 
 		PreTransformMatrix = XMMatrixScaling(0.0018f, 0.0018f, 0.0018f);
@@ -642,6 +659,10 @@ HRESULT CLoader::Loading_Shaders()
 		break;
 	case LEVEL_GAMEPLAY:	
 	{
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_SHADER_POS,
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::ElementDesc, VTXPOSTEX::iNumElements))))
+			return E_FAIL;
 
 		/* For.Prototype_Component_Shader_VtxNorTex */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_SHADER_NOR,
@@ -924,6 +945,20 @@ HRESULT CLoader::Loading_Prototype()
 			CExplosion::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_HP_FRAME,
+			CHP_Frame::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		
+		
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_HP_BAR,
+			CHP_Bar::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_OBJ_NORMAL_TRAIL,
+			CNormal_Trail::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		
 	}
 
 
@@ -973,6 +1008,100 @@ HRESULT CLoader::Loading_Navigation()
 			CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Navigation.dat")))))
 			return E_FAIL;
 	}
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_VIBuffers()
+{
+	switch (m_eNextLevelID)
+	{
+	case LEVEL_MENU:
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_COM_VI_RECT,
+			CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		break;
+	case LEVEL_LOGO:
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, PRO_COM_VI_RECT,
+			CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		break;
+	case LEVEL_GAMEPLAY:
+
+	{
+		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		SnowDesc{};
+
+		SnowDesc.iNumInstances = 3000;
+		SnowDesc.vCenter = _float3(65.f, 10.f, 65.f);
+		SnowDesc.vRange = _float3(129.f, 1.f, 129.f);
+		SnowDesc.vSpeed = _float2(2.f, 10.f);
+		SnowDesc.vLifeTime = _float2(1.f, 3.f);
+		SnowDesc.vSize = _float2(0.1f, 0.3f);
+		SnowDesc.isLoop = true;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Snow"),
+			CVIBuffer_Rect_Instancing::Create(m_pDevice, m_pContext, &SnowDesc))))
+			return E_FAIL;
+
+		CVIBuffer_Particle::INSTANCE_PARTICLE_DESC		ExploDesc{};
+
+		ExploDesc.iNumInstances = 300;
+		ExploDesc.vCenter = _float3(0.f, 0.f, 0.f);
+		ExploDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
+		ExploDesc.vSpeed = _float2(2.f, 10.f);
+		ExploDesc.vLifeTime = _float2(0.1f, 0.5f);
+		ExploDesc.vSize = _float2(0.1f, 0.3f);
+		ExploDesc.vPivot = _float3(0.f, -1.0f, 0.f);
+		ExploDesc.isLoop = true;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Particle_Explosion"),
+			CVIBuffer_Point_Instancing::Create(m_pDevice, m_pContext, &ExploDesc))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_TERRAIN,
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_CUBE,
+			CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, PRO_COM_VI_RECT,
+			CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+	}
+
+		break;
+	default:
+		break;
+	}
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_Sounds()
+{
+	switch (m_eNextLevelID)
+	{
+	case LEVEL_MENU:
+
+		break;
+	case LEVEL_LOGO:
+
+		break;
+	case LEVEL_GAMEPLAY:
+		FAILED_CHECK_RETURN(m_pGameInstance->Load_SoundFile(m_pGameInstance->WstrToStr(PATH_SOUND)), E_FAIL);
+
+
+		break;
+	default:
+		break;
+	}
+
+
 	return S_OK;
 }
 

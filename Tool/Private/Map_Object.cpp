@@ -55,7 +55,7 @@ void CMap_Object::Update(_float fTimeDelta)
 
 void CMap_Object::Late_Update(_float fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_BLEND, this);
+    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
 HRESULT CMap_Object::Render()
@@ -115,15 +115,6 @@ HRESULT CMap_Object::Bind_SR()
     FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
-
-    const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
-    NULL_CHECK_RETURN(pLightDesc, E_FAIL);
-
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)), E_FAIL);
 
     return S_OK;
 }

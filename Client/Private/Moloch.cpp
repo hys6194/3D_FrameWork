@@ -38,37 +38,29 @@ HRESULT CMoloch::Initialize_Prototype()
 
 HRESULT CMoloch::Initialize(void* pArg)
 {
-    MONSTER_DESC Desc{};
+    //MONSTER_DESC Desc{};
+    //
+    //Desc.bBoss = true;
+    //Desc.bWave = false;
+    //Desc.fSpeedPerSec = 7.5f;
+    //Desc.fRotationPerSec = XMConvertToRadians(90.f);
+    //Desc.iState = STATE_IDLE;
+    //Desc.strMonsterName = TEXT("_Moloch");
+    //m_iState = Desc.iState;
+    //
+    //m_bIsBoss = Desc.bBoss;
+    //m_fAttackDistance = 12.f;
+    //m_fDetectDistance = 18.f;
+    //m_fAttackCoolTime = 1.f;
+    //m_fHitPersent = 0.5f;
 
-    Desc.bBoss = true;
-    Desc.bWave = false;
-    Desc.fSpeedPerSec = 7.5f;
-    Desc.fRotationPerSec = XMConvertToRadians(90.f);
-    Desc.iState = STATE_IDLE;
-    Desc.strMonsterName = TEXT("_Moloch");
-    m_iState = Desc.iState;
-
-    m_bIsBoss = Desc.bBoss;
-
-    m_fAttackDistance = 12.f;
-    m_fDetectDistance = 18.f;
-    m_fAttackCoolTime = 1.f;
-    m_fHitPersent = 0.5f;
-
-    FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
+    FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
 
-
-    //m_pTransformCom->SetUp_Scaled(1.85f, 1.85f, 1.85f);
-
-    // 수정할 필요가 있어보임
     m_pTransformCom->Set_State(CTransform::STATE_POS,
-        XMVectorSet(16.459108f, 16.321875f, 146.170197f, 1.000000f));
-
-    //m_pTransformCom->Set_State(CTransform::STATE_POS,
-    //    XMVectorSet(0,0,0, 1.000000f));
+        XMVectorSet(16.054913f, 15.933666f, 155.276825f, 1.000000f));
 
     m_pFSMCom->Change_State(m_iState);
 
@@ -78,28 +70,11 @@ HRESULT CMoloch::Initialize(void* pArg)
 void CMoloch::Priority_Update(_float fTimeDelta)
 {
      __super::Priority_Update(fTimeDelta);
-    
-    //if (m_pGameInstance->Key_Down(DIK_1))
-    //    m_iState = STATE_HIT;
-    //
-    if (m_pGameInstance->Key_Down(DIK_2))
-     m_iState = STATE_IDLE;
-    
-    if (m_pGameInstance->Key_Down(DIK_3))
-     m_iState = STATE_DEAD;
-    //
-    //if (m_pGameInstance->Key_Down(DIK_4))
-    //    m_iState = STATE_SEARCH;  
-    //
-    //if (m_pGameInstance->Key_Down(DIK_5))
-    //    m_iState = STATE_AVOID;
-    //
-    //if (m_pGameInstance->Key_Down(DIK_6))
-    //     m_iState = STATE_ATTACK;
-    //
-    //if (m_pGameInstance->Key_Down(DIK_7))
-    //    m_iState = STATE_TRACE;
-    
+
+    if (m_bHit || m_iState != CMonster::STATE_IDLE)
+    {
+        m_bIsFight = true;
+    }
     
 }
 
@@ -159,16 +134,16 @@ HRESULT CMoloch::Ready_States()
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
     
     // 여기에서 다음과 같은 방식으로 공격 패턴에 관한 클래스를 계속 등록해줘야 함
-    pState = CMolochAttack_Swipe::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIPE_01, 12.f);
-    m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_SWIPE_01, static_cast<CAttack_Base*>(pState));
-
-    pState = CMolochAttack_Swing::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_SWING_01, 12.f);
+    pState = CMolochAttack_Swing::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_SWING_01, 3.f);
     m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_FULL_SWING_01, static_cast<CAttack_Base*>(pState));
 
-    pState = CMolochAttack_Geyser::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_GEYSER_START, 90.f);
+    pState = CMolochAttack_Swipe::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_SWIPE_01, 3.f);
+    m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_SWIPE_01, static_cast<CAttack_Base*>(pState));
+
+    pState = CMolochAttack_Geyser::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_GEYSER_START, 80.f);
     m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_FULL_GEYSER_START, static_cast<CAttack_Base*>(pState));
 
-    pState = CMolochAttack_Dash::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_DASH, 45.f);
+    pState = CMolochAttack_Dash::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_FULL_DASH, 30.f);
     m_pAttackCom->Regist_AttackPattern(MOLOCH_ATK_FULL_DASH, static_cast<CAttack_Base*>(pState));
 
     pState = CMolochAttack_180::Create(this, m_vecParts[PART_BODY], MOLOCH_ATK_180_L, 1.f);
@@ -183,7 +158,7 @@ HRESULT CMoloch::Ready_States()
 HRESULT CMoloch::Ready_Components()
 {
     CNavigation::NAVIGATION_DESC		NaviDesc{};
-    NaviDesc.iCellIndex = 446;
+    NaviDesc.iCellIndex = 278;
     //NaviDesc.iCellIndex = 0;
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_NAVI,
@@ -207,7 +182,7 @@ HRESULT CMoloch::Ready_Components()
         reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_AABB]), COM_COLL_AABB, &ColliderDesc), E_FAIL);
 
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
-    SphereDesc.fRadius = 8.f;
+    SphereDesc.fRadius = 10.f;
     SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
     SphereDesc.strCollTag = Get_Name() + TEXT("_Body_Detect");
     SphereDesc.iOption = COLL_OPT::OP_DETECT;
@@ -218,14 +193,20 @@ HRESULT CMoloch::Ready_Components()
         reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_SPHERE]), COM_COLL_SPHERE, &SphereDesc), E_FAIL);
     
     CStatus::STATUS_DESC StatusDesc{};
-    StatusDesc.iAttack = 2;
-    StatusDesc.iHP = 500;
+    StatusDesc.iAttack = 5;
+    StatusDesc.iHP = 1000;
+    //StatusDesc.iHP = 1;
     StatusDesc.pOwner = this;
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_STATUS,
         reinterpret_cast<CComponent**>(&m_pStatusCom), COM_STATUS, &StatusDesc), E_FAIL);
 
     return S_OK;
+}
+
+HRESULT CMoloch::Ready_UI_HP()
+{
+    return E_NOTIMPL;
 }
 
 CMoloch* CMoloch::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
