@@ -15,6 +15,7 @@
 #include "Target_Manager.h"
 #include "CollisionManager.h"
 #include "Picking.h"
+#include "Sound_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -67,6 +68,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	m_pPicking = CPicking::Create(*ppDevice, *ppContext, EngineDesc.hWnd);
 	NULL_CHECK_RETURN(m_pPicking, E_FAIL);
+
+	m_pSound_Manager = CSound_Manager::Create();
+	NULL_CHECK_RETURN(m_pSound_Manager, E_FAIL);
 	
 	return S_OK;
 }
@@ -532,9 +536,43 @@ _bool CGameInstance::Picking(_float3* pOut)
 {
 	return m_pPicking->Picking(pOut);
 }
+
 #endif
 
 #pragma endregion
+
+#pragma region SOUND_MANAGER
+
+void CGameInstance::Play_Sound(const wstring& pSoundKey, _uint iSoundIndex, float fVolume, bool bLoop)
+{
+	return	m_pSound_Manager->Play_Sound(pSoundKey, iSoundIndex, fVolume);
+}
+void CGameInstance::Play_BGM(const wstring& pSoundKey, _uint iSoundIndex, float fVolume)
+{
+	return	m_pSound_Manager->Play_BGM(pSoundKey, iSoundIndex, fVolume);
+}
+void CGameInstance::Stop_Sound(_uint iSoundIndex)
+{
+	return	m_pSound_Manager->Stop_Sound(iSoundIndex);
+}
+void CGameInstance::Stop_All()
+{
+	return	m_pSound_Manager->Stop_All();
+}
+void CGameInstance::Set_ChannelVolume(_uint iSoundIndex, float fVolume)
+{
+	return	m_pSound_Manager->Set_ChannelVolume(iSoundIndex, fVolume);
+}
+void CGameInstance::Set_BGMVolume(_uint iSoundIndex, _float fVolume)
+{
+	 return	m_pSound_Manager->Set_BGMVolume(iSoundIndex, fVolume);
+}
+void CGameInstance::Set_AllEffectVolume(_float fVolume)
+{
+	return m_pSound_Manager->Set_AllEffectVolume(fVolume);
+}
+
+#pragma endregion SOUND_MANAGER
 
 void CGameInstance::Release_Engine()
 {
@@ -551,6 +589,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pPicking);
 	Safe_Release(m_pImGui_Manager);
+	Safe_Release(m_pSound_Manager);
 	Safe_Release(m_pGraphic_Device);
 
 

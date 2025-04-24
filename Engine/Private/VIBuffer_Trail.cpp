@@ -120,10 +120,17 @@ HRESULT CVIBuffer_Trail::Trail(_float fTimeDelta, void* pArg)
 
 	m_fTotalTime += fTimeDelta;
 
-	pVertices[0].vPosition.y = -pDesc->fPos.y / pDesc->fTime.y;
+	//totalÅ¸ÀÓÀÌ 
+	if (pDesc->fTime.x <= m_fTotalTime)
+	{
+		pVertices[1].vPosition.y = m_fPrePos1.y;
+		pVertices[2].vPosition.y = m_fPrePos2.y;
+	}
+
+	pVertices[0].vPosition.y = pDesc->fPos.y - pDesc->fTime.y;
 	//pVertices[1].vPosition.y = 
 	//pVertices[2].vPosition.y =
-	pVertices[3].vPosition.y = pDesc->fPos.y / pDesc->fTime.y;
+	pVertices[3].vPosition.y = pDesc->fPos.y + pDesc->fTime.y;
 
 
 

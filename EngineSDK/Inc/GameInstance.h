@@ -1,11 +1,10 @@
 #pragma once
 
+#include "Engine_Defines.h"
 #include "Renderer.h"
 #include "PipeLine.h"
 #include "Prototype.h"
 #include "CollisionManager.h"
-
-
 
 /* GameInstance */
 /* 엔진이 제공해주는 대부분의 기능을 모아둔다. */
@@ -153,7 +152,15 @@ public:
 	_bool							Picking(_float3* pOut);
 #pragma endregion
 
+#pragma region SOUND_MANAGER
+	void Play_Sound(const wstring& pSoundKey, _uint iSoundIndex, float fVolume, bool bLoop = true);
+	void Play_BGM(const wstring& pSoundKey, _uint iSoundIndex, float fVolume);
+	void Stop_Sound(_uint iSoundIndex);
+	void Stop_All();
+	void Set_ChannelVolume(_uint iSoundIndex, float fVolume);
 
+	void Set_BGMVolume(_uint iSoundIndex, _float fVolume);
+	void Set_AllEffectVolume(_float fVolume);
 #pragma endregion
 
 
@@ -172,6 +179,7 @@ private:
 	class CCollision_Manager*		m_pCollision_Manager		= { nullptr };
 	class CTarget_Manager*			m_pTarget_Manager			= { nullptr };
 	class CPicking*					m_pPicking					= { nullptr };
+	class CSound_Manager*			m_pSound_Manager			= { nullptr };
 
 public:	
 	virtual void					Free() override;

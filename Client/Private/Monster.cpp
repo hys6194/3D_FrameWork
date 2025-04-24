@@ -112,7 +112,6 @@ void CMonster::Update(_float fTimeDelta)
 		if (nullptr == m_pColliderCom[i])
 			continue;
 
-
 		m_pColliderCom[i]->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 	}
 #endif

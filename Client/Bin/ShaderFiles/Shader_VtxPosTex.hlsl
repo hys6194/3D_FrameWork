@@ -34,7 +34,7 @@ struct PS_IN
 struct PS_OUT
 {
     //float4 vColor : COLOR;
-    float4 vColor : SV_TARGET0;
+    float4 vDiffuse : SV_TARGET0;
     // 렌더타겟 뷰를 선언한 녀석이 있다, 렌더타겟은 
     //그래픽 디바이스 초기화 할 때, 백 버퍼를 생성해서 이를 통해 renderer를 그린다
     //따라서 SV_TARGET이 옳다
@@ -78,7 +78,13 @@ PS_OUT PS_MAIN(PS_IN In)
     
     // sampling 할 때 텍스쳐를 가로 세로로 얼만큼 할 것인지 정하고 위에서 정한 sampling 옵션으로 픽셀의 값 결정
     //Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
-    Out.vColor = g_Texture.Sample(LinearSampler, In.vTexcoord);
+    
+    float4 vDiffuse = g_Texture.Sample(LinearSampler, In.vTexcoord);
+    
+    if (vDiffuse.a < 0.1f)
+        discard;
+        
+    Out.vDiffuse = vDiffuse;
     
     //Out.vColor = In.vTexcoord.y;
     

@@ -111,8 +111,13 @@ HRESULT CBody_Player::Render()
 
 HRESULT CBody_Player::Ready_Components()
 {
+    CModel::MODEL_DESC Desc{};
+
+    Desc.strRootBoneTag = TEXT("Bone_Strife_Root");
+    Desc.fAngles = _float3(90.f, 0.f, 0.f);
+
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_STRIFE,
-        reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+        reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model"), &Desc), E_FAIL);
 
      FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
         reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);

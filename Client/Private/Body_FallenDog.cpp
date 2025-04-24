@@ -55,16 +55,22 @@ HRESULT CBody_FallenDog::Render()
 
 HRESULT CBody_FallenDog::Ready_Component()
 {
+	CModel::MODEL_DESC Desc{};
+
+	Desc.strRootBoneTag = TEXT("Bone_Root_FD");
+	Desc.fAngles = _float3(0.f, 0.f, 90.f);
+
+
 	_uint iNum = m_pGameInstance->Draw_RandomNum(2);
 	if(1 == iNum)
 	{
 		FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_DOG,
-			reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+			reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model"), &Desc), E_FAIL);
 	}
 	else
 	{
 		FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_DOG_LAVA,
-			reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+			reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model"), &Desc), E_FAIL);
 	}
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,

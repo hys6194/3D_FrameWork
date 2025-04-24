@@ -348,6 +348,14 @@ HRESULT CModel::Initialize_Prototype(MODELTYPE eType, const _char* pModelFilePat
 
 HRESULT CModel::Initialize(void* pArg)
 {
+    MODEL_DESC* pDesc = static_cast<MODEL_DESC*>(pArg);
+
+    if (nullptr == pDesc)
+        return S_OK;
+
+    m_strRootName = pDesc->strRootBoneTag;
+    m_fAngles = pDesc->fAngles;
+
     return S_OK;
 }
 
@@ -390,7 +398,12 @@ _bool CModel::Play_Animation(_float fTimeDelta, CGameObject* pObject)
         bIsEnd = m_Animations[m_iCurrentAnimationIndex]->Update_TransformationMatrix(m_vecBone, fTimeDelta, m_bIsLoop, &m_vecCurrentTrackPosition[m_iCurrentAnimationIndex], m_vecKeyFrameIndex[m_iCurrentAnimationIndex]);
         for (auto& pBone : m_vecBone)
         {
-            pBone->Update_Combine_RootMatrix(m_vecBone, &m_PreTransformMatrix, m_iCurKeyFrameIndex, pObject);
+            string dest = Convert_wstringTo_string(m_strRootName);
+            const char* pChar = dest.c_str();
+
+            _bool bCheck = pBone->Compare_Name(pChar);
+
+            pBone->Update_Combine_RootMatrix(m_vecBone, &m_PreTransformMatrix, m_iCurKeyFrameIndex, pObject/*, bCheck, m_fAngles*/);
         }
     }
 
@@ -518,6 +531,21 @@ HRESULT CModel::Ready_Animations()
     }
 
     return S_OK;
+}
+
+string CModel::Convert_wstringTo_string(_wstring strTag)
+{
+    string PF{};
+
+    int requiredSize = WideCharToMultiByte(CP_ACP, 0, m_strRootName.c_str(), -1, nullptr, 0, nullptr, nullptr);
+    if (requiredSize == 0) 
+        return PF;
+
+    string strDest{};
+    strDest.resize(requiredSize); // 널 문자 포함
+    WideCharToMultiByte(CP_ACP, 0, m_strRootName.c_str(), -1, &strDest[0], requiredSize, nullptr, nullptr);
+
+    return strDest;
 }
 
 CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)

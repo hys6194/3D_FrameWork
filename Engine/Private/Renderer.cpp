@@ -277,8 +277,8 @@ HRESULT CRenderer::Render_Debug()
     FAILED_CHECK_RETURN(m_pShader->Bind_Matrix("g_ViewMatrix", &m_matView), E_FAIL);
     FAILED_CHECK_RETURN(m_pShader->Bind_Matrix("g_ProjMatrix", &m_matProj), E_FAIL);
 
-    FAILED_CHECK_RETURN(m_pGameInstance->Render_RT_Debug(MRT_GAMEOBJ, m_pShader, m_pVIBuffer), E_FAIL);
-    FAILED_CHECK_RETURN(m_pGameInstance->Render_RT_Debug(MRT_LIGHT, m_pShader, m_pVIBuffer), E_FAIL);
+    //FAILED_CHECK_RETURN(m_pGameInstance->Render_RT_Debug(MRT_GAMEOBJ, m_pShader, m_pVIBuffer), E_FAIL);
+    //FAILED_CHECK_RETURN(m_pGameInstance->Render_RT_Debug(MRT_LIGHT, m_pShader, m_pVIBuffer), E_FAIL);
 
     return S_OK;
 }

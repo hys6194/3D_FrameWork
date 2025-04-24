@@ -57,22 +57,11 @@ void CHP_Bar::Update(_float fTimeDelta)
 
 void CHP_Bar::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_PRIORITY, this);
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_UI, this);
 }
 
 HRESULT CHP_Bar::Render()
 {
-	//_float4x4			f4Matrix;
-	//
-	//// 항등행렬로 만들기
- 	//XMStoreFloat4x4(&f4Matrix, XMMatrixIdentity());
-	//
-	//m_pShaderCom->Bind_Matrix(&f4Matrix, "g_WorldMatrix");
-	//m_pShaderCom->Bind_Matrix(&f4Matrix, "g_ViewMatrix");
-	//m_pShaderCom->Bind_Matrix(&f4Matrix, "g_ProjMatrix");
-	//
-  	//m_pTextureCom->Bind_SR(m_pShaderCom, "g_Texture", 0);
-
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
@@ -84,7 +73,6 @@ HRESULT CHP_Bar::Render()
 
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
-
 
     return S_OK;
 }
@@ -106,14 +94,17 @@ HRESULT CHP_Bar::Ready_Component()
 		reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader"))))
 		return E_FAIL;
 
+	return S_OK;
 }
 
 HRESULT CHP_Bar::Bind_SR()
 {
 	if (FAILED(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom)))
 		return E_FAIL;
+
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;
+
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 

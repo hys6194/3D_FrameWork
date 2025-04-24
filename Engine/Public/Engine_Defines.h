@@ -25,6 +25,11 @@
 #include "assimp_Old/Importer.hpp"
 #include "assimp_Old/postprocess.h"
 
+#include <io.h>
+
+#include "../../EngineSDK/Inc/fmod/fmod.h"
+#include "../../EngineSDK/Inc/fmod/fmod.hpp"
+
 using namespace DirectX;
 
 #include <vector>
@@ -35,10 +40,11 @@ using namespace DirectX;
 #include <string>
 #include <unordered_map>
 #include <ctime>
-#include <io.h>
-#include <iostream>
 #include <fstream>
+#include <sstream>
+#include <iostream>
 #include <random>
+#include <filesystem>
 using namespace std;
 
 #include "tchar.h"

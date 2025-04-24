@@ -254,30 +254,21 @@ HRESULT CPlayer::Ready_States()
 
 HRESULT CPlayer::Ready_UI_HP()
 {
-	//_matrix matHand = XMMatrixMultiply(XMLoadFloat4x4(m_pHandMatrix), XMLoadFloat4x4(m_pParentMatrix));
-	//CBullet::BULLET_DESC Desc{};
-	//Desc.fSpeedPerSec = 1.f;
-	//lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Player_Bullet "));
-	//
-	//
-	//XMStoreFloat4(&Desc.fLook, m_pOwner->Get_Transform()->Get_State(CTransform::STATE_LOOK));
-	//XMStoreFloat4x4(&Desc.f4Hand, matHand);
-
-	//CHP_Frame::HPFRAME_DESC FrameDesc{};
-	//FrameDesc.fX = 0;
-	//FrameDesc.fY = 0;
-	//FrameDesc.fSizeX = 10;
-	//FrameDesc.fSizeY = 10;
-	//FrameDesc.strFrameTag = PRO_TEX_PLAYER_HP_FRAME;
-	//
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_FRAME,
-	//	LEVEL_GAMEPLAY, TEXT("GameObject_Player_Bullet "), &FrameDesc), E_FAIL);
-	//
-	//CHP_Bar::UIOBJECT_DESC BarDesc{};
-	//BarDesc.pOwner = this;
-	//
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_BAR,
-	//	LEVEL_GAMEPLAY, TEXT("GameObject_Player_Bullet "), &BarDesc), E_FAIL);
+	CHP_Frame::HPFRAME_DESC FrameDesc{};
+	FrameDesc.fX = 100;
+	FrameDesc.fY = 100;
+	FrameDesc.fSizeX = 150;
+	FrameDesc.fSizeY = 50;
+	FrameDesc.strFrameTag = PRO_TEX_PLAYER_HP_FRAME;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_FRAME,
+		LEVEL_GAMEPLAY, TEXT("GameObject_Player_HP_Frame "), &FrameDesc), E_FAIL);
+	
+	CHP_Bar::UIOBJECT_DESC BarDesc{};
+	BarDesc.pOwner = this;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_BAR,
+		LEVEL_GAMEPLAY, TEXT("GameObject_Player_HP_Bar "), &BarDesc), E_FAIL);
 
 	return S_OK;
 }
