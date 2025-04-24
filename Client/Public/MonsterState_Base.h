@@ -48,6 +48,14 @@ public:
 	void									Update_Animation(_float fTimeDelta)		override;
 	void									Set_CurAnimation()						= 0;
 
+public:
+	void									Set_AnimSound(_float2 fKeyFrames, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop = true);
+	void									Set_RandomAnimSound(_float2 fKeyFrames, _uint iRandomNum, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop = true);
+
+	void									Set_Sound(const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop = true);
+	void									Set_RandomSound(_uint iRandomNum, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop = true);
+
+
 protected:
 	_vector									Calculate_MonsterDir(_vector vTargetPos);
 	_bool									Update_MonsterLook(_float fTimeDelta);

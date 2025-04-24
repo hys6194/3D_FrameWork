@@ -19,6 +19,9 @@ HRESULT CDogAttack_Slash::Enter_State()
     m_bAttack = true;
     m_pMonster->Set_Attack(m_bAttack);
 
+    Set_RandomSound(7, TEXT("Fallendog_atk_slash_"), SOUND_DOG_SLASH, 0.05f, false);
+    Set_RandomSound(6, TEXT("Fallendog_atk_slash_vo_"), SOUND_DOG_SLASH_VOICE, 0.05f, false);
+
     return S_OK;
 }
 
@@ -76,6 +79,9 @@ HRESULT CDogAttack_Slash::Exit_State()
 {
     Set_PreAnimation();
     Secede_PartCollUpdate();
+
+    m_pGameInstance->Stop_Sound(SOUND_DOG_SLASH);
+    m_pGameInstance->Stop_Sound(SOUND_DOG_SLASH_VOICE);
 
     m_fElapseTime = 0.f;
     m_bAttack = false;
@@ -146,7 +152,7 @@ _bool CDogAttack_Slash::Check_Colls()
     _bool bColl = static_cast<CCollider*>(m_pMonster->Get_Component(COM_COLL_SPHERE))->Is_Coll();
     _bool bColl2 = static_cast<CCollider*>(m_pPlayer->Get_Component(COM_COLL_SPHERE))->Is_Coll();
 
-    if (bColl && bColl2)
+    if (!bColl && !bColl2)
         return true;
 
     return false;

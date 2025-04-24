@@ -19,6 +19,10 @@ HRESULT CGhoulAttack_Flurry::Enter_State()
     m_bAttack = true;
     m_pMonster->Set_Attack(m_bAttack);
 
+
+    Set_RandomSound(3, TEXT("Ghoul_atk_flurry_"), SOUND_GHOUL_FLURRY, 0.05f, false);
+    Set_RandomSound(3, TEXT("Ghoul_atk_flurry_vo_"), SOUND_GHOUL_FLURRY_VOICE, 0.05f, false);
+
     return S_OK;
 }
 
@@ -74,6 +78,9 @@ HRESULT CGhoulAttack_Flurry::Exit_State()
 {
     Set_PreAnimation();
     Secede_PartCollUpdate();
+
+    m_pGameInstance->Stop_Sound(SOUND_GHOUL_FLURRY);
+    m_pGameInstance->Stop_Sound(SOUND_GHOUL_FLURRY_VOICE);
 
     m_fElapseTime = 0.f;
     m_bAttack = false;

@@ -5,6 +5,7 @@
 #include "Map_Object.h"
 
 #include "Crystal.h"
+#include "Moloch.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel { pDevice , pContext }
@@ -43,18 +44,28 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, TEXT("현재 레벨 : 게임플레이 레벨"));
 
-	if (m_pGameInstance->Key_Down(DIK_F1))
-		m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
-			LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+	//if (m_pGameInstance->Key_Down(DIK_F1))
+	//	m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+	//		LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+	//
+	//if (m_pGameInstance->Key_Down(DIK_F2))
+	//	m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+	//		LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+	//
+	//if (m_pGameInstance->Key_Down(DIK_F8))
+	//	m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
+	//		LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
 
-	if (m_pGameInstance->Key_Down(DIK_F2))
-		m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
-			LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
-	
-	if (m_pGameInstance->Key_Down(DIK_F8))
-		m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
-			LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+	CMoloch* pMoloch = static_cast<CMoloch*>(m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY,
+		TEXT("Layer_Monster"),
+		TEXT("GameObject_Monster_Moloch")));
 
+	if (nullptr != pMoloch && pMoloch->Is_Fight() && !m_bCheck)
+	{
+		m_bCheck = true;
+		m_pGameInstance->Stop_Sound(SOUND_BGM);
+		m_pGameInstance->Play_BGM(TEXT("Level01_hollowlord"), SOUND_BGM, 0.4f);
+	}
 
 }
 
@@ -117,24 +128,69 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 {
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MONSTER,
-	//	LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
+	// Moloch
+	CMonster::MONSTER_DESC Desc{};
+	Desc.bBoss = true;
+	Desc.bWave = false;
+	Desc.fSpeedPerSec = 7.5f;
+	Desc.fRotationPerSec = XMConvertToRadians(90.f);
+	Desc.iState = CMonster::STATE_IDLE;
+	Desc.strMonsterName = TEXT("_Moloch");
+	Desc.fDetectDistance = 18.f;
+	Desc.fAttackCoolTime = 1.f;
+	Desc.fAttackDistance = 12.f;
+	Desc.fHitPersent = 0.5f;
 
-	// 나중에 여기에서 Index를 추가하는 방식으로 구분을 하던가 해
-	for (size_t i = 0; i < 2; i++)
-	{
-		//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
-		//	LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
-	}
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
 
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
-	//	LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
+	//ghoul
+	Desc.bBoss = false;
+	Desc.bWave = false;
+	Desc.fSpeedPerSec = 10.f;
+	Desc.fRotationPerSec = XMConvertToRadians(90.f);
+	Desc.iState = CMonster::STATE_IDLE;
+	Desc.strMonsterName = TEXT("_Ghoul");
+	Desc.fDetectDistance = 15.f;
+	Desc.fAttackCoolTime = 3.f;
+	Desc.fAttackDistance = 4.f;
+	Desc.fHitPersent = 15.f;
 
+	//Desc.vPos = 
 
-	// 테스트 몬스터
-	// 
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TEST_MONSTER,
-	//	LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	//
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	//
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	//
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	//
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+
+	// FallenDog
+	Desc.bBoss = false;
+	Desc.bWave = false;
+	Desc.fSpeedPerSec = 10.f;
+	Desc.fRotationPerSec = XMConvertToRadians(90.f);
+	Desc.iState = CMonster::STATE_IDLE;
+	Desc.strMonsterName = TEXT("_Fallen_Dog");
+	Desc.fDetectDistance = 15.f;
+	Desc.fAttackCoolTime = 3.f;
+	Desc.fAttackDistance = 4.f;
+	Desc.fHitPersent = 15.f;
+
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+
 
 	return S_OK;
 }

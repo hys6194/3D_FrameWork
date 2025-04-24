@@ -38,22 +38,9 @@ HRESULT CFallen_Dog::Initialize_Prototype()
 
 HRESULT CFallen_Dog::Initialize(void* pArg)
 {
-    MONSTER_DESC Desc{};
+    MONSTER_DESC* pMonsterDesc = static_cast<MONSTER_DESC*>(pArg);
 
-    Desc.bBoss = false;
-    Desc.bWave = false;
-    Desc.fSpeedPerSec = 10.f;
-    Desc.fRotationPerSec = XMConvertToRadians(90.f);
-    Desc.iState = STATE_IDLE;
-    Desc.strMonsterName = TEXT("_Fallen_Dog");
-    m_iState = Desc.iState;
-
-    m_fDetectDistance = 15.f;
-    m_fAttackDistance = 4.f;
-    m_fHitPersent = 15.f;
-    m_fAttackCoolTime = 3.f;
-
-    FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
+    FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
@@ -62,6 +49,8 @@ HRESULT CFallen_Dog::Initialize(void* pArg)
     m_pTransformCom->Set_State(CTransform::STATE_POS,
         XMVectorSet(m_pGameInstance->Random(0.f, 10.f), 2.f, m_pGameInstance->Random(0.f, 10.f), 1.f));
 
+
+    //m_pTransformCom->Set_State(CTransform::STATE_POS, pMonsterDesc->vPos);
     m_pFSMCom->Change_State(m_iState);
 
     return S_OK;

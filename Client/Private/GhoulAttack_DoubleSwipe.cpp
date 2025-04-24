@@ -19,6 +19,10 @@ HRESULT CGhoulAttack_DoubleSwipe::Enter_State()
     m_bAttack = true;
     m_pMonster->Set_Attack(m_bAttack);
 
+
+    Set_RandomSound(3, TEXT("Ghoul_atk_doubleswipe_"), SOUND_GHOUL_DOUBLELEAF, 0.05f, false);
+    Set_RandomSound(3, TEXT("Ghoul_atk_doubleswipe_vo"), SOUND_GHOUL_DOUBLELEAF_VOICE, 0.05f, false);
+
     return S_OK;
 }
 
@@ -77,6 +81,9 @@ HRESULT CGhoulAttack_DoubleSwipe::Exit_State()
 {
     Set_PreAnimation();
     Secede_PartCollUpdate();
+
+    m_pGameInstance->Stop_Sound(SOUND_GHOUL_DOUBLELEAF);
+    m_pGameInstance->Stop_Sound(SOUND_GHOUL_DOUBLELEAF_VOICE);
 
     m_fElapseTime = 0.f;
     m_bAttack = false;

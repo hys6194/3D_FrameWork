@@ -48,6 +48,9 @@ public:
     };
 
 public:
+    _bool                                   Is_Fight() { return m_bIsFight; }
+
+public:
 	virtual HRESULT							Initialize_Prototype() override;
 	virtual HRESULT							Initialize(void* pArg) override;
 	virtual void							Priority_Update(_float fTimeDelta) override;
@@ -60,6 +63,9 @@ public:
 	virtual HRESULT							Ready_PartObjects();
     virtual HRESULT							Ready_Components();
     virtual HRESULT							Ready_UI_HP() override;
+
+private:
+    _bool                                   m_bIsFight = false;
 
 public:
 	HRESULT									Ready_States();

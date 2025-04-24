@@ -66,6 +66,17 @@ void CStrifeState_Shoot::Set_PreAnimation()
 	m_pModelCom->Set_PreAnimation(PLAYER_ANIMLIST::AIM_IDLE);
 }
 
+void CStrifeState_Shoot::SetUp_WalkSound()
+{
+	if (9 < m_pModelCom->Get_CurKeyFrameIndex() ||
+		11 > m_pModelCom->Get_CurKeyFrameIndex())
+	{
+		_uint iNum = m_pGameInstance->Draw_RandomNum(14);
+		wstring strSoundName = TEXT("Strife_foot_") + to_wstring(iNum);
+		m_pGameInstance->Play_Sound(strSoundName, SOUND_PLAYER_MOVE, 0.1f, true);
+	}
+}
+
 void CStrifeState_Shoot::Update_Animation(_float fTimeDelta)
 {
 	if (m_pModelCom->Get_Interpolate())
@@ -83,47 +94,54 @@ void CStrifeState_Shoot::Set_CurAnimation()
 
 void CStrifeState_Shoot::Player_ShootMove(_float fTimeDelta)
 {
-	if (9 < m_pModelCom->Get_CurKeyFrameIndex() ||
-		11 > m_pModelCom->Get_CurKeyFrameIndex())
-	{
-		_uint iNum = m_pGameInstance->Draw_RandomNum(14);
-		wstring strSoundName = TEXT("Strife_foot_") + to_wstring(iNum);
-		m_pGameInstance->Play_Sound(strSoundName, SOUND_PLAYER_MOVE, 0.1f, true);
-	}
-
     switch (m_iKeyState)
     {
 	case CPlayer::KEY_LEFT | CPlayer::KEY_UP | CPlayer::KEY_LB:
 		m_pOwner->Get_Transform()->Move_Left_Up(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-		break;
+		SetUp_WalkSound();
+
+			break;
 
 	case CPlayer::KEY_RIGHT | CPlayer::KEY_DOWN | CPlayer::KEY_LB:
 		m_pOwner->Get_Transform()->Move_Right_Down(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-		break;
+		SetUp_WalkSound();
+
+			break;
 
 	case CPlayer::KEY_LEFT | CPlayer::KEY_DOWN | CPlayer::KEY_LB:
 		m_pOwner->Get_Transform()->Move_Left_Down(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-		break;
+		SetUp_WalkSound();
+			break;
 
 	case CPlayer::KEY_RIGHT | CPlayer::KEY_UP | CPlayer::KEY_LB:
 		m_pOwner->Get_Transform()->Move_Right_Up(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+		SetUp_WalkSound();
+
+			break;
+
+	case CPlayer::KEY_DOWN | CPlayer::KEY_LB:
+		m_pOwner->Get_Transform()->Move_Backward(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+		SetUp_WalkSound();
+
+			break;
+
+	case CPlayer::KEY_LEFT | CPlayer::KEY_LB:
+		m_pOwner->Get_Transform()->Move_Left(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+		SetUp_WalkSound();
+
+			break;
+
+	case CPlayer::KEY_RIGHT | CPlayer::KEY_LB:
+		m_pOwner->Get_Transform()->Move_Right(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+		SetUp_WalkSound();
+
+			break;
+
+	case CPlayer::KEY_UP | CPlayer::KEY_LB:
+		m_pOwner->Get_Transform()->Move_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+		SetUp_WalkSound();
+
 		break;
-
-    case CPlayer::KEY_DOWN | CPlayer::KEY_LB:
-        m_pOwner->Get_Transform()->Move_Backward(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
-
-    case CPlayer::KEY_LEFT | CPlayer::KEY_LB:
-        m_pOwner->Get_Transform()->Move_Left(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
-
-    case CPlayer::KEY_RIGHT | CPlayer::KEY_LB:
-        m_pOwner->Get_Transform()->Move_Right(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
-
-    case CPlayer::KEY_UP | CPlayer::KEY_LB:
-        m_pOwner->Get_Transform()->Move_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
     }
 }
 

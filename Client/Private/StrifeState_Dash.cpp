@@ -15,6 +15,10 @@ HRESULT CStrifeState_Dash::Enter_State()
 
 	m_iCheckDash++;
 
+	_uint iNum = m_pGameInstance->Draw_RandomNum(3);
+	wstring strSoundName = TEXT("Strife_dash_1_") + to_wstring(iNum);
+	m_pGameInstance->Play_Sound(strSoundName, SOUND_PLAYER_DASH,0.2f);
+
 	return S_OK;
 }
 
@@ -31,6 +35,11 @@ void CStrifeState_Dash::PriorityUpdate_State(_float fTimeDelta)
 		{	
 			m_iState	 |= CPlayer::STATE_DOUBLEDASH;
 			m_bDashed = true;
+
+			m_pGameInstance->Stop_Sound(SOUND_PLAYER_DASH);
+			_uint iNum = m_pGameInstance->Draw_RandomNum(2);
+			wstring strSoundName = TEXT("Strife_dash_double_") + to_wstring(iNum);
+			m_pGameInstance->Play_Sound(strSoundName, SOUND_PLAYER_DASH, 0.2f);
 
 			Set_LastDashAnimation();
 			Set_Player_Direction();
@@ -66,12 +75,13 @@ void CStrifeState_Dash::LateUpdate_State(_float fTimeDelta)
 
 HRESULT CStrifeState_Dash::Exit_State()
 {
-	//Set_PreAnimation();
 	if (true == m_bDashed && m_iState & CPlayer::STATE_DOUBLEDASH)
 		m_iState ^= CPlayer::STATE_DOUBLEDASH;
 
 	m_AnimEnd = false;
 	m_bDashed = false;
+
+	m_pGameInstance->Stop_Sound(SOUND_PLAYER_DASH);
 
 	return S_OK;
 }

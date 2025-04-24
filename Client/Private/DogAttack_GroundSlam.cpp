@@ -19,6 +19,9 @@ HRESULT CDogAttack_GroundSlam::Enter_State()
     m_bAttack = true;
     m_pMonster->Set_Attack(m_bAttack);
 
+    Set_RandomSound(7, TEXT("Fallendog_atk_groundslam_"), SOUND_DOG_GOUND, 0.05f, false);
+    Set_RandomSound(6, TEXT("Fallendog_atk_groundslam_vo_"), SOUND_DOG_GOUND_VOICE, 0.05f, false);
+
     return S_OK;
 }
 
@@ -76,6 +79,9 @@ HRESULT CDogAttack_GroundSlam::Exit_State()
 {
     Set_PreAnimation();
     Secede_PartCollUpdate();
+
+    m_pGameInstance->Stop_Sound(SOUND_DOG_GOUND);
+    m_pGameInstance->Stop_Sound(SOUND_DOG_GOUND_VOICE);
 
     m_fElapseTime = 0.f;
     m_bAttack = false;

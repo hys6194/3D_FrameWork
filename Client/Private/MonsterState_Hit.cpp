@@ -20,6 +20,18 @@ HRESULT CMonsterState_Hit::Enter_State()
     Setting_PlayerInfo();
     Set_CurAnimation();
 
+    if (m_pMonster->Get_Name().find(TEXT("Ghoul")) != wstring::npos)
+    {
+        Set_RandomSound(3, TEXT("Ghoul_impact_"), SOUND_GHOUL_HIT, 0.05f, false);
+        Set_RandomSound(3, TEXT("Ghoul_impact_vo_"), SOUND_GHOUL_HIT_VOICE, 0.05f, false);
+    }
+
+    if (m_pMonster->Get_Name().find(TEXT("Dog")) != wstring::npos)
+    {
+        Set_RandomSound(3, TEXT("Fallendog_impact_heavy_"), SOUND_DOG_HIT, 0.05f, false);
+        Set_RandomSound(3, TEXT("Fallendog_impact_heavy_vo_"), SOUND_DOG_HIT_VOICE, 0.05f, false);
+    }
+
     return S_OK;
 }
 
@@ -56,6 +68,23 @@ void CMonsterState_Hit::LateUpdate_State(_float fTimeDelta)
 HRESULT CMonsterState_Hit::Exit_State()
 {
     Set_PreAnimation();
+
+    if (m_pMonster->Get_Name().find(TEXT("Ghoul")) != wstring::npos)
+    {
+        m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT);
+        m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT_VOICE);
+    }
+
+    if (m_pMonster->Get_Name().find(TEXT("Dog")) != wstring::npos)
+    {
+        m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT);
+        m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT_VOICE);
+    }
+
+    //m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT);
+    //m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT_VOICE);
+
+
 
     return S_OK;
 }

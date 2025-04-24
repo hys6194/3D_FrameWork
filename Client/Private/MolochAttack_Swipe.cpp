@@ -17,7 +17,10 @@ HRESULT CMolochAttack_Swipe::Enter_State()
     Setting_PlayerInfo();
     Set_CurAnimation();
 
-    m_iAnimIndex = CMoloch::MOLOCH_ATK_SWIPE_01;
+    Set_Sound(TEXT("Moloch_atk_swipe_1"), SOUND_MOLOCH_SWIPE, 0.1f, false);
+    Set_RandomSound(14, TEXT("Moloch_Annoyed_"), SOUND_MOLOCH_SWIPE_VOICE, 0.1f, false);
+
+
 
     m_bAttack = true;
     m_pMonster->Set_Attack(m_bAttack);
@@ -38,8 +41,16 @@ void CMolochAttack_Swipe::PriorityUpdate_State(_float fTimeDelta)
 
             if (30 > fDegree && Check_Colls() && m_pModelCom->Get_CurAnimationTrackPosition() >= 33)
             {
+                m_pGameInstance->Stop_Sound(SOUND_MOLOCH_SWIPE);
+                m_pGameInstance->Stop_Sound(SOUND_MOLOCH_SWIPE_VOICE);
+
+
                 m_iAnimIndex = CMoloch::MOLOCH_ATK_SWIPE_02;
                 m_pModelCom->Set_AnimationIndex(m_iAnimIndex);
+
+
+                Set_Sound(TEXT("Moloch_atk_swipe_2"), SOUND_MOLOCH_SWIPE, 0.1f, false);
+                Set_RandomSound(14, TEXT("Moloch_Annoyed_"), SOUND_MOLOCH_SWIPE_VOICE, 0.1f, false);
 
                 Secede_PartCollUpdate();
                 m_bRegisted = false;
@@ -54,9 +65,15 @@ void CMolochAttack_Swipe::PriorityUpdate_State(_float fTimeDelta)
 
             if (30 > fDegree && Check_Colls() && m_pModelCom->Get_CurAnimationTrackPosition() >= 33)
             {
+                m_pGameInstance->Stop_Sound(SOUND_MOLOCH_SWIPE);
+                m_pGameInstance->Stop_Sound(SOUND_MOLOCH_SWIPE_VOICE);
+
                 m_iAnimIndex = CMoloch::MOLOCH_ATK_SWIPE_03;
 
                 m_pModelCom->Set_AnimationIndex(m_iAnimIndex);
+
+                Set_Sound(TEXT("Moloch_atk_swipe_1"), SOUND_MOLOCH_SWIPE, 0.1f, false);
+                Set_RandomSound(14, TEXT("Moloch_Annoyed_"), SOUND_MOLOCH_SWIPE_VOICE, 0.1f, false);
 
                 Secede_PartCollUpdate();
 
@@ -66,6 +83,7 @@ void CMolochAttack_Swipe::PriorityUpdate_State(_float fTimeDelta)
             }
             else if (30 <= fDegree && m_bAnimEnd)
                 Reset_Pattern();
+
             return;
         case CMoloch::MOLOCH_ATK_SWIPE_03:
 
@@ -129,6 +147,9 @@ HRESULT CMolochAttack_Swipe::Exit_State()
     Set_PreAnimation();
     Secede_PartCollUpdate();
 
+    m_pGameInstance->Stop_Sound(SOUND_MOLOCH_SWIPE);
+    m_pGameInstance->Stop_Sound(SOUND_MOLOCH_SWIPE_VOICE);
+
     m_fElapseTime = 0.f;
 
     m_bAttack = false;
@@ -148,12 +169,14 @@ void CMolochAttack_Swipe::Update_Animation(_float fTimeDelta)
 {
     m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
 
-    m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)), 0.5f);
+    m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)), 1.5f);
 }
 
 void CMolochAttack_Swipe::Set_CurAnimation()
 {
     m_pModelCom = m_pBody->Get_Model();
+
+    m_iAnimIndex = CMoloch::MOLOCH_ATK_SWIPE_01;
 
     m_pModelCom->Set_AnimationIndex(m_iAnimIndex);
 }
@@ -197,6 +220,9 @@ _bool CMolochAttack_Swipe::Check_Colls()
 void CMolochAttack_Swipe::Reset_Pattern()
 {
     m_iAnimIndex = CMoloch::MOLOCH_ATK_SWIPE_01;
+
+    m_pGameInstance->Stop_Sound(SOUND_MOLOCH_SWIPE);
+    m_pGameInstance->Stop_Sound(SOUND_MOLOCH_SWIPE_VOICE);
 
     Secede_PartCollUpdate();
 

@@ -141,6 +141,7 @@ HRESULT CMoloch_Sword::Ready_Components()
     OBBDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Moloch_Sword ");
     OBBDesc.iOption = COLL_OPT::OP_IMPACT;
     OBBDesc.eType = TYPE::TYPE_OBB;
+    OBBDesc.pOwner = m_pOwner;
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &OBBDesc), E_FAIL);

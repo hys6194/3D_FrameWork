@@ -39,6 +39,14 @@ HRESULT CMonster::Initialize(void* pArg)
 	pDesc->iNumPartObjects = PART_END;
 	lstrcpy(pDesc->szGameObjectTag, strMonsterTag.c_str());
 
+	m_bWave  = pMonsterDesc->bWave;
+	m_iState = pMonsterDesc->iState;
+	m_bIsBoss = pMonsterDesc->bBoss;
+	m_fHitPersent = pMonsterDesc->fHitPersent;
+	m_fDetectDistance = pMonsterDesc->fDetectDistance;
+	m_fAttackDistance = pMonsterDesc->fAttackDistance;
+	m_fAttackCoolTime = pMonsterDesc->fAttackCoolTime;
+
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 

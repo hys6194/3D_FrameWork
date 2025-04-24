@@ -60,6 +60,8 @@ void CMolochAttack_Swing::PriorityUpdate_State(_float fTimeDelta)
                 Desc.strModelTag = PRO_MODEL_MOLOCH_CRYSTAL_B;
                 m_bSpawn = true;
 
+                Set_RandomSound(3, TEXT("Moloch_atk_cluster_appear_"), SOUND_MOLOCH_CRYSTALSPAWN, 0.1f, false);
+
                 for (size_t i = 0; i < fCount; i++)
                 {
                     for (size_t j = 0; j < i; j++)
@@ -103,6 +105,10 @@ HRESULT CMolochAttack_Swing::Exit_State()
     Set_PreAnimation();
     Secede_PartCollUpdate();
 
+    m_pGameInstance->Stop_Sound(SOUND_MOLOCH_SWING);
+    m_pGameInstance->Stop_Sound(SOUND_MOLOCH_SWING_VOICE);
+    m_pGameInstance->Stop_Sound(SOUND_MOLOCH_CRYSTALSPAWN);
+
     m_fElapseTime = 0.f;
 
     m_bAttack = false;
@@ -122,7 +128,7 @@ void CMolochAttack_Swing::Update_Animation(_float fTimeDelta)
 {
     m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
 
-    m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)), 0.5f);
+    m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)), 1.5f);
 }
 
 void CMolochAttack_Swing::Set_CurAnimation()
@@ -132,13 +138,25 @@ void CMolochAttack_Swing::Set_CurAnimation()
     _uint iNum = m_pGameInstance->Draw_RandomNum(3);
 
     if (1 == iNum)
+    {
         m_iAnimIndex = CMoloch::MOLOCH_ATK_FULL_SWING_01;
+        Set_Sound(TEXT("Moloch_atk_full_swing_1"), SOUND_MOLOCH_SWING, 0.1f, false);
+        Set_RandomSound(8, TEXT("Moloch_Sword_"), SOUND_MOLOCH_SWING_VOICE, 0.1f, false);
+    }
 
     else if (2 == iNum)
+    {
         m_iAnimIndex = CMoloch::MOLOCH_ATK_FULL_SWING_02;
+        Set_Sound(TEXT("Moloch_atk_full_swing_2"), SOUND_MOLOCH_SWING, 0.1f, false);
+        Set_RandomSound(8, TEXT("Moloch_Sword_"), SOUND_MOLOCH_SWING_VOICE, 0.1f, false);
+    }
 
     else if (3 == iNum)
+    {
         m_iAnimIndex = CMoloch::MOLOCH_ATK_FULL_SWING_03;
+        Set_Sound(TEXT("Moloch_atk_full_swing_3"), SOUND_MOLOCH_SWING, 0.1f, false);
+        Set_RandomSound(8, TEXT("Moloch_Sword_"), SOUND_MOLOCH_SWING_VOICE, 0.1f, false);
+    }
 
     m_pModelCom->Set_AnimationIndex(m_iAnimIndex);
 }

@@ -17,6 +17,21 @@ HRESULT CMonsterState_Dead::Enter_State()
     Setting_PlayerInfo();
     Set_CurAnimation();
 
+    if (m_pMonster->Get_Name().find(TEXT("Dog")) != wstring::npos)
+    {
+        Set_RandomSound(2, TEXT("Fallendog_death_"), SOUND_MOSNTER_DEAD, 0.1f, false);
+        Set_RandomSound(3, TEXT("Fallendog_death_vo_"), SOUND_MOSNTER_DEAD_VOICE, 0.1f, false);
+        return S_OK;
+    }
+
+    if (m_pMonster->Get_Name().find(TEXT("Moloch")) != wstring::npos)
+    {
+        Set_Sound(TEXT("Moloch_impact_stun"), SOUND_MOSNTER_DEAD, 0.1f, false);
+        return S_OK;
+    }
+
+    Set_RandomSound(4, TEXT("General_death_"), SOUND_MOSNTER_DEAD, 0.05f, false);
+
     return S_OK;
 }
 
@@ -33,7 +48,11 @@ void CMonsterState_Dead::PriorityUpdate_State(_float fTimeDelta)
     // 어차피 탐지할 몬스터들은 보스를 제외한 나머지 간단한 몹들이므로 통일시켜 하자
 
     if (m_bAnimEnd)
+    {
+        m_pGameInstance->Stop_Sound(SOUND_MOSNTER_DEAD);
+        m_pGameInstance->Stop_Sound(SOUND_MOSNTER_DEAD_VOICE);
         m_pMonster->Set_Dead(true);
+    }
 
 }
 

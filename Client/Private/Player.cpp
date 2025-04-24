@@ -103,6 +103,11 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 		m_pTransformCom->Set_Speed(10.f);
 	}
 
+	if (m_pGameInstance->Get_DIKeyState(DIK_R))
+	{
+		m_pStatusCom->Take_Heal(15.f);
+	}
+
 	
 
 

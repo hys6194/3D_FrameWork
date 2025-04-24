@@ -19,6 +19,9 @@ HRESULT CDogAttack_3HitCombo::Enter_State()
     m_bAttack = true;
     m_pMonster->Set_Attack(m_bAttack);
 
+    Set_RandomSound(4, TEXT("Fallendog_atk_3hitcombo_"), SOUND_DOG_3HIT, 0.05f, false);
+    Set_RandomSound(4, TEXT("Fallendog_atk_3hitcombo_vo_"), SOUND_DOG_3HIT_VOICE, 0.05f, false);
+
     return S_OK;
 }
 
@@ -77,6 +80,9 @@ HRESULT CDogAttack_3HitCombo::Exit_State()
     Set_PreAnimation();
     Secede_PartCollUpdate();
 
+    m_pGameInstance->Stop_Sound(SOUND_DOG_3HIT);
+    m_pGameInstance->Stop_Sound(SOUND_DOG_3HIT_VOICE);
+
     m_fElapseTime = 0.f;
     m_bAttack = false;
     m_pMonster->Set_Attack(m_bAttack);
@@ -94,10 +100,6 @@ void CDogAttack_3HitCombo::Set_PreAnimation()
 
 void CDogAttack_3HitCombo::Update_Animation(_float fTimeDelta)
 {
-      //if (0 != m_pModelCom->Get_PreAnimIndex()
-      //    && m_pModelCom->Get_Interpolate())
-      //    m_pModelCom->Interpolate_Animation(0.2f);
-      //else
     m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta, m_pAnimOwner);
 
     m_pMonster->Get_Transform()->Dash(m_pModelCom->Get_Delta(), dynamic_cast<CNavigation*>(m_pMonster->Get_Component(COM_NAVI)));

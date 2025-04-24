@@ -40,7 +40,7 @@ public:
 	void				Reset_Damaged() { m_bIsDamaged = false; }
 
 	void				Take_Damage(_float iDamage);
-	void				Take_Heal(_float iHeal) { m_tDesc.iHP = Clamp(m_tDesc.iHP + iHeal, 0.f, 100.f); }
+	void				Take_Heal(_float iHeal) { m_tDesc.iHP = Clamp(m_tDesc.iHP + iHeal, 0.f, m_tMaxDesc.iHP); }
 
 public:
 	void				Calculate_StatusInfo(_int iAttack);

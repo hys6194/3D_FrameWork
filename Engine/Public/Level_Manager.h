@@ -22,7 +22,7 @@ public:
 	HRESULT						Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 
 private:
-	class CGameInstance*			m_pGameInstance = { nullptr }; // 
+	class CGameInstance*		m_pGameInstance = { nullptr }; // 
 	class CLevel*				m_pCurrentLevel = { nullptr }; // 현재 실행중인 레벨(Level 상속받아서 만든 Client의 Level*)
 	_uint						m_iCurrentLevelIndex = { };	   // enum LEVEL로 인지할 현재 레벨의 상태값
 

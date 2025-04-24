@@ -154,15 +154,15 @@ public:
 #pragma endregion
 
 #pragma region SOUND_MANAGER
-	void Play_Sound(const wstring& pSoundKey, _uint iSoundIndex, float fVolume, bool bLoop = true);
-	void Play_BGM(const wstring& pSoundKey, _uint iSoundIndex, float fVolume);
-	void Stop_Sound(_uint iSoundIndex);
-	void Stop_All();
-	void Set_ChannelVolume(_uint iSoundIndex, float fVolume);
-	HRESULT Load_SoundFile(const string& sPath);
+	void							Play_Sound(const wstring& pSoundKey, _uint iSoundIndex, float fVolume, bool bLoop = true);
+	void							Play_BGM(const wstring& pSoundKey, _uint iSoundIndex, float fVolume);
+	void							Stop_Sound(_uint iSoundIndex);
+	void							Stop_All();
+	void							Set_ChannelVolume(_uint iSoundIndex, float fVolume);
+	HRESULT							Load_SoundFile(const string& sPath);
 
-	void Set_BGMVolume(_uint iSoundIndex, _float fVolume);
-	void Set_AllEffectVolume(_float fVolume);
+	void							Set_BGMVolume(_uint iSoundIndex, _float fVolume);
+	void							Set_AllEffectVolume(_float fVolume);
 #pragma endregion
 
 

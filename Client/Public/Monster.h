@@ -4,9 +4,11 @@
 #include "ContainerObject.h"
 
 BEGIN(Engine)
+
 class CFSM;
 class CNavigation;
 class CCollider;
+
 END
 
 BEGIN(Client)
@@ -23,12 +25,16 @@ public:
 	{
 		_bool bBoss = { false };
 		_bool bWave = { false };
-		_uint iState = { STATE_IDLE };
 
-		// 이거 어따 썼지?
-		_float iEvadePersent = {};
-		_float fDetectDistance = { 15.f };
-		_float fNoticeDistance = { 15.f };	//  쓰고싶은데 못쓰고 있는중
+		_uint iState = { STATE_IDLE };
+		_uint iCellIndex;
+
+		_float fAttackDistance = {};
+		_float fHitPersent	   = {};
+		_float fAttackCoolTime = {};
+		_float fDetectDistance = {};
+
+		_vector vPos{};
 
 		_wstring strMonsterName = {};
 		_wstring strHPFramgeTag= {};
@@ -104,13 +110,15 @@ protected:
 	_uint									m_iState									= { STATE_NONE };
 	_uint									m_iHP										= {};
 	_uint									m_iIndex									= {};
+	_uint									m_iCellIndex								= {};
 
 	_float									m_fHitPersent								= {};
-	_float									m_fNoticeDistance							= {};
 	_float									m_fDetectDistance							= {};
 	_float									m_fAttackDistance							= {};
 	_float									m_fTotalTime								= { 0.f };
 	_float									m_fAttackCoolTime							= { 0.f };
+
+	_vector									m_vPos										= {};
 
 	_wstring								m_strModelTag								= {};
 
