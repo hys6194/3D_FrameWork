@@ -1,13 +1,12 @@
 #pragma once
 
 #include "Base.h"
+#include "Bounding.h"
 
 BEGIN(Engine)
 
 class ENGINE_DLL CCollision_Manager final : public CBase
 {
-public:
-	enum COLL_OPT { OP_IMPACT, OP_TARGET, OP_END };
 
 private:
 	CCollision_Manager();
@@ -16,29 +15,42 @@ private:
 public:
 	HRESULT											Initialize();
 
-	HRESULT											Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
+	HRESULT											Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, CBounding* pInstance);
 
 	// 충돌체 등록
-	HRESULT											Regist_Update(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
-	HRESULT											Secede_Update(const _uint iCollOption, const wstring& strColliderTag, class CBounding* pInstance);
+	HRESULT											Regist_Update(CBounding* pBounder1, CBounding* pBounder2 = nullptr);
+	HRESULT											Update_Collisions(_float fTimeDelta);
+	HRESULT											Secede_Update(CBounding* pBounder1, CBounding* pBounder2 = nullptr);
 
-	list<class CBounding*>*							Find_List(const _uint iCollOption, const wstring& strColliderTag);
+	list<CBounding*>*								Find_List(TYPE eType, CBounding* pBounding);
+	CBounding*										Find_Bound(TYPE eType, CBounding* pBounding);
 
-	HRESULT											OnCollision_Enter();		// 업데이트에 등록할 시점 선언
-	HRESULT											OnCollision_Update();		// 충돌처리 확인
-	HRESULT											OnCollision_Exit();			// 업데이트에서 탈출
-
-	// 해당 충돌체의 삭제????
-	// 시발 어떻게 삭제하나요?
+	_bool											Check_Collision(list<CBounding*>*, list<CBounding*>* = nullptr, class CBounding** pBound1 = nullptr , class CBounding** pBound2 = nullptr);
 
 private:
-	HRESULT											Update_Impactor();
-	HRESULT											Update_TargetBody();
+	_bool											Update_Impactor(_float fTimeDelta);
+	_bool											Update_TargetBody(_float fTimeDelta);
+	_bool											Update_Detector(_float fTimeDelta);
+	_bool											Detect_Collision(CBounding* pDest, CBounding* pSour);
 
-	
 private:
-	// wsrting으로 키로 객체에서 만든 충돌체들만 모아서 관리
+	void											Calculate_AABB_AABB(class CBounding_AABB* pAABB1, class CBounding_AABB* pAABB2);
+	void											Calculate_AABB_OBB(class CBounding_AABB* pOBB1, class CBounding_OBB* pOBB2);
+	void											Calculate_AABB_Sphere(class CBounding_AABB* pAABB1, class CBounding_Sphere* pSphere1);
+
+	void											Calculate_0BB_0BB(class CBounding_OBB* pOBB1, class CBounding_OBB* pOBB2);
+	void											Calculate_0BB_Sphere(class CBounding_OBB* pOBB1, class CBounding_Sphere* pSphere1);
+
+	void											Calculate_Sphere_Sphere(class CBounding_Sphere* pSphere1, class CBounding_Sphere* pSphere2);
+
+	// 밀어낼 두 충돌체를 입력
+	void											Detrude_Colliders(CBounding* pDest, CBounding* pSour); 
+
+private:
 	map<const wstring, list<CBounding*>*>*			m_mapColliders[OP_END] = { nullptr };
+	class CGameInstance*							m_pGameInstance = { nullptr };
+
+	_float											m_fTotalTime = { 0.f };
 
 public:
 	static CCollision_Manager*						Create();

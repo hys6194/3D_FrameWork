@@ -1,6 +1,12 @@
 #include "Player.h"
 #include "GameInstance.h"
 #include "Body_Player.h"
+#include "Status.h"
+#include "HP_Frame.h"
+#include "HP_Bar.h"
+
+#include "Ghoul.h"
+#include "Moloch.h"
 
 #include "Gun_Left.h"
 #include "Gun_Right.h"
@@ -31,7 +37,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Player"));
 	Desc.fSpeedPerSec = 10.f;
-	Desc.fRotationPerSec = XMConvertToRadians(90.f); 
+	Desc.fRotationPerSec = XMConvertToRadians(360.f); 
 	Desc.iNumPartObjects = PART_END;
 	Desc.iState = STATE_IDLE;
 	m_iState = Desc.iState;
@@ -40,6 +46,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
+	FAILED_CHECK_RETURN(Ready_UI_HP(), E_FAIL);
 
 	m_iKey = KEY_NONE;
 
@@ -53,15 +60,56 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 {
 	Input_Keys();
 
-	// 왜 이렇게 했지? 이유가 있었는데
-	// 대쉬 초기화 때문에
 	m_pFSMCom->Change_State(m_iState);
 	m_pFSMCom->PriUpdate_State(fTimeDelta);
 
-	//m_pFSMCom->PriUpdate_State(fTimeDelta);
-	//m_pFSMCom->Change_State(m_iState);
+	if (m_pColliderCom[COLL_OBB]->Is_Coll())
+	{
+		m_bHit = true;
 
-	m_pColliderCom->Reset();
+		if (nullptr == m_pColliderCom[COLL_OBB]->Get_TargetBounder())
+			return;
+
+		CMonster* pMonster = static_cast<CMonster*>(m_pColliderCom[COLL_OBB]->Get_TargetBounder()->Get_Info()->pOwner);
+
+		CStatus* pMonsterStatus = static_cast<CStatus*>(pMonster->Get_Component(COM_STATUS));
+
+		m_pStatusCom->Take_Damage(pMonsterStatus->Get_StatusDesc().iAttack * 0.4f);
+	}
+	else
+		m_bHit = false;
+
+
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		if (nullptr == m_pColliderCom[i])
+			continue;
+
+		m_pColliderCom[i]->Reset();
+	}
+
+	if (m_pGameInstance->Get_DIKeyState(DIK_7))
+	{
+		m_pTransformCom->Set_Speed(50.f);
+	}
+
+	if (m_pGameInstance->Get_DIKeyState(DIK_8))
+	{
+		m_pTransformCom->Set_Speed(25.f);
+	}
+
+	if (m_pGameInstance->Get_DIKeyState(DIK_9))
+	{
+		m_pTransformCom->Set_Speed(10.f);
+	}
+
+	if (m_pGameInstance->Get_DIKeyState(DIK_R))
+	{
+		m_pStatusCom->Take_Heal(15.f);
+	}
+
+	
+
 
 	__super::Priority_Update(fTimeDelta);
 }
@@ -72,7 +120,16 @@ void CPlayer::Update(_float fTimeDelta)
 
 	m_pFSMCom->Update_State(fTimeDelta);
 
-	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+
+#ifdef _DEBUG
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		if (nullptr == m_pColliderCom[i])
+			continue;
+
+		m_pColliderCom[i]->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+	}
+#endif
 
 }
 
@@ -87,21 +144,39 @@ void CPlayer::Late_Update(_float fTimeDelta)
 
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
+#ifdef _DEBUG
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom[i]);
+	}
+	m_pGameInstance->Add_Renderer_DebugComponent(m_pNavigationCom);
+
+#endif
+
+	if (m_pGameInstance->Get_DIKeyState(DIK_F7))
+	{
+		_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_POS);
+
+		//float4 디버깅
+		_float4 fDebug{};
+		XMStoreFloat4(&fDebug, vPos);
+		TCHAR debugMessage[256];
+		_stprintf_s(debugMessage, _T("PlayerPos: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"),
+			fDebug.x, fDebug.y, fDebug.z, fDebug.w);
+		OutputDebugString(debugMessage);
+
+		TCHAR debugMessage1[256];
+		_stprintf_s(debugMessage1, _T("CellIndex: %d,\n"),
+			m_pNavigationCom->Get_CellIndex());
+		OutputDebugString(debugMessage1);
+
+	}
+
+
 }
 
 HRESULT CPlayer::Render()
 {
-#ifdef _DEBUG
-	m_pColliderCom->Render();
-#endif 
-
-	//_float4 fPos{};
-	//XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
-	//TCHAR debugMessage[256];
-	//_stprintf_s(debugMessage, _T("Debug_Value: x = %.6f, y = %.6f, z = %.6f, w = %.6f\n"), 
-	//	fPos.x, fPos.y, fPos.z, fPos.w);
-	//OutputDebugString(debugMessage);
-
 	return S_OK;
 }
 
@@ -113,20 +188,38 @@ HRESULT CPlayer::Ready_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_NAVI,
 		reinterpret_cast<CComponent**>(&m_pNavigationCom), COM_NAVI, &NaviDesc),E_FAIL);
 
-	CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
-	ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
-	ColliderDesc.vCenter  = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
-	ColliderDesc.bColls = true;
-	ColliderDesc.strCollTag = Get_Name() + TEXT("_Body") + std::to_wstring(1);
-	ColliderDesc.iOption = CCollision_Manager::OP_TARGET;
-	ColliderDesc.eType = CCollider::TYPE_AABB;
+	CBounding_OBB::BOUNDING_OBB_DESC		ColliderDesc{};
+	ColliderDesc.vExtents		= _float3(1.f, 2.f, 1.f);
+	ColliderDesc.vCenter		= _float3(0.f, ColliderDesc.vExtents.y, 0.f);
+	ColliderDesc.strCollTag		= Get_Name() + TEXT("_Body");
+	ColliderDesc.iOption		= COLL_OPT::OP_TARGET;
+	ColliderDesc.eType			= TYPE::TYPE_OBB;
+	ColliderDesc.pOwner			= this;
 
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
-		reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_OBB,
+		reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_OBB]), COM_COLL_OBB, &ColliderDesc), E_FAIL);
+
+	CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
+	SphereDesc.fRadius = 5.f;
+	SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	SphereDesc.strCollTag = Get_Name() + TEXT("_Body_Detect");
+	SphereDesc.iOption = COLL_OPT::OP_DETECT;
+	SphereDesc.eType = TYPE::TYPE_SPHERE;
+	SphereDesc.pOwner = this;
+
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
+		reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_SPHERE]), COM_COLL_SPHERE, &SphereDesc), E_FAIL);
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_FSM,
 		reinterpret_cast<CComponent**>(&m_pFSMCom), COM_FSM), E_FAIL);
 
+	CStatus::STATUS_DESC StatusDesc{};
+	StatusDesc.iAttack = 5;
+	StatusDesc.iHP = 200;
+	StatusDesc.pOwner = this;
+
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_STATUS,
+		reinterpret_cast<CComponent**>(&m_pStatusCom), COM_STATUS, &StatusDesc), E_FAIL);
 
 	return S_OK;
 }
@@ -137,6 +230,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	CBody_Player::BODY_PLAYER_DESC		BodyDesc{};
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	BodyDesc.pTargetState = &m_iState;
+	BodyDesc.pOwner = this;
 	
 	FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_BODY, PART_BODY, &BodyDesc), E_FAIL);
 
@@ -189,6 +283,34 @@ HRESULT CPlayer::Ready_States()
 
 	pState = CStrifeState_Shoot::Create(this, m_vecParts[PART_BODY]);
 	m_pFSMCom->Add_State(CPlayer::STATE_SHOOT, pState);
+
+	return S_OK;
+}
+
+HRESULT CPlayer::Ready_UI_HP()
+{
+	//CHP_Frame::HPFRAME_DESC FrameDesc{};
+	//FrameDesc.fX = m_pTransformCom->Get_State(CTransform::STATE_POS).m128_f32[0];
+	//FrameDesc.fY = m_pTransformCom->Get_State(CTransform::STATE_POS).m128_f32[1];
+	//FrameDesc.fSizeX = 150;
+	//FrameDesc.fSizeY = 50;
+	//FrameDesc.strFrameTag = PRO_TEX_PLAYER_HP_FRAME;
+	//FrameDesc.iPass = 1;
+	//
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_FRAME,
+	//	LEVEL_GAMEPLAY, TEXT("GameObject_Player_HP_Frame "), &FrameDesc), E_FAIL);
+	
+	CHP_Bar::HPBAR_DESC BarDesc{};
+	BarDesc.pOwner = this;
+	BarDesc.fX = 100;
+	BarDesc.fY = 100;
+	BarDesc.fSizeX = 200;
+	BarDesc.fSizeY = 40;
+	BarDesc.iPass = 0;
+	BarDesc.pOwner = this;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_BAR,
+		LEVEL_GAMEPLAY, TEXT("GameObject_Player_HP_Bar "), &BarDesc), E_FAIL);
 
 	return S_OK;
 }
@@ -288,7 +410,16 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Release(m_pNavigationCom);
-	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pFSMCom);
+	Safe_Release(m_pStatusCom);
+
+
+#ifdef _DEBUG
+	for (size_t i = 0; i < TYPE_END; i++)
+	{
+		Safe_Release(m_pColliderCom[i]);
+	}
+
+#endif
 
 }

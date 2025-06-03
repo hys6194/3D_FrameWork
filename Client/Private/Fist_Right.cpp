@@ -11,6 +11,7 @@ CFist_Right::CFist_Right(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CFist_Right::CFist_Right(const CFist_Right& Prototype)
     : CPartObject{ Prototype }
+    , m_pOwner{ Prototype.m_pOwner }
 {
 }
 
@@ -46,7 +47,6 @@ void CFist_Right::Priority_Update(_float fTimeDelta)
 
 void CFist_Right::Update(_float fTimeDelta)
 {
- 
     _matrix		SocketMatrix = XMLoadFloat4x4(m_pHandMatrix);
 
     for (size_t i = 0; i < 3; i++)
@@ -65,10 +65,19 @@ void CFist_Right::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
+    if (static_cast<CMonster*>(m_pOwner)->Is_Dead())
+        return;
+
+#ifdef _DEBUG
+    m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom);
+#endif
+
 }
 
 HRESULT CFist_Right::Render()
 {
+    if (static_cast<CMonster*>(m_pOwner)->Is_Dead())
+        return S_OK;
 
 #ifdef _DEBUG
     m_pColliderCom->Render();
@@ -82,13 +91,12 @@ HRESULT CFist_Right::Ready_Components()
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
     SphereDesc.fRadius = 0.5f;
     SphereDesc.vCenter = _float3(0.f, SphereDesc.fRadius, 0.f);
-    SphereDesc.bColls = true;
-    SphereDesc.iOption = CCollision_Manager::OP_IMPACT;
-    SphereDesc.eType = CCollider::TYPE_SPHERE;
-    SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Right ") + std::to_wstring(m_pOwner->Get_Index());
+    SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Right ");
+    SphereDesc.iOption = COLL_OPT::OP_IMPACT;
+    SphereDesc.eType = TYPE::TYPE_SPHERE;
+    SphereDesc.pOwner = m_pOwner;
 
-
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc), E_FAIL);
 
     return S_OK;

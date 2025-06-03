@@ -1,7 +1,10 @@
 #include "Collider.h"
 
-#include "GameInstance.h"
+#include "GameObject.h"
 #include "Bounding_AABB.h"
+#include "Bounding_OBB.h"
+#include "Bounding_Sphere.h"
+#include "GameInstance.h"
 
 CCollider::CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent  { pDevice, pContext }
@@ -27,7 +30,7 @@ HRESULT CCollider::Initialize_Prototype()
 
 #ifdef _DEBUG
 
-    m_pBatch  = new PrimitiveBatch<VertexPositionColor>(m_pContext);
+    m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
     m_pEffect = new BasicEffect(m_pDevice);
 
     m_pEffect->SetVertexColorEnabled(true);
@@ -44,27 +47,57 @@ HRESULT CCollider::Initialize_Prototype()
 	return S_OK;
 }
 
+HRESULT CCollider::Initialize_Prototype(TYPE eType)
+{
+    m_eColliderType = eType;
+
+#ifdef _DEBUG
+
+    m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
+    m_pEffect = new BasicEffect(m_pDevice);
+
+    m_pEffect->SetVertexColorEnabled(true);
+
+    const void* pShaderByteCode = { nullptr };
+    size_t      iLength = {};
+
+    m_pEffect->GetVertexShaderBytecode(&pShaderByteCode, &iLength);
+
+    m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCode, iLength, &m_pInputLayout);
+
+#endif
+
+    return S_OK;
+}
+
 HRESULT CCollider::Initialize(void* pArg)
 {
-    const CBounding::BOUNDING_DESC* pDesc = static_cast<const CBounding::BOUNDING_DESC*>(pArg);
-    
-    m_eColliderType = pDesc->eType;
 
     switch (m_eColliderType)
     {
-    case TYPE_AABB:
-        m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pDesc);
-        break;
-    case TYPE_OBB:
-        m_pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pDesc);
-        break;
-    case TYPE_SPHERE:
-        m_pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pDesc);
-        break;
-    }
+        case TYPE_AABB:
+        {
+            const CBounding_AABB::BOUNDING_AABB_DESC* pDesc = static_cast<const CBounding_AABB::BOUNDING_AABB_DESC*>(pArg);
+            m_pOwner = pDesc->pOwner;
+            m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pDesc, this);
+            break;
+        }
+        case TYPE_OBB:
+        {
+            const CBounding_OBB::BOUNDING_OBB_DESC* pDesc = static_cast<const CBounding_OBB::BOUNDING_OBB_DESC*>(pArg);
+            m_pOwner = pDesc->pOwner;
+            m_pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pDesc, this);
+            break;
+        }
+        case TYPE_SPHERE:
+        {
+            const CBounding_Sphere::BOUNDING_SPHERE_DESC* pDesc = static_cast<const CBounding_Sphere::BOUNDING_SPHERE_DESC*>(pArg);
+            m_pOwner = pDesc->pOwner;
 
-    if (true == pDesc->bColls)
-        m_pGameInstance->Add_Collistionlist(pDesc->iOption ,pDesc->strCollTag, m_pBounding);
+            m_pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pDesc, this);
+            break;
+        }
+    }
 
 	return S_OK;
 }
@@ -72,6 +105,42 @@ HRESULT CCollider::Initialize(void* pArg)
 void CCollider::Update(_fmatrix WorldMatrix)
 {
     m_pBounding->Update(WorldMatrix);
+
+    // 피격 처리
+    if (m_pTargetBounding != nullptr)
+    {
+        switch (m_pTargetBounding->Get_Info()->eType)
+        {
+            case TYPE_AABB:
+            {
+                wstring strTest = this->m_pOwner->Get_Name();
+
+                if (Check_IncWord(this->m_pOwner->Get_Name(), TEXT("Monster")))
+                {
+
+                }
+                break;
+            }
+            case TYPE_OBB:
+            {
+                wstring strTest = this->m_pOwner->Get_Name();
+
+                int a = 10;
+
+                break;
+            }
+            case TYPE_SPHERE:
+            {
+                wstring strTest = this->m_pOwner->Get_Name();
+
+                int a = 10;
+
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }
 
 _bool CCollider::Intersect(CCollider* pTargetCollider)
@@ -84,12 +153,22 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
     }
 
     return m_isColl;
+
+    
 }
 
 #ifdef _DEBUG
 
+void CCollider::Check_CollisionHit()
+{
+
+}
+
 HRESULT CCollider::Render()
 {
+    // 지오메트리셰이더를 그릴 때 
+    m_pContext->GSSetShader(nullptr, nullptr, 0);
+
     m_pContext->IASetInputLayout(m_pInputLayout);
 
     m_pEffect->SetWorld(XMMatrixIdentity());
@@ -114,6 +193,19 @@ CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
     CCollider* pInstance = new CCollider(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed To Created : CCollider");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
+CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType)
+{
+    CCollider* pInstance = new CCollider(pDevice, pContext);
+
+    if (FAILED(pInstance->Initialize_Prototype(eType)))
     {
         MSG_BOX("Failed To Created : CCollider");
         Safe_Release(pInstance);

@@ -55,35 +55,21 @@ HRESULT CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
     // Look 벡터의 방향으로 fSpeedPerSec의 값만큼 fTimeDelta 초 만큼 이동한다
     vPos += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
     
-    _float4 fTest1{};
-    XMStoreFloat4(&fTest1, Get_State(CTransform::STATE_POS));
-
-    // 사라지기만 해봐 십련아 ㅋㅋ 디버깅 걸면 그만이야~
-    if (_isnan(fTest1.x) ||
-        _isnan(fTest1.y) ||
-        _isnan(fTest1.z) ||
-        _isnan(fTest1.w))
-    {
-        int a = 10;
-    }
-
-    // 계산한 Vector를 position에 대입한다
+    _vector vPrePos = Get_State(CTransform::STATE_POS);
 
     if (nullptr == pNavigation ||
         true == pNavigation->isMove(vPos))
         Set_State(STATE_POS, vPos);
 
-
     _float4 fTest{};
     XMStoreFloat4(&fTest, Get_State(CTransform::STATE_POS));
 
-    // 사라지기만 해봐 십련아 ㅋㅋ 디버깅 걸면 그만이야~
     if (_isnan(fTest.x) ||
         _isnan(fTest.y) ||
         _isnan(fTest.z) ||
         _isnan(fTest.w))
     {
-        int a = 10;
+        Set_State(STATE_POS, vPrePos);
     }
 
     return S_OK;
@@ -102,9 +88,24 @@ HRESULT CTransform::Go_Backward(_float fTimeDelta, CNavigation* pNavigation)
 
     // 계산한 Vector를 position에 대입한다
 
+
+    _vector vPrePos = Get_State(CTransform::STATE_POS);
+
     if (nullptr == pNavigation ||
         true == pNavigation->isMove(vPos))
         Set_State(STATE_POS, vPos);
+
+    _float4 fTest{};
+    XMStoreFloat4(&fTest, Get_State(CTransform::STATE_POS));
+
+    if (_isnan(fTest.x) ||
+        _isnan(fTest.y) ||
+        _isnan(fTest.z) ||
+        _isnan(fTest.w))
+    {
+        Set_State(STATE_POS, vPrePos);
+    }
+
 
     return S_OK;
 }
@@ -122,9 +123,23 @@ HRESULT CTransform::Go_Right(_float fTimeDelta, CNavigation* pNavigation)
 
     // 계산한 Vector를 Position에 대입한다
 
+    _vector vPrePos = Get_State(CTransform::STATE_POS);
+
     if (nullptr == pNavigation ||
         true == pNavigation->isMove(vPos))
         Set_State(STATE_POS, vPos);
+
+    _float4 fTest{};
+    XMStoreFloat4(&fTest, Get_State(CTransform::STATE_POS));
+
+    if (_isnan(fTest.x) ||
+        _isnan(fTest.y) ||
+        _isnan(fTest.z) ||
+        _isnan(fTest.w))
+    {
+        Set_State(STATE_POS, vPrePos);
+    }
+
 
     return S_OK;
 }
@@ -142,9 +157,24 @@ HRESULT CTransform::Go_Left(_float fTimeDelta, CNavigation* pNavigation)
 
     // 계산한 Vector를 position에 대입한다
 
+
+    _vector vPrePos = Get_State(CTransform::STATE_POS);
+
     if (nullptr == pNavigation ||
         true == pNavigation->isMove(vPos))
         Set_State(STATE_POS, vPos);
+
+    _float4 fTest{};
+    XMStoreFloat4(&fTest, Get_State(CTransform::STATE_POS));
+
+    if (_isnan(fTest.x) ||
+        _isnan(fTest.y) ||
+        _isnan(fTest.z) ||
+        _isnan(fTest.w))
+    {
+        Set_State(STATE_POS, vPrePos);
+    }
+
 
     return S_OK;
 }
@@ -174,17 +204,61 @@ HRESULT CTransform::LookAt(_vector vAt)
     return S_OK;
 }
 
-HRESULT CTransform::Dash(_float4 fDelta, CNavigation* pNavigation)
+HRESULT CTransform::Dash(_float4 fDelta, CNavigation* pNavigation, _float fMag)
 {
     _vector vPos = Get_State(STATE_POS);
     _vector vLook = Get_State(STATE_LOOK);
-    _vector vDelta = XMVectorSet(fDelta.z, 0.f, fDelta.z, 0.f);
+    _vector vDelta = XMVectorSet(fDelta.z * fMag, 0.f, fDelta.z * fMag, 0.f);
 
     vPos += XMVector4Normalize(vLook) * vDelta;
+
+
+    _vector vPrePos = Get_State(CTransform::STATE_POS);
 
     if (nullptr == pNavigation ||
         true == pNavigation->isMove(vPos))
         Set_State(STATE_POS, vPos);
+
+    _float4 fTest{};
+    XMStoreFloat4(&fTest, Get_State(CTransform::STATE_POS));
+
+    if (_isnan(fTest.x) ||
+        _isnan(fTest.y) ||
+        _isnan(fTest.z) ||
+        _isnan(fTest.w))
+    {
+        Set_State(STATE_POS, vPrePos);
+    }
+
+
+    return S_OK;
+}
+
+HRESULT CTransform::BackDash(_float4 fDelta, CNavigation* pNavigation, _float fMag)
+{
+    _vector vPos = Get_State(STATE_POS);
+    _vector vLook = Get_State(STATE_LOOK);
+    _vector vDelta = XMVectorSet(fDelta.z * fMag, 0.f, fDelta.z * fMag, 0.f);
+
+    vPos -= XMVector4Normalize(vLook) * vDelta;
+
+    _vector vPrePos = Get_State(CTransform::STATE_POS);
+
+    if (nullptr == pNavigation ||
+        true == pNavigation->isMove(vPos))
+        Set_State(STATE_POS, vPos);
+
+    _float4 fTest{};
+    XMStoreFloat4(&fTest, Get_State(CTransform::STATE_POS));
+
+    if (_isnan(fTest.x) ||
+        _isnan(fTest.y) ||
+        _isnan(fTest.z) ||
+        _isnan(fTest.w))
+    {
+        Set_State(STATE_POS, vPrePos);
+    }
+
 
     return S_OK;
 }
@@ -197,9 +271,24 @@ HRESULT CTransform::Avoid(_float4 fDelta, CNavigation* pNavigation)
 
     vPos += XMVector4Normalize(vRight) * vDelta;
 
+
+    _vector vPrePos = Get_State(CTransform::STATE_POS);
+
     if (nullptr == pNavigation ||
         true == pNavigation->isMove(vPos))
         Set_State(STATE_POS, vPos);
+
+    _float4 fTest{};
+    XMStoreFloat4(&fTest, Get_State(CTransform::STATE_POS));
+
+    if (_isnan(fTest.x) ||
+        _isnan(fTest.y) ||
+        _isnan(fTest.z) ||
+        _isnan(fTest.w))
+    {
+        Set_State(STATE_POS, vPrePos);
+    }
+
 
     return S_OK;
 }
@@ -217,11 +306,21 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
     Set_State(STATE_LOOK, XMVector4Transform(vLook, RotationMatrix));
 }
 
-_bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir)
+_bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTargetToDir, _bool bClamp)
 {
+
     _vector		vRight         = Get_State(STATE_RIGHT);
     _vector		vUp            = Get_State(STATE_UP);
     _vector		vLook          = Get_State(STATE_LOOK);
+
+    if(bClamp)
+    {
+        if (XMVector4NearEqual(XMVector3Normalize(vLook), vTargetToDir, XMVectorSet(0.1f, 0.f, 0.1f, 0.f)))
+        {
+            Set_State(STATE_LOOK, vTargetToDir);
+            return true;
+        }
+    }
 
     _vector vAxisBase = vAxis;
 
@@ -229,7 +328,8 @@ _bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTarg
     _float      fDot = acosf(XMVectorGetX(XMVector3Dot(vLook, vTargetToDir)));
 
     if (0 > fY)
-            vAxisBase = XMVectorSetY(vAxis, -1.f);
+       vAxisBase = XMVectorScale(vAxis, -1.f);
+
 
     _matrix		RotationMatrix = XMMatrixRotationAxis(vAxisBase, fTimeDelta * m_fRotationPerSec);
                            
@@ -237,10 +337,13 @@ _bool CTransform::Turn_ToTarget(_fvector vAxis, _float fTimeDelta, _vector vTarg
     Set_State(STATE_UP,        XMVector4Transform(vUp,      RotationMatrix));
     Set_State(STATE_LOOK,      XMVector4Transform(vLook,    RotationMatrix));
 
-
     // 방향과 타겟으로 향한 벡터와 비슷하다면 종료하게 끔
+
     if (XMVector4NearEqual(vLook, vTargetToDir, XMVectorSet(0.05f, 0.f, 0.05f, 0.f)))
+    {
+        Set_State(STATE_LOOK, vLook);
         return true;
+    }
     else
         return false;
 }

@@ -32,10 +32,14 @@ public:
 private:
 	_float							m_fDistance = { 15.f }; // 임시로 설정
 
-	class CGameObject*				m_pPlayer = { nullptr };
 	_float							m_fUpdateTime = {};
+	_float							m_fTotalTime = { 0.f };
+
 
 	_bool							m_bTurned = { false };
+
+private:
+	void							MoveTo_Player(_float fTimeDelta);
 
 public:
 	// 몬스터들이 공용으로 사용할 State라서 애니메이션 인덱스를 인자로 받아 출력하게 한다

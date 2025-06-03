@@ -4,6 +4,9 @@
 #include "TP_Camera.h"
 #include "Map_Object.h"
 
+#include "Crystal.h"
+#include "Moloch.h"
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel { pDevice , pContext }
 {
@@ -26,11 +29,13 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Object(TEXT("Layer_Objcet"))))
 		return E_FAIL;
+
+	m_pGameInstance->Play_BGM(TEXT("Level01_combat"), SOUND_BGM, 0.4f);
 
     return S_OK;
 }
@@ -38,6 +43,30 @@ HRESULT CLevel_GamePlay::Initialize()
 void CLevel_GamePlay::Update(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, TEXT("현재 레벨 : 게임플레이 레벨"));
+
+	//if (m_pGameInstance->Key_Down(DIK_F1))
+	//	m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+	//		LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+	//
+	//if (m_pGameInstance->Key_Down(DIK_F2))
+	//	m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+	//		LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+	//
+	//if (m_pGameInstance->Key_Down(DIK_F8))
+	//	m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
+	//		LEVEL_GAMEPLAY, TEXT("Layer_Monster"));
+
+	CMoloch* pMoloch = static_cast<CMoloch*>(m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY,
+		TEXT("Layer_Monster"),
+		TEXT("GameObject_Monster_Moloch")));
+
+	if (nullptr != pMoloch && pMoloch->Is_Fight() && !m_bCheck)
+	{
+		m_bCheck = true;
+		m_pGameInstance->Stop_Sound(SOUND_BGM);
+		m_pGameInstance->Play_BGM(TEXT("Level01_hollowlord"), SOUND_BGM, 0.4f);
+	}
+
 }
 
 HRESULT CLevel_GamePlay::Render()
@@ -47,9 +76,10 @@ HRESULT CLevel_GamePlay::Render()
 
 HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
-	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
-	//	LEVEL_GAMEPLAY, pLayerTag)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_TERRAIN,
+		LEVEL_GAMEPLAY, pLayerTag)))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_SKY,
 		LEVEL_GAMEPLAY, pLayerTag)))
 		return E_FAIL;
@@ -98,15 +128,106 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar* pLayerTag)
 {
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MONSTER,
-	//	LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
+	// Moloch
+	CMonster::MONSTER_DESC Desc{};
+	Desc.bBoss = true;
+	Desc.bWave = false;
+	Desc.fSpeedPerSec = 7.5f;
+	Desc.fRotationPerSec = XMConvertToRadians(90.f);
+	Desc.iState = CMonster::STATE_IDLE;
+	Desc.strMonsterName = TEXT("_Moloch");
+	Desc.fDetectDistance = 18.f;
+	Desc.fAttackCoolTime = 1.f;
+	Desc.fAttackDistance = 12.f;
+	Desc.fHitPersent = 0.5f;
 
-	// 나중에 여기에서 Index를 추가하는 방식으로 구분을 하던가 해
-	for (size_t i = 0; i < 4; i++)
-	{
-		FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MONSTER,
-			LEVEL_GAMEPLAY, pLayerTag), E_FAIL);
-	}
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_MOLOCH,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+
+	//ghoul
+	Desc.bBoss = false;
+	Desc.bWave = false;
+	Desc.fSpeedPerSec = 10.f;
+	Desc.fRotationPerSec = XMConvertToRadians(90.f);
+	Desc.iState = CMonster::STATE_IDLE;
+	Desc.strMonsterName = TEXT("_Ghoul");
+	Desc.fDetectDistance = 15.f;
+	Desc.fAttackCoolTime = 3.f;
+	Desc.fAttackDistance = 4.f;
+	Desc.fHitPersent = 15.f;
+
+	Desc.vPos = XMVectorSet(-31.652328, -4.921481, -21.566696, 1.f);
+	Desc.iCellIndex = 87;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+
+	Desc.vPos = XMVectorSet(13.329205f, -4.509197f, -39.605682f, 1.000000f);
+	Desc.iCellIndex = 522;
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	Desc.vPos = XMVectorSet(-1.795749, -4.771991, -29.072830, 1.f);
+	Desc.iCellIndex = 386;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	Desc.vPos = XMVectorSet(5.625879, -5.645026, -52.225605, 1.f);
+	Desc.iCellIndex = 364;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	//
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	//
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL,
+	//	LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	// FallenDog
+	Desc.bBoss = false;
+	Desc.bWave = false;
+	Desc.fSpeedPerSec = 10.f;
+	Desc.fRotationPerSec = XMConvertToRadians(90.f);
+	Desc.iState = CMonster::STATE_IDLE;
+	Desc.strMonsterName = TEXT("_Fallen_Dog");
+	Desc.fDetectDistance = 15.f;
+	Desc.fAttackCoolTime = 3.f;
+	Desc.fAttackDistance = 4.f;
+	Desc.fHitPersent = 15.f;
+	
+	Desc.vPos = XMVectorSet(33.088619f, -4.356323f, -9.989949f, 1.000000f);
+	Desc.iCellIndex = 493;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	Desc.vPos = XMVectorSet(47.194363f, -4.137296f, -22.021006f, 1.000000f);
+	Desc.iCellIndex = 450;
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	Desc.vPos = XMVectorSet(31.457439f, -4.075185f, -45.014366f, 1.000000f);
+	Desc.iCellIndex = 525;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+	
+	
+	Desc.vPos = XMVectorSet(23.707235, -4.471273, -48.808155, 1.f);
+	Desc.iCellIndex = 530;
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
+
+	Desc.vPos = XMVectorSet(-29.588865f, -6.323592f, -43.536289f, 1.000000f);
+	Desc.iCellIndex = 78;
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_DOG,
+		LEVEL_GAMEPLAY, pLayerTag, &Desc), E_FAIL);
 
 
 	return S_OK;
@@ -123,9 +244,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _tchar* pLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Effect(const _tchar* pLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Snow"),
-		LEVEL_GAMEPLAY, pLayerTag)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Snow"),
+	//	LEVEL_GAMEPLAY, pLayerTag)))
+	//	return E_FAIL;
+	//
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Explosion"),
+	//	LEVEL_GAMEPLAY, pLayerTag)))
+	//	return E_FAIL;
+
+
 	return S_OK;
 
 }
@@ -176,7 +304,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Object(const _tchar* pLayerTag)
 
 	CloseHandle(hFile);
 
-
 	return S_OK;
 }
 
@@ -187,11 +314,32 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;
+
+	//// 점 조명들
+	//LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	//LightDesc.vPosition = _float4(10.f, 5.f, 10.f, 1.f);
+	//LightDesc.fRange = 12.f;
+	//LightDesc.vDiffuse = _float4(1.f, 0.0f, 0.f, 1.f);
+	//LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	//LightDesc.vSpecular = LightDesc.vDiffuse;
+	//
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+	//	return E_FAIL;
+	//
+	//LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	//LightDesc.vPosition = _float4(20.f, 5.f, 10.f, 1.f);
+	//LightDesc.fRange = 12.f;
+	//LightDesc.vDiffuse = _float4(0.f, 1.f, 0.f, 1.f);
+	//LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	//LightDesc.vSpecular = LightDesc.vDiffuse;
+	//
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

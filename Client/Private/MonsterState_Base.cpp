@@ -6,11 +6,13 @@
 CMonsterState_Base::CMonsterState_Base(CGameObject* pOwner, CGameObject* pAnimOwner)
 	: CState{ pOwner, pAnimOwner, m_pGameInstance }
 {
-	// 이래도 되려나	
-	m_pMonster  = dynamic_cast<CMonster*>(m_pOwner);
-	m_pBody     = dynamic_cast<CBody_Ghoul*>(m_pAnimOwner);
+	m_pMonster = dynamic_cast<CMonster*>(m_pOwner);
+	m_pBody = dynamic_cast<CBody_Monster*>(m_pAnimOwner);
+
+	// 이게 문제인 거 같은데
 	m_pModelCom = m_pBody->Get_Model();
 }
+
 
 HRESULT CMonsterState_Base::Enter_State()
 {
@@ -19,7 +21,8 @@ HRESULT CMonsterState_Base::Enter_State()
 
 void CMonsterState_Base::PriorityUpdate_State(_float fTimeDelta)
 {
-	//구조가 바뀌었다
+		//구조가 바뀌었다
+	
 }
 
 void CMonsterState_Base::Update_Animation(_float fTimeDelta)
@@ -30,6 +33,40 @@ void CMonsterState_Base::Update_Animation(_float fTimeDelta)
 		m_pModelCom->Interpolate_Animation(0.2f);
 	else
 		m_bAnimEnd = m_pModelCom->Play_Animation(fTimeDelta);
+}
+
+void CMonsterState_Base::Set_AnimSound(_float2 fKeyFrames, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop)
+{
+	if (fKeyFrames.x < m_pModelCom->Get_CurKeyFrameIndex() ||
+		fKeyFrames.y > m_pModelCom->Get_CurKeyFrameIndex())
+	{
+
+		wstring strSoundName = strAnimTag;
+		m_pGameInstance->Play_Sound(strSoundName, eType, fVolume, IsLoop);
+	}
+}
+
+void CMonsterState_Base::Set_RandomAnimSound(_float2 fKeyFrames, _uint iRandomNum, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop)
+{
+	if (fKeyFrames.x < m_pModelCom->Get_CurKeyFrameIndex() ||
+		fKeyFrames.y > m_pModelCom->Get_CurKeyFrameIndex())
+	{
+		_uint iNum = m_pGameInstance->Draw_RandomNum(iRandomNum);
+		wstring strSoundName = strAnimTag + to_wstring(iNum);
+		m_pGameInstance->Play_Sound(strSoundName, eType, fVolume, IsLoop);
+	}
+}
+
+void CMonsterState_Base::Set_Sound(const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop)
+{
+	m_pGameInstance->Play_Sound(strAnimTag, eType, fVolume, IsLoop);
+}
+
+void CMonsterState_Base::Set_RandomSound(_uint iRandomNum, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop)
+{
+	_uint iNum = m_pGameInstance->Draw_RandomNum(iRandomNum);
+	wstring strSoundName = strAnimTag + to_wstring(iNum);
+	m_pGameInstance->Play_Sound(strSoundName, eType, fVolume, IsLoop);
 }
 
 _vector CMonsterState_Base::Calculate_MonsterDir(_vector vTargetPos)
@@ -45,23 +82,48 @@ _bool CMonsterState_Base::Update_MonsterLook(_float fTimeDelta)
 	return m_pMonster->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, vTargetPos);
 }
 
-_float CMonsterState_Base::Update_MonsterTurnSpeed(_float fSpeed)
+void CMonsterState_Base::Update_MonsterTurnSpeed(_float fSpeed)
+{
+	_float fDot = Get_MonsterLookDot();
+
+	// 진입했을 때 각도에 따른 속도 설정
+	m_pMonster->Get_Transform()->Set_RotationSpeed(fDot * fSpeed);
+}
+
+_float CMonsterState_Base::Get_MonsterLookDot()
 {
 	_vector vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
 	_vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
-
+	_float fTest = XMVectorGetX(XMVector4Dot(vLook, vTargetPos));
 	_float fDot = acosf(XMVectorGetX(XMVector4Dot(vLook, vTargetPos)));
 
 	_float fDegree = XMConvertToDegrees(fDot);
-	// 진입했을 때 각도에 따른 속도 설정
-	m_pMonster->Get_Transform()->Set_RotationSpeed(fDot * fSpeed);
-	
-	return fDegree;
+
+	return fDot;
 }
 
 void CMonsterState_Base::Setting_PlayerInfo()
 {
-	m_pPlayer = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
+	if(nullptr == m_pPlayer)
+		m_pPlayer = m_pGameInstance->Find_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("GameObject_Player"));
+}
+
+_bool CMonsterState_Base::Check_PlayerLeft()
+{
+	_vector vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+	_vector vTargetPos = Calculate_MonsterDir(m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS));
+
+	_vector vCross = XMVector3Cross(vLook, vTargetPos);
+	_float fCrossY = XMVectorGetY(vCross);
+
+	if (fCrossY > 0.f)
+	{
+		return false;
+	}
+	else if (fCrossY < 0.f)
+	{
+		return true;
+	}
 }
 
 HRESULT CMonsterState_Base::Check_Dead(_float fTimeDelta)
@@ -83,12 +145,26 @@ HRESULT CMonsterState_Base::Check_Hit(_float fTimeDelta)
 
 	if (bHit && (m_iPreState != CMonster::STATE_ATTACK))
 	{
-		// 해당 몬스터의 Shader처리
+		_vector vPos = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_POS);
+		_vector vLook = m_pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+		_vector vPlayerPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
 
-		// 일정 확률로 이동하게 해야함 
-		if (m_pGameInstance->Random_Persent(20))
+		_vector vTargetPos = XMVector4Normalize(Calculate_MonsterDir(vPlayerPos));
+
+		_float fDegree = XMConvertToDegrees(acosf(XMVectorGetX(XMVector4Dot(vLook, vTargetPos))));
+
+		if (fDegree < 40.f)
 		{
-			m_pMonster->Change_CurrentState(CMonster::STATE_HIT);
+			if (m_pGameInstance->Random_Persent(m_pMonster->Get_HitPersent()))
+			{
+				m_pMonster->Change_CurrentState(CMonster::STATE_HIT);
+				return E_ABORT;
+			}
+
+		}
+		else if(fDegree >= 40.f && !bHit)
+		{
+			m_pMonster->Change_CurrentState(CMonster::STATE_SEARCH);
 			return E_ABORT;
 		}
 	}

@@ -4,9 +4,11 @@
 #include "ContainerObject.h"
 
 BEGIN(Engine)
+
 class CFSM;
 class CNavigation;
 class CCollider;
+
 END
 
 BEGIN(Client)
@@ -23,36 +25,53 @@ public:
 	{
 		_bool bBoss = { false };
 		_bool bWave = { false };
-		_uint iState = { STATE_IDLE };
-		_uint iHP = {};
 
-		_float fDetectDistance = { 15.f };
-		_float fNoticeDistance = { 15.f };
+		_uint iState = { STATE_IDLE };
+		_uint iCellIndex;
+
+		_float fAttackDistance = {};
+		_float fHitPersent	   = {};
+		_float fAttackCoolTime = {};
+		_float fDetectDistance = {};
+
+		_vector vPos{};
+
+		_wstring strMonsterName = {};
+		_wstring strHPFramgeTag= {};
 
 	}MONSTER_DESC;
 
-
-	enum PARTOBJ { PART_BODY, PART_LEFT, PART_RIGHT, PART_EFFECT, PART_END };
-
 public:
-	enum MONSTER_STATE { STATE_IDLE, STATE_SEARCH, STATE_TRACE, STATE_HIT, STATE_ATTACK, STATE_AVOID, STATE_DEAD, STATE_NONE };
+	enum MONSTER_STATE { STATE_IDLE, STATE_SEARCH, STATE_TRACE, STATE_HIT, STATE_ATTACK, STATE_AVOID, STATE_LOOKOUT,STATE_DEAD, STATE_NONE };
+	enum PARTOBJ { PART_BODY, PART_LEFT, PART_RIGHT, PART_EFFECT, PART_END };
+	enum COLL_TYPE {COLL_AABB, COLL_OBB, COLL_SPHERE, COLL_END };
 
 public:
 	void									Set_Dead			(_bool bDead)			{ m_bIsDead		= bDead; }
 	void									Set_Hit				(_bool bHit)			{ m_bHit		= bHit;  }
 	void									Set_Rec				(_bool bRec)			{ m_bRec		= bRec;  }
 	void									Set_Critical		(_bool bCri)			{ m_bCri		= bCri;  }
+	void									Set_Attack			(_bool bAttack)			{ m_bAttack		= bAttack; }
+
 	void									Set_PreState		(_uint iState)			{ m_iPreState	= iState;}
 
 public:
 	//Getter
 	_bool									Is_Dead()									{ return m_bIsDead; }
+	_bool									Is_Attackable()								{ return m_bAttack; }
 	_bool									Is_Hit ()									{ return m_bHit;    }
 	_bool									Is_Rec ()									{ return m_bRec;    }
 	_bool									Is_Critical()								{ return m_bCri;    }
+	_bool									Is_Boss()									{ return m_bIsBoss;    }
 
 	_uint									Get_PreState()								{ return m_iPreState;}
 	_uint									Get_Index()									{ return m_iIndex;}
+	_float									Get_HitPersent()							{ return m_fHitPersent; }
+	
+	_float									Get_CoolTime()								{ return m_fAttackCoolTime; }
+	_float									Get_AttackDistance()						{ return m_fAttackDistance; }
+	_float									Get_DetectDistance()						{ return m_fDetectDistance; }
+
 public:
 	void									Change_CurrentState (MONSTER_STATE eState)  { m_iState = eState; }
 
@@ -67,13 +86,16 @@ public:
 
 public:
 	virtual HRESULT							Ready_PartObjects()							= 0;
+	virtual HRESULT							Ready_UI_HP()								= 0;
 	virtual HRESULT							Ready_Components();
 
 protected:
 	CFSM*									m_pFSMCom									= { nullptr };
 	CNavigation*							m_pNavigationCom							= { nullptr };
-	CCollider*								m_pColliderCom								= { nullptr };
+	CCollider*								m_pColliderCom[COLL_END]					= {nullptr};
 
+	class CAttack*							m_pAttackCom								= { nullptr };
+	class CStatus*							m_pStatusCom								= { nullptr };
 
 protected:
 	_bool									m_bIsDead									= { false };
@@ -82,14 +104,22 @@ protected:
 	_bool									m_bCri										= { false };
 	_bool									m_bIsBoss									= { false };
 	_bool									m_bWave										= { false };
+	_bool									m_bAttack									= { false };
 
 	_uint									m_iPreState									= { STATE_NONE};
 	_uint									m_iState									= { STATE_NONE };
 	_uint									m_iHP										= {};
-	_uint									m_iIndex									= { };
+	_uint									m_iIndex									= {};
+	_uint									m_iCellIndex								= {};
 
-	_float									m_fNoticeDistance							= {};
-	
+	_float									m_fHitPersent								= {};
+	_float									m_fDetectDistance							= {};
+	_float									m_fAttackDistance							= {};
+	_float									m_fTotalTime								= { 0.f };
+	_float									m_fAttackCoolTime							= { 0.f };
+
+	_vector									m_vPos										= {};
+
 	_wstring								m_strModelTag								= {};
 
 protected:

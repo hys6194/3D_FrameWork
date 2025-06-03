@@ -10,10 +10,27 @@ CMonsterState_Hit::CMonsterState_Hit(CGameObject* pOwner, CGameObject* pAnimOwne
 {
 }
 
+
 HRESULT CMonsterState_Hit::Enter_State()
 { 
+    m_pMonster = dynamic_cast<CMonster*>(m_pOwner);
+    m_pBody = dynamic_cast<CBody_Monster*>(m_pAnimOwner);
+    m_pModelCom = m_pBody->Get_Model();
+
     Setting_PlayerInfo();
     Set_CurAnimation();
+
+    if (m_pMonster->Get_Name().find(TEXT("Ghoul")) != wstring::npos)
+    {
+        Set_RandomSound(3, TEXT("Ghoul_impact_"), SOUND_GHOUL_HIT, 0.05f, false);
+        Set_RandomSound(3, TEXT("Ghoul_impact_vo_"), SOUND_GHOUL_HIT_VOICE, 0.05f, false);
+    }
+
+    if (m_pMonster->Get_Name().find(TEXT("Dog")) != wstring::npos)
+    {
+        Set_RandomSound(3, TEXT("Fallendog_impact_heavy_"), SOUND_DOG_HIT, 0.05f, false);
+        Set_RandomSound(3, TEXT("Fallendog_impact_heavy_vo_"), SOUND_DOG_HIT_VOICE, 0.05f, false);
+    }
 
     return S_OK;
 }
@@ -27,10 +44,12 @@ void CMonsterState_Hit::PriorityUpdate_State(_float fTimeDelta)
 
     if (m_bAnimEnd)
     {
-        if (m_pGameInstance->Random_Persent(50))
-            m_pMonster->Change_CurrentState(CMonster::STATE_AVOID);
-        else
+        //if (m_pGameInstance->Random_Persent(50))
+        //    m_pMonster->Change_CurrentState(CMonster::STATE_AVOID);
+        //else
             m_pMonster->Change_CurrentState(CMonster::STATE_IDLE);
+
+
     }
 
 
@@ -50,6 +69,23 @@ HRESULT CMonsterState_Hit::Exit_State()
 {
     Set_PreAnimation();
 
+    if (m_pMonster->Get_Name().find(TEXT("Ghoul")) != wstring::npos)
+    {
+        m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT);
+        m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT_VOICE);
+    }
+
+    if (m_pMonster->Get_Name().find(TEXT("Dog")) != wstring::npos)
+    {
+        m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT);
+        m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT_VOICE);
+    }
+
+    //m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT);
+    //m_pGameInstance->Stop_Sound(SOUND_GHOUL_HIT_VOICE);
+
+
+
     return S_OK;
 }
 
@@ -58,6 +94,7 @@ void CMonsterState_Hit::Set_PreAnimation()
     m_pModelCom->Reset_PreAnimation();
     m_pModelCom->Set_PreAnimation(m_iAnimIndex);
     m_pMonster->Set_PreState(CMonster::STATE_HIT);
+    m_pMonster->Set_Hit(false);
     m_bAnimEnd = false;
 
 }

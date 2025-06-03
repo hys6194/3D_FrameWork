@@ -8,6 +8,7 @@ class CAnimation final : public CBase
 {
 private:
 	CAnimation();
+	//CAnimation(const CAnimation& Prototype);
 	virtual ~CAnimation() = default;
 
 public:
@@ -16,7 +17,6 @@ public:
 
 	// 애니메이션의 행렬 업데이트
 	_bool Update_TransformationMatrix(const vector<class CBone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex);
-	_bool Update_TransformationMatrix(const vector<class CBone*>& pBone, _float fTimeDelta, _bool bIsLoop, _float* pCurrentTrackPosition, vector<_uint>& vecKeyFrameIndex, class CGameObject* pObject);
 	void KeyFrame_Reset();
 
 public:
@@ -33,6 +33,11 @@ public:
 	const _float Get_Duration()
 	{
 		return m_fDuration;
+	}
+
+	const _bool Get_AnimEnd()
+	{
+		return m_bIsAnimEnd;
 	}
 
 private:
@@ -55,9 +60,10 @@ private:
 
 
 public:
-	static CAnimation* Create(const aiAnimation* pAIAnimation, const vector<class CBone*>& pBone, vector<_uint>& iCurrentKeyFrameIndices);
-	static CAnimation* Create(const vector<class CBone*>& _Bones, ifstream& _InStream, vector<_uint>& _CurrentKeyFrameIndices);
-	virtual void Free() override;
+	static CAnimation*			Create(const aiAnimation* pAIAnimation, const vector<class CBone*>& pBone, vector<_uint>& iCurrentKeyFrameIndices);
+	static CAnimation*			Create(const vector<class CBone*>& _Bones, ifstream& _InStream, vector<_uint>& _CurrentKeyFrameIndices);
+	virtual CAnimation*			Clone()				{ return new CAnimation(*this); };
+	virtual void				Free() override;
 };
 
 END

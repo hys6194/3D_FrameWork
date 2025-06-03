@@ -27,6 +27,8 @@ public:
 	virtual void			Update_Animation(_float fTimeDelta);
 	virtual void			Set_PreAnimation();
 
+private:
+	void					SetUp_WalkSound();
 
 private:
 	CModel*					m_pModelCom;

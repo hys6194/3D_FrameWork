@@ -27,7 +27,7 @@ private:
 	ID3D11DeviceContext*		m_pContext			= { nullptr };
 
 private:
-	class CMap_Object*			m_pMapObject = { nullptr };
+	class CMap_Object*			m_pMapObject		= { nullptr };
 	class CImGui_UI*			m_pUI				= { nullptr };
 	class CImGui_Map*			m_pMap				= { nullptr };
 	class CCell_Guide*			m_pCell				= { nullptr };
@@ -36,6 +36,7 @@ private:
 private:
 	_bool						m_bRayShoot			= { false };
 	_bool						m_bColl				= { false };
+	_bool						m_bTest				= { false };
 
 	_float						m_fDistance			  {};
 	_float						m_fPreDistance		  {};

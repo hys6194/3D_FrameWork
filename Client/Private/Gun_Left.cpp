@@ -45,10 +45,17 @@ void CGun_Left::Priority_Update(_float fTimeDelta)
 
     if ((CPlayer::STATE_SHOOT & *m_pTargetState) && m_fCool < m_fTotalTime)
     {
+        m_pGameInstance->Stop_Sound(SOUND_PLAYER_SHOOT);
+
         if(E_FAIL == Create_Bullet())
             return;
 
-        m_fCool += 0.2f;
+        _uint iNum = m_pGameInstance->Draw_RandomNum(4);
+        wstring strSoundName = TEXT("Strife_gunfire_") + to_wstring(iNum);
+        m_pGameInstance->Play_Sound(strSoundName, SOUND_PLAYER_SHOOT, 0.02f, false);
+        
+
+        m_fCool += 0.3f;
     }
 
     else if ((CPlayer::STATE_SHOOT & ~*m_pTargetState))
@@ -76,7 +83,6 @@ void CGun_Left::Update(_float fTimeDelta)
         XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * 
         matSocket *
         XMLoadFloat4x4(m_pParentMatrix));
-
 
 }
 
@@ -126,7 +132,7 @@ HRESULT CGun_Left::Create_Bullet()
 {
     _matrix matHand = XMMatrixMultiply(XMLoadFloat4x4(m_pHandMatrix), XMLoadFloat4x4(m_pParentMatrix));
     CBullet::BULLET_DESC Desc{};
-    Desc.fSpeedPerSec = 0.5f;
+    Desc.fSpeedPerSec = 1.f;
     lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Player_Bullet "));
 
 
@@ -147,15 +153,7 @@ HRESULT CGun_Left::Bind_SR()
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 
-    const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
-    NULL_CHECK_RETURN(pLightDesc, E_FAIL);
-
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)), E_FAIL);
    
 
     return S_OK;

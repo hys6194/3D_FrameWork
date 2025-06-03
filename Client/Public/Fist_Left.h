@@ -20,7 +20,7 @@ public:
 		const _float4x4* pSocketMatrix;
 		const _float4x4* pHandMatrix;
 		const _uint* pTargetState = { nullptr };
-		class CMonster* pOwner = { nullptr };
+		class CGameObject* pOwner = { nullptr };
 	}FIST_LEFT_DESC;
 
 private:
@@ -39,7 +39,6 @@ public:
 private:
 	CShader*					m_pShaderCom = { nullptr };
 	CModel*						m_pModelCom = { nullptr };
-	CCollider*					m_pColliderCom = { nullptr };
 
 private:
 	_float						m_fTotalTime = { 0 };
@@ -51,7 +50,7 @@ private:
 
 	_float						m_fCool = {};
 	_bool						m_bShoot = { false };
-	class CMonster*				m_pOwner = { nullptr };
+	class CGameObject*				m_pOwner = { nullptr };
 
 
 private:

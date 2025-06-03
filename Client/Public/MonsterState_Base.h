@@ -30,6 +30,8 @@ protected:
 
 public:
 	void									Set_AnimIndex(_uint iIndex) { m_iAnimIndex = iIndex;}
+
+	_bool									Get_AnimEnd()				{ return m_bAnimEnd; }
 	
 	// 상태 관련 가상함수
 public:
@@ -46,11 +48,21 @@ public:
 	void									Update_Animation(_float fTimeDelta)		override;
 	void									Set_CurAnimation()						= 0;
 
+public:
+	void									Set_AnimSound(_float2 fKeyFrames, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop = true);
+	void									Set_RandomAnimSound(_float2 fKeyFrames, _uint iRandomNum, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop = true);
+
+	void									Set_Sound(const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop = true);
+	void									Set_RandomSound(_uint iRandomNum, const _wstring& strAnimTag, SOUNDLIST eType, _float fVolume, _bool IsLoop = true);
+
+
 protected:
 	_vector									Calculate_MonsterDir(_vector vTargetPos);
 	_bool									Update_MonsterLook(_float fTimeDelta);
-	_float									Update_MonsterTurnSpeed(_float fSpeed = 1.f);
+	_float									Get_MonsterLookDot();
+	void									Update_MonsterTurnSpeed(_float fSpeed = 1.f);
 	void									Setting_PlayerInfo();
+	_bool									Check_PlayerLeft();
 
 	HRESULT									Check_Dead(_float fTimeDelta);
 	HRESULT									Check_Hit(_float fTimeDelta);
@@ -68,7 +80,9 @@ protected:
 
 protected:
 	class CMonster*							m_pMonster								= { nullptr };	
-	class CBody_Ghoul*						m_pBody									= { nullptr };
+	
+	// 이 부분도 문제가 될 듯한데?
+	class CBody_Monster*					m_pBody									= { nullptr };
 	class CGameObject*						m_pPlayer 								= { nullptr };
 
 public:

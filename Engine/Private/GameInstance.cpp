@@ -12,7 +12,10 @@
 #include "Light_Manager.h"
 #include "Font_Manager.h"
 #include "ImGui_Manager.h"
+#include "Target_Manager.h"
 #include "CollisionManager.h"
+#include "Picking.h"
+#include "Sound_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -42,6 +45,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pObject_Manager = CObject_Manager::Create(EngineDesc.iNumLevels);
 	NULL_CHECK_RETURN(m_pObject_Manager, E_FAIL);
 
+	m_pTarget_Manager = CTarget_Manager::Create(*ppDevice, *ppContext);
+	NULL_CHECK_RETURN(m_pTarget_Manager, E_FAIL);
+
 	m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
 	NULL_CHECK_RETURN(m_pRenderer, E_FAIL);
 
@@ -59,6 +65,12 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	m_pCollision_Manager = CCollision_Manager::Create();
 	NULL_CHECK_RETURN(m_pCollision_Manager, E_FAIL);
+
+	m_pPicking = CPicking::Create(*ppDevice, *ppContext, EngineDesc.hWnd);
+	NULL_CHECK_RETURN(m_pPicking, E_FAIL);
+
+	m_pSound_Manager = CSound_Manager::Create();
+	NULL_CHECK_RETURN(m_pSound_Manager, E_FAIL);
 	
 	return S_OK;
 }
@@ -67,8 +79,10 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pImGui_Manager->SetUp_Render_ImGui();
 
+
 	m_pInput_Device->Update();
 
+	m_pPicking->Copy(TARGET_PICK);
 	// 여기에서 콜리젼 매니져를 통해 삭제처리가 되어야 하는 애들을 삭제 처리
 	// 혹은 렌더링 기능을 끄게 설정
 
@@ -80,8 +94,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pObject_Manager->Late_Update(fTimeDelta);
 
-	// 여기에서 콜리젼 매니져의 Check_Collisions 호출해야 함
-	m_pCollision_Manager->OnCollision_Enter();
+	m_pCollision_Manager->Update_Collisions(fTimeDelta);
 
 	m_pLevel_Manager->Update(fTimeDelta);
 
@@ -143,6 +156,54 @@ _bool CGameInstance::Random_Persent(_uint iSuccessProb)
 		return true;
 	else
 		return false;
+}
+
+_uint CGameInstance::Draw_RandomNum(_uint iNumber)
+{
+	if (0 > iNumber)
+		iNumber = 0;
+
+	random_device rand;
+	mt19937 gen1(rand());
+
+	_uint iLow, iHigh;
+	iLow = 1;
+	iHigh = iNumber;
+
+	uniform_int_distribution<>Index(iLow, iHigh);
+
+	_uint iIndex = (_uint)Index(gen1);
+
+	return iIndex;
+}
+
+string CGameInstance::WstrToStr(const wstring& wide_str)
+{
+	string narrow_str;
+
+	int size_needed = WideCharToMultiByte(CP_ACP, 0, wide_str.c_str(), -1, NULL, 0, NULL, NULL);
+	if (size_needed > 0)
+	{
+		narrow_str.resize(size_needed - 1);
+		WideCharToMultiByte(CP_ACP, 0, wide_str.c_str(), -1, &narrow_str[0], size_needed, NULL, NULL);
+	}
+
+	return narrow_str;
+}
+
+wstring CGameInstance::StrToWstr(const string& narrow_str)
+{
+	wstring wide_str(narrow_str.length() + 1, L'\0');
+	size_t converted_chars = 0;
+
+	mbstowcs_s(&converted_chars, &wide_str[0], wide_str.size(), narrow_str.c_str(), narrow_str.length());
+
+	return wide_str;
+}
+
+_float3 CGameInstance::Convert_ColorCodes(_uint iR, _uint iG, _uint iB)
+{
+	return _float3(iR / 255, iG / 255, iB /255);
 }
 
 #pragma region GRAPHIC_DEVICE
@@ -339,6 +400,14 @@ HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERERGROUP eRenderGroupID,
 	return m_pRenderer->Add_RenderObject(eRenderGroupID, pRenderObject);
 }
 
+#ifdef _DEBUG
+void CGameInstance::Add_Renderer_DebugComponent(CComponent* pDebugComponent)
+{
+	return m_pRenderer->Add_DebugComponent(pDebugComponent);
+}
+
+#endif
+
 #pragma endregion
 
 #pragma region PIPELINE
@@ -408,6 +477,10 @@ HRESULT CGameInstance::Add_Light(const LIGHT_DESC& pDesc)
 {
 	return m_pLight_Manager->Add_Light(pDesc);
 }
+HRESULT CGameInstance::Render_Light(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	return m_pLight_Manager->Render(pShader, pVIBuffer);
+}
 const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iLightIndex) const
 {
 	return m_pLight_Manager->Get_LightDesc(iLightIndex);
@@ -426,25 +499,116 @@ HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _wstring& str
 	return m_pFont_Manager->Render(strFontTag, strText, vPosition, vColor, fRadian, vOrigin, fScale);
 }
 
+#pragma endregion
+
+#pragma region Collision_Manager
+
 HRESULT CGameInstance::Add_Collistionlist(const _uint iCollOption, const wstring& strColliderTag, CBounding* pInstance)
 {
 	return m_pCollision_Manager->Add_Collistionlist(iCollOption, strColliderTag, pInstance);
 }
 
-HRESULT CGameInstance::Regist_Update(const _uint iCollOption, const _wstring& strCollTag, class CBounding* pInstance)
+HRESULT CGameInstance::Regist_Update(class CBounding* pCollCom1, class CBounding* pCollCom2)
 {
-	return m_pCollision_Manager->Regist_Update(iCollOption, strCollTag, pInstance);
+	return m_pCollision_Manager->Regist_Update(pCollCom1, pCollCom2);
 }
 
-HRESULT CGameInstance::Secede_Update(const _uint iCollOption, const _wstring& strCollTag, class CBounding* pInstance)
+HRESULT CGameInstance::Secede_Update(class CBounding* pCollCom1, class CBounding* pCollCom2)
 {
-	return m_pCollision_Manager->Secede_Update(iCollOption, strCollTag, pInstance);
+	return m_pCollision_Manager->Secede_Update(pCollCom1, pCollCom2);
 }
 
 #pragma endregion
+
+#pragma region TARGET_MANAGER
+
+HRESULT CGameInstance::Add_RenderTarget(const _wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
+{
+	return m_pTarget_Manager->Add_RenderTarget(strTargetTag, iSizeX, iSizeY, ePixelFormat, vClearColor);
+}
+
+HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag)
+{
+	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
+}
+
+HRESULT CGameInstance::Bind_RT_ToShader(CShader* pShader, const _char* pConstantName, const _wstring& strTargetTag)
+{
+	return m_pTarget_Manager->Bind_SR(pShader, pConstantName, strTargetTag);
+}
+
+HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
+{
+	return m_pTarget_Manager->Begin_MRT(strMRTTag);
+}
+
+void CGameInstance::Copy_RenderTarget(const _wstring& strTargetTag, ID3D11Texture2D* pTexture2D)
+{
+	return m_pTarget_Manager->Copy_RenderTarget(strTargetTag, pTexture2D);
+}
+
+HRESULT CGameInstance::End_MRT()
+{
+	return m_pTarget_Manager->End_MRT();
+}
+
+#ifdef _DEBUG
+HRESULT CGameInstance::Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
+{
+	return m_pTarget_Manager->Ready_Debug(strTargetTag, fX, fY, fSizeX, fSizeY);
+}
+HRESULT CGameInstance::Render_RT_Debug(const _wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	return m_pTarget_Manager->Render(strMRTTag, pShader, pVIBuffer);
+}
+_bool CGameInstance::Picking(_float3* pOut)
+{
+	return m_pPicking->Picking(pOut);
+}
+
+#endif
+
+#pragma endregion
+
+#pragma region SOUND_MANAGER
+
+void CGameInstance::Play_Sound(const wstring& pSoundKey, _uint iSoundIndex, float fVolume, bool bLoop)
+{
+	return	m_pSound_Manager->Play_Sound(pSoundKey, iSoundIndex, fVolume, bLoop);
+}
+void CGameInstance::Play_BGM(const wstring& pSoundKey, _uint iSoundIndex, float fVolume)
+{
+	return	m_pSound_Manager->Play_BGM(pSoundKey, iSoundIndex, fVolume);
+}
+void CGameInstance::Stop_Sound(_uint iSoundIndex)
+{
+	return	m_pSound_Manager->Stop_Sound(iSoundIndex);
+}
+void CGameInstance::Stop_All()
+{
+	return	m_pSound_Manager->Stop_All();
+}
+void CGameInstance::Set_ChannelVolume(_uint iSoundIndex, float fVolume)
+{
+	return	m_pSound_Manager->Set_ChannelVolume(iSoundIndex, fVolume);
+}
+HRESULT CGameInstance::Load_SoundFile(const _string& sPath)
+{
+	return m_pSound_Manager->Load_SoundFile(sPath);
+}
+void CGameInstance::Set_BGMVolume(_uint iSoundIndex, _float fVolume)
+{
+	 return	m_pSound_Manager->Set_BGMVolume(iSoundIndex, fVolume);
+}
+void CGameInstance::Set_AllEffectVolume(_float fVolume)
+{
+	return m_pSound_Manager->Set_AllEffectVolume(fVolume);
+}
+
+#pragma endregion SOUND_MANAGER
+
 void CGameInstance::Release_Engine()
 {
-	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pLevel_Manager);
@@ -455,7 +619,12 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pCollision_Manager);
+	Safe_Release(m_pTarget_Manager);
+	Safe_Release(m_pPicking);
 	Safe_Release(m_pImGui_Manager);
+	Safe_Release(m_pSound_Manager);
+	Safe_Release(m_pGraphic_Device);
+
 
 	CGameInstance::DestroyInstance();
 }

@@ -111,6 +111,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../Public/;../../EngineSDK/Inc/;../../Tool/Public/Imgui/</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,6 +133,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../Public/;../../EngineSDK/Inc/</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,18 +149,34 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\Attack.h" />
+    <ClInclude Include="..\Public\Attack_Base.h" />
     <ClInclude Include="..\Public\BackGround.h" />
+    <ClInclude Include="..\Public\Body_FallenDog.h" />
     <ClInclude Include="..\Public\Body_Ghoul.h" />
+    <ClInclude Include="..\Public\Body_Moloch.h" />
+    <ClInclude Include="..\Public\Body_Monster.h" />
     <ClInclude Include="..\Public\Body_Player.h" />
     <ClInclude Include="..\Public\Bullet.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Const_Key.h" />
+    <ClInclude Include="..\Public\Crystal.h" />
+    <ClInclude Include="..\Public\DogAttack_3HitCombo.h" />
+    <ClInclude Include="..\Public\DogAttack_GroundSlam.h" />
+    <ClInclude Include="..\Public\DogAttack_Slash.h" />
+    <ClInclude Include="..\Public\Explosion.h" />
+    <ClInclude Include="..\Public\Fallen_Dog.h" />
     <ClInclude Include="..\Public\Fist_Left.h" />
     <ClInclude Include="..\Public\Fist_Right.h" />
     <ClInclude Include="..\Public\Ghoul.h" />
+    <ClInclude Include="..\Public\GhoulAttack_DoubleSwipe.h" />
+    <ClInclude Include="..\Public\GhoulAttack_Flurry.h" />
+    <ClInclude Include="..\Public\GhoulAttack_Leaf.h" />
     <ClInclude Include="..\Public\Gun_Left.h" />
     <ClInclude Include="..\Public\Gun_Right.h" />
+    <ClInclude Include="..\Public\HP_Bar.h" />
+    <ClInclude Include="..\Public\HP_Frame.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
@@ -166,6 +184,13 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Map_Object.h" />
+    <ClInclude Include="..\Public\Moloch.h" />
+    <ClInclude Include="..\Public\MolochAttack_180.h" />
+    <ClInclude Include="..\Public\MolochAttack_Dash.h" />
+    <ClInclude Include="..\Public\MolochAttack_Geyser.h" />
+    <ClInclude Include="..\Public\MolochAttack_Swing.h" />
+    <ClInclude Include="..\Public\MolochAttack_Swipe.h" />
+    <ClInclude Include="..\Public\Moloch_Sword.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\MonsterState_Attack.h" />
     <ClInclude Include="..\Public\MonsterState_Avoid.h" />
@@ -173,6 +198,7 @@
     <ClInclude Include="..\Public\MonsterState_Dead.h" />
     <ClInclude Include="..\Public\MonsterState_Hit.h" />
     <ClInclude Include="..\Public\MonsterState_Idle.h" />
+    <ClInclude Include="..\Public\MonsterState_LookOut.h" />
     <ClInclude Include="..\Public\MonsterState_Search.h" />
     <ClInclude Include="..\Public\MonsterState_Trace.h" />
     <ClInclude Include="..\Public\Player.h" />
@@ -180,11 +206,13 @@
     <ClInclude Include="..\Public\Player_KeyState.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\Snow.h" />
+    <ClInclude Include="..\Public\Status.h" />
     <ClInclude Include="..\Public\StrifeState_Dash.h" />
     <ClInclude Include="..\Public\StrifeState_Idle.h" />
     <ClInclude Include="..\Public\StrifeState_Run.h" />
     <ClInclude Include="..\Public\StrifeState_Shoot.h" />
     <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\Public\Test_Monster.h" />
     <ClInclude Include="..\Public\TP_Camera.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="Client.h" />
@@ -193,16 +221,32 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\Attack.cpp" />
+    <ClCompile Include="..\Private\Attack_Base.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
+    <ClCompile Include="..\Private\Body_FallenDog.cpp" />
     <ClCompile Include="..\Private\Body_Ghoul.cpp" />
+    <ClCompile Include="..\Private\Body_Moloch.cpp" />
+    <ClCompile Include="..\Private\Body_Monster.cpp" />
     <ClCompile Include="..\Private\Body_Player.cpp" />
     <ClCompile Include="..\Private\Bullet.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Crystal.cpp" />
+    <ClCompile Include="..\Private\DogAttack_3HitCombo.cpp" />
+    <ClCompile Include="..\Private\DogAttack_GroundSlam.cpp" />
+    <ClCompile Include="..\Private\DogAttack_Slash.cpp" />
+    <ClCompile Include="..\Private\Explosion.cpp" />
+    <ClCompile Include="..\Private\Fallen_Dog.cpp" />
     <ClCompile Include="..\Private\Fist_Left.cpp" />
     <ClCompile Include="..\Private\Fist_Right.cpp" />
     <ClCompile Include="..\Private\Ghoul.cpp" />
+    <ClCompile Include="..\Private\GhoulAttack_DoubleSwipe.cpp" />
+    <ClCompile Include="..\Private\GhoulAttack_Flurry.cpp" />
+    <ClCompile Include="..\Private\GhoulAttack_Leaf.cpp" />
     <ClCompile Include="..\Private\Gun_Left.cpp" />
     <ClCompile Include="..\Private\Gun_Right.cpp" />
+    <ClCompile Include="..\Private\HP_Bar.cpp" />
+    <ClCompile Include="..\Private\HP_Frame.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
@@ -210,6 +254,13 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Map_Object.cpp" />
+    <ClCompile Include="..\Private\Moloch.cpp" />
+    <ClCompile Include="..\Private\MolochAttack_180.cpp" />
+    <ClCompile Include="..\Private\MolochAttack_Dash.cpp" />
+    <ClCompile Include="..\Private\MolochAttack_Geyser.cpp" />
+    <ClCompile Include="..\Private\MolochAttack_Swing.cpp" />
+    <ClCompile Include="..\Private\MolochAttack_Swipe.cpp" />
+    <ClCompile Include="..\Private\Moloch_Sword.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\MonsterState_Attack.cpp" />
     <ClCompile Include="..\Private\MonsterState_Avoid.cpp" />
@@ -217,6 +268,7 @@
     <ClCompile Include="..\Private\MonsterState_Dead.cpp" />
     <ClCompile Include="..\Private\MonsterState_Hit.cpp" />
     <ClCompile Include="..\Private\MonsterState_Idle.cpp" />
+    <ClCompile Include="..\Private\MonsterState_LookOut.cpp" />
     <ClCompile Include="..\Private\MonsterState_Search.cpp" />
     <ClCompile Include="..\Private\MonsterState_Trace.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
@@ -224,11 +276,13 @@
     <ClCompile Include="..\Private\Player_KeyState.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\Snow.cpp" />
+    <ClCompile Include="..\Private\Status.cpp" />
     <ClCompile Include="..\Private\StrifeState_Dash.cpp" />
     <ClCompile Include="..\Private\StrifeState_Idle.cpp" />
     <ClCompile Include="..\Private\StrifeState_Run.cpp" />
     <ClCompile Include="..\Private\StrifeState_Shoot.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
+    <ClCompile Include="..\Private\Test_Monster.cpp" />
     <ClCompile Include="..\Private\TP_Camera.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="Client.cpp" />
@@ -249,8 +303,11 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosParticle.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosUI.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectParticle.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectUI.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

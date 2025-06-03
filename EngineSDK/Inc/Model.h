@@ -9,6 +9,15 @@ BEGIN(Engine)
 
 class ENGINE_DLL CModel final : public CComponent
 {
+
+public:
+	typedef struct tagModelDesc
+	{
+		_wstring strRootBoneTag;
+		_float3 fAngles;
+
+	}MODEL_DESC;
+
 private:
 	CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CModel(const CModel& Prototype);
@@ -57,6 +66,16 @@ public:
 		return m_vecCurrentTrackPosition[m_iCurrentAnimationIndex];
 	}
 
+	const _uint							Get_CurKeyFrameIndex()
+	{
+		return m_iCurKeyFrameIndex;
+	}
+
+	_bool								Get_AnimEnd()
+	{
+		return m_Animations[m_iCurrentAnimationIndex]->Get_AnimEnd();
+	}
+
 public:
 	//재생하려고 하는 애니메이션, 루프, 보간
 	void								Set_AnimationIndex(_uint iAnimationIndex, _bool isLoop = false, _bool IsInter = true);
@@ -93,6 +112,7 @@ public:
 	_bool								CheckRayColl_Mesh(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord, _vector vScale, _vector vRotation, _vector vTranslation);
 	_bool								DotPoint_InMesh(_vector vPos, _vector vDir, _float* _fDistance, _float4* _fCoord, _vector vScale, _vector vRotation, _vector vTranslation);
 
+
 private:
 	const aiScene*						m_pAIScene = { nullptr };
 	Assimp::Importer					m_Importer;
@@ -128,10 +148,16 @@ private:
 	_float								m_fCurTrackPos = {};
 	_float								m_fRatio = { 0.f };
 
+	_float3								m_fAngles = {};
+
 	_uint								m_iNumBone = {};
+
+	_wstring							m_strRootName = {};
 
 	vector<class CChannel*>				m_pPreChannel;
 	vector<class CChannel*>				m_pCurChannel;
+
+	vector<class CChannel*>				m_vecChannel;
 
 	KEYFRAME							m_pPreKeyFrame = { };
 	KEYFRAME							m_pCurKeyFrame = { };
@@ -149,6 +175,10 @@ private:
 	HRESULT								Ready_Meshes();
 	HRESULT								Ready_Materials(const _char* pModelFilePath);
 	HRESULT								Ready_Animations();
+
+private:
+	string								Convert_wstringTo_string(_wstring strTag);
+
 
 public:
 	static CModel*						Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODELTYPE eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity());

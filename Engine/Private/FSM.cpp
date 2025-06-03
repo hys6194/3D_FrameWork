@@ -7,7 +7,8 @@ CFSM::CFSM(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CFSM::CFSM(const CFSM& Prototype)
-    :CComponent{ Prototype }
+    : CComponent{ Prototype }
+    , m_pCurrentState { Prototype.m_pCurrentState }
 {
 }
 

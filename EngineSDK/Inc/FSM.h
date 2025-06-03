@@ -34,11 +34,12 @@ private:
 	map<const _uint, class CState*>	m_mapFSM;
 	_uint							m_iCurrentState = {0};
 	_uint							m_iPreState = {0};
+
 	CState*							m_pCurrentState;
 
 
 public:
-	static CFSM* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static  CFSM* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent* Clone(void* pArg = nullptr);
 	virtual void Free() override;
 

@@ -1,5 +1,8 @@
+#include "Bounding_AABB.h"
 #include "Bounding_OBB.h"
+#include "Bounding_Sphere.h"
 #include "DebugDraw.h"
+#include "GameInstance.h"
 
 CBounding_OBB::CBounding_OBB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CBounding { pDevice, pContext }
@@ -7,9 +10,11 @@ CBounding_OBB::CBounding_OBB(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 
 }
 
-HRESULT CBounding_OBB::Initialize(const CBounding::BOUNDING_DESC* pDesc)
+HRESULT CBounding_OBB::Initialize(const CBounding_OBB::BOUNDING_OBB_DESC* pDesc, class CCollider* pOwner)
 {
     const BOUNDING_OBB_DESC* pBoundDesc = static_cast<const BOUNDING_OBB_DESC*>(pDesc);
+
+    m_pOwner = pOwner;
 
     _float4 vQuaternion = {};
     
@@ -17,8 +22,13 @@ HRESULT CBounding_OBB::Initialize(const CBounding::BOUNDING_DESC* pDesc)
 
     m_pLocalDesc = new BoundingOrientedBox(pBoundDesc->vCenter, pBoundDesc->vExtents, vQuaternion);
     m_pDesc = new BoundingOrientedBox(*m_pLocalDesc);
-    m_eType = pBoundDesc->eType;
 
+    m_eType = pBoundDesc->eType;
+    m_tInfo.iOption = pBoundDesc->iOption;
+    m_tInfo.pOwner = pBoundDesc->pOwner;
+    m_tInfo.strCollTag = pBoundDesc->strCollTag;
+
+    m_pGameInstance->Add_Collistionlist(pBoundDesc->iOption, pBoundDesc->strCollTag, this);
 
     return S_OK;
 }
@@ -28,25 +38,31 @@ void CBounding_OBB::Update(_fmatrix WorldMatrix)
     m_pLocalDesc->Transform(*m_pDesc, WorldMatrix);
 }
 
-_bool CBounding_OBB::Intersect(CCollider::TYPE eType, CBounding* pTargetBound)
+_bool CBounding_OBB::Intersect(TYPE eType, CBounding* pTargetBound)
 {
-    void* pDesc = pTargetBound->Get_Desc();
+     _bool     isColl = { false };
 
-    _bool     isColl = { false };
-
-    switch (eType)
-    {
-    case CCollider::TYPE_AABB:
-        isColl = m_pDesc->Intersects(*static_cast<BoundingBox*>(pDesc));
-        break;
-    case CCollider::TYPE_OBB:
-        //isColl = Intersect_OBB(static_cast<CBounding_OBB*>(pTargetBound));
-        isColl = m_pDesc->Intersects(*static_cast<BoundingOrientedBox*>(pDesc));
-        break;
-    case CCollider::TYPE_SPHERE:
-        isColl = m_pDesc->Intersects(*static_cast<BoundingSphere*>(pDesc));
-        break;
-    }
+     switch (eType)
+     {
+         case TYPE_AABB:
+         {
+             BoundingBox* pDesc = static_cast<CBounding_AABB*>(pTargetBound)->Get_Desc();
+             isColl = m_pDesc->Intersects(*pDesc);
+             break;
+         }
+         case TYPE_OBB:
+         {
+             BoundingOrientedBox* pDesc1 = static_cast<CBounding_OBB*>(pTargetBound)->Get_Desc();
+             isColl = m_pDesc->Intersects(*pDesc1);
+             break;
+         }
+         case TYPE_SPHERE:
+         {
+             BoundingSphere* pDesc2 = static_cast<CBounding_Sphere*>(pTargetBound)->Get_Desc();
+             isColl = m_pDesc->Intersects(*pDesc2);
+             break;
+         }
+     }
 
     return isColl;
 }
@@ -73,6 +89,7 @@ _bool CBounding_OBB::Intersect_OBB(CBounding_OBB* pTargetBound)
         {
             _float          fLength[3] = {};
 
+            // 충돌체 객체와 다른 객체의 거리와 x, y, z 방향으로 투영한 기준 벡터와 내적
             fLength[0] = fabs(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenter) - XMLoadFloat3(&OBBDesc[0].vCenter),
                 XMLoadFloat3(&OBBDesc[i].vAlignDir[j])).m128_f32[0]);
 
@@ -88,14 +105,13 @@ _bool CBounding_OBB::Intersect_OBB(CBounding_OBB* pTargetBound)
                 return false;
         }
 
-    }
-
+    } 
     return true;
 }
 
 CBounding_OBB::OBB_DESC CBounding_OBB::Compute_OBBDesc()
 {
-    OBB_DESC            OBBDesc{};
+    OBB_DESC    OBBDesc{};
 
     _float3     vPoints[8];
 
@@ -103,21 +119,23 @@ CBounding_OBB::OBB_DESC CBounding_OBB::Compute_OBBDesc()
 
     OBBDesc.vCenter = m_pDesc->Center;
 
+    // x,y,z 축에 대한 방향 벡터 -> 분리 축
     XMStoreFloat3(&OBBDesc.vCenterDir[0], (XMLoadFloat3(&vPoints[5]) - XMLoadFloat3(&vPoints[4])) * 0.5f);
     XMStoreFloat3(&OBBDesc.vCenterDir[1], (XMLoadFloat3(&vPoints[7]) - XMLoadFloat3(&vPoints[4])) * 0.5f);
     XMStoreFloat3(&OBBDesc.vCenterDir[2], (XMLoadFloat3(&vPoints[0]) - XMLoadFloat3(&vPoints[4])) * 0.5f);
 
+    // 해당 면과 수직인 벡터 선언
     for (size_t i = 0; i < 3; i++)
         XMStoreFloat3(&OBBDesc.vAlignDir[i], XMVector3Normalize(XMLoadFloat3(&OBBDesc.vCenterDir[i])));
 
     return OBBDesc;
 }
 
-CBounding_OBB* CBounding_OBB::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc)
+CBounding_OBB* CBounding_OBB::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding_OBB::BOUNDING_OBB_DESC* pDesc, class CCollider* pOwner)
 {
     CBounding_OBB* pInstance = new CBounding_OBB(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize(pDesc)))
+    if (FAILED(pInstance->Initialize(pDesc, pOwner)))
     {
         MSG_BOX("Failed To Created : CBounding_OBB");
         Safe_Release(pInstance);

@@ -27,7 +27,7 @@
 
 #define		VK_MAX		0xff
 
-
+static const std::wstring PATH_SOUND					=TEXT("../Bin/Resources/Sounds");
 
 /* Texture */
 static const std::wstring PRO_TEX_SKY					= TEXT("Prototype_Component_Texture_Sky");
@@ -36,11 +36,22 @@ static const std::wstring PRO_TEX_BRUSH					= TEXT("Prototype_Component_Texture_
 static const std::wstring PRO_TEX_LOGO1					= TEXT("Prototype_Component_Texture_Logo1");
 static const std::wstring PRO_TEX_LOGO2					= TEXT("Prototype_Component_Texture_Logo2");
 static const std::wstring PRO_TEX_TERRAIN				= TEXT("Prototype_Component_Texture_Terrain");
+static const std::wstring PRO_TEX_DISSOLVE				= TEXT("Prototype_Component_Texture_Dissolve");
 static const std::wstring PRO_TEX_BACKGROUND			= TEXT("Prototype_Component_Texture_BackGround");
+static const std::wstring PRO_TEX_PLAYER_HP_FRAME		= TEXT("Prototype_Component_Texture_Player_HP_Frame");
+static const std::wstring PRO_TEX_MONSTER_HP_FRAME		= TEXT("Prototype_Component_Texture_Monster_HP_Frame");
+static const std::wstring PRO_TEX_BOSS_HP_FRAME			= TEXT("Prototype_Component_Texture_BOSS_HP_Frame");
+static const std::wstring PRO_TEX_HP_BAR				= TEXT("Prototype_Component_Texture_HP_Bar");
+static const std::wstring PRO_TEX_UI_FRAME				= TEXT("Prototype_Component_Texture_UI_Frame");
+static const std::wstring PRO_TEX_POTION				= TEXT("Prototype_Component_Texture_Potion");
+static const std::wstring PRO_TEX_GHOST_HOOK			= TEXT("Prototype_Component_Texture_Ghost_Hook");
+static const std::wstring PRO_TEX_PARTICLE_BLOOD		= TEXT("Prototype_Component_Texture_Particle");
 
 
 /* Component */
 static const std::wstring PRO_COM_FSM					= TEXT("Prototype_Component_FSM");
+static const std::wstring PRO_COM_ATTACK				= TEXT("Prototype_Component_Attack");
+static const std::wstring PRO_COM_STATUS				= TEXT("Prototype_Component_Status");
 static const std::wstring PRO_COM_NAVI					= TEXT("Prototype_Component_Navigation");
 static const std::wstring PRO_COM_VI_CELL				= TEXT("Prototype_Component_VIBuffer_Cell");
 static const std::wstring PRO_COM_VI_CUBE				= TEXT("Prototype_Component_VIBuffer_Cube");
@@ -49,12 +60,17 @@ static const std::wstring PRO_COM_VI_GUIDE				= TEXT("Prototype_Component_VIBuff
 static const std::wstring PRO_COM_VI_TERRAIN			= TEXT("Prototype_Component_VIBuffer_Terrain");
 
 /* Collider */
-static const std::wstring PRO_COM_COLL						= TEXT("Prototype_Component_Collider");
+static const std::wstring PRO_COM_COLL					= TEXT("Prototype_Component_Collider");
+static const std::wstring PRO_COM_COLL_AABB				= TEXT("Prototype_Component_Collider_AABB");
+static const std::wstring PRO_COM_COLL_OBB				= TEXT("Prototype_Component_Collider_OBB");
+static const std::wstring PRO_COM_COLL_SPHERE			= TEXT("Prototype_Component_Collider_Sphere");
 
 /* Model */
 static const std::wstring PRO_MODEL_STRIFE				= TEXT("Prototype_Component_Model_Test");
+static const std::wstring PRO_MODEL_BULLET				= TEXT("Prototype_Component_Model_Bullet");
 static const std::wstring PRO_MODEL_FIONA				= TEXT("Prototype_Component_Model_Fiona");
 static const std::wstring PRO_MODEL_GHOUL				= TEXT("Prototype_Component_Model_Ghoul"); 
+static const std::wstring PRO_MODEL_FALLEN_GHOUL		= TEXT("Prototype_Component_Model_Fallen_Ghoul"); 
 static const std::wstring PRO_MODEL_FLOOR1				= TEXT("Prototype_Component_Model_Floor 1");
 static const std::wstring PRO_MODEL_FLOOR2				= TEXT("Prototype_Component_Model_Floor 2");
 static const std::wstring PRO_MODEL_FLOOR3				= TEXT("Prototype_Component_Model_Floor 3");
@@ -89,6 +105,13 @@ static const std::wstring PRO_MODEL_SPIKE_E				= TEXT("Prototype_Component_Model
 static const std::wstring PRO_MODEL_SPIKE_A				= TEXT("Prototype_Component_Model_FortressSpike A");
 static const std::wstring PRO_MODEL_PILLAR_ALCOVE		= TEXT("Prototype_Component_Model_Pillar Alcove A");
 
+static const std::wstring PRO_MODEL_MOLOCH				= TEXT("Prototype_Component_Model_Moloch");
+static const std::wstring PRO_MODEL_MOLOCH_SWORD		= TEXT("Prototype_Component_Model_Moloch_Sword");
+static const std::wstring PRO_MODEL_MOLOCH_CRYSTAL_A	= TEXT("Prototype_Component_Model_Crystal_A");
+static const std::wstring PRO_MODEL_MOLOCH_CRYSTAL_B	= TEXT("Prototype_Component_Model_Crystal_B");
+static const std::wstring PRO_MODEL_DOG					= TEXT("Prototype_Component_Model_Dog");
+static const std::wstring PRO_MODEL_DOG_LAVA			= TEXT("Prototype_Component_Model_Dog_Lava");
+
 /* Shader */
 static const std::wstring PRO_SHADER_CELL				= TEXT("Prototype_Component_Shader_VtxCell");
 static const std::wstring PRO_SHADER_CUBE				= TEXT("Prototype_Component_Shader_VtxCube");
@@ -100,6 +123,9 @@ static const std::wstring PRO_SHADER_ANIM				= TEXT("Prototype_Component_Shader_
 /* GameObject */
 static const std::wstring PRO_OBJ_SKY					= TEXT("Prototype_GameObject_Sky");
 static const std::wstring PRO_OBJ_GHOUL					= TEXT("Prototype_GameObject_Ghoul");
+static const std::wstring PRO_OBJ_DOG					= TEXT("Prototype_GameObject_Dog");
+static const std::wstring PRO_OBJ_DOG_BODY				= TEXT("Prototype_GameObject_Dog Body");
+static const std::wstring PRO_OBJ_DOG_LAVA				= TEXT("Prototype_GameObject_Dog_Lava");
 static const std::wstring PRO_OBJ_BULLET				= TEXT("Prototype_GameObject_Bullet"); 
 static const std::wstring PRO_OBJ_PLAYER				= TEXT("Prototype_GameObject_Player");
 static const std::wstring PRO_OBJ_WEAPON				= TEXT("Prototype_GameObject_Weapon");
@@ -122,6 +148,15 @@ static const std::wstring PRO_OBJ_ROCK2					= TEXT("Prototype_GameObject_Desert 
 static const std::wstring PRO_OBJ_ROCK_TALL				= TEXT("Prototype_GameObject_Desert RockTall");
 static const std::wstring PRO_OBJ_SPIKE_A				= TEXT("Prototype_GameObject_FortressSpike A");
 static const std::wstring PRO_OBJ_SPIKE_E				= TEXT("Prototype_GameObject_FortressSpike E");
+static const std::wstring PRO_OBJ_MOLOCH				= TEXT("Prototype_GameObject_Moloch");
+static const std::wstring PRO_OBJ_TEST_MONSTER			= TEXT("Prototype_GameObject_TEST_MONSTER");
+static const std::wstring PRO_OBJ_MOLOCH_BODY 			= TEXT("Prototype_GameObject_Moloch Body");
+static const std::wstring PRO_OBJ_MOLOCH_SWORD			= TEXT("Prototype_GameObject_Moloch Sword");
+static const std::wstring PRO_OBJ_CRYSTAL				= TEXT("Prototype_GameObject_Crystal");
+static const std::wstring PRO_OBJ_HP_FRAME				= TEXT("Prototype_GameObject_HP_Frame");
+static const std::wstring PRO_OBJ_HP_BAR				= TEXT("Prototype_GameObject_HP_Bar");
+static const std::wstring PRO_OBJ_NORMAL_TRAIL			= TEXT("Prototype_GameObject_Normal_Trail");
+//static const std::wstring PRO_OBJ_HP_BAR				= TEXT("Prototype_GameObject_HP_Bar");
 
 static const std::wstring PRO_OBJ_GROUND_DECAL			= TEXT("Prototype_GameObject_GroundDecal LG A");
 static const std::wstring PRO_OBJ_DAM_END				= TEXT("Prototype_GameObject_Dam EndCap A");
@@ -145,6 +180,7 @@ static const std::wstring PRO_OBJ_WODDEN_CIRCLE			= TEXT("Prototype_GameObject_W
 static const std::wstring PRO_OBJ_PILLAR_ALCOVE			= TEXT("Prototype_GameObject_Pillar Alcove A");
 
 
+
 /* Sockets */
 static const std::wstring SOCKET_LEFT_HAND				= TEXT("Socket_Strife_Hand L");
 static const std::wstring SOCKET_RIGHT_HAND				= TEXT("Socket_Strife_Hand R");
@@ -153,6 +189,12 @@ static const std::wstring SOCKET_HOLSTER_RIGHT			= TEXT("Socket_Strife_Holster R
 
 static const std::wstring SOCKET_GHOUL_LEFT_HAND		= TEXT("Socket_Ghoul_Hand L");
 static const std::wstring SOCKET_GHOUL_RIGHT_HAND		= TEXT("Socket_Ghoul_Hand R");
+
+static const std::wstring SOCKET_MOLOCH_LEFT_HAND		= TEXT("Socket_Moloch_Hand L");
+static const std::wstring SOCKET_MOLOCH_RIGHT_HAND		= TEXT("Socket_Moloch_Hand R");
+
+static const std::wstring SOCKET_DOG_LEFT_HAND			= TEXT("Socket_Dog_Hand L");
+static const std::wstring SOCKET_DOG_RIGHT_HAND			= TEXT("Socket_Dog_Hand R");
 
 /* Layers */
 static const std::wstring LAYER_DESERT_ROCK_1			= TEXT("Layer_Desert_Rock1");
@@ -164,6 +206,8 @@ static const std::wstring LAYER_DESERT_ROCK_2			= TEXT("Layer_Desert_Rock2");
 
 /* Component */
 static const std::wstring COM_FSM						= TEXT("Component_FSM");
+static const std::wstring COM_ATTACK					= TEXT("Component_Attack");
+static const std::wstring COM_STATUS					= TEXT("Component_Status");
 static const std::wstring COM_NAVI						= TEXT("Component_Navigation");
 static const std::wstring COM_VI_CELL					= TEXT("Component_VIBuffer_Cell");
 static const std::wstring COM_VI_CUBE					= TEXT("Component_VIBuffer_Cube");
@@ -173,14 +217,15 @@ static const std::wstring COM_VI_TERRAIN				= TEXT("Component_VIBuffer_Terrain")
 
 /* Collider */
 static const std::wstring COM_COLL						= TEXT("Component_Collider");
-
+static const std::wstring COM_COLL_AABB					= TEXT("Component_Collider_AABB");
+static const std::wstring COM_COLL_OBB					= TEXT("Component_Collider_OBB");
+static const std::wstring COM_COLL_SPHERE				= TEXT("Component_Collider_Sphere");
 
 static const std::wstring PRO_MODEL_RUIN_WALL_CNR_B		= TEXT("Prototype_Component_Model_Wall Cnr B");
 static const std::wstring PRO_MODEL_PILLAR_DECO_A		= TEXT("Prototype_Component_Model_Pillar Base Deco A");
 
 static const std::wstring PRO_OBJ_RUIN_WALL_CNR_B		= TEXT("Prototype_GameObject_Wall Cnr B");
 static const std::wstring PRO_OBJ_PILLAR_DECO_A			= TEXT("Prototype_GameObject_Pillar Base Deco A");
-
 
 
 
@@ -225,4 +270,55 @@ enum PLAYER_ANIMLIST
 	SWAP_IDLE,
 	SWAP_START,
 	ANIM_END
+};
+enum HP_TEXTURELIST
+{
+	HP_FRAME, HP_BAR, HP_END
+};
+enum SOUNDLIST
+{
+	SOUND_BGM,
+	SOUND_PLAYER_SHOOT,
+	SOUND_PLAYER_MOVE,
+	SOUND_PLAYER_DASH,
+	SOUND_MONSTER_HIT,
+	SOUND_MONSTER_HIT_VOICE,
+	SOUND_MOSNTER_ATTACK,
+	SOUND_MOSNTER_ATTACK_VOICE,
+	SOUND_MONSTER_FOOT,
+	SOUND_MONSTER_HAND,
+	SOUND_MONSTER_TURN,
+	SOUND_MONSTER_TURN_VOICE,		// 보스 용도 -> 데미지 입혔으면 SEARCH할때 웃는다?
+	SOUND_MONSTER_TURN_ATTACK,
+	SOUND_MOSNTER_DEAD,
+	SOUND_MOSNTER_DEAD_VOICE,
+	SOUND_DOG_SLASH,
+	SOUND_DOG_SLASH_VOICE,
+	SOUND_DOG_GOUND,
+	SOUND_DOG_GOUND_VOICE,
+	SOUND_DOG_3HIT,
+	SOUND_DOG_3HIT_VOICE,
+	SOUND_DOG_HIT,
+	SOUND_DOG_HIT_VOICE,
+	SOUND_GHOUL_HIT,
+	SOUND_GHOUL_HIT_VOICE,
+	SOUND_GHOUL_LEAF,
+	SOUND_GHOUL_LEAF_VOICE,
+	SOUND_GHOUL_DOUBLELEAF,
+	SOUND_GHOUL_DOUBLELEAF_VOICE,
+	SOUND_GHOUL_FLURRY,
+	SOUND_GHOUL_FLURRY_VOICE,
+	SOUND_MOLOCH_CRYSTALSPAWN,
+	SOUND_MOLOCH_180,
+	SOUND_MOLOCH_180_VOICE,
+	SOUND_MOLOCH_SWIPE,
+	SOUND_MOLOCH_SWIPE_VOICE,
+	SOUND_MOLOCH_SWING,
+	SOUND_MOLOCH_SWING_VOICE,
+	SOUND_MOLOCH_DASH,
+	SOUND_MOLOCH_DASH_VOICE,
+	SOUND_MOLOCH_GEYSER,
+	SOUND_MOLOCH_GEYSER_VOICE,
+
+
 };

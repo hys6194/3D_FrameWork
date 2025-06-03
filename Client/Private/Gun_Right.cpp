@@ -49,28 +49,26 @@ HRESULT CGun_Right::Initialize(void* pArg)
 
 void CGun_Right::Priority_Update(_float fTimeDelta)
 {
-    //m_pTransformCom->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-    //m_pTransformCom->Rotation(AXIS_X, XMConvertToRadians(-90.f));
-    //m_pTransformCom->Rotation(AXIS_Z, XMConvertToRadians(-180.f));
-    //m_pTransformCom->Rotation(XMQuaternionRotationAxis())
-    //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(20.f, -5.f, 12.5f, 1.f));
-
     m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(19.f, -5.f, 12.5f, 1.f));
 
     m_fTotalTime += m_pGameInstance->Get_TimeDelta(TIME60);
 
     if ((CPlayer::STATE_SHOOT & *m_pTargetState) && m_fCool < m_fTotalTime)
     {
+        m_pGameInstance->Stop_Sound(SOUND_PLAYER_SHOOT);
 
         Create_Bullet();
 
-        m_fCool += 0.2f;
+        _uint iNum = m_pGameInstance->Draw_RandomNum(4);
+        wstring strSoundName = TEXT("Strife_gunfire_") + to_wstring(iNum);
+        m_pGameInstance->Play_Sound(strSoundName, SOUND_PLAYER_SHOOT, 0.02f, false);
 
+        m_fCool += 0.3f;
     }
 
     else if (CPlayer::STATE_SHOOT & ~*m_pTargetState)
     {
-        m_fCool = 0.1f;
+        m_fCool = 0.15f;
         m_fTotalTime = 0.f;
     }
 
@@ -143,7 +141,7 @@ HRESULT CGun_Right::Create_Bullet()
 {
     _matrix matHand = XMMatrixMultiply(XMLoadFloat4x4(m_pHandMatrix), XMLoadFloat4x4(m_pParentMatrix));
     CBullet::BULLET_DESC Desc{};
-    Desc.fSpeedPerSec = 0.5f;
+    Desc.fSpeedPerSec = 1.f;
     lstrcpy(Desc.szGameObjectTag, TEXT("GameObject_Player_Bullet "));
 
     XMStoreFloat4(&Desc.fLook, m_pOwner->Get_Transform()->Get_State(CTransform::STATE_LOOK));
@@ -163,15 +161,7 @@ HRESULT CGun_Right::Bind_SR()
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
 
-    const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
-    NULL_CHECK_RETURN(pLightDesc, E_FAIL);
-
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)), E_FAIL);
    
 
     return S_OK;

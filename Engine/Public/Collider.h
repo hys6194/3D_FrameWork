@@ -6,8 +6,6 @@ BEGIN(Engine)
 
 class ENGINE_DLL CCollider final : public CComponent
 {
-public:
-	enum TYPE { TYPE_SPHERE, TYPE_AABB, TYPE_OBB, TYPE_END };
 private:
 	CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCollider(const CCollider& Prototype);
@@ -15,7 +13,28 @@ private:
 
 public:
 	virtual HRESULT							Initialize_Prototype();
+	virtual HRESULT							Initialize_Prototype(TYPE eType);
 	virtual HRESULT							Initialize(void* pArg) override;
+
+public:
+	class CBounding*						Get_Bounder()
+	{
+		return m_pBounding;
+	}
+
+	class CBounding*						Get_TargetBounder()
+	{
+		return m_pTargetBounding;
+	}
+
+	_bool									Is_Coll()
+	{
+		return m_isColl;
+	}
+
+public:
+	void									Set_Coll(_bool bToogle)	{ m_isColl = bToogle; }
+	void									Set_TargetColl(CBounding* pTargetBounding) { m_pTargetBounding = pTargetBounding; }
 
 public:
 	void									Update(_fmatrix WorldMatrix);
@@ -24,15 +43,20 @@ public:
 		m_isColl = false;
 	}
 
+	void									Check_CollisionHit();
+
 #ifdef _DEBUG
-	HRESULT Render();
+	virtual HRESULT							Render();
 #endif
 
 private:
-	TYPE									m_eColliderType = { TYPE_END };
 	class CBounding*						m_pBounding = { nullptr };
+	class CBounding*						m_pTargetBounding = { nullptr };
+	class CGameObject*						m_pOwner = { nullptr };
 
 	_bool									m_isColl = { false };
+
+	TYPE									m_eColliderType = { TYPE_END };
 
 #ifdef _DEBUG
 private:
@@ -44,6 +68,7 @@ private:
 
 public:
 	static CCollider*						Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CCollider*						Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType);
 	virtual CComponent*						Clone(void* pArg) override;
 	virtual void							Free() override;
 };

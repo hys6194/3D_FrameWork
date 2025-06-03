@@ -7,9 +7,16 @@ BEGIN(Engine)
 class CBounding_Sphere final : public CBounding
 {
 public:
-	typedef struct tagBoudingSphereDesc : public CBounding::BOUNDING_DESC
+	typedef struct tagBoudingSphereDesc
 	{
+		class CGameObject* pOwner;
+
+		TYPE		eType;
+		_wstring	strCollTag;
+		_uint		iOption;
 		_float		fRadius;
+		_float3		vCenter;
+		_uint		iAttack; // 아...이거 절대 아닌데
 	}BOUNDING_SPHERE_DESC;
 
 private:
@@ -17,29 +24,28 @@ private:
 	virtual ~CBounding_Sphere() = default;
 
 public:
-	virtual void* Get_Desc() {
+	BoundingSphere*				Get_Desc() {
 		return m_pDesc;
 	}
 
 public:
-	HRESULT Initialize(const CBounding::BOUNDING_DESC* pDesc);
-	virtual void Update(_fmatrix WorldMatrix) override;
+	HRESULT						Initialize(const CBounding_Sphere::BOUNDING_SPHERE_DESC* pDesc, class CCollider* pOwner);
+	virtual void				Update(_fmatrix WorldMatrix) override;
 public:
-	virtual _bool Intersect(CCollider::TYPE eType, CBounding* pTargetBound) override;
+	virtual _bool				Intersect(TYPE eType, CBounding* pTargetBound) override;
 
 #ifdef _DEBUG
 public:
-	virtual HRESULT Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor) override;
+	virtual HRESULT				Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor) override;
 #endif
 
 private:
 	BoundingSphere*				m_pLocalDesc = { nullptr };
-	BoundingSphere*				m_pDesc = { nullptr };
-	
+	BoundingSphere*				m_pDesc = { nullptr };	
 
 public:
-	static CBounding_Sphere* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc);
-	virtual void Free() override;
+	static CBounding_Sphere*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding_Sphere::BOUNDING_SPHERE_DESC* pDesc, class CCollider* pOwner);
+	virtual void				Free() override;
 
 };
 

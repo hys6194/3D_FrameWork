@@ -126,7 +126,7 @@ HRESULT CCell_Guide::Render()
         for (auto& iter : m_vecBufferComs)
         {
             iter->Bind_Input_Assembler();
-            //iter->Render();
+            iter->Render();
         }
 
     }
@@ -134,7 +134,7 @@ HRESULT CCell_Guide::Render()
     if(nullptr != m_pVIBufferCom)
     {
         m_pVIBufferCom->Bind_Input_Assembler();
-        //m_pVIBufferCom->Render();
+        m_pVIBufferCom->Render();
     }
 
 	return S_OK;
@@ -188,7 +188,7 @@ void CCell_Guide::Correct_CellPoint(_vector vCoord)
     if (m_vecCellPos.empty())
         m_vPoint[m_iIndex];
 
-    _vector vDistance = { 0.5f, 0.5f, 0.5f, 1.f };
+    _vector vDistance = { 1.f, 1.f, 1.f, 1.f };
 
     for (auto iter = m_vecCellPos.rbegin();
         iter != m_vecCellPos.rend();

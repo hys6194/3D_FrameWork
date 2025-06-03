@@ -1,12 +1,20 @@
 #include "Ghoul.h"
 #include "Monster.h"
-
+#include "Status.h"
+#include "Attack.h"
+#include "HP_Frame.h"
+#include "HP_Bar.h"
 
 #include "Fist_Left.h"
 #include "Fist_Right.h"
 #include "Body_Ghoul.h"
 #include "GameInstance.h"
 
+#include "GhoulAttack_Leaf.h"
+#include "GhoulAttack_Flurry.h"
+#include "GhoulAttack_DoubleSwipe.h"
+
+#include "MonsterState_LookOut.h"
 #include "MonsterState_Attack.h"
 #include "MonsterState_Search.h"
 #include "MonsterState_Trace.h"
@@ -32,30 +40,15 @@ HRESULT CGhoul::Initialize_Prototype()
 
 HRESULT CGhoul::Initialize(void* pArg)
 {
-    MONSTER_DESC Desc{};
+    MONSTER_DESC* pMonsterDesc = static_cast<MONSTER_DESC*>(pArg);
 
-    Desc.bBoss = false;
-    Desc.bWave = false;
-    Desc.fSpeedPerSec = 10.f;
-    Desc.fRotationPerSec = XMConvertToRadians(90.f);
-    Desc.iState = STATE_IDLE;
-    m_iState = Desc.iState;
-    
-    // 해당 객체를 생성할 때마다 인덱스를 증가하는 방식으로
-    // 충돌체에서 사용할 거임
-    // 근데 이거 1로만 증가하게됨 안 쓰는게 나아 보일지도
-    // 다른 방법을 생각해보자
-    m_iIndex = m_iIndex + 1;
-
-    FAILED_CHECK_RETURN(__super::Initialize(&Desc), E_FAIL);
+    FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
     FAILED_CHECK_RETURN(Ready_PartObjects(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_States(), E_FAIL);
+    FAILED_CHECK_RETURN(Ready_UI_HP(), E_FAIL);
 
-    // 잠깐 랜덤 생성시키기
-    m_pTransformCom->Set_State(CTransform::STATE_POS,
-        XMVectorSet(m_pGameInstance->Random(0.f, 10.f), 2.f, m_pGameInstance->Random(0.f, 10.f), 1.f));
-
+    m_pTransformCom->Set_State(CTransform::STATE_POS, m_vPos);
     m_pFSMCom->Change_State(m_iState);
 
     return S_OK;
@@ -64,42 +57,6 @@ HRESULT CGhoul::Initialize(void* pArg)
 void CGhoul::Priority_Update(_float fTimeDelta)
 {
     __super::Priority_Update(fTimeDelta);
-
-   if (m_pGameInstance->Key_Down(DIK_1))
-       m_iState = STATE_HIT;
-   
-   if (m_pGameInstance->Key_Down(DIK_2))
-	   m_iState = STATE_IDLE;
-
-   if (m_pGameInstance->Key_Down(DIK_3))
-	   m_iState = STATE_DEAD;
-
-   if (m_pGameInstance->Key_Down(DIK_4))
-       m_iState = STATE_SEARCH;  
-
-   if (m_pGameInstance->Key_Down(DIK_5))
-       m_iState = STATE_AVOID;
-
-   if (m_pGameInstance->Key_Down(DIK_6))
-       m_iState = STATE_ATTACK;
-
-   if (m_pGameInstance->Key_Down(DIK_7))
-       m_iState = STATE_TRACE;
-
-   if (m_pGameInstance->Key_Down(DIK_8))
-   {
-       m_bHit = true;
-       m_bRec = true;
-   }
-   else
-       m_bHit = false;
-
-   //m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(1.61f, 2.96f, 34.18f, 1.00f));
-
-
-
-
-
 }
 
 void CGhoul::Update(_float fTimeDelta)
@@ -122,9 +79,12 @@ HRESULT CGhoul::Render()
 
 HRESULT CGhoul::Ready_PartObjects()
 {
+    // 손에 어떻게 충돌체를 어떻게 부착해야 함?
+
     CBody_Ghoul::BODY_MONSTER_DESC		BodyDesc{};
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     BodyDesc.pTargetState = &m_iState;
+    BodyDesc.pOwner = this;
     
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_GHOUL_BODY, PART_BODY, &BodyDesc), E_FAIL);
 
@@ -141,9 +101,7 @@ HRESULT CGhoul::Ready_PartObjects()
     FDesc2.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
     FDesc2.pTargetState = &m_iState;
     FDesc2.pOwner = this;
-
     FAILED_CHECK_RETURN(__super::Add_PartObject(LEVEL_GAMEPLAY, PRO_OBJ_R_FIST, PART_RIGHT, &FDesc2), E_FAIL);
-
 
 
     return S_OK;
@@ -151,8 +109,6 @@ HRESULT CGhoul::Ready_PartObjects()
 
 HRESULT CGhoul::Ready_States()
 {
-    // 이 구조 좋다
-    // 차라리 출력해줘야 할 애니메이션을 세팅하는게 훨 낫다
     CState* pState = nullptr;
 
     // 애초에 Pointer로 만들어서 문제인건가?
@@ -171,8 +127,17 @@ HRESULT CGhoul::Ready_States()
     pState = CMonsterState_Attack::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_FLURRY);
     m_pFSMCom->Add_State(CMonster::STATE_ATTACK, pState);
 
-    pState = CMonsterState_Avoid::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_EVADE_LEFT);
-    m_pFSMCom->Add_State(CMonster::STATE_AVOID, pState);
+    pState = CGhoulAttack_Leaf::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_LEAP, 5.f);
+    m_pAttackCom->Regist_AttackPattern(GHOUL_ATK_LEAP, static_cast<CAttack_Base*>(pState));
+
+    pState = CGhoulAttack_Flurry::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_FLURRY, 5.f);
+    m_pAttackCom->Regist_AttackPattern(GHOUL_ATK_FLURRY, static_cast<CAttack_Base*>(pState));
+
+    pState = CGhoulAttack_DoubleSwipe::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_ATK_DOUBLESWIPE, 5.f);
+    m_pAttackCom->Regist_AttackPattern(GHOUL_ATK_DOUBLESWIPE, static_cast<CAttack_Base*>(pState));
+
+    pState = CMonsterState_LookOut::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_WALK_L);
+    m_pFSMCom->Add_State(CMonster::STATE_LOOKOUT, pState);
 
     pState = CMonsterState_Trace::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_RUN_F);
     m_pFSMCom->Add_State(CMonster::STATE_TRACE, pState);
@@ -184,21 +149,77 @@ HRESULT CGhoul::Ready_Components()
 {
     __super::Ready_Components();
 
-    CBounding_OBB::BOUNDING_OBB_DESC		ColliderDesc{};
+    CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
     ColliderDesc.vExtents = _float3(1.f, 2.f, 1.f);
     ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
-    ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
-    ColliderDesc.bColls = true;
-    ColliderDesc.strCollTag = Get_Name() + TEXT("_Body ") + std::to_wstring(m_iIndex);
-    ColliderDesc.iOption = CCollision_Manager::OP_TARGET;
-    ColliderDesc.eType = CCollider::TYPE_OBB;
+    //ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
+    //ColliderDesc.strCollTag = Get_Name() + TEXT("_Body ") + std::to_wstring(m_iIndex);
+    ColliderDesc.eType = TYPE_AABB;
+    ColliderDesc.strCollTag = Get_Name() + TEXT("_Body");
+    ColliderDesc.iOption = COLL_OPT::OP_TARGET;
+    ColliderDesc.pOwner = this;
     
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
-    	reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &ColliderDesc), E_FAIL);
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_AABB,
+    	reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_AABB]), COM_COLL_AABB, &ColliderDesc), E_FAIL);
     
+    CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
+    SphereDesc.fRadius = 1.f;
+    SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    SphereDesc.strCollTag = Get_Name() + TEXT("_Body_Detect");
+    SphereDesc.iOption = COLL_OPT::OP_DETECT;
+    SphereDesc.eType = TYPE::TYPE_SPHERE;
+    SphereDesc.pOwner = this;
+
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
+        reinterpret_cast<CComponent**>(&m_pColliderCom[COLL_SPHERE]), COM_COLL_SPHERE, &SphereDesc), E_FAIL);
+
+
+    CStatus::STATUS_DESC StatusDesc{};
+    StatusDesc.iAttack = 2;
+    StatusDesc.iHP = 100;
+    //StatusDesc.iHP = 1;
+    StatusDesc.pOwner = this;
+
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_STATUS,
+        reinterpret_cast<CComponent**>(&m_pStatusCom), COM_STATUS, &StatusDesc), E_FAIL);
+
+
     
     return S_OK;
 }
+
+HRESULT CGhoul::Ready_UI_HP()
+{
+    //CHP_Frame::HPFRAME_DESC FrameDesc{};
+    //FrameDesc.fX = m_pTransformCom->Get_State(CTransform::STATE_POS).m128_f32[0];
+    //FrameDesc.fY = m_pTransformCom->Get_State(CTransform::STATE_POS).m128_f32[1];
+    //FrameDesc.fSizeX = 150;
+    //FrameDesc.fSizeY = 50;
+    //FrameDesc.strFrameTag = PRO_TEX_MONSTER_HP_FRAME;
+    //FrameDesc.iPass = 1;
+    //
+    //FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_FRAME,
+    //	LEVEL_GAMEPLAY, TEXT("GameObject_Monster_HP_Frame "), &FrameDesc), E_FAIL);
+
+    CHP_Bar::HPBAR_DESC BarDesc{};
+    BarDesc.pOwner = this;
+
+    _float4 fPos{};
+    XMStoreFloat4(&fPos, m_pTransformCom->Get_State(CTransform::STATE_POS));
+    BarDesc.fX = fPos.x;
+    BarDesc.fY = fPos.y;
+    BarDesc.fSizeX = 200;
+    BarDesc.fSizeY = 40;
+    BarDesc.iPass = 1;
+    BarDesc.pOwner = this;
+
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_HP_BAR,
+        LEVEL_GAMEPLAY, TEXT("GameObject_Monster_HP_Bar "), &BarDesc), E_FAIL);
+
+    return S_OK;
+}
+
+
 
 CGhoul* CGhoul::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
@@ -229,6 +250,13 @@ CGameObject* CGhoul::Clone(void* pArg)
 void CGhoul::Free()
 {
     __super::Free();
-    Safe_Release(m_pColliderCom);
+
+#ifdef _DEBUG
+    for (size_t i = 0; i < TYPE_END; i++)
+    {
+        Safe_Release(m_pColliderCom[i]);
+    }
+
+#endif
 
 }

@@ -3,10 +3,12 @@
 #include "Client_Defines.h"
 #include "ContainerObject.h"
 
+
 BEGIN(Engine)
 class CFSM;
 class CNavigation;
 class CCollider;
+class CTexture; 
 END
 
 BEGIN(Client)
@@ -38,6 +40,7 @@ public:
 		KEY_RB				= 0x00000080,
 		KEY_NONE			= 0x00000000,
 	};
+	enum PLAYER_COLLTYPE { COLL_AABB, COLL_OBB, COLL_SPHERE, COLL_END };
 
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -80,8 +83,10 @@ public:
 		m_bCanMove = bMove;
 	}
 
-//public:
-//	CNavigation*			Get_NavigationCom();// 이거 왜 만듬?
+	_bool					Is_Hit()
+	{
+		return m_bHit;
+	}
 
 public:
 	virtual HRESULT			Initialize_Prototype() override;
@@ -91,28 +96,30 @@ public:
 	virtual void			Late_Update(_float fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
-
-	// 파츠들을 모아서 렌더를 할 것인데, PartObject를 상속받는 클래스에서 생성하고 그 클래스에서 렌더를 할 예정이기 때문에 쓸모가 없어짐
-	//private:
-	//	CShader*					m_pShaderCom = { nullptr };	
-	//	CModel*						m_pModelCom = { nullptr };
 private:
-	_uint					m_iState		= { STATE_NONE };
-	_uint					m_iKey			= { KEY_DOWN };
+	_uint					m_iState			= { STATE_NONE };
+	_uint					m_iKey				= { KEY_DOWN };
 
 
-	_bool					m_bIsDashed		= { false };
-	_bool					m_bCanMove		= { true };
+	_bool					m_bIsDashed			= { false };
+	_bool					m_bCanMove			= { true };
+	_bool					m_bHit				= { false };
+
+	_float					m_fTotalTime = { 0.f };
 
 private:
-	CFSM*					m_pFSMCom		= { nullptr };
-	CNavigation*			m_pNavigationCom = { nullptr };
-	CCollider*				m_pColliderCom = { nullptr };
+	CFSM*					m_pFSMCom					= { nullptr };
+	CCollider*				m_pColliderCom[COLL_END]	= { nullptr };
+	CNavigation*			m_pNavigationCom			= { nullptr };
+	//CTexture*				m_pTextureCom[HP_END]		= { nullptr };
+	class CStatus*			m_pStatusCom				= { nullptr };
+
 
 private:
 	HRESULT					Ready_Components();
 	HRESULT					Ready_PartObjects();
 	HRESULT					Ready_States();
+	HRESULT					Ready_UI_HP();
 	HRESULT					Bind_SR();
 
 private:

@@ -3,22 +3,13 @@
 #include "GameInstance.h"
 
 CBody_Ghoul::CBody_Ghoul(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CPartObject{ pDevice, pContext }
+	: CBody_Monster{ pDevice, pContext }
 {
 }
 
 CBody_Ghoul::CBody_Ghoul(const CBody_Ghoul& Prototype)
-	: CPartObject{ Prototype }
+	: CBody_Monster{ Prototype }
 {
-}
-
-const _float4x4* CBody_Ghoul::Get_f4SocketMatrix(const _wstring& strSocketName)
-{
-	auto iter = m_mapSocketmat.find(strSocketName);
-	if (iter == m_mapSocketmat.end())
-		return nullptr;
-
-	return iter->second;
 }
 
 HRESULT CBody_Ghoul::Initialize_Prototype()
@@ -30,10 +21,7 @@ HRESULT CBody_Ghoul::Initialize(void* pArg)
 {
 	NULL_CHECK_RETURN(pArg, E_FAIL);
 
-	BODY_MONSTER_DESC* pDesc = static_cast<BODY_MONSTER_DESC*>(pArg);
-	m_pTargetState = *pDesc->pTargetState;
-
-	FAILED_CHECK_RETURN(__super::Initialize(pDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Component(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_SocketMatrices(), E_FAIL);
 
@@ -46,13 +34,16 @@ void CBody_Ghoul::Priority_Update(_float fTimeDelta)
 
 void CBody_Ghoul::Update(_float fTimeDelta)
 {
-	XMStoreFloat4x4(&m_CombinedWorldMatrix,
-		XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentMatrix));
+	__super::Update(fTimeDelta);
+
+	//XMStoreFloat4x4(&m_CombinedWorldMatrix,
+	//	XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()) * XMLoadFloat4x4(m_pParentMatrix));
 }
 
 void CBody_Ghoul::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+	__super::Late_Update(fTimeDelta);
+	//m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
 HRESULT CBody_Ghoul::Render()
@@ -60,22 +51,7 @@ HRESULT CBody_Ghoul::Render()
 	if (FAILED(Bind_SR()))
 		return E_FAIL;
 
-	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
-
-	for (size_t i = 0; i < iNumMeshes; i++)
-	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture",
-			aiTextureType_DIFFUSE, i, 0)))
-			return E_FAIL;
-
-		m_pModelCom->Bind_BoneMatrix(m_pShaderCom, "g_BoneMatrices", i);
-
-		if (FAILED(m_pShaderCom->Begin(0)))
-			return E_FAIL;
-
-		if (FAILED(m_pModelCom->Render(i)))
-			return E_FAIL;
-	}
+	__super::Render();
 
 	return S_OK;
 
@@ -83,8 +59,23 @@ HRESULT CBody_Ghoul::Render()
 
 HRESULT CBody_Ghoul::Ready_Component()
 {
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
-		reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
+	CModel::MODEL_DESC Desc{};
+
+	Desc.strRootBoneTag = TEXT("Bone_SW_Root");
+	Desc.fAngles = _float3(0.f, 90.f, 90.f);
+
+
+	_uint iNum = m_pGameInstance->Draw_RandomNum(2);
+	if(1 == iNum)
+	{
+		FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_GHOUL,
+			reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model"), &Desc), E_FAIL);
+	}
+	else
+	{
+		FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_FALLEN_GHOUL,
+			reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model"), &Desc), E_FAIL);
+	}
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_ANIM,
 		reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
@@ -111,15 +102,6 @@ HRESULT CBody_Ghoul::Bind_SR()
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
-
-	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
-	NULL_CHECK_RETURN(pLightDesc, E_FAIL);
-
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)), E_FAIL);
 
 	return S_OK;
 }
@@ -154,8 +136,4 @@ CGameObject* CBody_Ghoul::Clone(void* pArg)
 void CBody_Ghoul::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pModelCom);
-	Safe_Release(m_pShaderCom);
-
 }

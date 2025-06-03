@@ -38,18 +38,64 @@ HRESULT CTP_Camera::Initialize(void* pArg)
 
 void CTP_Camera::Priority_Update(_float fTimeDelta)
 {
-	_vector vPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
+	if (m_pGameInstance->Get_DIKeyState(DIK_SPACE))
+		m_bChange = !m_bChange;
 
-	_vector vEye = XMVectorSetW(XMLoadFloat3(&m_vCamEye), 0.f) + vPos;
-	_vector vLook = vPos - vEye;
+	if (m_bChange)
+	{
+		if (m_pGameInstance->Key_Pressing(DIK_UP))
+		{
+			m_pTransformCom->Go_Straight(fTimeDelta * 3);
+		}
+		if (m_pGameInstance->Key_Pressing(DIK_DOWN))
+		{
+			m_pTransformCom->Go_Backward(fTimeDelta * 3);
+		}
+		if (m_pGameInstance->Key_Pressing(DIK_LEFT))
+		{
+			m_pTransformCom->Go_Left(fTimeDelta * 3);
+		}
+		if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
+		{
+			m_pTransformCom->Go_Right(fTimeDelta * 3);
+		}
 
-	vLook = XMVector4Normalize(vLook);
-	//m_pTransformCom->LookAt(XMVectorSetW(vLook, 1.f));
+		_long		MouseMove{};
 
-	m_pTransformCom->Set_State(CTransform::STATE_POS, vEye);
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVectorSetW(vLook, 0.f));
-	 
+		if (MouseMove = m_pGameInstance->Get_DIMouseMove(MOUSEMOVESTATE::DIMS_X))
+		{
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * m_fMouseSensor);
+		}
+
+		if (MouseMove = m_pGameInstance->Get_DIMouseMove(MOUSEMOVESTATE::DIMS_Y))
+		{
+			m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * m_fMouseSensor);
+		}
+	}
+
+	else
+	{
+		_vector vPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POS);
+
+		_vector vEye = XMVectorSetW(XMLoadFloat3(&m_vCamEye), 0.f) + vPos;
+
+		_vector vLook = vPos - vEye;
+
+		vLook = XMVector3Normalize(vLook);
+
+		_vector vUp = XMVector3Normalize(XMVector3Cross(vLook, XMVector3Normalize(m_pTransformCom->Get_State(CTransform::STATE_RIGHT))));
+		_vector vRight = XMVector3Normalize(XMVector3Cross(vUp, vLook));
+
+		m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+		m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+		m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+		m_pTransformCom->Set_State(CTransform::STATE_POS, vEye);
+	}
+
+	
+
 	__super::Renew_Matrices();
+
 }
 
 void CTP_Camera::Update(_float fTimeDelta)

@@ -30,14 +30,22 @@ HRESULT CBullet::Initialize(void* pArg)
     FAILED_CHECK_RETURN(Ready_Component(), E_FAIL)
 
     m_pTransformCom->Set_Matrix(&m_matHand);
-    m_pTransformCom->SetUp_Scaled(3.f, 3.f, 3.f);
+    m_pTransformCom->SetUp_Scaled(2.f, 2.f, 2.f);
+
+
+    CNormal_Trail::NORMALTRAIL_DESC Desc{};
+    _float3 fColorBase =  m_pGameInstance->Convert_ColorCodes(138, 43, 226);
+    Desc.fColor = _float4(fColorBase.x, fColorBase.y, fColorBase.z, 1.f);
+
+    FAILED_CHECK_RETURN(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, PRO_OBJ_NORMAL_TRAIL, 
+        LEVEL_GAMEPLAY, TEXT("GameObject_Normal_Trail"), &Desc), E_FAIL);
 
     return S_OK;
 }
 
 void CBullet::Priority_Update(_float fTimeDelta)
 {
-    m_pColliderCom->Reset();
+    //m_pColliderCom->Reset();
 
 }
 
@@ -52,17 +60,13 @@ void CBullet::Update(_float fTimeDelta)
     m_pTransformCom->Set_State(CTransform::STATE_POS, vTest);
 
 
-    if (10.f < m_fTotalTime /*||
-        몬스터와 충돌했을 때*/ )
+    if (10.f < m_fTotalTime ||
+        m_pColliderCom->Is_Coll())
     {
-        // 총알 사라짐 구현해야 함
-        // 
-        // 아니 근데 몬스터도 어떻게 사라지게 해야하냐? 
-        //
-        // 
-
-        //m_pGameInstance->Delete_LastObject();
+        m_pGameInstance->Secede_Update(m_pColliderCom->Get_Bounder());
+        m_bDisappear = true;
     }
+
     m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
 }
@@ -70,10 +74,20 @@ void CBullet::Update(_float fTimeDelta)
 void CBullet::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+    if (m_bDisappear)
+        return;
+
+#ifdef _DEBUG
+    //m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom);
+#endif
 }
 
 HRESULT CBullet::Render()
 {
+    if (m_bDisappear)
+        return E_ABORT;
+
     if (FAILED(Bind_SR()))
         return E_FAIL;
 
@@ -93,7 +107,7 @@ HRESULT CBullet::Render()
     }
 
 #ifdef _DEBUG
-    m_pColliderCom->Render();
+    //m_pColliderCom->Render();
 #endif 
 
     return S_OK;
@@ -102,25 +116,24 @@ HRESULT CBullet::Render()
 HRESULT CBullet::Ready_Component()
 {
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_FORK,
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_MODEL_BULLET,
         reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_SHADER_MESH,
-        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL)
-        ;
+        reinterpret_cast<CComponent**>(&m_pShaderCom), TEXT("Com_Shader")), E_FAIL);
+
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
-    SphereDesc.fRadius = 0.2f;
-    SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
-    SphereDesc.bColls = true;
-    SphereDesc.strCollTag = Get_Name() + std::to_wstring(m_iIndex);
-    SphereDesc.iOption = CCollision_Manager::OP_IMPACT;
-    SphereDesc.eType = CCollider::TYPE_SPHERE;
+    SphereDesc.fRadius      = 0.2f;
+    SphereDesc.vCenter      = _float3(0.f, 0.f, 0.f);
+    SphereDesc.strCollTag   = Get_Name();
+    SphereDesc.iOption      = COLL_OPT::OP_IMPACT;
+    SphereDesc.eType =      TYPE::TYPE_SPHERE;
 
-
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc)))
         return E_FAIL;
 
+    m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
 
     return S_OK;
 }
@@ -130,15 +143,7 @@ HRESULT CBullet::Bind_SR()
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldMatrix_Ptr()), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
-
-    const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
-    NULL_CHECK_RETURN(pLightDesc, E_FAIL);
-
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)), E_FAIL);
+        
     return S_OK;
 }
 

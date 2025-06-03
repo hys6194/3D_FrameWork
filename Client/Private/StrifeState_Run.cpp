@@ -14,6 +14,8 @@ HRESULT CStrifeState_Run::Enter_State()
 {
     Set_CurAnimation();
 
+    //m_pGameInstance->Play_Sound(TEXT("Strife_foot_01"), SOUND_PLAYER_MOVE, 0.3f, true);
+
     return S_OK;
 }
 
@@ -33,6 +35,16 @@ void CStrifeState_Run::PriorityUpdate_State(_float fTimeDelta)
         return;
     }
 
+    // 야 랜덤 만든 나 ㅈㄴ 칭찬해 개신박하네 이거
+    if (9 < m_pModelCom->Get_CurKeyFrameIndex() ||
+        11 > m_pModelCom->Get_CurKeyFrameIndex())
+    {
+        _uint iNum = m_pGameInstance->Draw_RandomNum(4);
+        wstring strSoundName = TEXT("Strife_foot_") + to_wstring(iNum);
+        m_pGameInstance->Play_Sound(strSoundName, SOUND_PLAYER_MOVE, 0.1f, true);
+    }
+
+
     PlayerMove(fTimeDelta);
   
 }
@@ -51,6 +63,7 @@ void CStrifeState_Run::LateUpdate_State(_float fTimeDelta)
 HRESULT CStrifeState_Run::Exit_State()
 {
     Set_PreAnimation();
+    m_pGameInstance->Stop_Sound(SOUND_PLAYER_MOVE);
     return S_OK;
 }
 
@@ -80,52 +93,95 @@ void CStrifeState_Run::Set_PreAnimation()
 void CStrifeState_Run::PlayerMove(_float fTimeDelta)
 {
     // 나중에 시간 나면 수정하자 머리 아프다
+
+    _bool bCheck = false;
+    _float fRadian = XMConvertToRadians(720.f);
+
     switch (m_iKeyState)
     {
+        case (CPlayer::KEY_DOWN | CPlayer::KEY_LEFT):
+            bCheck = m_pOwner->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, XMVector3Normalize(XMVectorAdd(-AXIS_X, -AXIS_Z)), true);
+            if (bCheck)
+                m_pOwner->Get_Transform()->Set_RotationSpeed(0.f);
+            else
+                m_pOwner->Get_Transform()->Set_RotationSpeed(fRadian);
 
-    case (CPlayer::KEY_DOWN | CPlayer::KEY_LEFT):
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-135.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
+            m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+            break;
 
-    case (CPlayer::KEY_UP | CPlayer::KEY_LEFT):
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-45.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
+        case (CPlayer::KEY_UP | CPlayer::KEY_LEFT):
+            m_pOwner->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, XMVector3Normalize(XMVectorAdd(-AXIS_X, AXIS_Z)), true);
+            if (bCheck)
+                m_pOwner->Get_Transform()->Set_RotationSpeed(0.f);
+            else
+                m_pOwner->Get_Transform()->Set_RotationSpeed(fRadian);
 
-    case(CPlayer::KEY_UP | CPlayer::KEY_RIGHT):
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(45.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
+            m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+            break;
 
-    case(CPlayer::KEY_RIGHT | CPlayer::KEY_DOWN):
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(135.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
+        case(CPlayer::KEY_UP | CPlayer::KEY_RIGHT):
+            m_pOwner->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, XMVector3Normalize(XMVectorAdd(AXIS_X, AXIS_Z)), true);
+            if (bCheck)
+                m_pOwner->Get_Transform()->Set_RotationSpeed(0.f);
+            else
+                m_pOwner->Get_Transform()->Set_RotationSpeed(fRadian);
 
-    case CPlayer::KEY_DOWN:
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(180.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
+            m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+            break;
 
-    case CPlayer::KEY_LEFT:
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(-90.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
+        case(CPlayer::KEY_RIGHT | CPlayer::KEY_DOWN):
+            m_pOwner->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, XMVector3Normalize(XMVectorAdd(AXIS_X, -AXIS_Z)), true);
+            if (bCheck)
+                m_pOwner->Get_Transform()->Set_RotationSpeed(0.f);
+            else
+                m_pOwner->Get_Transform()->Set_RotationSpeed(fRadian);
 
-    case CPlayer::KEY_RIGHT:
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(90.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
+            m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+            break;
 
-    case CPlayer::KEY_UP:
-        m_pOwner->Get_Transform()->Rotation(AXIS_Y, XMConvertToRadians(0.f));
-        m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
-        break;
+        case CPlayer::KEY_DOWN:
+            m_pOwner->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, -AXIS_Z, true);
+            if (bCheck)
+                m_pOwner->Get_Transform()->Set_RotationSpeed(0.f);
+            else
+                m_pOwner->Get_Transform()->Set_RotationSpeed(fRadian);
 
-    default:
-        dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(CPlayer::STATE_IDLE);
-        break;
+            m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+            break;
+
+        case CPlayer::KEY_LEFT:
+            m_pOwner->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, -AXIS_X, true);
+            if (bCheck)
+                m_pOwner->Get_Transform()->Set_RotationSpeed(0.f);
+            else
+                m_pOwner->Get_Transform()->Set_RotationSpeed(fRadian);
+
+            m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+            break;
+
+        case CPlayer::KEY_RIGHT:
+            m_pOwner->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, AXIS_X, true);
+            if (bCheck)
+                m_pOwner->Get_Transform()->Set_RotationSpeed(0.f);
+            else
+                m_pOwner->Get_Transform()->Set_RotationSpeed(fRadian);
+
+            m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+            break;
+
+        case CPlayer::KEY_UP:
+            m_pOwner->Get_Transform()->Turn_ToTarget(AXIS_Y, fTimeDelta, AXIS_Z, true);
+            if (bCheck)
+                m_pOwner->Get_Transform()->Set_RotationSpeed(0.f);
+            else
+                m_pOwner->Get_Transform()->Set_RotationSpeed(fRadian);
+
+            m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, dynamic_cast<CNavigation*>(m_pOwner->Get_Component(COM_NAVI)));
+            break;
+
+        default:
+            dynamic_cast<CPlayer*>(m_pOwner)->Set_PlayerState(CPlayer::STATE_IDLE);
+            break;
     }
 }
 

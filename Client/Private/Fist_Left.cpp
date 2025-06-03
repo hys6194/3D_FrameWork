@@ -11,6 +11,7 @@ CFist_Left::CFist_Left(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CFist_Left::CFist_Left(const CFist_Left& Prototype)
     : CPartObject{ Prototype }
+    , m_pOwner { Prototype.m_pOwner }
 {
 }
 
@@ -35,6 +36,7 @@ HRESULT CFist_Left::Initialize(void* pArg)
     FAILED_CHECK_RETURN(Ready_Components(), E_FAIL);
 
     m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
+ 
 
 
     return S_OK;
@@ -67,10 +69,20 @@ void CFist_Left::Update(_float fTimeDelta)
 void CFist_Left::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+    if (static_cast<CMonster*>(m_pOwner)->Is_Dead())
+        return;
+
+#ifdef _DEBUG
+    m_pGameInstance->Add_Renderer_DebugComponent(m_pColliderCom);
+#endif
 }
 
 HRESULT CFist_Left::Render()
 {
+    if (static_cast<CMonster*>(m_pOwner)->Is_Dead())
+        return S_OK;
+
 #ifdef _DEBUG
     m_pColliderCom->Render();
 #endif 
@@ -83,13 +95,17 @@ HRESULT CFist_Left::Ready_Components()
     CBounding_Sphere::BOUNDING_SPHERE_DESC		SphereDesc{};
     SphereDesc.fRadius = 0.5f;
     SphereDesc.vCenter = _float3(0.f, SphereDesc.fRadius, 0.f);
-    SphereDesc.bColls = true;
-    SphereDesc.iOption = CCollision_Manager::OP_IMPACT;
-    SphereDesc.eType = CCollider::TYPE_SPHERE;
-    SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Left ") + std::to_wstring(m_pOwner->Get_Index());
+    SphereDesc.strCollTag = m_pOwner->Get_Name() + TEXT("_Fist_Left");
+    SphereDesc.iOption = COLL_OPT::OP_IMPACT;
+    SphereDesc.eType = TYPE::TYPE_SPHERE;
+    SphereDesc.pOwner = m_pOwner;
 
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL,
+
+    // ¿Ã πÊΩƒ¿Ã »Œ ≥¥±‰«œ¥Ÿ
+    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, PRO_COM_COLL_SPHERE,
         reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &SphereDesc), E_FAIL);
+
+    //m_pGameInstance->Regist_Update(m_pColliderCom->Get_Bounder());
 
     return S_OK;
 }
@@ -102,15 +118,6 @@ HRESULT CFist_Left::Bind_SR()
     FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
-
-    const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
-    NULL_CHECK_RETURN(pLightDesc, E_FAIL);
-
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)), E_FAIL);
    
 
     return S_OK;

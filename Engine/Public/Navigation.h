@@ -18,6 +18,9 @@ private:
 	virtual ~CNavigation() = default;
 
 public:
+	_int Get_CellIndex() { return m_iCurrentCellIndex; }
+
+public:
 	virtual HRESULT Initialize_Prototype(const _tchar* pNavigationDataFilePath);
 	virtual HRESULT Initialize(void* pArg);
 

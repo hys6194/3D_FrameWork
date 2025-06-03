@@ -15,11 +15,14 @@ public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 
+#ifdef _DEBUG
+	virtual HRESULT Render() { return S_OK; }
+#endif
+
 protected:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
 	class CGameInstance* m_pGameInstance = { nullptr };
-
 
 	_bool					m_isCloned = { false };
 

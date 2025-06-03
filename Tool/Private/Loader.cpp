@@ -272,10 +272,10 @@ HRESULT Loader::Loading_Models()
 		return E_FAIL;
 
 
-	/* Colliders */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_COLL,
-		CCollider::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	///* Colliders */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, PRO_COM_COLL,
+	//	CCollider::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 
 	return S_OK;

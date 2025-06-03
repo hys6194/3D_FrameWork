@@ -21,7 +21,7 @@ HRESULT CMap_Object::Initialize(void* pArg)
 
     //m_iIndex = m_pDesc.iObjectIndex;
     
-    //wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(m_pDesc.iObjectIndex);
+    wstring strGameObjectTag = TEXT("Game_MapObject") + std::to_wstring(m_pDesc.iObjectIndex);
 
     lstrcpy(Desc->szGameObjectTag, TEXT("Game_MapObject"));
  
@@ -50,12 +50,12 @@ void CMap_Object::Priority_Update(_float fTimeDelta)
 
 void CMap_Object::Update(_float fTimeDelta)
 {
-    m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+    //m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 }
 
 void CMap_Object::Late_Update(_float fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_BLEND, this);
+    m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
 HRESULT CMap_Object::Render()
@@ -96,15 +96,15 @@ HRESULT CMap_Object::Ready_Components(const wstring _strModelTag)
     FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, _strModelTag,
         reinterpret_cast<CComponent**>(&m_pModelCom), TEXT("Com_Model")), E_FAIL);
 
-    CBounding_OBB::BOUNDING_OBB_DESC OBBDesc{};
-
-    OBBDesc.vRotation = _float3(0.f, 0.f, 0.f);
-    OBBDesc.vExtents = _float3(5.f, 1.f, 5.f);
-    OBBDesc.vCenter = _float3(0.f, 0.f, 0.f);
-    OBBDesc.eType = CCollider::TYPE_OBB;
-
-    FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_COM_COLL,
-        reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &OBBDesc), E_FAIL);
+    //CBounding_OBB::BOUNDING_OBB_DESC OBBDesc{};
+    //
+    //OBBDesc.vRotation = _float3(0.f, 0.f, 0.f);
+    //OBBDesc.vExtents = _float3(5.f, 1.f, 5.f);
+    //OBBDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    ////OBBDesc.eType = TYPE_OBB;
+    //
+    //FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_TOOL, PRO_COM_COLL,
+    //    reinterpret_cast<CComponent**>(&m_pColliderCom), COM_COLL, &OBBDesc), E_FAIL);
 
     return S_OK;
 }
@@ -115,15 +115,6 @@ HRESULT CMap_Object::Bind_SR()
     FAILED_CHECK_RETURN(m_pTransformCom->Bind_SR("g_WorldMatrix", m_pShaderCom), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ViewMatrix", m_pShaderCom, CPipeLine::D3DTS_VIEW), E_FAIL);
     FAILED_CHECK_RETURN(m_pGameInstance->Bind_VP_Transform_SR("g_ProjMatrix", m_pShaderCom, CPipeLine::D3DTS_PROJ), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4)), E_FAIL);
-
-    const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_LightDesc(0);
-    NULL_CHECK_RETURN(pLightDesc, E_FAIL);
-
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4)), E_FAIL);
-    FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4)), E_FAIL);
 
     return S_OK;
 }
