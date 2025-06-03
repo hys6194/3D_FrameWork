@@ -155,6 +155,7 @@ HRESULT CGhoul::Ready_States()
     // 차라리 출력해줘야 할 애니메이션을 세팅하는게 훨 낫다
     CState* pState = nullptr;
 
+    // 애초에 Pointer로 만들어서 문제인건가?
     pState = CMonsterState_Idle::Create(this, m_vecParts[PART_BODY], CGhoul::GHOUL_IDLE);
     m_pFSMCom->Add_State(CMonster::STATE_IDLE, pState);
 
